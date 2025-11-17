@@ -43,7 +43,17 @@
                     <ul tabindex="0" class="menu dropdown-content mt-3 z-[1] p-2 shadow bg-base-200 rounded-box w-52">
                         <li><a>Perfil</a></li>
                         <li><a>Configuración</a></li>
-                        <li><a>Cerrar sesión</a></li>
+                        <li><a>
+                             <form method="POST" action="{{ route('logout') }}"> 
+                                @csrf
+
+                                <x-dropdown-link :href="route('logout')" 
+                                        onclick="event.preventDefault();
+                                                    this.closest('form').submit();">
+                                    Cerrar sesión 
+                                </x-dropdown-link>
+                        </form>
+                       </a></li>
                     </ul>
                 </div>
             </div>
