@@ -25,4 +25,6 @@ Route::get('/admin/compras', function () {
     return view('admin.compras.index');
 })->name('compras.index'); 
 
+
+
 require __DIR__.'/auth.php';

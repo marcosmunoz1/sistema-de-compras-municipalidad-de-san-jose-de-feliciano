@@ -72,6 +72,7 @@
                 <li><a href="{{ route('compras.index') }}">Compras</a></li>
                 <li><a href="#">Proveedores</a></li>
                 <li><a href="#">Usuarios</a></li>
+                <li><a href="#">Roles</a></li>
             </ul>
         </div>
     </div>
