@@ -25,6 +25,8 @@ Route::get('/admin/compras', function () {
     return view('admin.compras.index');
 })->name('compras.index'); 
 
-
+//rutas para roles
+Route::get('/admin/roles', [App\Http\Controllers\RoleController::class, 'index'])->name('admin.roles.index');
+Route::post('/admin/roles/store', [App\Http\Controllers\RoleController::class, 'store'])->name('admin.roles.store');
 
 require __DIR__.'/auth.php';

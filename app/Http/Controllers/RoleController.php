@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Spatie\Permission\Models\Role;
 
 class RoleController extends Controller
 {
@@ -11,7 +12,9 @@ class RoleController extends Controller
      */
     public function index()
     {
-        //
+        $contador = 1;
+        $roles = Role::all();
+        return view('admin.roles.index', compact('contador', 'roles'));
     }
 
     /**
@@ -27,8 +30,39 @@ class RoleController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // Validación
+        $request->validate(
+            [
+                'name' => 'required',
+            ],
+            [
+                'name.required' => 'El campo nombre no puede estar vacío',
+            ]
+        );
+
+        // ACCIÓN: CREAR
+        if ($request->input('accion') == "1") {
+
+            $role = new Role();
+            $role->name = $request->name;
+            $role->save();
+
+            return redirect()->route('admin.roles.index')
+                            ->with('success', 'Rol creado correctamente');
+        }
+
+        // ACCIÓN: EDITAR
+        if ($request->input('accion') == "2") {
+
+            $role = Role::findOrFail($request->id);
+            $role->name = $request->name;
+            $role->save();
+
+            return redirect()->route('admin.roles.index')
+                            ->with('success', 'Rol actualizado correctamente');
+        }
     }
+
 
     /**
      * Display the specified resource.
