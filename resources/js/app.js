@@ -1,29 +1,10 @@
 import './bootstrap';
 
+import Alpine from 'alpinejs';
 
-document.addEventListener("DOMContentLoaded", () => {
-    const themeToggle = document.getElementById("theme-toggle");
+window.Alpine = Alpine;
 
-    if (themeToggle) {
-        themeToggle.addEventListener("click", () => {
-            const html = document.documentElement;
-
-            if (html.getAttribute("data-theme") === "dark") {
-                html.setAttribute("data-theme", "light");
-                localStorage.setItem("theme", "light");
-            } else {
-                html.setAttribute("data-theme", "dark");
-                localStorage.setItem("theme", "dark");
-            }
-        });
-    }
-
-    // Mantener el modo al recargar
-    const savedTheme = localStorage.getItem("theme");
-    if (savedTheme) {
-        document.documentElement.setAttribute("data-theme", savedTheme);
-    }
-});
+Alpine.start();
 
 document.addEventListener("DOMContentLoaded", () => {
     const html = document.documentElement;
