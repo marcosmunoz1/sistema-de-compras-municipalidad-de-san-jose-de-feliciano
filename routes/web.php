@@ -25,6 +25,11 @@ Route::get('/admin/compras', function () {
     return view('admin.compras.index');
 })->name('compras.index'); 
 
+//rutas para roles
+Route::get('/admin/roles', [App\Http\Controllers\RoleController::class, 'index'])->name('admin.roles.index');
+Route::post('/admin/roles/store', [App\Http\Controllers\RoleController::class, 'store'])->name('admin.roles.store');
+Route::delete('/admin/roles/{id}', [App\Http\Controllers\RoleController::class, 'destroy'])->name('admin.roles.destroy');
+
 Route::get('/admin/usuarios', [\App\Http\Controllers\UserController::class, 'index'])->name('usuarios.index'); 
 
 require __DIR__.'/auth.php';
