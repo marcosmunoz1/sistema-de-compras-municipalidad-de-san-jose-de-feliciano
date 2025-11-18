@@ -10,7 +10,9 @@
        class="btn btn-primary">
         + Nueva Compra
     </a>
+    
 </div>
+
 
 <div class="card bg-base-100 shadow">
     <div class="card-body p-4">

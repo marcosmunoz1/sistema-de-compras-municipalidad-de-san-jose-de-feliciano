@@ -83,9 +83,9 @@
                     </svg>
                       Home 
                     </a></li>
-                <li><a href="{{ route('compras.index') }}">🛒Compras</a></li> 
-                <li><a href="#">Proveedores</a></li>
-                <li><a href="#">Usuarios</a></li>
+                <li><a href="{{ route('compras.index') }}">🛒Compras</a></li>  
+                <li><a href="#"><x-heroicon-s-user class="w-6 h-6" /> Proveedores</a></li>
+                <li><a href="{{ route('usuarios.index') }}"><x-heroicon-o-user class="w-6 h-6" /> Usuarios</a></li>
             </ul>
         </div>
     </div>
