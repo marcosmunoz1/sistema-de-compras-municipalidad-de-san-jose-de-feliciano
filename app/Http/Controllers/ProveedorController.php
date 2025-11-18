@@ -83,8 +83,8 @@ class ProveedorController extends Controller
      */
     public function edit($id)
     {
-        $proveedor = Proveedor::findOrFail($id);
-        return view('admin.proveedores.edit', compact('proveedor'));  
+        $proveedor = Proveedor::findOrFail($id); 
+        return view('admin.proveedores.edit', compact('proveedor'));   
     } 
 
     /**
@@ -125,9 +125,9 @@ class ProveedorController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Remove the specified resource from storage. 
      */
-    public function destroy(ProveedorController $proveedorController)
+    public function destroy($id) 
     {
         //
     }

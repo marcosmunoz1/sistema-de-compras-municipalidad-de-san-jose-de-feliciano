@@ -94,11 +94,11 @@
                 </thead>
                 <tbody>
                     @php
-                        $contador = 1;
+                         $nr = $proveedores->currentPage() * $proveedores->perPage() - $proveedores->perPage() + 1; 
                     @endphp
                     @foreach ($proveedores as $proveedor) 
                         <tr>
-                            <td>{{ $contador++ }}</td>
+                            <td>{{ $nr++ }}</td>
                             <td>{{ $proveedor->empresa }}</td>
                             <td>{{ $proveedor->cuit }}</td> 
                             <td>{{ $proveedor->nombre ?? 'N/A' }}</td>
@@ -115,19 +115,12 @@
                                     </a>
 
                                     {{-- Editar --}}
-                                    <button 
+                                    <a href="{{ route('proveedores.edit', $proveedor->id) }}" 
                                         class="btn btn-warning btn-sm"
-                                        onclick="abrir_modal(
-                                            'ventana_modal',
-                                            'Editar {{ $proveedor->nombre }}',
-                                            2,
-                                            ['name'],
-                                            JSON.parse(this.dataset.proveedor)
-                                        )"
-                                        data-proveedor='@json($proveedor)'
+                                        
                                     >
                                         <x-heroicon-s-pencil class="w-4 h-4"/>
-                                    </button>
+                                    </a>
 
 
 
