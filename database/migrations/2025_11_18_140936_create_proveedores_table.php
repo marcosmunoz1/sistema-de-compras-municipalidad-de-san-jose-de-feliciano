@@ -25,8 +25,9 @@ return new class extends Migration
             $table->string('email')->nullable();   
             $table->string('codigo_postal')->nullable();
             $table->string('direccion')->nullable();
-            $table->string('observaciones')->nullable();
-            $table->timestamps();
+            $table->string('observaciones')->nullable(); 
+            $table->timestamps(); 
+            
         });
     }
 

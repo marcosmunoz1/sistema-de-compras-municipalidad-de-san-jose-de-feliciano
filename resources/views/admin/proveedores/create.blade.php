@@ -211,6 +211,10 @@
     <!-- BOTONES DEL FORMULARIO -->
     <!-- ========================= -->
     <div class="flex justify-end pt-4">
+        <a href="{{ route('proveedores.index') }}" class="btn btn-warning mr-2"> 
+            <x-heroicon-m-arrow-left class="w-4 h-4 inline" /> 
+            Volver 
+        </a>  
         <button type="submit" class="btn btn-primary">
             <x-heroicon-m-arrow-down-tray class="w-4 h-4 inline" /> 
             Guardar Proveedor 

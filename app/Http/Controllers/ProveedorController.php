@@ -60,7 +60,7 @@ class ProveedorController extends Controller
         $provedor->observaciones = $request->observaciones; 
         $provedor->save();
 
-        return redirect()->route('proveedores.index'); 
+        return redirect()->route('proveedores.index');  
     }
 
     /**
@@ -68,23 +68,53 @@ class ProveedorController extends Controller
      */
     public function show(ProveedorController $proveedorController)
     {
-        //
+        
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(ProveedorController $proveedorController)
+    public function edit($id)
     {
-        //
-    }
+        $proveedor = Proveedor::findOrFail($id);
+        return view('admin.proveedores.edit', compact('proveedor'));  
+    } 
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, ProveedorController $proveedorController)
-    {
-        //
+    public function update(Request $request, $id) 
+    {  
+      $request->validate([
+            'localidad' => 'required|string|max:255', 
+            'provincia' => 'required|string|max:255',
+            'pais' => 'required|string|max:255',
+            'empresa' => 'required|string|max:255',
+            'nombre' => 'required|string|max:255',
+            'razon_social' => 'required|nullable|string|max:255',
+            'cuit' => 'required|nullable|string|max:255',
+            'telefono' => 'required|nullable|string|max:255',
+            'celular' => 'required|string|max:255',
+            'email' => 'required|nullable|email|max:255',
+            'codigo_postal' => 'required|nullable|string|max:255',
+            'direccion' => 'required|string|max:255'
+        ]); 
+        $proveedor = Proveedor::findOrFail($id);
+        $proveedor->localidad = $request->localidad;
+        $proveedor->provincia = $request->provincia;
+        $proveedor->pais = $request->pais;
+        $proveedor->empresa = $request->empresa;
+        $proveedor->nombre = $request->nombre;
+        $proveedor->razon_social = $request->razon_social;
+        $proveedor->cuit = $request->cuit;
+        $proveedor->telefono = $request->telefono;
+        $proveedor->celular = $request->celular;
+        $proveedor->email = $request->email;
+        $proveedor->codigo_postal = $request->codigo_postal;
+        $proveedor->direccion = $request->direccion;
+        $proveedor->observaciones = $request->observaciones; 
+        $proveedor->save();
+        return redirect()->route('proveedores.index');
     }
 
     /**
