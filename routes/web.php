@@ -30,4 +30,9 @@ Route::get('/admin/roles', [App\Http\Controllers\RoleController::class, 'index']
 Route::post('/admin/roles/store', [App\Http\Controllers\RoleController::class, 'store'])->name('admin.roles.store');
 Route::delete('/admin/roles/{id}', [App\Http\Controllers\RoleController::class, 'destroy'])->name('admin.roles.destroy');
 
+//rutas para proveedores 
+Route::get('/admin/proveedores', [App\Http\Controllers\ProveedorController::class, 'index'])->name('admin.proveedores.index');
+Route::get('/admin/proveedores/create', [App\Http\Controllers\ProveedorController::class, 'create'])->name('admin.proveedores.create');
+Route::post('/admin/proveedores/store', [App\Http\Controllers\ProveedorController::class, 'store'])->name('admin.proveedores.store');
+
 require __DIR__.'/auth.php';
