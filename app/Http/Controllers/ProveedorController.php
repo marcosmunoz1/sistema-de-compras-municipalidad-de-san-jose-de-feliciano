@@ -10,9 +10,16 @@ class ProveedorController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
-    {
-        $proveedores = Proveedor::all(); 
+    public function index(Request $request) 
+    {   $search = $request->get('search');  
+        $query = Proveedor::withTrashed()->orderBy('id', 'desc');
+        if ($search) {
+            $query->where('empresa', 'like', "%{$search}%")
+                  ->orWhere('nombre', 'like', "%{$search}%")
+                  ->orWhere('razon_social', 'like', "%{$search}%")
+                  ->orWhere('cuit', 'like', "%{$search}%"); 
+        }
+        $proveedores = $query->paginate(5);  
         return view('admin.proveedores.index', compact('proveedores')); 
     }
 

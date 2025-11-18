@@ -49,29 +49,30 @@
 </div> 
 
 <!-- Buscador -->
-<div class="card bg-base-100 shadow p-6 mb-6">
-    <div class="flex items-center gap-3">
+<form action="{{ route('proveedores.index') }}" method="GET"> 
+    <div class="card bg-base-100 shadow p-6 mb-6">
+        <div class="flex items-center gap-3">
 
-        <!-- INPUT -->
-        <label class="input input-bordered flex items-center gap-2 w-full">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 opacity-70" fill="none"
-                viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="m21 21-4.35-4.35M11 19a8 8 0 100-16 8 8 0 000 16z" />
-            </svg>
-            <input 
-                type="text" 
-                placeholder="Buscar por nombre, RUC, contacto..."
-                class="w-full"
-            />
-        </label>
+            <!-- INPUT -->
+            <label class="input input-bordered flex items-center gap-2 w-full">
+                <input name="search" value="{{ request('search') ?? '' }}"
+                    type="text" 
+                    placeholder="Buscar por nombre, RUC, contacto..."
+                    class="w-full"
+                />
+            </label>
 
-        <!-- BOTÓN -->
-        <button class="btn btn-primary">
-            Buscar
-        </button>
+            <!-- BOTÓN -->
+            <button class="btn btn-primary">
+             <x-heroicon-o-magnifying-glass class="w-4 h-4" /> 
+                Buscar
+            </button>
+              @if(request('search'))
+                <a href="{{ route('proveedores.index') }}" class="btn btn-error"><x-heroicon-o-trash class="w-4 h-4" /> Limpiar</a>
+              @endif 
+        </div>
     </div>
-</div>
+</form> 
 
 <!-- Tabla -->
 <div class="card bg-base-100 shadow">
@@ -95,7 +96,7 @@
                     @php
                         $contador = 1;
                     @endphp
-                    @foreach ($proveedores as $proveedor)
+                    @foreach ($proveedores as $proveedor) 
                         <tr>
                             <td>{{ $contador++ }}</td>
                             <td>{{ $proveedor->empresa }}</td>
