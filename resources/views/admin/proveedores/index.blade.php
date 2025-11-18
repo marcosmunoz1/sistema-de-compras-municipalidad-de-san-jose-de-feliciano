@@ -57,7 +57,7 @@
             <label class="input input-bordered flex items-center gap-2 w-full">
                 <input name="search" value="{{ request('search') ?? '' }}"
                     type="text" 
-                    placeholder="Buscar por nombre, RUC, contacto..."
+                    placeholder="Buscar por nombre, Cuit, contacto..."
                     class="w-full"
                 />
             </label>
@@ -143,7 +143,45 @@
                     @endforeach
                 </tbody>
             </table>
+            
         </div>
+          @if ($proveedores->hasPages())
+                <div class="flex flex-col md:flex-row justify-between items-center mt-6 px-3 gap-4">
+
+                    <!-- Texto "Mostrando X - Y" -->
+                    <div class="text-sm text-gray-500">
+                        Mostrando {{ $proveedores->firstItem() }} - {{ $proveedores->lastItem() }} de {{ $proveedores->total() }} registros
+                    </div>
+
+                    <!-- Controles de paginación estilo DaisyUI -->
+                    <div class="join">
+
+                        {{-- Botón Anterior --}}
+                        @if ($proveedores->onFirstPage())
+                            <button class="join-item btn btn-square btn-disabled">«</button>
+                        @else
+                            <a href="{{ $proveedores->previousPageUrl() }}" class="join-item btn btn-square">«</a>
+                        @endif
+
+                        {{-- Números de página --}}
+                        @foreach ($proveedores->links()->elements[0] ?? [] as $page => $url)
+                            @if ($page == $proveedores->currentPage())
+                                <button class="join-item btn btn-square btn-active">{{ $page }}</button>
+                            @else
+                                <a href="{{ $url }}" class="join-item btn btn-square">{{ $page }}</a>
+                            @endif
+                        @endforeach
+
+                        {{-- Botón Siguiente --}}
+                        @if ($proveedores->hasMorePages())
+                            <a href="{{ $proveedores->nextPageUrl() }}" class="join-item btn btn-square">»</a>
+                        @else
+                            <button class="join-item btn btn-square btn-disabled">»</button>
+                        @endif
+
+                    </div>
+                </div>
+            @endif
 
     </div>
 </div>
