@@ -13,7 +13,6 @@ return new class extends Migration
     {
         Schema::table('proveedores', function (Blueprint $table) {
          $table->boolean('estado')->default(true); 
-         $table->softDeletes();
         });
     }
 
