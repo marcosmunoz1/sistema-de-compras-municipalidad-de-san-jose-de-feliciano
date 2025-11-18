@@ -22,28 +22,26 @@
             <table class="table table-zebra w-full">
                 <thead>
                     <tr>
-                        <th>Nr</th>
-                        <th>Nombre del rol</th>
-                        <th>Fecha y hora de creación</th>
+                        <th class="text-center">Nr</th>
+                        <th class="text-center">Nombre del rol</th>
+                        <th class="text-center">Fecha y hora de creación</th>
                         <th class="text-center">Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach ($roles as $role)
                         <tr>
-                            <td>{{ $contador++ }}</td>
-                            <td>{{ $role->name }}</td>
-                            <td> {{ $role->created_at->format('d/m/Y H:i') }}</td>
+                            <td style="text-align: center">{{ $contador++ }}</td>
+                            <td class="text-center">{{ $role->name }}</td>
+                            <td class="text-center"> {{ $role->created_at->format('d/m/Y H:i') }}</td>
 
                             <td class="text-center">
                                 <div class="flex items-center justify-center gap-2">
-
                                     {{-- Ver --}}
                                     <a href="" 
                                     class="btn btn-info btn-sm">
                                         <x-bi-eye-fill class="w-4 h-4"/>
                                     </a>
-
                                     {{-- Editar --}}
                                     <button 
                                         class="btn btn-warning btn-sm"
@@ -58,15 +56,10 @@
                                     >
                                         <x-bi-pencil-square class="w-4 h-4"/>
                                     </button>
-
-
-
-
-                                    {{-- Eliminar (después lo convertís en form POST/DELETE) --}}
+                                    {{-- Eliminar --}}
                                     <button class="btn btn-error btn-sm" onclick="confirmarEliminacion({{ $role->id }})">
                                         <x-bi-trash-fill class="w-4 h-4"/>
                                     </button>
-
                                 </div>
                             </td>
                         </tr>

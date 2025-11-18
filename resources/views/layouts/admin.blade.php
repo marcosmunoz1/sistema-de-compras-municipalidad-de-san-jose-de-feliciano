@@ -85,8 +85,8 @@
                     </a></li>
                 <li><a href="{{ route('compras.index') }}">🛒Compras</a></li> 
                 <li><a href="#">Proveedores</a></li>
-                <li><a href="#">Usuarios</a></li>
-                <li><a href="{{ url('/admin/roles') }}"><x-bi-person-fill-gear />Roles</a></li>
+                <li><a href=""><x-govicon-users />Usuarios</a></li>
+                <li><a href="{{ url('/admin/roles') }}"><x-bi-person-fill-gear />Roles</a>
             </ul>
         </div>
     </div>
