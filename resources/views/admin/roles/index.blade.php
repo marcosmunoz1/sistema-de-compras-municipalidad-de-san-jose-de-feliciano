@@ -3,7 +3,7 @@
 @section('content')
 
 <div class="flex items-center justify-between mb-6">
-    <h1 class="text-2xl font-semibold">Listado de Roles</h1>
+    <h1 class="text-2xl font-semibold">Listado de Roles</h1> 
 
     {{-- Botón agregar rol --}}
     <button 
@@ -41,7 +41,7 @@
                                     {{-- Ver --}}
                                     <a href="" 
                                     class="btn btn-info btn-sm">
-                                        <x-bi-eye-fill class="w-4 h-4"/>
+                                        <x-heroicon-s-eye class="w-4 h-4"/>
                                     </a>
 
                                     {{-- Editar --}}
@@ -56,7 +56,7 @@
                                         )"
                                         data-role='@json($role)'
                                     >
-                                        <x-bi-pencil-square class="w-4 h-4"/>
+                                        <x-heroicon-s-pencil class="w-4 h-4"/>
                                     </button>
 
 
@@ -64,7 +64,7 @@
 
                                     {{-- Eliminar (después lo convertís en form POST/DELETE) --}}
                                     <button class="btn btn-error btn-sm" onclick="confirmarEliminacion({{ $role->id }})">
-                                        <x-bi-trash-fill class="w-4 h-4"/>
+                                        <x-heroicon-s-trash class="w-4 h-4"/>
                                     </button>
 
                                 </div>
@@ -128,7 +128,7 @@
   <div class="modal-box">
 
     <h3 class="font-bold text-lg flex items-center gap-2 text-red-600">
-        <x-bi-trash-fill class="w-5 h-5" />
+        <x-heroicon-o-trash class="w-5 h-5" />
         Confirmar eliminación
     </h3>
 
@@ -150,7 +150,7 @@
             @method('DELETE')
 
             <button type="submit" class="btn btn-error">
-                <x-bi-trash-fill class="w-4 h-4" />
+                <x-heroicon-o-trash class="w-4 h-4" />
                 Eliminar
             </button>
         </form>
@@ -169,7 +169,7 @@
 
 @endsection
 
-@section('js')
+@section('js') 
     <script>
         function abrir_modal(modal, title, accion, campos, dato) {
             const dlg = document.getElementById(modal);

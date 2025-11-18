@@ -37,7 +37,7 @@
                 <div class="dropdown dropdown-end ml-2">
                     <label tabindex="0" class="btn btn-circle avatar">
                         <div class="w-10 rounded-full">
-                            <img src="https://i.pravatar.cc/300" />
+                            <img src="" /> 
                         </div>
                     </label>
                     <ul tabindex="0" class="menu dropdown-content mt-3 z-[1] p-2 shadow bg-base-200 rounded-box w-52">
@@ -84,12 +84,13 @@
                       Home 
                     </a></li>
                 <li><a href="{{ route('compras.index') }}">🛒Compras</a></li> 
-                <li><a href="#">Proveedores</a></li>
-                <li><a href="#">Usuarios</a></li>
-                <li><a href="{{ url('/admin/roles') }}"><x-bi-person-fill-gear />Roles</a></li>
+                <li><a href="{{ route('proveedores.index') }}"> 🏭Proveedores</a></li>
+                <li><a href="{{ route('usuarios.index') }}"><x-heroicon-s-user-group class="w-4 h-4 inline" />Usuarios</a></li>
+                <li><a href="{{ url('/admin/roles') }}"><x-heroicon-s-cog-6-tooth class="w-4 h-4 inline" />Roles</a></li>
             </ul>
         </div>
     </div>
     @yield('js')
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> 
 </body>
 </html>
