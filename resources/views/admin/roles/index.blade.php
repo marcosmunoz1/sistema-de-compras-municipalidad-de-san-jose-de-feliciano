@@ -3,13 +3,13 @@
 @section('content')
 
 <div class="flex items-center justify-between mb-6">
-    <h1 class="text-2xl font-semibold">Roles</h1>
+    <h1 class="text-2xl font-semibold">Listado de Roles</h1>
 
     {{-- Botón agregar rol --}}
     <button 
-        class="btn btn-primary"
+        class="btn btn-primary btn-md"
         onclick="abrir_modal('ventana_modal','Agregar',1,[],[])">
-        + Nuevo Rol
+        <x-heroicon-o-plus class="w-5 h-5"/>Agregar rol
     </button>
 
 
@@ -41,7 +41,7 @@
                                     {{-- Ver --}}
                                     <a href="" 
                                     class="btn btn-info btn-sm">
-                                        Ver
+                                        <x-bi-eye-fill class="w-4 h-4"/>
                                     </a>
 
                                     {{-- Editar --}}
@@ -56,15 +56,15 @@
                                         )"
                                         data-role='@json($role)'
                                     >
-                                        <i class="fas fa-edit"></i>
+                                        <x-bi-pencil-square class="w-4 h-4"/>
                                     </button>
 
 
 
 
                                     {{-- Eliminar (después lo convertís en form POST/DELETE) --}}
-                                    <button class="btn btn-error btn-sm">
-                                        Eliminar
+                                    <button class="btn btn-error btn-sm" onclick="confirmarEliminacion({{ $role->id }})">
+                                        <x-bi-trash-fill class="w-4 h-4"/>
                                     </button>
 
                                 </div>
@@ -77,7 +77,7 @@
 
     </div>
 </div>
-<!-- MODAL DAISYUI -->
+<!-- MODAL -->
 <dialog id="ventana_modal" class="modal">
     <div class="modal-box">
 
@@ -117,11 +117,48 @@
         </form>
     </div>
 
-    <!-- PARA QUE SE CIERRE HACIENDO CLICK FUERA (DaisyUI) -->
+    <!-- PARA QUE SE CIERRE HACIENDO CLICK FUERA  -->
     <form method="dialog" class="modal-backdrop">
         <button>Cerrar</button>
     </form>
 </dialog>
+
+<!-- Modal para eliminar -->
+<dialog id="modal_eliminar_rol" class="modal">
+  <div class="modal-box">
+
+    <h3 class="font-bold text-lg flex items-center gap-2 text-red-600">
+        <x-bi-trash-fill class="w-5 h-5" />
+        Confirmar eliminación
+    </h3>
+
+    <p class="py-4">
+        ¿Seguro que querés eliminar este rol?
+        <div>
+            <span class="text-red-600 font-semibold">Esta acción no se puede deshacer.</span>
+        </div>
+    </p>
+
+    <div class="modal-action">
+        <form method="dialog">
+            <button class="btn">Cancelar</button>
+        </form>
+
+        <!-- Formulario eliminar -->
+        <form id="formEliminarRol" method="POST">
+            @csrf
+            @method('DELETE')
+
+            <button type="submit" class="btn btn-error">
+                <x-bi-trash-fill class="w-4 h-4" />
+                Eliminar
+            </button>
+        </form>
+    </div>
+
+  </div>
+</dialog>
+
 @if ($errors->any())
     <script>
         document.addEventListener('DOMContentLoaded', function () {
@@ -154,6 +191,18 @@
         function cerrar_modal() {
             document.getElementById('ventana_modal').close();
         }
+
+       function confirmarEliminacion(id) {
+            const form = document.getElementById('formEliminarRol');
+            form.action = routeEliminarRol(id);
+            document.getElementById('modal_eliminar_rol').showModal();
+        }
+
+        // Genera la URL usando el helper de Laravel
+        function routeEliminarRol(id) {
+            return "{{ url('/admin/roles') }}/" + id;
+        }
+
 
         document.addEventListener('DOMContentLoaded', () => {
 

@@ -33,10 +33,11 @@ class RoleController extends Controller
         // Validación
         $request->validate(
             [
-                'name' => 'required',
+                'name' => 'required|string|max:255|unique:roles,name,'.$request->id,
             ],
             [
                 'name.required' => 'El campo nombre no puede estar vacío',
+                'name.unique' => 'El Rol ya está registrado.'
             ]
         );
 
@@ -91,8 +92,12 @@ class RoleController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy($id)
     {
-        //
+        $role = Role::findOrFail($id);
+        $role->delete();
+
+        return redirect()->route('admin.roles.index')
+                ->with('success', 'Rol eliminado correctamente');
     }
 }
