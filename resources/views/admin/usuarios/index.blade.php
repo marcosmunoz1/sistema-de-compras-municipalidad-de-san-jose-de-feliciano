@@ -86,6 +86,7 @@
                         <th class="text-center">Correo electronico</th>
                         <th class="text-center">Rol</th>
                         <th class="text-center">Ultimo acceso</th>
+                        <th class="text-center">Ultimo cierre</th>
                         <th class="text-center">Estado</th>
                         <th class="text-center">Acciones</th>
                     </tr>
@@ -99,7 +100,8 @@
                         <td class="text-center">
                           <span class="badge badge-info mr-1">{{ $usuario->roles->pluck('name')->join(', ')  }}</span>
                         </td>
-                          <td class="text-center">{{ $usuario->last_login_at?->format('d/m/Y H:i') ?? 'Nunca' }}</td>
+                        <td class="text-center">{{ $usuario->last_login_at?->format('d/m/Y H:i') ?? 'Nunca' }}</td>
+                        <td class="text-center">{{ $usuario->last_logout_at?->format('d/m/Y H:i') ?? 'Nunca' }}</td>
                         <td class="text-center">
                             <span class="badge {{ $usuario->estado ? 'badge-success' : 'badge-error' }}">
                               {{ $usuario->estado ? 'Activo' : 'Inactivo' }}

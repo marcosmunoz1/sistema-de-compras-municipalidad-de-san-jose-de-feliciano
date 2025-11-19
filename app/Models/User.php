@@ -24,6 +24,8 @@ class User extends Authenticatable
         'email',
         'password',
         'last_login_at',
+        'last_logout_at',
+        'estado',
     ];
 
     /**
@@ -47,6 +49,7 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
             'last_login_at' => 'datetime',
+            'last_logout_at' => 'datetime',
         ];
     }
 }
