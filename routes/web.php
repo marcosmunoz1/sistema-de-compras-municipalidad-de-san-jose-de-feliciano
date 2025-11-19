@@ -51,5 +51,17 @@ Route::put('/admin/usuarios/{id}', [App\Http\Controllers\UserController::class, 
 Route::delete('/admin/usuarios/{id}', [App\Http\Controllers\UserController::class, 'destroy'])->name('usuarios.destroy');
 Route::put('admin/usuarios/{id}/restore', [App\Http\Controllers\UserController::class, 'restore'])->name('usuarios.restore');
 
+//rutas para categorias 
+Route::get('/admin/categorias', [App\Http\Controllers\CategoriaController::class, 'index'])->name('categorias.index'); 
+
+//rutas para productos 
+Route::get('/admin/productos', [App\Http\Controllers\ProductoController::class, 'index'])->name('productos.index');
+Route::get('/admin/productos/create', [App\Http\Controllers\ProductoController::class, 'create'])->name('productos.create');
+Route::post('/admin/productos/store', [App\Http\Controllers\ProductoController::class, 'store'])->name('productos.store');
+Route::get('/admin/productos/{id}/edit', [App\Http\Controllers\ProductoController::class, 'edit'])->name('productos.edit');
+Route::put('/admin/productos/{id}', [App\Http\Controllers\ProductoController::class, 'update'])->name('productos.update');
+Route::get('/admin/productos/{id}', [App\Http\Controllers\ProductoController::class, 'show'])->name('productos.show');
+Route::delete('/admin/productos/{id}', [App\Http\Controllers\ProductoController::class, 'destroy'])->name('productos.destroy');
+Route::put('admin/productos/{id}/restore', [App\Http\Controllers\ProductoController::class, 'restore'])->name('productos.restore');
 
 require __DIR__.'/auth.php';

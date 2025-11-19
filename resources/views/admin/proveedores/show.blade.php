@@ -4,8 +4,19 @@
 <!-- Titulo y boton --> 
  <div class="flex items-center justify-between mb-6">
     <h1 class="text-2xl font-semibold">Ver Proveedor: {{ $proveedor->empresa }}</h1> 
- </div>
- 
+    <div class="flex gap-2">
+        <a href="{{ route('proveedores.index') }}"
+            class="inline-flex items-center gap-2 h-9 px-4 py-2 rounded-md bg-warning text-sm hover:bg-accent">
+                <x-heroicon-o-arrow-left class="w-4 h-4 inline" />
+                Volver a Proveedores
+        </a>
+        <a href="{{ route('proveedores.edit', $proveedor->id) }}"
+            class="inline-flex items-center gap-2 h-9 px-4 py-2 rounded-md text-sm bg-blue-600 hover:bg-blue-700 text-white">
+                <x-heroicon-o-pencil class="w-4 h-4 inline" />
+                Editar Proveedor 
+        </a>
+    </div>
+ </div> 
  <div class="breadcrumbs text-sm mb-6">
   <ul>
     <li>
@@ -37,7 +48,11 @@
       </span>
     </li>
   </ul>
+
 </div>
+
+ 
+
 <div class="card bg-base-100 dark:bg-base-200 shadow-md rounded-xl p-6">
     <div class="flex items-start justify-between">
         <div class="flex gap-4">

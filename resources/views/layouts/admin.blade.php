@@ -85,6 +85,8 @@
                     </a></li>
                 <li><a href="{{ route('compras.index') }}">🛒Compras</a></li> 
                 <li><a href="{{ route('proveedores.index') }}"><x-heroicon-o-truck class="w-4 h-4 inline" />Proveedores</a></li>
+                <li><a href="{{ route('categorias.index') }}"><x-heroicon-o-cog class="w-4 h-4 inline" />Categorias</a></li>
+                <li><a href="{{ route('productos.index') }}"><x-heroicon-o-cog class="w-4 h-4 inline" />Productos</a></li>
                 <li><a href="{{ route('usuarios.index') }}"><x-heroicon-s-user-group class="w-4 h-4 inline" />Usuarios</a></li>
                 <li><a href="{{ url('/admin/roles') }}"><x-heroicon-s-cog-6-tooth class="w-4 h-4 inline" />Roles</a></li>
             </ul>
