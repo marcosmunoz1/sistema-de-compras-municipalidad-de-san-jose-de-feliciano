@@ -73,8 +73,10 @@ class ProveedorController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(ProveedorController $proveedorController)
-    {
+    public function show($id)
+    { 
+        $proveedor = Proveedor::findOrFail($id); 
+        return view('admin.proveedores.show', compact('proveedor')); 
         
     }
 

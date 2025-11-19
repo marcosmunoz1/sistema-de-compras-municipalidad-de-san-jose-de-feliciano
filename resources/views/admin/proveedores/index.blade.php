@@ -54,11 +54,13 @@
         <div class="flex items-center gap-3">
 
             <!-- INPUT -->
-            <label class="input input-bordered flex items-center gap-2 w-full">
+            <label class="w-full"> 
                 <input name="search" value="{{ request('search') ?? '' }}"
                     type="text" 
                     placeholder="Buscar por nombre, Cuit, contacto..."
-                    class="w-full"
+                    class="w-full h-10 rounded-md border border-base-300 bg-base-200 
+                        px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
+                        focus:border-primary transition"
                 />
             </label>
 
@@ -109,7 +111,7 @@
                                 <div class="flex items-center justify-center gap-2">
 
                                     {{-- Ver --}}
-                                    <a href="" 
+                                    <a href="{{ route('proveedores.show', $proveedor->id) }}"  
                                     class="btn btn-info btn-sm">
                                         <x-heroicon-s-eye class="w-4 h-4"/>
                                     </a>
@@ -220,6 +222,41 @@
     </div>
 
   </div>
+</dialog>
+<!-- Modal para restaurar -->
+<dialog id="modal_restaurar_proveedor" class="modal">
+    <div class="modal-box">
+
+        <h3 class="font-bold text-lg flex items-center gap-2 text-green-600">
+            <x-heroicon-o-arrow-path class="w-5 h-5" />
+            Confirmar restauración
+        </h3>
+
+        <p class="py-4">
+            ¿Seguro que querés restaurar este proveedor?
+        </p>
+
+        <div class="modal-action">
+
+            <!-- Botón cancelar -->
+            <form method="dialog">
+                <button class="btn">Cancelar</button>
+            </form>
+
+            <!-- Formulario restaurar -->
+            <form id="formRestaurarProveedor" method="POST">
+                @csrf
+                @method('PUT')
+
+                <button type="submit" class="btn btn-success">
+                    <x-heroicon-o-arrow-path class="w-4 h-4" />
+                    Restaurar
+                </button>
+            </form>
+
+        </div>
+
+    </div>
 </dialog>
 
 @endsection 

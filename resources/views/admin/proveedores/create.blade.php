@@ -80,30 +80,53 @@
                     <!-- Empresa -->
                     <div class="space-y-2">
                         <label for="empresa" class="text-sm font-medium">Nombre de la Empresa <span class="text-red-600">*</span></label>
-                        <input id="empresa" name="empresa" value="{{ old('empresa') }}" class="input input-bordered w-full" required />
+                        <input 
+                            id="empresa" 
+                            name="empresa" 
+                            value="{{ old('empresa') }}"
+                            type="text"
+                            placeholder="Nombre de la empresa..."
+                            class="w-full h-10 rounded-md border border-base-300 bg-base-200 px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition"
+                        />
                     </div>
 
                     <!-- Razon Social -->
                     <div class="space-y-2">
                         <label for="razon_social" class="text-sm font-medium">Razón Social</label>
-                        <input id="razon_social" name="razon_social" value="{{ old('razon_social') }}" class="input input-bordered w-full" />
+                        <input id="razon_social" name="razon_social" value="{{ old('razon_social') }}" 
+                        class="w-full h-10 rounded-md border border-base-300 bg-base-200 
+                        px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
+                        focus:border-primary transition" 
+                        placeholder="Razón Social..."/> 
                     </div>
                 </div>
 
                 <div class="grid grid-cols-3 gap-4">
                     <div class="space-y-2">
                         <label for="cuit" class="text-sm font-medium">CUIT / RUC</label>
-                        <input id="cuit" name="cuit" value="{{ old('cuit') }}" class="input input-bordered w-full" />
+                        <input id="cuit" name="cuit" value="{{ old('cuit') }}" 
+                        class="w-full h-10 rounded-md border border-base-300 bg-base-200 
+                        px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
+                        focus:border-primary transition" 
+                        placeholder="CUIT..."/>
                     </div>
 
                     <div class="space-y-2">
                         <label for="email" class="text-sm font-medium">Email</label>
-                        <input id="email" name="email" type="email" value="{{ old('email') }}" class="input input-bordered w-full" />
+                        <input id="email" name="email" type="email" value="{{ old('email') }}" 
+                        class="w-full h-10 rounded-md border border-base-300 bg-base-200 
+                        px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
+                        focus:border-primary transition" 
+                        placeholder="Email..."/>
                     </div>
 
                     <div class="space-y-2">
                         <label for="codigo_postal" class="text-sm font-medium">Código Postal</label>
-                        <input id="codigo_postal" name="codigo_postal" value="{{ old('codigo_postal') }}" class="input input-bordered w-full" />
+                        <input id="codigo_postal" name="codigo_postal" value="{{ old('codigo_postal') }}" 
+                        class="w-full h-10 rounded-md border border-base-300 bg-base-200 
+                        px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
+                        focus:border-primary transition" 
+                        placeholder="Código Postal..."/>
                     </div>
                 </div>
 
@@ -113,17 +136,29 @@
                     <div class="grid grid-cols-3 gap-4">
                         <div class="space-y-2">
                             <label for="nombre" class="text-sm font-medium">Nombre del Contacto <span class="text-red-600">*</span></label>
-                            <input id="nombre" name="nombre" value="{{ old('nombre') }}" class="input input-bordered w-full" required />
+                            <input id="nombre" name="nombre" value="{{ old('nombre') }}" 
+                            class="w-full h-10 rounded-md border border-base-300 bg-base-200 
+                            px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
+                            focus:border-primary transition" 
+                            placeholder="Nombre del Contacto..." required />
                         </div>
 
                         <div class="space-y-2">
                             <label for="telefono" class="text-sm font-medium">Teléfono</label>
-                            <input id="telefono" name="telefono" value="{{ old('telefono') }}" class="input input-bordered w-full" />
+                            <input id="telefono" name="telefono" value="{{ old('telefono') }}" 
+                            class="w-full h-10 rounded-md border border-base-300 bg-base-200 
+                            px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
+                            focus:border-primary transition" 
+                            placeholder="Teléfono..." />
                         </div>
 
                         <div class="space-y-2">
                             <label for="celular" class="text-sm font-medium">Celular <span class="text-red-600">*</span></label>
-                            <input id="celular" name="celular" value="{{ old('celular') }}" class="input input-bordered w-full" required />
+                            <input id="celular" name="celular" value="{{ old('celular') }}" 
+                            class="w-full h-10 rounded-md border border-base-300 bg-base-200 
+                            px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
+                            focus:border-primary transition" 
+                            placeholder="Celular..." required />
                         </div>
                     </div>
                 </div>
@@ -169,14 +204,22 @@
                     <!-- Localidad -->
                     <div class="space-y-2">
                         <label for="localidad" class="text-sm font-medium">Localidad <span class="text-red-600">*</span></label>
-                        <input id="localidad" name="localidad" value="{{ old('localidad') }}" class="input input-bordered w-full" />
+                        <input id="localidad" name="localidad" value="{{ old('localidad') }}" 
+                        class="w-full h-10 rounded-md border border-base-300 bg-base-200 
+                        px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
+                        focus:border-primary transition" 
+                        placeholder="Localidad..." />
                     </div>
                 </div>
 
                 <!-- Dirección -->
                 <div class="space-y-2">
                     <label for="direccion" class="text-sm font-medium">Dirección</label>
-                    <input id="direccion" name="direccion" value="{{ old('direccion') }}" class="input input-bordered w-full" />
+                    <input id="direccion" name="direccion" value="{{ old('direccion') }}" 
+                    class="w-full h-10 rounded-md border border-base-300 bg-base-200 
+                    px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
+                    focus:border-primary transition" 
+                    placeholder="Dirección..." />
                 </div>
             </div>
         </div>
@@ -200,7 +243,9 @@
                 <textarea id="observaciones" name="observaciones" rows="5"
                     placeholder="Ingrese cualquier observación o nota relevante sobre el proveedor..."
                     value="{{ old('observaciones') }}"
-                    class="input input-bordered w-full">
+                    class="w-full h-10 rounded-md border border-base-300 bg-base-200 
+                    px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
+                    focus:border-primary transition">
                 
                 </textarea>
             </div>
