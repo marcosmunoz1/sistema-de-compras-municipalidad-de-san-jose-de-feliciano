@@ -40,4 +40,5 @@ Route::post('/admin/proveedores/store', [App\Http\Controllers\ProveedorControlle
 Route::get('/admin/proveedores/{id}/edit', [App\Http\Controllers\ProveedorController::class, 'edit'])->name('proveedores.edit');
 Route::put('/admin/proveedores/{id}', [App\Http\Controllers\ProveedorController::class, 'update'])->name('proveedores.update');
 Route::delete('/admin/proveedores/{id}', [App\Http\Controllers\ProveedorController::class, 'destroy'])->name('proveedores.destroy');
+
 require __DIR__.'/auth.php';
