@@ -104,7 +104,7 @@
                                                 {{ json_encode($categoria) }}
                                             )"
                                             class="btn btn-info btn-sm">
-                                            <x-heroicon-o-eye class="w-5 h-5" />
+                                            <x-heroicon-s-eye class="w-4 h-4"/>
                                         </button>
 
 
@@ -118,7 +118,7 @@
                                                 {{ json_encode($categoria) }}
                                             )"
                                             class="btn btn-warning btn-sm">
-                                            <x-heroicon-o-pencil-square class="w-5 h-5" />
+                                            <x-heroicon-s-pencil class="w-4 h-4"/>
                                         </button>
 
 

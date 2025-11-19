@@ -71,12 +71,12 @@
             <table class="table table-zebra w-full">
                 <thead>
                     <tr>
-                        <th>Nr</th>
-                        <th>Categoria</th>
-                        <th>Nombre</th>
-                        <th>Descripcion</th>
-                        <th>Unidad</th>
-                        <th>Estado</th>
+                        <th class="text-center">Nr</th>
+                        <th class="text-center">Categoria</th>
+                        <th class="text-center">Nombre</th>
+                        <th class="text-center">Descripcion</th>
+                        <th class="text-center">Unidad</th>
+                        <th class="text-center">Estado</th>
                         <th class="text-center">Acciones</th>
                     </tr>
                 </thead>
@@ -86,11 +86,11 @@
                     @endphp
                     @foreach ($productos as $producto)  
                         <tr>
-                            <td>{{ $nr++ }}</td>
-                            <td>{{ $producto->categoria->nombre }}</td>
-                            <td>{{ $producto->nombre }}</td> 
-                            <td>{{ $producto->descripcion }}</td>
-                            <td>{{ $producto->unidad }}</td>
+                            <td class="text-center">{{ $nr++ }}</td>
+                            <td class="text-center">{{ $producto->categoria->nombre }}</td>
+                            <td class="text-center">{{ $producto->nombre }}</td> 
+                            <td class="text-center">{{ $producto->descripcion }}</td>
+                            <td class="text-center">{{ $producto->unidad }}</td>
                             <td class="text-center">
                                 <span class="badge {{ $producto->estado ? 'badge-success' : 'badge-error' }}">
                                 {{ $producto->estado ? 'Activo' : 'Inactivo' }}

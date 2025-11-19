@@ -74,13 +74,13 @@
             <table class="table table-zebra w-full">
                 <thead>
                     <tr>
-                        <th>Nr</th>
-                        <th>Nombre de la empresa</th>
-                        <th>Cuit</th>
-                        <th>Contacto</th>
-                        <th>Telefono</th>
-                        <th>Celular</th>
-                        <th>Email</th>
+                        <th class="text-center">Nr</th>
+                        <th class="text-center">Nombre de la empresa</th>
+                        <th class="text-center">Cuit</th>
+                        <th class="text-center">Contacto</th>
+                        <th class="text-center">Telefono</th>
+                        <th class="text-center">Celular</th>
+                        <th class="text-center">Email</th>
                         <th class="text-center">Acciones</th>
                     </tr>
                 </thead>
@@ -90,13 +90,13 @@
                     @endphp
                     @foreach ($proveedores as $proveedor) 
                         <tr>
-                            <td>{{ $nr++ }}</td>
-                            <td>{{ $proveedor->empresa }}</td>
-                            <td>{{ $proveedor->cuit }}</td> 
-                            <td>{{ $proveedor->nombre ?? 'N/A' }}</td>
-                            <td>{{ $proveedor->telefono ?? 'N/A' }}</td>
-                            <td>{{ $proveedor->celular ?? 'N/A' }}</td>
-                            <td>{{ $proveedor->email ?? 'N/A' }}</td>
+                            <td class="text-center">{{ $nr++ }}</td>
+                            <td class="text-center">{{ $proveedor->empresa }}</td>
+                            <td class="text-center">{{ $proveedor->cuit }}</td> 
+                            <td class="text-center">{{ $proveedor->nombre ?? 'N/A' }}</td>
+                            <td class="text-center">{{ $proveedor->telefono ?? 'N/A' }}</td>
+                            <td class="text-center">{{ $proveedor->celular ?? 'N/A' }}</td>
+                            <td class="text-center">{{ $proveedor->email ?? 'N/A' }}</td>
                             <td class="text-center">
                                 <div class="flex items-center justify-center gap-2">
 
