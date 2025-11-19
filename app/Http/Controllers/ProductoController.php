@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\producto;
 use Illuminate\Http\Request;
-
+use App\Models\Categoria;
 class ProductoController extends Controller
 {
     /**
@@ -12,60 +12,88 @@ class ProductoController extends Controller
      */
     public function index(Request $request)
     {   
+        $categorias = Categoria::all();
         $search = $request->input('search'); 
         $productos = Producto::where('nombre', 'LIKE', "%{$search}%")
             ->orWhere('descripcion', 'LIKE', "%{$search}%")
             ->orWhere('unidad', 'LIKE', "%{$search}%")
             ->orWhere('estado', 'LIKE', "%{$search}%")
             ->paginate(10);
-        return view('admin.productos.index', compact('productos'));
+        return view('admin.productos.index', compact('productos', 'categorias')); 
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-    {
-        //
+    {   
+        /* return response()->json($request->all());   */
+        $request->validate([
+            'categoria_id' => 'required', 
+            'nombre' => 'required',
+            'descripcion' => 'required',
+            'unidad' => 'required'
+        ]);
+
+        $producto = new Producto();
+        $producto->categoria_id = $request->categoria_id; 
+        $producto->nombre = $request->nombre;
+        $producto->descripcion = $request->descripcion;
+        $producto->unidad = $request->unidad;
+        $producto->estado = true; 
+        $producto->save(); 
+
+        return redirect()->route('productos.index')
+        ->with('mensaje', 'Producto creado exitosamente.')
+        ->with('icono', 'success'); 
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(producto $producto)
+    public function show($id)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(producto $producto)
-    {
-        //
+        $producto = Producto::findOrFail($id); 
+        return view('admin.productos.show', compact('producto')); 
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, producto $producto)
-    {
-        //
+    public function update(Request $request,$id)
+    { 
+        $request->validate([
+            'categoria_id' => 'required', 
+            'nombre' => 'required',
+            'descripcion' => 'required',
+            'unidad' => 'required'
+        ]);
+
+        $producto = Producto::findOrFail($id); 
+        $producto->categoria_id = $request->categoria_id; 
+        $producto->nombre = $request->nombre;
+        $producto->descripcion = $request->descripcion;
+        $producto->unidad = $request->unidad;
+        $producto->estado = true; 
+        $producto->save(); 
+
+        return redirect()->route('productos.index')
+        ->with('mensaje', 'Producto actualizado exitosamente.')
+        ->with('icono', 'success'); 
     }
 
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(producto $producto)
-    {
-        //
+    {   
+        $producto = Producto::findOrFail($id); 
+        $producto->estado = false; 
+        $producto->save();
+        $producto->delete(); 
+        return redirect()->route('productos.index')
+        ->with('mensaje', 'Producto eliminado exitosamente.')
+        ->with('icono', 'success'); 
     }
 }

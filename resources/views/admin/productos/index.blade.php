@@ -4,10 +4,9 @@
 <!-- Titulo y boton --> 
  <div class="flex items-center justify-between mb-6">
     <h1 class="text-2xl font-semibold">Productos</h1>
-    <a href="#" 
-       class="btn btn-primary">
-        + Nuevo Producto
-    </a>
+    <button onclick="crearProductoModal.showModal()" class="btn btn-primary"> 
+      <x-heroicon-o-plus class="w-5 h-5"/>Nuevo Producto
+    </button>
  </div>
  
  <div class="breadcrumbs text-sm mb-6">
@@ -73,12 +72,11 @@
                 <thead>
                     <tr>
                         <th>Nr</th>
-                        <th>Nombre de la empresa</th>
-                        <th>Cuit</th>
-                        <th>Contacto</th>
-                        <th>Telefono</th>
-                        <th>Celular</th>
-                        <th>Email</th>
+                        <th>Categoria</th>
+                        <th>Nombre</th>
+                        <th>Descripcion</th>
+                        <th>Unidad</th>
+                        <th>Estado</th>
                         <th class="text-center">Acciones</th>
                     </tr>
                 </thead>
@@ -89,12 +87,15 @@
                     @foreach ($productos as $producto)  
                         <tr>
                             <td>{{ $nr++ }}</td>
-                            <td>{{ $producto->nombre }}</td>
-                            <td>{{ $producto->descripcion }}</td> 
+                            <td>{{ $producto->categoria->nombre }}</td>
+                            <td>{{ $producto->nombre }}</td> 
+                            <td>{{ $producto->descripcion }}</td>
                             <td>{{ $producto->unidad }}</td>
-                            <td>{{ $producto->estado }}</td>
-                            <td>{{ $producto->celular ?? 'N/A' }}</td>
-                            <td>{{ $producto->email ?? 'N/A' }}</td>
+                            <td class="text-center">
+                                <span class="badge {{ $producto->estado ? 'badge-success' : 'badge-error' }}">
+                                {{ $producto->estado ? 'Activo' : 'Inactivo' }}
+                                </span>
+                            </td>
                             <td class="text-center">
                                 <div class="flex items-center justify-center gap-2">
 
@@ -246,6 +247,121 @@
 
     </div>
 </dialog>
+<dialog id="crearProductoModal" class="modal">
+
+  <div class="modal-box max-w-xl rounded-xl">
+
+    <!-- Título -->
+    <h3 class="font-bold text-xl flex items-center gap-3 mb-4">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+        stroke-width="1.5" stroke="currentColor" class="w-7 h-7 text-primary">
+        <path stroke-linecap="round" stroke-linejoin="round"
+          d="M16.5 6 21 6m-15 0L3 6m6 0L9 3m6 3 0 3m-6 9 6-9H6l6 9Z" />
+      </svg>
+      Crear Nuevo Producto
+    </h3>
+
+    <form action="{{ url('/admin/productos/store') }}" method="POST" class="space-y-5">
+      @csrf
+
+      <!-- Categoría -->
+      <div class="form-control">
+        <label class="label">
+          <span class="label-text font-medium">Categoría</span>
+        </label>
+
+        <select name="categoria_id" class="select select-bordered w-full rounded-md border border-base-300 bg-base-200 focus:outline-none focus:ring-2 focus:ring-primary 
+          focus:border-primary transition" required>
+            <option value="">Seleccione una categoría</option>
+          @foreach ($categorias as $categoria)
+            <option value="{{ $categoria->id }}">{{ $categoria->nombre }}</option> 
+          @endforeach
+        </select>
+
+        @error('categoria_id')
+          <small class="text-red-500">{{ $message }}</small>
+        @enderror
+      </div>
+
+      <!-- Nombre -->
+      <div class="form-control">
+        <label class="label">
+          <span class="label-text font-medium">Nombre del Producto</span>
+        </label>
+
+        <input type="text" name="nombre" value="{{ old('nombre') }}"
+          placeholder="Ej: Aceite Motor 5W-30"
+          class="w-full h-10 rounded-md border border-base-300 bg-base-200 px-3 
+          text-sm focus:outline-none focus:ring-2 focus:ring-primary 
+          focus:border-primary transition" 
+          required>
+
+        @error('nombre')
+          <small class="text-red-500">{{ $message }}</small>
+        @enderror
+      </div>
+
+      <!-- Descripción -->
+      <div class="form-control">
+        <label class="label">
+          <span class="label-text font-medium">Descripción</span>
+        </label>
+
+        <textarea name="descripcion" rows="3"
+          placeholder="Ingrese una descripción breve del producto..."
+          class="textarea w-full rounded-md border border-base-300 bg-base-200 focus:outline-none focus:ring-2 focus:ring-primary 
+          focus:border-primary transition" required>{{ old('descripcion') }}</textarea>
+
+        @error('descripcion')
+          <small class="text-red-500">{{ $message }}</small>
+        @enderror
+      </div>
+
+      <!-- Unidad -->
+      <div class="form-control">
+        <label class="label">
+          <span class="label-text font-medium">Unidad</span>
+        </label>
+
+        <input type="text" name="unidad" value="{{ old('unidad') }}"
+          placeholder="Ej: Unidad, Caja, Litro, Par..."
+          class="w-full h-10 rounded-md border border-base-300 bg-base-200 px-3 
+          text-sm focus:outline-none focus:ring-2 focus:ring-primary 
+          focus:border-primary transition"
+          required>
+
+        @error('unidad')
+          <small class="text-red-500">{{ $message }}</small>
+        @enderror
+      </div>
+
+      <!-- Botones -->
+      <div class="modal-action">
+        <button class="btn btn-primary">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+            stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-1">
+            <path stroke-linecap="round" stroke-linejoin="round"
+              d="M4.5 12.75l6 6 9-13.5" />
+          </svg>
+          Guardar Producto
+        </button>
+
+        <button type="button" onclick="crearProductoModal.close()" class="btn btn-neutral">
+          Cancelar
+        </button>
+      </div>
+
+    </form>
+
+  </div>
+
+  <!-- fondo oscuro -->
+  <form method="dialog" class="modal-backdrop">
+    <button></button>
+  </form>
+
+</dialog>
+
 
 @endsection 
 

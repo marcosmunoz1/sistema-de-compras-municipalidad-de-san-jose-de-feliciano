@@ -56,9 +56,7 @@ Route::get('/admin/categorias', [App\Http\Controllers\CategoriaController::class
 
 //rutas para productos 
 Route::get('/admin/productos', [App\Http\Controllers\ProductoController::class, 'index'])->name('productos.index');
-Route::get('/admin/productos/create', [App\Http\Controllers\ProductoController::class, 'create'])->name('productos.create');
 Route::post('/admin/productos/store', [App\Http\Controllers\ProductoController::class, 'store'])->name('productos.store');
-Route::get('/admin/productos/{id}/edit', [App\Http\Controllers\ProductoController::class, 'edit'])->name('productos.edit');
 Route::put('/admin/productos/{id}', [App\Http\Controllers\ProductoController::class, 'update'])->name('productos.update');
 Route::get('/admin/productos/{id}', [App\Http\Controllers\ProductoController::class, 'show'])->name('productos.show');
 Route::delete('/admin/productos/{id}', [App\Http\Controllers\ProductoController::class, 'destroy'])->name('productos.destroy');
