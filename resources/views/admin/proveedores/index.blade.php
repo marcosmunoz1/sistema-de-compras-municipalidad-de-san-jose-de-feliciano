@@ -126,9 +126,20 @@
 
 
                                     {{-- Eliminar (después lo convertís en form POST/DELETE) --}}
-                                    <button class="btn btn-error btn-sm" onclick="confirmarEliminacion({{ $proveedor->id }})">
-                                        <x-heroicon-s-trash class="w-4 h-4"/>
-                                    </button>
+                                      {{-- Si está eliminado (tiene deleted_at) --}}
+                                    @if ($proveedor->trashed())
+                                        {{-- Restaurar --}}
+                                            <button class="btn btn-sm btn-success"
+                                              onclick="abrirModalRestaurar('{{ url('/admin/proveedores/'. $proveedor->id.'/restore') }}')">
+                                                <x-heroicon-s-arrow-uturn-left class="w-4 h-4"/>
+                                            </button>
+                                    {{-- Si NO está eliminado --}}
+                                    @else
+                                        {{-- Eliminar --}}
+                                      <button class="btn btn-error btn-sm" onclick="confirmarEliminacion({{ $proveedor->id }})">
+                                          <x-heroicon-s-trash class="w-4 h-4"/>
+                                      </button>
+                                    @endif
 
                                 </div>
                             </td>
@@ -178,8 +189,57 @@
 
     </div>
 </div>
-@endsection
+<!-- Modal para eliminar -->
+<dialog id="modal_eliminar_proveedor" class="modal">
+  <div class="modal-box">
+
+    <h3 class="font-bold text-lg flex items-center gap-2 text-red-600">
+        <x-heroicon-o-trash class="w-5 h-5" />
+        Confirmar eliminación
+    </h3>
+
+    <p class="py-4">
+        ¿Seguro que querés eliminar este proveedor?
+    </p>
+
+    <div class="modal-action">
+        <form method="dialog">
+            <button class="btn">Cancelar</button>
+        </form>
+
+        <!-- Formulario eliminar -->
+        <form id="formEliminarProveedor" method="POST">
+            @csrf
+            @method('DELETE')
+
+            <button type="submit" class="btn btn-error">
+                <x-heroicon-o-trash class="w-4 h-4" />
+                Eliminar
+            </button>
+        </form>
+    </div>
+
+  </div>
+</dialog>
+
+@endsection 
 
 @section('js')
-
+  <script>
+    function confirmarEliminacion(id) { 
+            const form = document.getElementById('formEliminarProveedor');
+            form.action = routeEliminarProveedor(id);
+            document.getElementById('modal_eliminar_proveedor').showModal();
+        }
+      // Genera la URL usando el helper de Laravel
+      function routeEliminarProveedor(id) {
+          return "{{ url('/admin/proveedores') }}/" + id;
+      }
+      function abrirModalRestaurar(url) {
+        const form = document.getElementById('formRestaurarProveedor');
+        form.action = url;
+        modal_restaurar_proveedor.showModal();
+      }
+  </script>
 @endsection
+

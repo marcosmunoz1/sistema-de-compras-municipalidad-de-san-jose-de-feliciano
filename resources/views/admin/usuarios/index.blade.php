@@ -116,20 +116,7 @@
                                     <a class="btn btn-warning btn-sm" href="{{ url('/admin/usuarios/'.$usuario->id.'/edit') }}">
                                       <x-heroicon-s-pencil class="w-4 h-4"/>
                                     </a>
-                                    {{-- Si está eliminado (tiene deleted_at) --}}
-                                    @if ($usuario->trashed())
-                                        {{-- Restaurar --}}
-                                            <button class="btn btn-sm btn-success"
-                                              onclick="abrirModalRestaurar('{{ url('/admin/usuarios/'. $usuario->id.'/restore') }}')">
-                                                <x-heroicon-s-arrow-uturn-left class="w-4 h-4"/>
-                                            </button>
-                                    {{-- Si NO está eliminado --}}
-                                    @else
-                                        {{-- Eliminar --}}
-                                      <button class="btn btn-error btn-sm" onclick="confirmarEliminacion({{ $usuario->id }})">
-                                          <x-heroicon-s-trash class="w-4 h-4"/>
-                                      </button>
-                                    @endif
+                                   c
                                 </div>
                             </td>
                     </tr>

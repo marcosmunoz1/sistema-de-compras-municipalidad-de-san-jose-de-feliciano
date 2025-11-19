@@ -139,4 +139,14 @@ class ProveedorController extends Controller
         ->with('mensaje', 'Proveedor eliminado correctamente')
         ->with('icono', 'success'); 
     }
-}
+     public function restore(string $id)
+    {
+        $proveedor = Proveedor::withTrashed()->find($id); 
+        $proveedor->restore(); 
+        $proveedor->estado = true;  
+        $proveedor->save();  
+        return redirect()->route('proveedores.index') 
+        ->with('mensaje', 'Proveedor restaurado exitosamente')
+        ->with('icono', 'success');
+    }
+} 
