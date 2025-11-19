@@ -92,5 +92,16 @@
     </div>
     @yield('js')
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> 
+     @if(($mensaje = Session::get('mensaje')) && ($icono = Session::get('icono')))
+        <script> 
+        Swal.fire({
+        position: "top-center",
+        icon: "{{ $icono }}",
+        title: "{{ $mensaje }}",
+        showConfirmButton: false,
+        timer: 1000
+        }); 
+    </script>  
+@endif 
 </body>
 </html>

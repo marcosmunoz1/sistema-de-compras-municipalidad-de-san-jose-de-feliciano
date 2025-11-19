@@ -10,9 +10,16 @@ class ProveedorController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
-    {
-        $proveedores = Proveedor::all(); 
+    public function index(Request $request) 
+    {   $search = $request->get('search');  
+        $query = Proveedor::withTrashed()->orderBy('id', 'desc');
+        if ($search) {
+            $query->where('empresa', 'like', "%{$search}%")
+                  ->orWhere('nombre', 'like', "%{$search}%")
+                  ->orWhere('razon_social', 'like', "%{$search}%")
+                  ->orWhere('cuit', 'like', "%{$search}%"); 
+        }
+        $proveedores = $query->paginate(2);  
         return view('admin.proveedores.index', compact('proveedores')); 
     }
 
@@ -76,8 +83,8 @@ class ProveedorController extends Controller
      */
     public function edit($id)
     {
-        $proveedor = Proveedor::findOrFail($id);
-        return view('admin.proveedores.edit', compact('proveedor'));  
+        $proveedor = Proveedor::findOrFail($id); 
+        return view('admin.proveedores.edit', compact('proveedor'));   
     } 
 
     /**
@@ -118,9 +125,9 @@ class ProveedorController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Remove the specified resource from storage. 
      */
-    public function destroy(ProveedorController $proveedorController)
+    public function destroy($id) 
     {
         //
     }
