@@ -121,14 +121,22 @@ class ProveedorController extends Controller
         $proveedor->direccion = $request->direccion;
         $proveedor->observaciones = $request->observaciones; 
         $proveedor->save();
-        return redirect()->route('proveedores.index');
+        return redirect()->route('proveedores.index')
+        ->with('mensaje', 'Proveedor actualizado correctamente')
+        ->with('icono', 'success'); 
     }
 
     /**
      * Remove the specified resource from storage. 
      */
     public function destroy($id) 
-    {
-        //
+    { 
+        $proveedor = Proveedor::findOrFail($id);
+        $proveedor->estado = false; 
+        $proveedor->save();
+        $proveedor->delete();
+        return redirect()->route('proveedores.index')
+        ->with('mensaje', 'Proveedor eliminado correctamente')
+        ->with('icono', 'success'); 
     }
 }

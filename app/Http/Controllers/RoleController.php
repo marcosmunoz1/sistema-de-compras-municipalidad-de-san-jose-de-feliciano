@@ -49,7 +49,8 @@ class RoleController extends Controller
             $role->save();
 
             return redirect()->route('admin.roles.index')
-                            ->with('success', 'Rol creado correctamente');
+            ->with('mensaje', 'Rol creado correctamente')
+            ->with('icono', 'success'); 
         }
 
         // ACCIÓN: EDITAR
