@@ -74,15 +74,17 @@
 
                             <!-- Estado -->
                             <div class="form-control">
-                                <label class="label"><span class="label-text font-semibold">Estado</span></label>
+                                    <label class="label">
+                                        <span class="label-text font-semibold">Estado</span>
+                                    </label>
 
-                                <div>
-                                    <span class="badge badge-lg px-4 {{ $usuario->estado ? 'badge-success' : 'badge-error' }}">
-                                        {{ $usuario->estado ? 'Activo' : 'Inactivo' }}
-                                    </span>
-
+                                    <select name="estado" class="select select-bordered w-full" readonly disabled>
+                                        <option value="1"
+                                            {{ old('estado', $usuario->estado) == 1 ? 'selected' : '' }}>Activo</option>
+                                        <option value="0"
+                                            {{ old('estado', $usuario->estado) == 0 ? 'selected' : '' }}>Inactivo</option>
+                                    </select>
                                 </div>
-                            </div>
 
                         </div>
 

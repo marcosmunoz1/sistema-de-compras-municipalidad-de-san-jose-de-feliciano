@@ -85,7 +85,7 @@
                     </a></li>
                 <li><a href="{{ route('compras.index') }}">🛒Compras</a></li> 
                 <li><a href="{{ route('proveedores.index') }}"><x-heroicon-o-truck class="w-4 h-4 inline" />Proveedores</a></li>
-                <li><a href="{{ route('categorias.index') }}"><x-heroicon-o-cog class="w-4 h-4 inline" />Categorias</a></li>
+                <li><a href="{{ route('categorias.index') }}"><x-heroicon-o-tag class="w-4 h-4 inline" />Categorias</a></li>
                 <li><a href="{{ route('productos.index') }}"><x-heroicon-o-cog class="w-4 h-4 inline" />Productos</a></li>
                 <li><a href="{{ route('usuarios.index') }}"><x-heroicon-s-user-group class="w-4 h-4 inline" />Usuarios</a></li>
                 <li><a href="{{ url('/admin/roles') }}"><x-heroicon-s-cog-6-tooth class="w-4 h-4 inline" />Roles</a></li>
@@ -96,14 +96,22 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> 
      @if(($mensaje = Session::get('mensaje')) && ($icono = Session::get('icono')))
         <script> 
-        Swal.fire({
-        position: "top-center",
-        icon: "{{ $icono }}",
-        title: "{{ $mensaje }}",
-        showConfirmButton: false,
-        timer: 1000
-        }); 
-    </script>  
+            // Detectar modo oscuro del SO
+            const oscuro = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+            Swal.fire({
+                position: "top-center",
+                icon: "{{ $icono }}",
+                title: "{{ $mensaje }}",
+                showConfirmButton: false,
+                timer: 4000,
+
+                // Estilos adaptados
+                background: oscuro ? "#1f2937" : "#ffffff",     // gris oscuro / blanco
+                color: oscuro ? "#f3f4f6" : "#111827",           // texto claro / oscuro
+            });
+
+        </script>  
 @endif 
 </body>
 </html>
