@@ -106,12 +106,12 @@
                                     </a>
 
                                     {{-- Editar --}}
-                                    <a href="{{ route('productos.edit', $producto->id) }}" 
+                                    <button onclick="abrirModalEditar('{{ url('/admin/productos/'. $producto->id.'/edit') }}')" 
                                         class="btn btn-warning btn-sm"
                                         
                                     >
                                         <x-heroicon-s-pencil class="w-4 h-4"/>
-                                    </a>
+                                    </button>
 
 
 
