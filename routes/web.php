@@ -90,6 +90,8 @@ Route::get('/admin/vehiculos/{id}/edit', [App\Http\Controllers\VehiculoControlle
 Route::put('/admin/vehiculos/{id}', [App\Http\Controllers\VehiculoController::class, 'update'])->name('vehiculos.update');
 Route::get('/admin/vehiculos/{id}', [App\Http\Controllers\VehiculoController::class, 'show'])->name('vehiculos.show');
 Route::delete('/admin/vehiculos/{id}', [App\Http\Controllers\VehiculoController::class, 'destroy'])->name('vehiculos.destroy');
-Route::put('admin/vehiculos/{id}/restore', [App\Http\Controllers\VehiculoController::class, 'restore'])->name('vehiculos.restore');
+Route::put('admin/vehiculos/{id}/restore', [App\Http\Controllers\VehiculoController::class, 'restore'])->name('vehiculos.restore'); 
+
+Route::get('/admin/empleados', [App\Http\Controllers\EmpleadoController::class, 'index'])->name('empleados.index');
 
 require __DIR__.'/auth.php';
