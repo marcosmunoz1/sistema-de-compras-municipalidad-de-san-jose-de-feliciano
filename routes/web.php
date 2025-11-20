@@ -40,7 +40,7 @@ Route::get('/admin/proveedores/{id}/edit', [App\Http\Controllers\ProveedorContro
 Route::put('/admin/proveedores/{id}', [App\Http\Controllers\ProveedorController::class, 'update'])->name('proveedores.update');
 Route::get('/admin/proveedores/{id}', [App\Http\Controllers\ProveedorController::class, 'show'])->name('proveedores.show');
 Route::delete('/admin/proveedores/{id}', [App\Http\Controllers\ProveedorController::class, 'destroy'])->name('proveedores.destroy');
-Route::put('admin/proveedores/{id}/restore', [App\Http\Controllers\ProveedorController::class, 'restore'])->name('proveedores.restore');
+Route::put('/admin/proveedores/{id}/restore', [App\Http\Controllers\ProveedorController::class, 'restore'])->name('proveedores.restore');
 
 //Rutas para usuarios
 Route::get('/admin/usuarios', [App\Http\Controllers\UserController::class, 'index'])->name('usuarios.index');
@@ -57,13 +57,30 @@ Route::post('/admin/categorias/store', [App\Http\Controllers\CategoriaController
 Route::delete('/admin/categorias/{id}', [App\Http\Controllers\CategoriaController::class, 'destroy'])->name('categorias.destroy');
 Route::put('admin/categorias/{id}/restore', [App\Http\Controllers\CategoriaController::class, 'restore'])->name('categorias.restore');
 
-//rutas para productos 
-Route::get('/admin/productos', [App\Http\Controllers\ProductoController::class, 'index'])->name('productos.index');
-Route::post('/admin/productos/store', [App\Http\Controllers\ProductoController::class, 'store'])->name('productos.store');
-Route::put('/admin/productos/{id}', [App\Http\Controllers\ProductoController::class, 'update'])->name('productos.update');
-Route::get('/admin/productos/{id}', [App\Http\Controllers\ProductoController::class, 'show'])->name('productos.show');
-Route::delete('/admin/productos/{id}', [App\Http\Controllers\ProductoController::class, 'destroy'])->name('productos.destroy');
-Route::put('admin/productos/{id}/restore', [App\Http\Controllers\ProductoController::class, 'restore'])->name('productos.restore');
+// rutas para productos
+Route::get('/admin/productos', [ App\Http\Controllers\ProductoController::class, 'index'])->name('productos.index');
+Route::post('/admin/productos/store', [ App\Http\Controllers\ProductoController::class, 'store'])->name('productos.store');
+
+// ESTA VA PRIMERO
+Route::get('/admin/productos/{id}/data', [ App\Http\Controllers\ProductoController::class, 'data'])->name('productos.data');
+
+Route::put('/admin/productos/{id}/update', [ App\Http\Controllers\ProductoController::class, 'update'])->name('productos.update');
+
+// ESTA VA DESPUÉS
+Route::get('/admin/productos/{id}', [ App\Http\Controllers\ProductoController::class, 'show'])->name('productos.show');
+
+Route::delete('/admin/productos/{id}', [ App\Http\Controllers\ProductoController::class, 'destroy'])->name('productos.destroy');
+Route::put('/admin/productos/{id}/restore', [ App\Http\Controllers\ProductoController::class, 'restore'])->name('productos.restore');
+
+//rutas para combustibles
+Route::get('/admin/combustibles', [App\Http\Controllers\CombustibleController::class, 'index'])->name('combustibles.index');
+Route::get('/admin/combustibles/create', [App\Http\Controllers\CombustibleController::class, 'create'])->name('combustibles.create');
+/* Route::post('/admin/combustibles/store', [App\Http\Controllers\CombustibleController::class, 'store'])->name('combustibles.store');
+Route::get('/admin/combustibles/{id}/edit', [App\Http\Controllers\CombustibleController::class, 'edit'])->name('combustibles.edit');
+Route::put('/admin/combustibles/{id}', [App\Http\Controllers\CombustibleController::class, 'update'])->name('combustibles.update');
+Route::get('/admin/combustibles/{id}', [App\Http\Controllers\CombustibleController::class, 'show'])->name('combustibles.show');
+Route::delete('/admin/combustibles/{id}', [App\Http\Controllers\CombustibleController::class, 'destroy'])->name('combustibles.destroy');
+Route::put('/admin/combustibles/{id}/restore', [App\Http\Controllers\CombustibleController::class, 'restore'])->name('combustibles.restore'); */
 
 //rutas para vehiculos
 Route::get('/admin/vehiculos', [App\Http\Controllers\VehiculoController::class, 'index'])->name('vehiculos.index');

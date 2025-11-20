@@ -106,15 +106,9 @@
                                     </a>
 
                                     {{-- Editar --}}
-                                    <button onclick="abrirModalEditar('{{ url('/admin/productos/'. $producto->id.'/edit') }}')" 
-                                        class="btn btn-warning btn-sm"
-                                        
-                                    >
-                                        <x-heroicon-s-pencil class="w-4 h-4"/>
-                                    </button>
-
-
-
+                                    <button class="btn btn-warning btn-sm" onclick="abrirModalEditar({{ $producto->id }})">
+                                        <x-heroicon-o-pencil-square class="w-4 h-4"/>
+                                    </button> 
 
                                     {{-- Eliminar (después lo convertís en form POST/DELETE) --}}
                                       {{-- Si está eliminado (tiene deleted_at) --}}
@@ -247,6 +241,8 @@
 
     </div>
 </dialog>
+
+<!-- Modal para crear -->
 <dialog id="crearProductoModal" class="modal">
 
   <div class="modal-box max-w-xl rounded-xl">
@@ -337,7 +333,7 @@
 
       <!-- Botones -->
       <div class="modal-action">
-        <button class="btn btn-primary">
+        <button class="btn btn-primary"> 
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
             stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-1">
             <path stroke-linecap="round" stroke-linejoin="round"
@@ -362,6 +358,96 @@
 
 </dialog>
 
+<!-- Modal Editar Producto -->
+<dialog id="editarProductoModal" class="modal">
+
+  <div class="modal-box max-w-xl rounded-xl">
+
+    <!-- Título -->
+    <h3 class="font-bold text-xl flex items-center gap-3 mb-4">
+      <x-heroicon-o-pencil-square class="w-7 h-7 text-warning" />
+      Editar Producto
+    </h3>
+
+    <form  id="formEditarProducto" method="POST" class="space-y-5"> 
+      @csrf
+      @method('PUT')  
+
+      <!-- ID oculto -->
+      <input type="hidden" name="producto_id" id="editar_id">
+
+      <!-- Categoría -->
+      <div class="form-control">
+        <label class="label">
+          <span class="label-text font-medium">Categoría</span>
+        </label>
+
+        <select name="categoria_id" id="editar_categoria_id"
+          class="select select-bordered w-full rounded-md border border-base-300 bg-base-200 focus:outline-none focus:ring-2 focus:ring-primary 
+          focus:border-primary transition" required>
+          <option value="">Seleccione una categoría</option>
+          @foreach ($categorias as $categoria)
+            <option value="{{ $categoria->id }}">{{ $categoria->nombre }}</option>
+          @endforeach
+        </select>
+      </div>
+
+      <!-- Nombre -->
+      <div class="form-control">
+        <label class="label">
+          <span class="label-text font-medium">Nombre</span>
+        </label>
+
+        <input id="editar_nombre" name="nombre" type="text"
+          class="w-full h-10 rounded-md border border-base-300 bg-base-200 px-3 
+          text-sm focus:outline-none focus:ring-2 focus:ring-primary 
+          focus:border-primary transition" required>
+      </div>
+
+      <!-- Descripción -->
+      <div class="form-control">
+        <label class="label">
+          <span class="label-text font-medium">Descripción</span>
+        </label>
+
+        <textarea id="editar_descripcion" name="descripcion" rows="3"
+          class="textarea w-full rounded-md border border-base-300 bg-base-200 focus:outline-none focus:ring-2 focus:ring-primary 
+          focus:border-primary transition" required></textarea>
+      </div>
+
+      <!-- Unidad -->
+      <div class="form-control">
+        <label class="label">
+          <span class="label-text font-medium">Unidad</span>
+        </label>
+
+        <input id="editar_unidad" name="unidad" type="text"
+          class="w-full h-10 rounded-md border border-base-300 bg-base-200 px-3 
+          text-sm focus:outline-none focus:ring-2 focus:ring-primary 
+          focus:border-primary transition" required>
+      </div>
+
+      <!-- Botones -->
+      <div class="modal-action">
+        <button class="btn btn-warning">
+          <x-heroicon-o-check class="w-5 h-5" />
+          Guardar Cambios
+        </button>
+
+        <button type="button" onclick="editarProductoModal.close()" class="btn btn-neutral">
+          Cancelar
+        </button>
+      </div>
+    </form>
+
+  </div>
+
+  <form method="dialog" class="modal-backdrop">
+    <button></button>
+  </form>
+
+</dialog> 
+
 
 @endsection 
 
@@ -382,4 +468,34 @@
         modal_restaurar_producto.showModal();
       }
   </script>
+ <script>
+function abrirModalEditar(id) {
+    if(id){
+    $.ajax({
+        url: "{{ url('admin/productos') }}/"+id+"/data",  
+        type: "GET",
+        success: function(data) { 
+            
+            // Rellenar inputs del modal
+            $('#editarProductoModal [name="categoria_id"]').val(data.categoria_id);
+            $('#editarProductoModal [name="nombre"]').val(data.nombre);
+            $('#editarProductoModal [name="descripcion"]').val(data.descripcion);
+            $('#editarProductoModal [name="unidad"]').val(data.unidad);
+            $('#editarProductoModal [name="producto_id"]').val(data.id); 
+
+            // Cambiar action del form
+            $('#formEditarProducto').attr('action', `/admin/productos/${id}/update`);
+
+            // Abrir modal (Bootstrap 4 o Native dialog)
+            document.getElementById('editarProductoModal').showModal();  
+        },
+        error: function(err) {
+            console.error(err);
+            alert("Error cargando datos del producto.");
+        }
+    });
+    }
+}
+</script>
+
 @endsection

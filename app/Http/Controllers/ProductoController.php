@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\producto;
+use App\Models\Producto; 
 use Illuminate\Http\Request;
 use App\Models\Categoria;
 class ProductoController extends Controller
@@ -57,11 +57,16 @@ class ProductoController extends Controller
         $producto = Producto::findOrFail($id); 
         return view('admin.productos.show', compact('producto')); 
     }
+   public function data($id) 
+    {
+        $producto = Producto::findOrFail($id); 
+        return response()->json($producto);
+    }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request,$id)
+    public function update(Request $request,$id) 
     { 
         $request->validate([
             'categoria_id' => 'required', 
@@ -86,7 +91,7 @@ class ProductoController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(producto $producto)
+    public function destroy($id) 
     {   
         $producto = Producto::findOrFail($id); 
         $producto->estado = false; 
@@ -96,4 +101,14 @@ class ProductoController extends Controller
         ->with('mensaje', 'Producto eliminado exitosamente.')
         ->with('icono', 'success'); 
     }
+    public function restore($id) 
+    {   
+        $producto = Producto::findOrFail($id); 
+        $producto->estado = true; 
+        $producto->save(); 
+        $producto->restore(); 
+        return redirect()->route('productos.index')
+        ->with('mensaje', 'Producto restaurado exitosamente.')
+        ->with('icono', 'success'); 
+    } 
 }
