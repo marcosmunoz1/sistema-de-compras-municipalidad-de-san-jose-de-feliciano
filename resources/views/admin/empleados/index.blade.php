@@ -4,7 +4,7 @@
 
 <!-- Titulo y boton --> 
  <div class="flex items-center justify-between mb-6">
-    <h1 class="text-2xl font-semibold">Empleado</h1>
+    <h1 class="text-2xl font-semibold">Empleados</h1>
     <a href="{{ route('empleados.create') }}" 
        class="btn btn-primary">
         + Nuevo Empleado
