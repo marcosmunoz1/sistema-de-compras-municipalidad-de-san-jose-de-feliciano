@@ -77,6 +77,43 @@ class VehiculoController extends Controller
             'chasis' => 'required|string|max:255|unique:vehiculos,chasis',
             'motor' => 'required|string|max:255|unique:vehiculos,motor',
             'imagen' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:16384',
+        ], [
+            'marca.required'   => 'La marca es obligatoria.',
+            'marca.string'     => 'La marca debe ser texto.',
+            'marca.max'        => 'La marca no puede superar los 255 caracteres.',
+
+            'tipo.required'    => 'El tipo de vehículo es obligatorio.',
+            'tipo.string'      => 'El tipo debe ser texto.',
+
+            'patente.required' => 'La patente es obligatoria.',
+            'patente.string'   => 'La patente debe ser texto.',
+            'patente.max'      => 'La patente no puede superar los 255 caracteres.',
+            'patente.unique'   => 'Ya existe un vehículo con esta patente.',
+
+            'modelo.required'  => 'El modelo es obligatorio.',
+            'modelo.string'    => 'El modelo debe ser texto.',
+            'modelo.max'       => 'El modelo no puede superar los 255 caracteres.',
+
+            'color.required'   => 'El color es obligatorio.',
+            'color.string'     => 'El color debe ser texto.',
+            'color.max'        => 'El color no puede superar los 255 caracteres.',
+
+            'anio.required'    => 'El año es obligatorio.',
+            'anio.integer'     => 'El año debe ser un número entero.',
+
+            'chasis.required'  => 'El número de chasis es obligatorio.',
+            'chasis.string'    => 'El chasis debe ser texto.',
+            'chasis.max'       => 'El chasis no puede superar los 255 caracteres.',
+            'chasis.unique'    => 'Ya existe un vehículo con este número de chasis.',
+
+            'motor.required'   => 'El número de motor es obligatorio.',
+            'motor.string'     => 'El motor debe ser texto.',
+            'motor.max'        => 'El motor no puede superar los 255 caracteres.',
+            'motor.unique'     => 'Ya existe un vehículo con este número de motor.',
+
+            'imagen.image'     => 'El archivo debe ser una imagen.',
+            'imagen.mimes'     => 'La imagen debe ser JPEG, PNG, JPG, GIF o SVG.',
+            'imagen.max'       => 'La imagen no puede superar los 16 MB.',
         ]);
 
         $vehiculo = new Vehiculo();
@@ -129,16 +166,54 @@ class VehiculoController extends Controller
         //return response()->json($request->all());
 
         $request->validate([
-            'marca' => 'required|string|max:255',
-            'tipo' => 'required|string|max:255',
-            'patente' => 'required|string|max:255|unique:vehiculos,patente,'.$id,
-            'modelo' => 'required|string|max:255',
-            'color' => 'required|string|max:255',
-            'anio' => 'required|integer',
-            'chasis' => 'required|string|max:255|unique:vehiculos,chasis,'.$id,
-            'motor' => 'required|string|max:255|unique:vehiculos,motor,'.$id,
-            'imagen' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:16384',
+            'marca'   => 'required|string|max:255',
+            'tipo'    => 'required|string|max:255',
+            'patente' => 'required|string|max:255|unique:vehiculos,patente,' . $id,
+            'modelo'  => 'required|string|max:255',
+            'color'   => 'required|string|max:255',
+            'anio'    => 'required|integer',
+            'chasis'  => 'required|string|max:255|unique:vehiculos,chasis,' . $id,
+            'motor'   => 'required|string|max:255|unique:vehiculos,motor,' . $id,
+            'imagen'  => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:16384',
+        ], [
+            'marca.required'   => 'La marca es obligatoria.',
+            'marca.string'     => 'La marca debe ser texto.',
+            'marca.max'        => 'La marca no puede superar los 255 caracteres.',
+
+            'tipo.required'    => 'El tipo de vehículo es obligatorio.',
+            'tipo.string'      => 'El tipo debe ser texto.',
+
+            'patente.required' => 'La patente es obligatoria.',
+            'patente.string'   => 'La patente debe ser texto.',
+            'patente.max'      => 'La patente no puede superar los 255 caracteres.',
+            'patente.unique'   => 'Ya existe un vehículo con esta patente.',
+
+            'modelo.required'  => 'El modelo es obligatorio.',
+            'modelo.string'    => 'El modelo debe ser texto.',
+            'modelo.max'       => 'El modelo no puede superar los 255 caracteres.',
+
+            'color.required'   => 'El color es obligatorio.',
+            'color.string'     => 'El color debe ser texto.',
+            'color.max'        => 'El color no puede superar los 255 caracteres.',
+
+            'anio.required'    => 'El año es obligatorio.',
+            'anio.integer'     => 'El año debe ser un número entero.',
+
+            'chasis.required'  => 'El número de chasis es obligatorio.',
+            'chasis.string'    => 'El chasis debe ser texto.',
+            'chasis.max'       => 'El chasis no puede superar los 255 caracteres.',
+            'chasis.unique'    => 'Ya existe un vehículo con este número de chasis.',
+
+            'motor.required'   => 'El número de motor es obligatorio.',
+            'motor.string'     => 'El motor debe ser texto.',
+            'motor.max'        => 'El motor no puede superar los 255 caracteres.',
+            'motor.unique'     => 'Ya existe un vehículo con este número de motor.',
+
+            'imagen.image'     => 'El archivo debe ser una imagen.',
+            'imagen.mimes'     => 'La imagen debe ser JPEG, PNG, JPG, GIF o SVG.',
+            'imagen.max'       => 'La imagen no puede superar los 16 MB.',
         ]);
+
 
         $vehiculo = Vehiculo::withTrashed()->findOrFail($id);
         $vehiculo->marca = $request->marca;

@@ -70,7 +70,9 @@
                                 <label for="tipo" class="text-sm font-medium">Tipo <span
                                         class="text-red-600">*</span></label>
 
-                                <select id="tipo" name="tipo" class="select select-bordered w-full h-10" required>
+                                <select id="tipo" name="tipo"
+                                    class="select select-bordered w-full h-10 @error('tipo') input-error @enderror"
+                                    required>
                                     <option value="" disabled selected>Seleccione un tipo...</option>
 
                                     @php
@@ -81,6 +83,9 @@
                                         <option value="{{ $tipo }}">{{ $tipo }}</option>
                                     @endforeach
                                 </select>
+                                @error('tipo')
+                                    <small class="text-red-500 error-message">{{ $message }}</small>
+                                @enderror
                             </div>
 
 
@@ -91,8 +96,11 @@
                                 <input id="patente" name="patente" value="{{ old('patente') }}"
                                     class="w-full h-10 rounded-md border border-base-300 bg-base-200 
                                    px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
-                                   focus:border-primary transition"
+                                   focus:border-primary transition @error('patente') input-error @enderror"
                                     placeholder="ABC123 o AA123BB" required />
+                                @error('patente')
+                                    <small class="text-red-500 error-message">{{ $message }}</small>
+                                @enderror
                             </div>
                         </div>
 
@@ -103,8 +111,11 @@
                                         class="text-red-600">*</span></label>
                                 <input id="marca" name="marca" value="{{ old('marca') }}"
                                     class="w-full h-10 rounded-md border border-base-300 bg-base-200 px-3 text-sm 
-                                      focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition"
+                                      focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition @error('patente') input-error @enderror"
                                     placeholder="Marca..." required />
+                                @error('marca')
+                                    <small class="text-red-500 error-message">{{ $message }}</small>
+                                @enderror
                             </div>
 
                             <!-- Modelo -->
@@ -113,19 +124,25 @@
                                         class="text-red-600">*</span></label>
                                 <input id="modelo" name="modelo" value="{{ old('modelo') }}"
                                     class="w-full h-10 rounded-md border border-base-300 bg-base-200 px-3 text-sm 
-                                      focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition"
+                                      focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition @error('modelo') input-error @enderror"
                                     placeholder="Modelo..." required />
+                                @error('modelo')
+                                    <small class="text-red-500 error-message">{{ $message }}</small>
+                                @enderror
                             </div>
 
                             <!-- Año -->
                             <div class="space-y-2">
                                 <label for="anio" class="text-sm font-medium">Año <span
                                         class="text-red-600">*</span></label>
-                                <input id="anio" name="anio" type="number" min="1900" max="{{ date('Y') }}"
-                                    value="{{ old('anio') }}"
+                                <input id="anio" name="anio" type="number" min="1900"
+                                    max="{{ date('Y') }}" value="{{ old('anio') }}"
                                     class="w-full h-10 rounded-md border border-base-300 bg-base-200 px-3 text-sm 
-                                      focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition"
+                                      focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition @error('anio') input-error @enderror"
                                     placeholder="Año..." required />
+                                @error('anio')
+                                    <small class="text-red-500 error-message">{{ $message }}</small>
+                                @enderror
                             </div>
                         </div>
 
@@ -135,8 +152,11 @@
                                 <label for="color" class="text-sm font-medium">Color</label>
                                 <input id="color" name="color" value="{{ old('color') }}"
                                     class="w-full h-10 rounded-md border border-base-300 bg-base-200 px-3 text-sm 
-                                      focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition"
+                                      focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition @error('color') input-error @enderror"
                                     placeholder="Color..." />
+                                @error('color')
+                                    <small class="text-red-500 error-message">{{ $message }}</small>
+                                @enderror
                             </div>
 
                             <!-- Motor -->
@@ -145,8 +165,11 @@
                                         class="text-red-600">*</span></label>
                                 <input id="motor" name="motor" value="{{ old('motor') }}"
                                     class="w-full h-10 rounded-md border border-base-300 bg-base-200 px-3 text-sm 
-                                      focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition"
+                                      focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition @error('motor') input-error @enderror"
                                     placeholder="Número de Motor..." required />
+                                @error('motor')
+                                    <small class="text-red-500 error-message">{{ $message }}</small>
+                                @enderror
                             </div>
                         </div>
 
@@ -157,8 +180,11 @@
                                         class="text-red-600">*</span></label>
                                 <input id="chasis" name="chasis" value="{{ old('chasis') }}"
                                     class="w-full h-10 rounded-md border border-base-300 bg-base-200 px-3 text-sm 
-                                      focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition"
+                                      focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition @error('chasis') input-error @enderror"
                                     placeholder="Número de Chasis..." required />
+                                @error('chasis')
+                                    <small class="text-red-500 error-message">{{ $message }}</small>
+                                @enderror
                             </div>
                         </div>
 
@@ -172,7 +198,7 @@
 
                         <!-- INPUT FILE -->
                         <input id="imagen" name="imagen" type="file"
-                            class="file-input file-input-bordered w-full mt-2" />
+                            class="file-input file-input-bordered w-full mt-2 @error('imagen') input-error @enderror" />
 
                         <!-- PREVIEW -->
                         <div id="preview-container"
@@ -180,6 +206,9 @@
                             <!-- Aquí se mostrará la vista previa -->
                             <span class="text-gray-500 text-sm">Vista previa</span>
                         </div>
+                        @error('imagen')
+                            <small class="text-red-500 error-message">{{ $message }}</small>
+                        @enderror
                     </div>
 
                 </div>
