@@ -9,7 +9,7 @@
     <button 
         class="btn btn-primary btn-md"
         onclick="abrir_modal('ventana_modal','Agregar',1,[],[])">
-        <x-heroicon-o-plus class="w-5 h-5"/>Agregar rol
+        <x-heroicon-o-plus class="w-5 h-5"/>Nuevo rol
     </button>
 
 

@@ -52,7 +52,10 @@ Route::delete('/admin/usuarios/{id}', [App\Http\Controllers\UserController::clas
 Route::put('admin/usuarios/{id}/restore', [App\Http\Controllers\UserController::class, 'restore'])->name('usuarios.restore');
 
 //rutas para categorias 
-Route::get('/admin/categorias', [App\Http\Controllers\CategoriaController::class, 'index'])->name('categorias.index'); 
+Route::get('/admin/categorias', [App\Http\Controllers\CategoriaController::class, 'index'])->name('categorias.index');
+Route::post('/admin/categorias/store', [App\Http\Controllers\CategoriaController::class, 'store'])->name('categorias.store');
+Route::delete('/admin/categorias/{id}', [App\Http\Controllers\CategoriaController::class, 'destroy'])->name('categorias.destroy');
+Route::put('admin/categorias/{id}/restore', [App\Http\Controllers\CategoriaController::class, 'restore'])->name('categorias.restore');
 
 // rutas para productos
 Route::get('/admin/productos', [ App\Http\Controllers\ProductoController::class, 'index'])->name('productos.index');

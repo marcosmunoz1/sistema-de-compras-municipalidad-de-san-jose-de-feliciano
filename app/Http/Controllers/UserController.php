@@ -11,15 +11,52 @@ class UserController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         $contador = 1;
-        $usuarios = User::withTrashed()
-        ->with('roles')     // carga los roles del usuario
-        ->get();
+        $search = $request->input('search');
+
+        // Convertir búsqueda a estado (booleano)
+        $estadoBuscado = null;
+
+        if ($search !== null) {
+            $s = strtolower($search);
+
+            if ($s === 'activo') {
+                $estadoBuscado = 1;
+            } elseif ($s === 'inactivo') {
+                $estadoBuscado = 0;
+            }
+        }
+
+        $usuarios = User::with(['roles'])
+            ->withTrashed()
+            ->where(function ($query) use ($search, $estadoBuscado) {
+
+                // Campos de texto básicos
+                $query->where('name', 'LIKE', "%{$search}%")
+                    ->orWhere('email', 'LIKE', "%{$search}%");
+
+                // Si tenés DNI en la tabla, te queda listo:
+                // $query->orWhere('dni', 'LIKE', "%{$search}%");
+
+                // Búsqueda por rol
+                $query->orWhereHas('roles', function ($q) use ($search) {
+                    $q->where('name', 'LIKE', "%{$search}%");
+                });
+
+                // Búsqueda por estado (activo/inactivo)
+                if (!is_null($estadoBuscado)) {
+                    $query->orWhere('estado', $estadoBuscado);
+                }
+            })
+            ->paginate(10);
+
         $roles = Role::all();
-        return view('admin.usuarios.index', compact('usuarios', 'roles', 'contador')); 
+
+        return view('admin.usuarios.index', compact('usuarios', 'roles', 'contador'));
     }
+
 
     /**
      * Show the form for creating a new resource.
