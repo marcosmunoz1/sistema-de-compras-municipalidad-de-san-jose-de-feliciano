@@ -93,7 +93,7 @@
                                     <span class="badge {{ $usuario->estado ? 'badge-success' : 'badge-error' }}">
                                         {{ $usuario->estado ? 'Activo' : 'Inactivo' }}
                                     </span>
-                                </td class="text-center">
+                                </td>
                                 <td class="text-center">
                                     <div class="flex items-center justify-center gap-2">
                                         {{-- Ver --}}

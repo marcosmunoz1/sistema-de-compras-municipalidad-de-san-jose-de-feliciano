@@ -65,4 +65,14 @@ Route::get('/admin/productos/{id}', [App\Http\Controllers\ProductoController::cl
 Route::delete('/admin/productos/{id}', [App\Http\Controllers\ProductoController::class, 'destroy'])->name('productos.destroy');
 Route::put('admin/productos/{id}/restore', [App\Http\Controllers\ProductoController::class, 'restore'])->name('productos.restore');
 
+//rutas para vehiculos
+Route::get('/admin/vehiculos', [App\Http\Controllers\VehiculoController::class, 'index'])->name('vehiculos.index');
+Route::get('/admin/vehiculos/create', [App\Http\Controllers\VehiculoController::class, 'create'])->name('vehiculos.create');
+Route::post('/admin/vehiculos/store', [App\Http\Controllers\VehiculoController::class, 'store'])->name('vehiculos.store');
+Route::get('/admin/vehiculos/{id}/edit', [App\Http\Controllers\VehiculoController::class, 'edit'])->name('vehiculos.edit');
+Route::put('/admin/vehiculos/{id}', [App\Http\Controllers\VehiculoController::class, 'update'])->name('vehiculos.update');
+Route::get('/admin/vehiculos/{id}', [App\Http\Controllers\VehiculoController::class, 'show'])->name('vehiculos.show');
+Route::delete('/admin/vehiculos/{id}', [App\Http\Controllers\VehiculoController::class, 'destroy'])->name('vehiculos.destroy');
+Route::put('admin/vehiculos/{id}/restore', [App\Http\Controllers\VehiculoController::class, 'restore'])->name('vehiculos.restore');
+
 require __DIR__.'/auth.php';

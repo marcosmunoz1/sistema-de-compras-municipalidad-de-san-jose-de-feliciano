@@ -89,6 +89,7 @@
                 <li><a href="{{ route('productos.index') }}"><x-heroicon-o-cog class="w-4 h-4 inline" />Productos</a></li>
                 <li><a href="{{ route('usuarios.index') }}"><x-heroicon-o-user-group class="w-4 h-4 inline" />Usuarios</a></li>
                 <li><a href="{{ url('/admin/roles') }}"><x-heroicon-o-cog class="w-4 h-4 inline" />Roles</a></li>
+                <li><a href="{{ route('vehiculos.index') }}"><x-heroicon-o-truck class="w-4 h-4 inline" />Vehículos</a></li>
             </ul>
         </div>
     </div>
