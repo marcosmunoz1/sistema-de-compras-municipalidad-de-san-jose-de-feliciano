@@ -76,40 +76,50 @@
                     <input 
                         id="codigo"
                         name="codigo"
-                        placeholder="OCB-001"
-                        value="OCB-847186"
+                        placeholder="Ejemplo: OCB-001..."
+                        value="{{ old('codigo') }}"
                         class="w-full h-10 rounded-md border border-base-300 bg-base-200 
                         px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
-                        focus:border-primary transition">
+                        focus:border-primary transition @error('codigo') input-error @enderror"> 
+                        @error('codigo')
+                            <small class="text-red-500 error-message">{{ $message }}</small>
+                        @enderror
                 </div>
 
                 <!-- Fecha -->
                 <div class="space-y-2">
-                    <label for="fecha_emision" class="text-sm font-medium">Fecha de Emisión</label>
+                    <label for="fecha" class="text-sm font-medium">Fecha de Emisión</label>
                     <input 
                         type="date"
-                        id="fecha_emision"
-                        name="fecha_emision"
-                        value="2025-11-20"
+                        id="fecha"
+                        name="fecha"
+                        value="{{ old('fecha') }}"
                         class="w-full h-10 rounded-md border border-base-300 bg-base-200
                         px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
-                        focus:border-primary transition">
+                        focus:border-primary transition @error('fecha') input-error @enderror">
+                        @error('fecha')
+                            <small class="text-red-500 error-message">{{ $message }}</small>
+                        @enderror
                 </div>
 
                 <!-- Usuario -->
                 <div class="space-y-2">
-                    <label for="usuario_autoriza" class="text-sm font-medium">Usuario que Autoriza</label>
+                    <label for="user_id" class="text-sm font-medium">Usuario que Autoriza</label>
 
                     <select 
-                        id="usuario_autoriza"
-                        name="usuario_autoriza"
+                        id="user_id"
+                        name="user_id"
                         class="select w-full h-10 rounded-md border-base-300 bg-base-200
                         px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
-                        focus:border-primary transition">
-                        <option selected>María Sánchez - Supervisor</option>
-                        <option>Pedro Gómez - Encargado</option>
-                        <option>Laura Martínez - Administración</option>
+                        focus:border-primary transition @error('user_id') input-error @enderror">
+                        <option value="">Seleccione un usuario</option>   
+                        @foreach ($users as $usuario) 
+                            <option value="{{ $usuario->id }}">{{ $usuario->name }} - {{ $usuario->roles->pluck('name')->join(', ') }}</option>  
+                        @endforeach 
                     </select>
+                    @error('user_id')
+                        <small class="text-red-500 error-message">{{ $message }}</small>
+                    @enderror
                 </div>
 
             </div>
@@ -142,35 +152,42 @@ gap-1.5 px-6 pt-6">
 
 <!-- Select Vehículo -->
 <div class="space-y-2">
-<label for="vehiculo" class="text-sm font-medium">Vehículo</label>
-<select
-id="vehiculo"
-name="vehiculo"
-class="w-full h-10 rounded-md border border-base-300 bg-base-200
-px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary
-focus:border-primary transition">
-<option selected>Seleccione un vehículo</option>
-@foreach ($vehiculos as $vehiculo)
-<option>{{ $vehiculo->patente }} - {{ $vehiculo->marca }} {{ $vehiculo->modelo }}</option> 
-@endforeach
+<label for="vehiculo_id" class="text-sm font-medium">Vehículo</label>
+<select id="vehiculo_id" name="vehiculo_id"
+    class="w-full h-10 rounded-md border border-base-300 bg-base-200
+    px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary
+    focus:border-primary transition" required>
+    <option value="">Seleccione un vehículo</option>
+    @foreach ($vehiculos as $vehiculo) 
+    <option value="{{ $vehiculo->id }}">
+        Patente: {{ $vehiculo->patente }} 
+        - Marca: {{ $vehiculo->marca }} 
+        - Modelo: {{ $vehiculo->modelo }}</option> 
+    @endforeach
 </select>
+ @error('vehiculo_id') 
+    <small class="text-red-500 error-message">{{ $message }}</small>
+@enderror
 </div>
 
 
 <!-- Select Conductor / Chofer -->
 <div class="space-y-2">
-<label for="chofer" class="text-sm font-medium">Conductor / Chofer</label>
+<label for="empleado_id" class="text-sm font-medium">Conductor / Chofer</label>
 <select
-id="chofer"
-name="chofer"
+id="empleado_id"
+name="empleado_id"
 class="w-full h-10 rounded-md border border-base-300 bg-base-200
 px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary
 focus:border-primary transition">
 <option selected>Seleccione un conductor</option>
-<option>Carlos Pérez - DNI 87654321</option>
-<option>Mariana López - DNI 55443322</option>
-<option>Juan García - DNI 11223344</option>
+@foreach ($empleados as $empleado) 
+<option value="{{ $empleado->id }}">Nombre: {{ $empleado->nombre }} - DNI: {{ $empleado->dni }}</option> 
+@endforeach
 </select>
+ @error('empleado_id')  
+    <small class="text-red-500 error-message">{{ $message }}</small>
+@enderror
 </div>
 
 
@@ -180,7 +197,7 @@ focus:border-primary transition">
 </div>
 
 <!-- CARD DATOS DEL VEHÍCULO OCULTO  -->  
-<div class="hidden p-4 card bg-base-100 shadow-xl mt-6"> 
+<div id="vehiculo_info" class="hidden p-4  card bg-base-100 shadow-xl mt-6"> 
     <div class="flex items-center gap-2 mb-2">
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" 
              fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" 
@@ -351,4 +368,26 @@ focus:border-primary transition">
 
 </form>
 @endsection
+
+@section('js')
+    <script> 
+        document.addEventListener("DOMContentLoaded", function () {
+            const vehiculoSelect = document.getElementById("vehiculo_id");
+            const vehiculoInfo = document.getElementById("vehiculo_info");
+
+            function toggleVehiculoCard() {
+                if (vehiculoSelect.value !== "") {
+                    vehiculoInfo.classList.remove("hidden");
+                } else {
+                    vehiculoInfo.classList.add("hidden");
+                }
+            }
+
+            vehiculoSelect.addEventListener("change", toggleVehiculoCard);
+
+            toggleVehiculoCard(); // Ejecutar al cargar la página
+        });
+</script>
+@endsection
+
  

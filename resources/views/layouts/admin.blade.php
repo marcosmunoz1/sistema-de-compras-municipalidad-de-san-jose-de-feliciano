@@ -9,7 +9,6 @@
 </head>
 
 <body class="bg-base-200">
-
     <div class="drawer lg:drawer-open">
         <input id="sidebar" type="checkbox" class="drawer-toggle" />
 
@@ -97,7 +96,10 @@
     </div>
     @yield('js')
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script> 
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    @if ($errors->any())
+        {{-- Esto NO muestra los errores, pero asegura que se cargaron --}}
+    @endif
      @if(($mensaje = Session::get('mensaje')) && ($icono = Session::get('icono')))
         <script> 
             // Detectar modo oscuro del SO

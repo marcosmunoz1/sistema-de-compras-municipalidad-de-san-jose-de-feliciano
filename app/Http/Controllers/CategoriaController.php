@@ -145,8 +145,7 @@ class CategoriaController extends Controller
         ->with('mensaje', 'Categoría eliminada y marcada como inactiva.')
         ->with('icono', 'success');
     }
-
-
+    
     public function restore($id)
     {
         $categoria = Categoria::withTrashed()->findOrFail($id);

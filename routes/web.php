@@ -92,6 +92,14 @@ Route::get('/admin/vehiculos/{id}', [App\Http\Controllers\VehiculoController::cl
 Route::delete('/admin/vehiculos/{id}', [App\Http\Controllers\VehiculoController::class, 'destroy'])->name('vehiculos.destroy');
 Route::put('admin/vehiculos/{id}/restore', [App\Http\Controllers\VehiculoController::class, 'restore'])->name('vehiculos.restore'); 
 
+//rutas para empleados
 Route::get('/admin/empleados', [App\Http\Controllers\EmpleadoController::class, 'index'])->name('empleados.index');
+Route::get('/admin/empleados/create', [App\Http\Controllers\EmpleadoController::class, 'create'])->name('empleados.create');
+Route::post('/admin/empleados/store', [App\Http\Controllers\EmpleadoController::class, 'store'])->name('empleados.store');
+Route::get('/admin/empleados/{id}/edit', [App\Http\Controllers\EmpleadoController::class, 'edit'])->name('empleados.edit');
+Route::put('/admin/empleados/{id}', [App\Http\Controllers\EmpleadoController::class, 'update'])->name('empleados.update');
+Route::get('/admin/empleados/{id}', [App\Http\Controllers\EmpleadoController::class, 'show'])->name('empleados.show');
+Route::delete('/admin/empleados/{id}', [App\Http\Controllers\EmpleadoController::class, 'destroy'])->name('empleados.destroy');
+Route::put('admin/empleados/{id}/restore', [App\Http\Controllers\EmpleadoController::class, 'restore'])->name('empleados.restore');
 
 require __DIR__.'/auth.php';
