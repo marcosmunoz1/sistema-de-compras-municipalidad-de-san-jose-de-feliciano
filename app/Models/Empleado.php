@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory; 
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Models\Vehiculo;
+use App\Models\Combustible; 
 
 
 
@@ -27,8 +29,8 @@ class Empleado extends Model
     protected $attributes = [
       'estado' => true,
     ];
-    public function vehiculo()
+    public function combustible() 
     {
-      return $this->belongsTo(Vehiculo::class);
-    } 
+      return $this->hasMany(Combustible::class); 
+    }
 }

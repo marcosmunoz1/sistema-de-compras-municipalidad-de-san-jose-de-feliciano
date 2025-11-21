@@ -12,7 +12,7 @@ return new class extends Migration
         Schema::create('combustibles', function (Blueprint $table) {
             $table->id();
             $table->foreignId('vehiculo_id')->constrained('vehiculos')->cascadeOnDelete();
-            $table->foreignId('empleado_id')->constrained('empleados')->cascadeOnDelete();
+            $table->foreignId('empleado_id')->constrained('empleados')->cascadeOnDelete(); 
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete(); //Usuario que registro el combustible 
             $table->string('codigo'); // nr de factura  
             $table->decimal('litros', 12, 2)->nullable(); //Litros consumidos 

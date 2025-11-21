@@ -2,7 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Combustible; 
+use App\Models\Combustible;
+use App\Models\Empleado;
+use App\Models\Producto;
+use App\Models\User;
+use App\Models\Vehiculo;
 use Illuminate\Http\Request;
 
 class CombustibleController extends Controller
@@ -12,7 +16,8 @@ class CombustibleController extends Controller
      */
     public function index()
     {
-       return view('admin.combustibles.index'); 
+        $combustibles = Combustible::paginate(10); 
+       return view('admin.combustibles.index', compact('combustibles'));
     }
 
     /**
@@ -20,7 +25,10 @@ class CombustibleController extends Controller
      */
     public function create()
     {
-        //
+        $vehiculos = Vehiculo::all();
+        $empleados = Empleado::all(); 
+        $users = User::all(); 
+        return view('admin.combustibles.create', compact('vehiculos', 'empleados', 'users')); 
     }
 
     /**

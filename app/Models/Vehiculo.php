@@ -23,4 +23,8 @@ class Vehiculo extends Model
         'motor',
         'estado',
     ];
+    public function combustible()
+    {
+      return $this->hasMany(Combustible::class);
+    } 
 }

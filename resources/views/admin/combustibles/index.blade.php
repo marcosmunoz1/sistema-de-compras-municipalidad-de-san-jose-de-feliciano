@@ -150,6 +150,127 @@
         </div>
     </div>
 </form>
+<!-- Tabla -->
+<div class="card bg-base-100 shadow">
+    <div class="card-body p-4">
+
+        <div class="overflow-x-auto">
+            <table class="table table-zebra w-full">
+                <thead>
+                    <tr>
+                        <th class="text-center">Nr</th>
+                        <th class="text-center">Nr orden</th> 
+                        <th class="text-center">fecha</th>
+                        <th class="text-center">Vehiculo</th> 
+                        <th class="text-center">Conductor</th>
+                        <th class="text-center">Tipo</th>
+                        <th class="text-center">Litros</th>
+                        <th class="text-center">Importe</th>
+                        <th class="text-center">Estacion</th> 
+                        <th class="text-center">Tipo de pago</th>
+                        <th class="text-center">Acciones</th> 
+                    </tr>
+                </thead>
+                <tbody>
+                    @php
+                         $nr = $combustibles->currentPage() * $combustibles->perPage() - $combustibles->perPage() + 1; 
+                    @endphp
+                    @foreach ($combustibles as $combustible) 
+                        <tr> 
+                            <td class="text-center">{{ $nr++ }}</td>
+                            <td class="text-center">{{ $combustible->codigo }}</td> 
+                            <td class="text-center">{{ $combustible->fecha }}</td> 
+                            <td class="text-center">{{ $combustible->vehiculo->marca ?? 'N/A' }}</td>
+                            <td class="text-center">{{ $combustible->empleado->nombre ?? 'N/A' }}</td> 
+                            <td class="text-center">{{ $combustible->tipo }}</td> 
+                            <td class="text-center">{{ $combustible->litros }}</td>
+                            <td class="text-center">{{ $combustible->monto }}</td>
+                            <td class="text-center">{{ $combustible->estacion }}</td>
+                            <td class="text-center">{{ $combustible->tipo_de_pago }}</td>
+                            <td class="text-center">
+                                <div class="flex items-center justify-center gap-2">
+
+                                    {{-- Ver --}}
+                                    <a href="{{ route('combustibles.show', $combustible->id) }}"  
+                                    class="btn btn-info btn-sm">
+                                        <x-heroicon-s-eye class="w-4 h-4"/>
+                                    </a>
+
+                                    {{-- Editar --}}
+                                    <a href="{{ route('combustibles.edit', $combustible->id) }}" 
+                                        class="btn btn-warning btn-sm"
+                                        
+                                    >
+                                        <x-heroicon-s-pencil class="w-4 h-4"/>
+                                    </a>
+
+
+
+
+                                    {{-- Eliminar (después lo convertís en form POST/DELETE) --}}
+                                      {{-- Si está eliminado (tiene deleted_at) --}}
+                                    @if ($combustible->trashed())
+                                        {{-- Restaurar --}}
+                                            <button class="btn btn-sm btn-success"
+                                              onclick="abrirModalRestaurar('{{ url('/admin/combustibles/'. $combustible->id.'/restore') }}')">
+                                                <x-heroicon-s-arrow-uturn-left class="w-4 h-4"/>
+                                            </button>
+                                    {{-- Si NO está eliminado --}}
+                                    @else
+                                        {{-- Eliminar --}}
+                                      <button class="btn btn-error btn-sm" onclick="confirmarEliminacion({{ $combustible->id }})">
+                                          <x-heroicon-s-trash class="w-4 h-4"/>
+                                      </button>
+                                    @endif
+
+                                </div>
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+            
+        </div>
+          @if ($combustibles->hasPages())
+                <div class="flex flex-col md:flex-row justify-between items-center mt-6 px-3 gap-4">
+
+                    <!-- Texto "Mostrando X - Y" -->
+                    <div class="text-sm text-gray-500">
+                        Mostrando {{ $combustibles->firstItem() }} - {{ $combustibles->lastItem() }} de {{ $combustibles->total() }} registros
+                    </div>
+
+                    <!-- Controles de paginación estilo DaisyUI -->
+                    <div class="join">
+
+                        {{-- Botón Anterior --}}
+                        @if ($combustibles->onFirstPage())
+                            <button class="join-item btn btn-square btn-disabled">«</button>
+                        @else
+                            <a href="{{ $combustibles->previousPageUrl() }}" class="join-item btn btn-square">«</a>
+                        @endif
+
+                        {{-- Números de página --}}
+                        @foreach ($combustibles->links()->elements[0] ?? [] as $page => $url)
+                            @if ($page == $combustibles->currentPage())
+                                <button class="join-item btn btn-square btn-active">{{ $page }}</button>
+                            @else
+                                <a href="{{ $url }}" class="join-item btn btn-square">{{ $page }}</a>
+                            @endif
+                        @endforeach
+
+                        {{-- Botón Siguiente --}}
+                        @if ($combustibles->hasMorePages())
+                            <a href="{{ $combustibles->nextPageUrl() }}" class="join-item btn btn-square">»</a>
+                        @else
+                            <button class="join-item btn btn-square btn-disabled">»</button>
+                        @endif
+
+                    </div>
+                </div>
+            @endif
+
+    </div>
+</div>
 
 
 @endsection

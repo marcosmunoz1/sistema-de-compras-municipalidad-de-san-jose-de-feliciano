@@ -52,4 +52,9 @@ class User extends Authenticatable
             'last_logout_at' => 'datetime',
         ];
     }
+    public function combustible()
+    {
+      return $this->hasMany(combustible::class);
+    } 
+    
 }
