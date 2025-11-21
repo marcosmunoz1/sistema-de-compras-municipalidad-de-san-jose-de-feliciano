@@ -136,8 +136,8 @@ class UserController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users', 
-            'password' => 'nullable|string|min:8|confirmed', 
+            'email' => 'required|string|email|max:255|unique:users,email,' . $request->id,
+            'password' => 'nullable|string|min:8|confirmed',
             'role' => 'required|string|exists:roles,name',
         ], [
             'name.required' => 'El nombre es obligatorio.',
@@ -150,7 +150,6 @@ class UserController extends Controller
             'email.max' => 'El correo electrónico no puede superar los 255 caracteres.',
             'email.unique' => 'Este correo electrónico ya está registrado.',
 
-            'password.required' => 'La contraseña es obligatoria.',
             'password.string' => 'La contraseña debe ser un texto válido.',
             'password.min' => 'La contraseña debe tener al menos 8 caracteres.',
             'password.confirmed' => 'Las contraseñas no coinciden.',
@@ -159,6 +158,7 @@ class UserController extends Controller
             'role.string' => 'El rol enviado no es válido.',
             'role.exists' => 'El rol seleccionado no existe en el sistema.',
         ]);
+
 
         $user = User::findOrFail($id);
         $user->name = $request->name;
