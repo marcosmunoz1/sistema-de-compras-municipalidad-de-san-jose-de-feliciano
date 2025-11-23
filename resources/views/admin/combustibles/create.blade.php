@@ -72,7 +72,7 @@
 
                 <!-- Código -->
                 <div class="space-y-2">
-                    <label for="codigo" class="text-sm font-medium">Código de Orden</label>
+                    <label for="codigo" class="text-sm font-medium">Código de Orden<span class="text-red-600">*</span></label>
                     <input 
                         id="codigo"
                         name="codigo"
@@ -88,7 +88,7 @@
 
                 <!-- Fecha -->
                 <div class="space-y-2">
-                    <label for="fecha" class="text-sm font-medium">Fecha de Emisión</label>
+                    <label for="fecha" class="text-sm font-medium">Fecha de Emisión<span class="text-red-600">*</span></label>
                     <input 
                         type="date"
                         id="fecha"
@@ -96,7 +96,7 @@
                         value="{{ old('fecha') }}"
                         class="w-full h-10 rounded-md border border-base-300 bg-base-200
                         px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
-                        focus:border-primary transition @error('fecha') input-error @enderror">
+                        focus:border-primary transition @error('fecha') input-error @enderror" required>
                         @error('fecha')
                             <small class="text-red-500 error-message">{{ $message }}</small>
                         @enderror
@@ -104,14 +104,14 @@
 
                 <!-- Usuario -->
                 <div class="space-y-2">
-                    <label for="user_id" class="text-sm font-medium">Usuario que Autoriza</label>
+                    <label for="user_id" class="text-sm font-medium">Usuario que Autoriza<span class="text-red-600">*</span></label>
 
                     <select 
                         id="user_id"
                         name="user_id"
                         class="select w-full h-10 rounded-md border-base-300 bg-base-200
                         px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
-                        focus:border-primary transition @error('user_id') input-error @enderror">
+                        focus:border-primary transition @error('user_id') input-error @enderror" required> 
                         <option value="">Seleccione un usuario</option>   
                         @foreach ($users as $usuario) 
                             <option value="{{ $usuario->id }}">{{ $usuario->name }} - {{ $usuario->roles->pluck('name')->join(', ') }}</option>  
@@ -152,16 +152,21 @@ gap-1.5 px-6 pt-6">
 
 <!-- Select Vehículo -->
 <div class="space-y-2">
-<label for="vehiculo_id" class="text-sm font-medium">Vehículo</label>
+<label for="vehiculo_id" class="text-sm font-medium">Vehículo<span class="text-red-600">*</span></label>
 <select id="vehiculo_id" name="vehiculo_id"
     class="w-full h-10 rounded-md border border-base-300 bg-base-200
     px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary
-    focus:border-primary transition" required>
+    focus:border-primary transition @error('vehiculo_id') input-error @enderror" required>
     <option value="">Seleccione un vehículo</option>
     @foreach ($vehiculos as $vehiculo) 
-    <option value="{{ $vehiculo->id }}">
+    <option value="{{ $vehiculo->id }}"
+        data-marca="{{ $vehiculo->marca }}"
+        data-modelo="{{ $vehiculo->modelo }}"
+        data-tipo="{{ $vehiculo->tipo }}" 
+        data-combustible="{{ $vehiculo->tipo_combustible }}" 
+        data-ultima="{{ $vehiculo->created_at }}">
         Patente: {{ $vehiculo->patente }} 
-        - Marca: {{ $vehiculo->marca }} 
+        - Marca: {{ $vehiculo->marca }}  
         - Modelo: {{ $vehiculo->modelo }}</option> 
     @endforeach
 </select>
@@ -173,13 +178,13 @@ gap-1.5 px-6 pt-6">
 
 <!-- Select Conductor / Chofer -->
 <div class="space-y-2">
-<label for="empleado_id" class="text-sm font-medium">Conductor / Chofer</label>
+<label for="empleado_id" class="text-sm font-medium">Conductor / Chofer<span class="text-red-600">*</span></label>
 <select
 id="empleado_id"
 name="empleado_id"
 class="w-full h-10 rounded-md border border-base-300 bg-base-200
 px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary
-focus:border-primary transition">
+focus:border-primary transition @error('empleado_id') input-error @enderror" required>
 <option selected>Seleccione un conductor</option>
 @foreach ($empleados as $empleado) 
 <option value="{{ $empleado->id }}">Nombre: {{ $empleado->nombre }} - DNI: {{ $empleado->dni }}</option> 
@@ -197,7 +202,7 @@ focus:border-primary transition">
 </div>
 
 <!-- CARD DATOS DEL VEHÍCULO OCULTO  -->  
-<div id="vehiculo_info" class="hidden p-4  card bg-base-100 shadow-xl mt-6"> 
+<div id="vehiculo_info" class="hidden p-4 card bg-base-100 shadow-xl mt-6"> 
     <div class="flex items-center gap-2 mb-2">
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" 
              fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" 
@@ -213,31 +218,30 @@ focus:border-primary transition">
     <div class="grid grid-cols-3 gap-4 text-sm">
         <div>
             <span class="text-muted-foreground">Marca/Modelo:</span>
-            <p class="font-medium">Toyota Hilux 2020</p>
+            <p class="font-medium" id="v_marca_modelo"></p>
         </div>
         <div>
             <span class="text-muted-foreground">Tipo:</span>
-            <p class="font-medium">Camioneta</p>
+            <p class="font-medium" id="v_tipo"></p>
         </div>
-        <div>
+        {{-- <div>
             <span class="text-muted-foreground">Kilometraje:</span>
             <p class="font-medium">45,680 km</p>
-        </div>
+        </div> --}} 
         <div>
             <span class="text-muted-foreground">Combustible:</span>
-            <span class="inline-flex items-center justify-center rounded-md border px-2 py-0.5 text-xs font-medium 
+            <span id="v_tipo_combustible" class="inline-flex items-center justify-center rounded-md border px-2 py-0.5 text-xs font-medium 
                            w-fit whitespace-nowrap shrink-0 mt-1 bg-secondary text-secondary-foreground">
-                Diesel
             </span>
         </div>
         <div>
             <span class="text-muted-foreground">Última Carga:</span>
-            <p class="font-medium">2024-11-12 (42L)</p>
+            <p id="v_ultima_carga" class="font-medium"> (42L)</p> 
         </div>
-        <div>
+        {{-- <div>
             <span class="text-muted-foreground">Promedio:</span>
-            <p class="font-medium">12.5 km/L</p>
-        </div>
+            <p id="v_promedio" class="font-medium">12.5 km/L</p>
+        </div> --}} 
     </div>
 </div>
 
@@ -265,38 +269,47 @@ focus:border-primary transition">
 
                 <!-- Tipo Combustible -->
                 <div class="space-y-2">
-                    <label for="tipo_combustible" class="text-sm font-medium">Tipo de Combustible</label>
-                    <select id="tipo_combustible" name="tipo_combustible"
+                    <label for="combustible" class="text-sm font-medium">Tipo de Combustible<span class="text-red-600">*</span></label>
+                    <select id="combustible" name="combustible"
                         class="w-full h-10 rounded-md border border-base-300 bg-base-200 
                         px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary
-                        focus:border-primary transition">
+                        focus:border-primary @error('combustible') input-error @enderror transition" required>
                         <option value="">Seleccionar</option>
                         <option value="nafta">Nafta Súper</option>
                         <option value="premium">Nafta Premium</option>
                         <option value="diesel">Diesel</option>
                         <option value="euro">Diesel Euro</option>
-                    </select>
+                    </select> 
+                     @error('combustible')
+                        <small class="text-red-500 error-message">{{ $message }}</small>
+                    @enderror
                 </div>
 
                 <!-- Litros Estimados -->
                 <div class="space-y-2">
-                    <label for="litros_estimados" class="text-sm font-medium">Litros Estimados (Opcional)</label>
-                    <input type="number" id="litros_estimados" name="litros_estimados" placeholder="0"
+                    <label for="litros" class="text-sm font-medium">Litros Estimados <span class="text-red-600">*</span></label>
+                    <input type="number" id="litros" min="0" max="1000" name="litros" placeholder="0"
                         step="0.01"
                         class="w-full h-10 rounded-md border border-base-300 bg-base-200 
                         px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary
-                        focus:border-primary transition">
+                        focus:border-primary @error('litros') input-error @enderror transition" required>
                     <p class="text-xs text-gray-500">Dejar vacío para carga completa</p>
+                     @error('litros')
+                        <small class="text-red-500 error-message">{{ $message }}</small>
+                    @enderror 
                 </div>
 
                 <!-- Monto Máximo -->
-                <div class="space-y-2">
-                    <label for="monto_maximo" class="text-sm font-medium">Monto Máximo Estimado</label>
-                    <input type="number" id="monto_maximo" name="monto_maximo"
-                        placeholder="$0.00" step="0.01"
+                <div class="space-y-2"> 
+                    <label for="precio" class="text-sm font-medium">Precio del combustible<span class="text-red-600">*</span></label>
+                    <input type="number" id="precio" min="0" name="precio"
+                        placeholder="0" step="0.01"
                         class="w-full h-10 rounded-md border border-base-300 bg-base-200 
                         px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary
-                        focus:border-primary transition">
+                        focus:border-primary @error('precio') input-error @enderror transition" required>
+                    @error('precio')
+                        <small class="text-red-500 error-message">{{ $message }}</small>
+                    @enderror   
                 </div>
 
             </div>
@@ -306,37 +319,42 @@ focus:border-primary transition">
 
                 <!-- Estación sugerida -->
                 <div class="space-y-2">
-                    <label for="estacion_sugerida" class="text-sm font-medium">
-                        Estación Sugerida (Opcional)
+                    <label for="estacion" class="text-sm font-medium">
+                        Estación Sugerida <span class="text-red-600">*</span>
                     </label>
-                    <select id="estacion_sugerida" name="estacion_sugerida"
+                    <select id="estacion" name="estacion"  
                         class="w-full h-10 rounded-md border border-base-300 bg-base-200 
                         px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary
-                        focus:border-primary transition">
+                        focus:border-primary @error('estacion') input-error @enderror transition" required>
                         <option value="">Cualquier estación autorizada</option>
-                        <option>YPF Ruta 14</option>
+                        <option>YPF Ruta 14</option> 
                         <option>SHELL Centro</option>
                         <option>AXION Norte</option>
                     </select>
+                    @error('estacion')
+                        <small class="text-red-500 error-message">{{ $message }}</small>
+                    @enderror
                 </div>
 
                 <!-- Tipo de Pago -->
                 <div class="space-y-2">
-                    <label for="tipo_pago" class="text-sm font-medium">Tipo de Pago Autorizado</label>
-                    <select id="tipo_pago" name="tipo_pago"
+                    <label for="tipo_de_pago" class="text-sm font-medium">Tipo de Pago Autorizado<span class="text-red-600">*</span></label>
+                    <select id="tipo_de_pago" name="tipo_de_pago"
                         class="w-full h-10 rounded-md border border-base-300 bg-base-200 
                         px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary
-                        focus:border-primary transition">
+                        focus:border-primary @error('tipo_de_pago') input-error @enderror transition" required>
                         <option value="">Seleccionar</option>
                         <option value="contado">Pago en efectivo</option>
-                        <option value="cuenta_corriente">Cuenta corriente</option>
-                        <option value="tarjeta">Tarjeta corporativa</option>
+                        <option value="cuenta_corriente">Cuenta corriente</option> 
                     </select>
+                    @error('tipo_de_pago')
+                        <small class="text-red-500 error-message">{{ $message }}</small>
+                    @enderror
                 </div>
 
             </div>
 
-            <!-- MOTIVO -->
+           {{--  <!-- MOTIVO -->
             <div class="space-y-2">
                 <label for="motivo" class="text-sm font-medium">Motivo / Justificación</label>
                 <textarea id="motivo" name="motivo" rows="2"
@@ -344,12 +362,12 @@ focus:border-primary transition">
                     class="w-full rounded-md border border-base-300 bg-base-200
                     px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary
                     focus:border-primary transition resize-none"></textarea>
-            </div>
+            </div> --}}
 
             <!-- OBSERVACIONES -->
             <div class="space-y-2">
                 <label for="observaciones" class="text-sm font-medium">
-                    Observaciones / Instrucciones Especiales
+                    Observaciones / Instrucciones Especiales(Opcional) 
                 </label>
                 <textarea id="observaciones" name="observaciones" rows="3"
                     placeholder="Ingrese observaciones o instrucciones..."
@@ -357,36 +375,54 @@ focus:border-primary transition">
                     px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary
                     focus:border-primary transition resize-none"></textarea>
             </div>
-
+            
         </div>
-    </div>
-
+    </div> 
 </div>
 <!-- FIN DE DETALLES DE LA CARGA AUTORIZADA -->
-
-
-
+ <!-- ========================= -->
+    <!-- BOTONES DEL FORMULARIO -->
+    <!-- ========================= -->
+    <div class="flex justify-end pt-4">
+        <a href="{{ route('combustibles.index') }}" class="btn btn-warning mr-2"> 
+            <x-heroicon-m-arrow-left class="w-4 h-4 inline" /> 
+            Volver 
+        </a>  
+        <button type="submit" class="btn btn-primary">
+            <x-heroicon-m-arrow-down-tray class="w-4 h-4 inline" /> 
+            Guardar Carga De Combustible 
+        </button>
+    </div>
 </form>
 @endsection
 
 @section('js')
     <script> 
-        document.addEventListener("DOMContentLoaded", function () {
-            const vehiculoSelect = document.getElementById("vehiculo_id");
-            const vehiculoInfo = document.getElementById("vehiculo_info");
+     $(document).ready(function () { 
 
-            function toggleVehiculoCard() {
-                if (vehiculoSelect.value !== "") {
-                    vehiculoInfo.classList.remove("hidden");
-                } else {
-                    vehiculoInfo.classList.add("hidden");
-                }
+        function actualizarDatosVehiculo() {
+            var selected = $('#vehiculo_id option:selected');
+            var id = selected.val();
+
+            if (!id) {
+                $('#vehiculo_info').addClass('hidden');
+                return;
             }
 
-            vehiculoSelect.addEventListener("change", toggleVehiculoCard);
+            // Mostrar card
+            $('#vehiculo_info').removeClass('hidden');
 
-            toggleVehiculoCard(); // Ejecutar al cargar la página
-        });
+            // Cargar datos reales
+            $('#v_marca_modelo').text(selected.data('marca') + " " + selected.data('modelo'));
+            $('#v_tipo').text(selected.data('tipo'));
+            $('#v_tipo_combustible').text(selected.data('combustible'));
+            $('#v_ultima_carga').text(selected.data('ultima')); 
+        }
+
+        $('#vehiculo_id').change(actualizarDatosVehiculo);
+
+        actualizarDatosVehiculo(); // por si ya viene seleccionado
+    });
 </script>
 @endsection
 

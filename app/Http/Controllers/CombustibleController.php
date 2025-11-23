@@ -35,8 +35,44 @@ class CombustibleController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-    {
-        //
+    { 
+
+        /* return response()->json($request->all());  */
+        
+        $request->validate([
+            'vehiculo_id' => 'required',
+            'empleado_id' => 'required',
+            'user_id' => 'required',
+            'codigo' => 'required|unique:combustibles,codigo',
+            'fecha' => 'required',
+            'litros' => 'required|numeric',
+            'precio' => 'required|numeric',
+            'combustible' => 'required',
+            'estacion' => 'required',
+            'tipo_de_pago' => 'required',
+            'observaciones' => 'required' 
+        ]); 
+        $monto = $request->litros * $request->precio; 
+        
+        $combustible = Combustible::create([ 
+            'vehiculo_id' => $request->vehiculo_id,
+            'empleado_id' => $request->empleado_id,
+            'user_id' => $request->user_id,
+            'codigo' => $request->codigo,
+            'litros' => $request->litros,
+            'tipo' => $request->combustible, 
+            'precio' => $request->precio,
+            'estacion' => $request->estacion, 
+            'fecha' => $request->fecha,
+            'monto' => $monto,
+            'tipo_de_pago' => $request->tipo_de_pago,
+            'observaciones' => $request->observaciones,
+            'estado' => true, 
+        ]);
+
+        return redirect()->route('combustibles.index')
+        ->with('mensaje', 'Combustible creado exitosamente')
+        ->with('icono', 'success'); 
     }
 
     /**
