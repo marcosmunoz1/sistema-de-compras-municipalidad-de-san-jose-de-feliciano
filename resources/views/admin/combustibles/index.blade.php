@@ -4,12 +4,17 @@
  <!-- Titulo y boton --> 
  <div class="flex items-center justify-between mb-6">
     <h1 class="text-2xl font-semibold">Combustibles</h1>
-    <a href="{{ route('combustibles.create') }}" 
-       class="btn btn-primary">
-        + Nuevo Combustible 
-    </a>
+     <div class="flex  gap-2">
+        <button onclick="crearCombustible.showModal()" class="btn btn-warning tooltip tooltip-warning mb-1" data-tip="Actualizar los precios de los combustibles">   
+            <x-heroicon-s-cloud-arrow-up class="w-4 h-4 inline" /> 
+            Actulizar Precios 
+        </button> 
+        <a href="{{ route('combustibles.create') }}" 
+           class="btn btn-primary tooltip tooltip-primary tooltip-bottom mb-1" data-tip="Crear orden de carga">
+            + Nuevo Combustible
+        </a>
+    </div>
  </div>
- 
  <div class="breadcrumbs text-sm mb-6">
   <ul>
     <li>
@@ -271,6 +276,128 @@
 
     </div>
 </div>
+ <dialog id="crearCombustible" class="modal"> 
+        <div class="modal-box max-w-xl rounded-xl">
+
+            <!-- Título dinámico -->
+            <h3 class="font-bold text-xl flex items-center gap-3 mb-4">
+                <!-- Icono -->
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                    stroke="currentColor" class="w-7 h-7 text-primary">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M16.5 6 21 6m-15 0L3 6m6 0L9 3m6 3 0 3m-6 9 6-9H6l6 9Z" />
+                </svg>
+                <!-- El título será cambiado por JS -->
+                Actualizar precios de los combustibles
+            </h3>
+
+            <form action="{{ url('/admin/combustibles/update-prices') }}" method="POST" class="space-y-5" id="form">
+               @csrf  
+               @method('post')   
+                <!-- Nombre --> 
+                <div class="form-control">
+                    <label class="text-sm font-medium">Nombre<span class="text-red-600">*</span></label>
+                      <select id="id" name="id" class="w-full h-10 rounded-md border border-base-300 bg-base-200 
+                        px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary
+                        focus:border-primary @error('id') input-error @enderror transition" required>>
+                        <option value="">Seleccionar</option>
+                        @foreach($tipos_combustibles as $combustible_tipo)
+                          <option value="{{ $combustible_tipo->id }}" 
+                            data-combustible="{{ $combustible_tipo->valor }}" 
+                              >{{$combustible_tipo->nombre ?? ''}}</option>
+                        @endforeach 
+                      </select> 
+                    @error('id') 
+                        <small class="text-red-500 error-message">{{ $message }}</small>
+                    @enderror
+                </div>
+                 <!-- Nombre --> 
+                <div id="combustible_info" class="hidden form-control">  
+                    <label class="text-sm font-medium">Precio actual del combustible seleccionado</label>
+                     <input type="number" id="combustible_id" min="0" 
+                      step="0.01" 
+                        class="w-full h-10 rounded-md border border-base-300 bg-base-200 
+                        px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary
+                        focus:border-primary " readonly> 
+                </div> 
+                <!-- Monto Máximo -->
+                <div class="space-y-2"> 
+                    <label for="precio" class="text-sm font-medium">Nuevo precio del combustible<span class="text-red-600">*</span></label>
+                    <input type="number" id="precio" min="0" name="precio"
+                        placeholder="0" step="0.01"
+                        class="w-full h-10 rounded-md border border-base-300 bg-base-200 
+                        px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary
+                        focus:border-primary @error('precio') input-error @enderror transition" required>
+                    @error('precio')
+                        <small class="text-red-500 error-message">{{ $message }}</small>
+                    @enderror   
+                </div>
+
+                <!-- Descripción -->
+                <div class="form-control">
+                    <label class="label">
+                        <span class="label-text font-medium">Descripción</span>
+                    </label>
+
+                    <textarea name="descripcion" id="descripcion" rows="3"
+                        placeholder="Ingrese una descripción breve de la actulizacion del combustible..."
+                        class="textarea w-full rounded-md border border-base-300 bg-base-200 
+                 focus:outline-none focus:ring-2 focus:ring-primary 
+                 focus:border-primary transition @error('descripcion') input-error @enderror"
+                        >{{ old('descripcion') }}</textarea>
+
+                    @error('descripcion')
+                        <small class="text-red-500 error-message">{{ $message }}</small>
+                    @enderror
+                </div>
+
+                <!-- Botones -->
+                <div class="modal-action">
+
+                    <!-- Guardar -->
+                    <button class="btn btn-primary">  
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                            stroke="currentColor" class="w-5 h-5 mr-1">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                        </svg>
+                        Guardar precio 
+                    </button>
+
+                    <!-- Cancelar -->
+                    <button type="button" onclick="crearCombustible.close()" 
+                        class="btn btn-neutral">
+                        Cancelar
+                    </button>
+                </div>
+
+            </form>
+        </div>
 
 
+@endsection 
+@section('js')
+ <script> 
+     $(document).ready(function () { 
+
+        function actualizarDatosdelcombustible() {
+            var selected = $('#id option:selected');
+            var id = selected.val();  
+
+            if (!id) {
+                $('#combustible_info').addClass('hidden');
+                return;
+            }
+
+            // Mostrar card
+            $('#combustible_info').removeClass('hidden'); 
+
+            // Cargar datos reales
+            $('#combustible_id').val(selected.data('combustible'));
+        }
+
+        $('#id').change(actualizarDatosdelcombustible); 
+
+        actualizarDatosdelcombustible(); // por si ya viene seleccionado
+    });
+</script>
 @endsection

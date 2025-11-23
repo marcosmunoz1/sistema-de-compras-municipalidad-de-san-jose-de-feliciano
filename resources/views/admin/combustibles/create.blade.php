@@ -275,10 +275,9 @@ focus:border-primary transition @error('empleado_id') input-error @enderror" req
                         px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary
                         focus:border-primary @error('combustible') input-error @enderror transition" required>
                         <option value="">Seleccionar</option>
-                        <option value="nafta">Nafta Súper</option>
-                        <option value="premium">Nafta Premium</option>
-                        <option value="diesel">Diesel</option>
-                        <option value="euro">Diesel Euro</option>
+                        @foreach ($tipo_combustible as $combustible_tipo)
+                         <option value="{{ $combustible_tipo->nombre }}">{{$combustible_tipo->nombre }}</option>  
+                        @endforeach
                     </select> 
                      @error('combustible')
                         <small class="text-red-500 error-message">{{ $message }}</small>
@@ -404,7 +403,7 @@ focus:border-primary transition @error('empleado_id') input-error @enderror" req
             var selected = $('#vehiculo_id option:selected');
             var id = selected.val();
 
-            if (!id) {
+            if (!id) { 
                 $('#vehiculo_info').addClass('hidden');
                 return;
             }

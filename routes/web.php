@@ -81,7 +81,7 @@ Route::put('/admin/combustibles/{id}', [App\Http\Controllers\CombustibleControll
 Route::get('/admin/combustibles/{id}', [App\Http\Controllers\CombustibleController::class, 'show'])->name('combustibles.show');
 Route::delete('/admin/combustibles/{id}', [App\Http\Controllers\CombustibleController::class, 'destroy'])->name('combustibles.destroy');
 Route::put('/admin/combustibles/{id}/restore', [App\Http\Controllers\CombustibleController::class, 'restore'])->name('combustibles.restore');
-
+Route::post('/admin/combustibles/update-prices', [App\Http\Controllers\CombustibleController::class, 'updatePrices'])->name('combustibles.update-prices');
 //rutas para vehiculos
 Route::get('/admin/vehiculos', [App\Http\Controllers\VehiculoController::class, 'index'])->name('vehiculos.index');
 Route::get('/admin/vehiculos/create', [App\Http\Controllers\VehiculoController::class, 'create'])->name('vehiculos.create');

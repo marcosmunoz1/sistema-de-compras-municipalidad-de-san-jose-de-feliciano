@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Combustible;
 use App\Models\Empleado;
-use App\Models\Producto;
+use App\Models\Tipo_combustibles;
 use App\Models\User;
 use App\Models\Vehiculo;
 use Illuminate\Http\Request;
@@ -15,20 +15,22 @@ class CombustibleController extends Controller
      * Display a listing of the resource.
      */
     public function index()
-    {
-        $combustibles = Combustible::paginate(10); 
-       return view('admin.combustibles.index', compact('combustibles'));
+    {   
+        $tipos_combustibles = Tipo_combustibles::all();  
+        $combustibles = Combustible::paginate(10);  
+        return view('admin.combustibles.index', compact('combustibles', 'tipos_combustibles')); 
     }
 
     /**
      * Show the form for creating a new resource.
      */
     public function create()
-    {
+    {   
+        $tipo_combustible = Tipo_combustibles::all();  
         $vehiculos = Vehiculo::all();
         $empleados = Empleado::all(); 
         $users = User::all(); 
-        return view('admin.combustibles.create', compact('vehiculos', 'empleados', 'users')); 
+        return view('admin.combustibles.create', compact('vehiculos', 'empleados', 'users','tipo_combustible'));  
     }
 
     /**
@@ -106,4 +108,21 @@ class CombustibleController extends Controller
     {
         //
     }
-}
+    public function updatePrices(Request $request){   
+        /* return response()->json($request->all());  */ 
+     
+         $request->validate([ 
+            'precio' => 'required|numeric|min:0'
+        ]);
+        
+        $tipo_combustible = Tipo_combustibles::findOrFail($request->id);  
+        $tipo_combustible->valor = $request->precio; 
+        $tipo_combustible->descripcion = $request->descripcion;
+        $tipo_combustible->save();   
+          
+        
+         return redirect()->route('combustibles.index')
+        ->with('mensaje', 'Combustible Actualizado exitosamente')
+        ->with('icono', 'success');  
+    }
+} 
