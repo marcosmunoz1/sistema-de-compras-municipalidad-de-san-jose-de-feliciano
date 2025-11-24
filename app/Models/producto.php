@@ -15,8 +15,9 @@ class Producto extends Model
       'descripcion',
       'unidad', 
       'estado',
+      'estado2', 
     ];
-
+    
     protected $attributes = [
       'estado' => true,
     ];
@@ -24,5 +25,8 @@ class Producto extends Model
     public function categoria()
     {
       return $this->belongsTo(Categoria::class);
-    }
+    } 
+   
+
+    
 }
