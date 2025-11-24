@@ -2,64 +2,201 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Combustible; 
+use App\Models\Combustible;
+use App\Models\Empleado;
+use App\Models\Tipo_combustibles;
+use App\Models\User;
+use App\Models\Vehiculo;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class CombustibleController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
-    {
-       return view('admin.combustibles.index'); 
+    public function index(Request $request) 
+    {   
+            $tipos_combustibles = Tipo_combustibles::all(); 
+            $search = $request->get('search'); 
+
+            $query = Combustible::withTrashed()->orderBy('id', 'desc');  
+            if ($search) {
+                $query->where('codigo', 'like', "%{$search}%")
+                      ->orWhere('estacion', 'like', "%{$search}%");
+            }
+            $combustibles = $query->paginate(2); 
+        return view('admin.combustibles.index', compact('combustibles', 'tipos_combustibles')); 
     }
 
     /**
      * Show the form for creating a new resource.
      */
     public function create()
-    {
-        //
+    {   
+        $tipo_combustible = Tipo_combustibles::all();  
+        $vehiculos = Vehiculo::all();
+        $empleados = Empleado::all(); 
+        $users = User::all(); 
+        return view('admin.combustibles.create', compact('vehiculos', 'empleados', 'users','tipo_combustible'));  
     }
 
     /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-    {
-        //
+    { 
+
+        /* return response()->json($request->all());  */
+        
+        $request->validate([
+            'vehiculo_id' => 'required',
+            'empleado_id' => 'required',
+            'user_id' => 'required',
+            'codigo' => 'required|unique:combustibles,codigo',
+            'fecha' => 'required',
+            'litros' => 'required|numeric',
+            'precio' => 'required|numeric',
+            'combustible' => 'required',
+            'estacion' => 'required',
+            'tipo_de_pago' => 'required',
+            'observaciones' => 'required' 
+        ]); 
+        $monto = $request->litros * $request->precio; 
+        
+        $combustible = Combustible::create([ 
+            'vehiculo_id' => $request->vehiculo_id,
+            'empleado_id' => $request->empleado_id,
+            'user_id' => $request->user_id,
+            'codigo' => $request->codigo,
+            'litros' => $request->litros,
+            'tipo' => $request->combustible, 
+            'precio' => $request->precio,
+            'estacion' => $request->estacion, 
+            'fecha' => $request->fecha,
+            'monto' => $monto,
+            'tipo_de_pago' => $request->tipo_de_pago,
+            'observaciones' => $request->observaciones,
+            'estado' => true, 
+        ]);
+
+        return redirect()->route('combustibles.index')
+        ->with('mensaje', 'Combustible creado exitosamente')
+        ->with('icono', 'success'); 
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(combustible $combustible)
-    {
-        //
+    public function show($id)
+    {   
+        $combustible = Combustible::findOrFail($id); 
+        return view('admin.combustibles.show', compact('combustible'));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(combustible $combustible)
+    public function edit($id)
     {
-        //
+        $tipo_combustible = Tipo_combustibles::all();   
+        $vehiculos = Vehiculo::all(); 
+        $empleados = Empleado::all();  
+        $users = User::all();  
+        $combustible = Combustible::findOrFail($id);
+        return view('admin.combustibles.edit', compact('combustible', 'tipo_combustible', 'vehiculos', 'empleados', 'users')); 
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, combustible $combustible)
-    {
-        //
+    public function update(Request $request,$id) 
+    { 
+           
+           $request->validate([ 
+            'codigo' => 'required|unique:combustibles,codigo,' . $id,      
+            'fecha' => 'required', 
+            'user_id' => 'required', 
+            'vehiculo_id' => 'required', 
+            'empleado_id' => 'required',
+            'combustible' => 'required', 
+            'litros' => 'required|numeric',
+            'precio' => 'required|numeric',
+            'estacion' => 'required',
+            'tipo_de_pago' => 'required', 
+            'observaciones' => 'nullable|string|max:500'  
+        ]); 
+        
+        $monto = $request->litros * $request->precio;  
+        $combustible = Combustible::withTrashed()->findOrFail($id); 
+
+        $combustible->vehiculo_id = $request->vehiculo_id; 
+        $combustible->empleado_id = $request->empleado_id;
+        $combustible->user_id = $request->user_id;
+        $combustible->codigo = $request->codigo;
+        $combustible->litros = $request->litros;
+        $combustible->tipo = $request->combustible; 
+        $combustible->precio = $request->precio;
+        $combustible->estacion = $request->estacion;
+        $combustible->fecha = $request->fecha;
+        $combustible->monto = $monto;
+        $combustible->tipo_de_pago = $request->tipo_de_pago;
+        $combustible->observaciones = $request->observaciones;
+        $combustible->save();
+            
+        
+        return redirect()->route('combustibles.index') 
+        ->with('mensaje', 'Combustible actualizado exitosamente')
+        ->with('icono', 'success');
+  
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(combustible $combustible)
-    {
-        //
+    public function destroy($id)
+    {  
+        $combustible = Combustible::findOrFail($id); 
+
+        // Marcar como inactiva
+        $combustible->estado = false;
+        $combustible->save();
+
+        // Soft delete
+        $combustible->delete();
+
+        return redirect()->route('combustibles.index') 
+        ->with('mensaje', 'Combustible eliminado y marcado como inactivo.') 
+        ->with('icono', 'success');  
     }
-}
+
+    public function restore($id)
+    { 
+        $combustible = Combustible::withTrashed()->findOrFail($id);
+        $combustible->restore();
+        $combustible->estado = true;
+        $combustible->save();
+        
+        return redirect()->route('combustibles.index') 
+        ->with('mensaje', 'Combustible restaurado exitosamente.') 
+        ->with('icono', 'success');  
+    }
+
+    public function updatePrices(Request $request){   
+        /* return response()->json($request->all());  */ 
+     
+         $request->validate([ 
+            'precio' => 'required|numeric|min:0'
+        ]);
+        
+        $tipo_combustible = Tipo_combustibles::findOrFail($request->id);  
+        $tipo_combustible->valor = $request->precio; 
+        $tipo_combustible->descripcion = $request->descripcion;
+        $tipo_combustible->save();   
+          
+        
+         return redirect()->route('combustibles.index')
+        ->with('mensaje', 'Combustible Actualizado exitosamente')
+        ->with('icono', 'success');  
+    }
+} 

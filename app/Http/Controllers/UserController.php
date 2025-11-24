@@ -132,7 +132,7 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $id )
     {
         $request->validate([
             'name' => 'required|string|max:255',
