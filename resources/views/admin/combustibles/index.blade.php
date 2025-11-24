@@ -276,7 +276,7 @@
 
     </div>
 </div>
- <dialog id="crearCombustible" class="modal"> 
+<dialog id="crearCombustible" class="modal"> 
         <div class="modal-box max-w-xl rounded-xl">
 
             <!-- Título dinámico -->
@@ -336,7 +336,7 @@
                 <!-- Descripción -->
                 <div class="form-control">
                     <label class="label">
-                        <span class="label-text font-medium">Descripción</span>
+                        <span class="label-text font-medium">Descripción (Opcional) </span>
                     </label>
 
                     <textarea name="descripcion" id="descripcion" rows="3"
@@ -373,7 +373,74 @@
             </form>
         </div>
 
+</dialog>
+<!-- Modal para eliminar -->
+<dialog id="modal_eliminar_combustible" class="modal"> 
+  <div class="modal-box">
 
+    <h3 class="font-bold text-lg flex items-center gap-2 text-red-600">
+        <x-heroicon-o-trash class="w-5 h-5" />
+        Confirmar eliminación
+    </h3>
+
+    <p class="py-4">
+        ¿Seguro que querés eliminar este orden de carga de combustible?  
+    </p>
+
+    <div class="modal-action">
+        <form method="dialog">
+            <button class="btn">Cancelar</button>
+        </form>
+
+        <!-- Formulario eliminar -->
+        <form id="formEliminarCombustible" method="POST">
+            @csrf
+            @method('DELETE')
+
+            <button type="submit" class="btn btn-error">
+                <x-heroicon-o-trash class="w-4 h-4" />
+                Eliminar
+            </button>
+        </form>
+    </div>
+
+  </div>
+</dialog>
+<!-- Modal para restaurar -->
+<dialog id="modal_restaurar_combustible" class="modal">
+    <div class="modal-box">
+
+        <h3 class="font-bold text-lg flex items-center gap-2 text-green-600">
+            <x-heroicon-o-arrow-path class="w-5 h-5" />
+            Confirmar restauración
+        </h3>
+
+        <p class="py-4">
+            ¿Seguro que querés restaurar este combustible?
+        </p>
+
+        <div class="modal-action">
+
+            <!-- Botón cancelar -->
+            <form method="dialog">
+                <button class="btn">Cancelar</button>
+            </form>
+
+            <!-- Formulario restaurar -->
+            <form id="formRestaurarCombustible" method="POST">
+                @csrf
+                @method('PUT')
+
+                <button type="submit" class="btn btn-success">
+                    <x-heroicon-o-arrow-path class="w-4 h-4" />
+                    Restaurar
+                </button>
+            </form>
+
+        </div>
+
+    </div>
+</dialog>
 @endsection 
 @section('js')
  <script> 
@@ -400,4 +467,20 @@
         actualizarDatosdelcombustible(); // por si ya viene seleccionado
     });
 </script>
+ <script>
+    function confirmarEliminacion(id) { 
+            const form = document.getElementById('formEliminarCombustible');
+            form.action = routeEliminarCombustible(id); 
+            document.getElementById('modal_eliminar_combustible').showModal();
+        }
+      // Genera la URL usando el helper de Laravel
+      function routeEliminarCombustible(id) { 
+          return "{{ url('/admin/combustibles') }}/" + id; 
+      }
+      function abrirModalRestaurar(url) {
+        const form = document.getElementById('formRestaurarCombustible');
+        form.action = url; 
+        modal_restaurar_combustible.showModal(); 
+      }
+  </script>
 @endsection

@@ -122,7 +122,7 @@ class EmpleadoController extends Controller
     {
         $request->validate([
             'nombre' => 'required|string|max:255',
-            'dni' => 'required|string|max:20|unique:empleados,dni,' . $id,
+            'dni' => 'required|string|max:20|unique:empleados,dni,' . $id, 
             'email' => 'nullable|email|max:255|unique:empleados,email,' . $id,
             'celular' => 'nullable|string|max:20',
             'direccion' => 'nullable|string|max:255',
@@ -139,7 +139,7 @@ class EmpleadoController extends Controller
         ]);
 
         $empleado = Empleado::withTrashed()->findOrFail($id);
-        $empleado->nombre = $request->nombre;
+        $empleado->nombre = $request->nombre; 
         $empleado->dni = $request->dni;
         $empleado->email = $request->email;
         $empleado->celular = $request->celular;

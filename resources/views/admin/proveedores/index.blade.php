@@ -255,7 +255,7 @@
   <script>
     function confirmarEliminacion(id) { 
             const form = document.getElementById('formEliminarProveedor');
-            form.action = routeEliminarProveedor(id);
+            form.action = routeEliminarProveedor(id); 
             document.getElementById('modal_eliminar_proveedor').showModal();
         }
       // Genera la URL usando el helper de Laravel

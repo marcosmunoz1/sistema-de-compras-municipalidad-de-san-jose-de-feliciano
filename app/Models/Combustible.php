@@ -11,7 +11,7 @@ use App\Models\User;
 
 class  Combustible extends Model
 {  
-    use HasFactory,SoftDeletes;
+    use HasFactory,SoftDeletes;  
     protected $table = 'combustibles';
     protected $fillable = [
         'vehiculo_id',
