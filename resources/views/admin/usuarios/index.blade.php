@@ -83,8 +83,9 @@
                                 <td class="text-center">{{ $usuario->name }}</td>
                                 <td class="text-center">{{ $usuario->email }}</td>
                                 <td class="text-center">
-                                    <span
-                                        class="badge badge-info mr-1">{{ $usuario->roles->pluck('name')->join(', ') }}</span>
+                                    <div
+                                        class="badge badge-info h-auto items-start whitespace-normal break-words px-3 py-0">{{ $usuario->roles->pluck('name')->join(', ') }}
+                                    </div>
                                 </td>
                                 <td class="text-center">{{ $usuario->last_login_at?->format('d/m/Y H:i') ?? 'Nunca' }}</td>
                                 <td class="text-center">{{ $usuario->last_logout_at?->format('d/m/Y H:i') ?? 'Nunca' }}

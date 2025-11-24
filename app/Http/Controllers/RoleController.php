@@ -33,27 +33,27 @@ class RoleController extends Controller
         // Validación
         $request->validate(
             [
-                'name' => 'required|string|max:255|unique:roles,name,'.$request->id,
+                'name' => 'required|string|max:255|unique:roles,name,' . $request->id,
             ],
             [
                 'name.required' => 'El campo nombre no puede estar vacío',
-                'name.unique' => 'El Rol ya está registrado.'
+                'name.unique' => 'El Rol ya está registrado.',
             ]
         );
 
-        // ACCIÓN: CREAR
-        if ($request->input('accion') == "1") {
+        // ACCIÓN: AGREGAR (0)
+        if ($request->input('accion') == "0") {
 
             $role = new Role();
             $role->name = $request->name;
             $role->save();
 
             return redirect()->route('admin.roles.index')
-            ->with('mensaje', 'Rol creado correctamente')
-            ->with('icono', 'success'); 
+                ->with('mensaje', 'Rol creado correctamente')
+                ->with('icono', 'success');
         }
 
-        // ACCIÓN: EDITAR
+        // ACCIÓN: EDITAR (2)
         if ($request->input('accion') == "2") {
 
             $role = Role::findOrFail($request->id);
@@ -61,9 +61,14 @@ class RoleController extends Controller
             $role->save();
 
             return redirect()->route('admin.roles.index')
-                            ->with('success', 'Rol actualizado correctamente');
+                ->with('mensaje', 'Rol actualizado correctamente')
+                ->with('icono', 'success');
         }
+
+        // ACCIÓN: VER (1) → no hace nada
+        return redirect()->route('admin.roles.index');
     }
+
 
 
     /**
