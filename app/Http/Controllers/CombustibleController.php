@@ -16,7 +16,9 @@ class CombustibleController extends Controller
      * Display a listing of the resource.
      */
     public function index(Request $request) 
-    {   
+    {       $totalMonto = Combustible::sum('monto');
+            $totalLitros = Combustible::sum('litros'); 
+            $totalCargas =  Combustible::count(); 
             $tipos_combustibles = Tipo_combustibles::all(); 
             $search = $request->get('search'); 
 
@@ -26,7 +28,7 @@ class CombustibleController extends Controller
                       ->orWhere('estacion', 'like', "%{$search}%");
             }
             $combustibles = $query->paginate(2); 
-        return view('admin.combustibles.index', compact('combustibles', 'tipos_combustibles')); 
+        return view('admin.combustibles.index', compact('combustibles', 'tipos_combustibles', 'totalMonto', 'totalLitros','totalCargas')); 
     }
 
     /**
