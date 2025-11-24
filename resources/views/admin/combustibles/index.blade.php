@@ -209,6 +209,16 @@
                                         <x-heroicon-s-pencil class="w-4 h-4"/>
                                     </a>
 
+                                    
+                                    {{-- Imprimir --}}
+                                    <a href="{{ route('combustibles.report',$combustible->id ) }}" 
+                                        class="btn  bg-primary btn-sm" 
+                                        target="_blank"
+                                    >
+                                        <x-heroicon-o-printer class="w-4 h-4"/>
+                                    </a>
+
+
 
 
 

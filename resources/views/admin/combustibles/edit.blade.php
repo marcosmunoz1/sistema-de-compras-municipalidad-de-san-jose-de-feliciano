@@ -382,7 +382,7 @@
                     <label for="observaciones" class="text-sm font-medium">
                         Observaciones / Instrucciones Especiales(Opcional) 
                     </label>
-                    <textarea value="{{ old('observaciones', $combustible->observaciones) }}" id="observaciones" name="observaciones" rows="3"
+                    <textarea id="observaciones" name="observaciones" value="{{ old('observaciones',$combustible->observaciones) }}" rows="3"
                         placeholder="Ingrese observaciones o instrucciones..."
                         class="w-full rounded-md border border-base-300 bg-base-200
                         px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary

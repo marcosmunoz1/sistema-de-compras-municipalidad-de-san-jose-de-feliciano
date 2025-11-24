@@ -88,9 +88,10 @@ class CombustibleController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(combustible $combustible)
-    {
-        //
+    public function show($id)
+    {   
+        $combustible = Combustible::findOrFail($id); 
+        return view('admin.combustibles.show', compact('combustible'));
     }
 
     /**
