@@ -82,11 +82,9 @@ class CategoriaController extends Controller
             $categoria->save();
 
             return redirect()->route('categorias.index')
-                ->with('mensaje', 'Categoría creada exitosamente.')
-                ->with('icono', 'success');
+            ->with('mensaje', 'Categoría creada exitosamente.')
+            ->with('icono', 'success');
         }
-
-
         // ACCIÓN: EDITAR
         if ($request->input('accion') == "2") {
 
@@ -100,6 +98,7 @@ class CategoriaController extends Controller
                 ->with('mensaje', 'Categoría actualizada correctamente.')
                 ->with('icono', 'success');
         }
+
     }
 
 

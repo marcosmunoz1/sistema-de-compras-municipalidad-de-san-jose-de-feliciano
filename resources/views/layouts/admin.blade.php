@@ -82,7 +82,7 @@
                     </svg>
                       Home 
                     </a></li>
-                <li><a href="{{ route('compras.index') }}">🛒Compras</a></li> 
+                <li><a href="{{ route('compras.index') }}"><x-heroicon-o-shopping-bag class="w-6 h-6 inline" />Compras</a></li> 
                 <li><a href="{{ route('proveedores.index') }}"><x-heroicon-o-truck class="w-6 h-6 inline" />Proveedores</a></li>
                 <li><a href="{{ route('categorias.index') }}"><x-heroicon-o-tag class="w-6 h-6 inline" />Categorias</a></li>
                 <li><a href="{{ route('productos.index') }}"><x-heroicon-o-cog class="w-6 h-6 inline" />Productos</a></li>
@@ -91,6 +91,8 @@
                 <li><a href="{{ route('vehiculos.index') }}"><x-heroicon-o-truck class="w-6 h-6 inline" />Vehículos</a></li>
                 <li><a href="{{ url('/admin/combustibles') }}"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-fuel w-5 h-5" aria-hidden="true"><path d="M14 13h2a2 2 0 0 1 2 2v2a2 2 0 0 0 4 0v-6.998a2 2 0 0 0-.59-1.42L18 5"></path><path d="M14 21V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v16"></path><path d="M2 21h13"></path><path d="M3 9h11"></path></svg>Combustibles</a></li>
                 <li><a href="{{ url('/admin/empleados') }}"><x-heroicon-o-user-group class="w-6 h-6 inline" />Empleados</a></li>
+                <li><a href="{{ url('/admin/permisos') }}"><x-heroicon-o-shield-check class="w-6 h-6 inline" />Permisos</a></li>
+
             </ul>
         </div>
     </div>

@@ -103,4 +103,8 @@ Route::get('/admin/empleados/{id}', [App\Http\Controllers\EmpleadoController::cl
 Route::delete('/admin/empleados/{id}', [App\Http\Controllers\EmpleadoController::class, 'destroy'])->name('empleados.destroy');
 Route::put('admin/empleados/{id}/restore', [App\Http\Controllers\EmpleadoController::class, 'restore'])->name('empleados.restore');
 
+// Rutas para permisos 
+Route::get('/admin/permisos',[App\Http\Controllers\PermisoController::class, 'index'])->name('permisos.index');
+Route::get('/admin/permisos/store',[App\Http\Controllers\PermisoController::class, 'store'])->name('permisos.store'); 
+Route::delete('/admin/permisos/{id}', [App\Http\Controllers\PermisoController::class, 'destroy'])->name('permisos.destroy');
 require __DIR__.'/auth.php';
