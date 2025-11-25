@@ -49,18 +49,19 @@
         <div class="px-6 pt-6 pb-6">
             <div class="flex items-center justify-between">
                 <div>
-                    <p class="text-gray-500">Total del Mes</p>
-                    <h3 class="mt-2"></h3>  
+                    <p class="text-gray-500">Total de Permisos</p>
+                    <h3 class="mt-2">{{$totalPermisos}}</h3>   
                 </div>
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                    stroke-linecap="round" stroke-linejoin="round"
-                    class="lucide lucide-fuel w-10 h-10 text-blue-600">
-                    <path d="M14 13h2a2 2 0 0 1 2 2v2a2 2 0 0 0 4 0v-6.998a2 2 0 0 0-.59-1.42L18 5"></path>
-                    <path d="M14 21V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v16"></path>
-                    <path d="M2 21h13"></path>
-                    <path d="M3 9h11"></path>
-                </svg>
+                <svg xmlns="http://www.w3.org/2000/svg" 
+                width="24" height="24" 
+                viewBox="0 0 24 24" fill="none" 
+                stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round"
+                class="lucide lucide-shield-check w-10 h-10 text-blue-600">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                <path d="m9 12 2 2 4-4" />
+            </svg>
+
             </div>
         </div>
     </div>
@@ -73,15 +74,16 @@
                     <p class="text-gray-500">Litros Consumidos</p>
                     <h3 class="mt-2"> L</h3> 
                 </div>
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+               <svg xmlns="http://www.w3.org/2000/svg" 
+                    width="24" height="24" 
+                    viewBox="0 0 24 24" fill="none" 
+                    stroke="currentColor" stroke-width="2"
                     stroke-linecap="round" stroke-linejoin="round"
-                    class="lucide lucide-fuel w-10 h-10 text-green-600">
-                    <path d="M14 13h2a2 2 0 0 1 2 2v2a2 2 0 0 0 4 0v-6.998a2 2 0 0 0-.59-1.42L18 5"></path>
-                    <path d="M14 21V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v16"></path>
-                    <path d="M2 21h13"></path>
-                    <path d="M3 9h11"></path>
+                    class="lucide lucide-shield-check w-10 h-10 text-green-600 "> 
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                    <path d="m9 12 2 2 4-4" />
                 </svg>
+
             </div>
         </div>
     </div>
@@ -94,15 +96,16 @@
                     <p class="text-gray-500">Precio Promedio</p>
                     <h3 class="mt-2">$3.88</h3>
                 </div>
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                <svg xmlns="http://www.w3.org/2000/svg" 
+                    width="24" height="24" 
+                    viewBox="0 0 24 24" fill="none" 
+                    stroke="currentColor" stroke-width="2"
                     stroke-linecap="round" stroke-linejoin="round"
-                    class="lucide lucide-fuel w-10 h-10 text-yellow-600">
-                    <path d="M14 13h2a2 2 0 0 1 2 2v2a2 2 0 0 0 4 0v-6.998a2 2 0 0 0-.59-1.42L18 5"></path>
-                    <path d="M14 21V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v16"></path>
-                    <path d="M2 21h13"></path>
-                    <path d="M3 9h11"></path>
+                    class="lucide lucide-shield-check w-10 h-10 text-yellow-600"> 
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                    <path d="m9 12 2 2 4-4" />
                 </svg>
+
             </div>
         </div>
     </div>
@@ -115,14 +118,14 @@
                     <p class="text-gray-500">Total Cargas</p>
                     <h3 class="mt-2"></h3>  
                 </div>
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                 <svg xmlns="http://www.w3.org/2000/svg" 
+                    width="24" height="24" 
+                    viewBox="0 0 24 24" fill="none" 
+                    stroke="currentColor" stroke-width="2"
                     stroke-linecap="round" stroke-linejoin="round"
-                    class="lucide lucide-fuel w-10 h-10 text-red-600">
-                    <path d="M14 13h2a2 2 0 0 1 2 2v2a2 2 0 0 0 4 0v-6.998a2 2 0 0 0-.59-1.42L18 5"></path>
-                    <path d="M14 21V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v16"></path>
-                    <path d="M2 21h13"></path>
-                    <path d="M3 9h11"></path>
+                    class="lucide lucide-shield-check w-10 h-10 text-red-600"> 
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                    <path d="m9 12 2 2 4-4" />
                 </svg>
             </div>
         </div>
@@ -199,10 +202,17 @@
                             <td class="text-center">
                                 <div class="flex items-center justify-center gap-2">
 
-                                    <a href=""  
-                                       class="btn btn-info btn-sm">
+                                    <button
+                                        onclick="abrir_modal( 
+                                            'crearPermisoModal', 
+                                            'Ver Permiso',
+                                            'show',
+                                            ['name'],
+                                            {{ json_encode($permiso) }} 
+                                        )"
+                                        class="btn btn-info btn-sm">
                                         <x-heroicon-s-eye class="w-4 h-4"/>
-                                    </a>
+                                    </button>
 
                                     <button
                                             onclick="abrir_modal(
@@ -439,7 +449,7 @@
         function confirmarEliminacion(id) {
             const form = document.getElementById('formEliminarPermiso');
             form.action = routeEliminarPermiso(id);
-            document.getElementById('modal_eliminar_Permiso').showModal();
+            document.getElementById('modal_eliminar_permiso').showModal();
         }
         // Genera la URL usando el helper de Laravel
         function routeEliminarPermiso(id) {

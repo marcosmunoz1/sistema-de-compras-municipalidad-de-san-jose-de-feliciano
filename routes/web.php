@@ -114,6 +114,6 @@ Route::delete('/admin/obras/{id}', [App\Http\Controllers\ObraController::class, 
 Route::put('admin/obras/{id}/restore', [App\Http\Controllers\ObraController::class, 'restore'])->name('obras.restore');
 // Rutas para permisos 
 Route::get('/admin/permisos',[App\Http\Controllers\PermisoController::class, 'index'])->name('permisos.index');
-Route::get('/admin/permisos/store',[App\Http\Controllers\PermisoController::class, 'store'])->name('permisos.store'); 
+Route::post('/admin/permisos/store',[App\Http\Controllers\PermisoController::class, 'store'])->name('permisos.store'); 
 Route::delete('/admin/permisos/{id}', [App\Http\Controllers\PermisoController::class, 'destroy'])->name('permisos.destroy');
 require __DIR__.'/auth.php';

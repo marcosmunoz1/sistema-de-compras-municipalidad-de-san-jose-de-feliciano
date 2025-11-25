@@ -11,14 +11,15 @@ class PermisoController extends Controller
      * Display a listing of the resource.
      */
     public function index(Request $request)  
-    { 
+    {    
+        $totalPermisos = Permission::count();
         $search = $request->get('search'); 
         $query = Permission::orderBy('id', 'desc');   
         if ($search) {
             $query->where('name', 'like', "%{$search}%");
         }
         $permisos = $query->paginate(10); 
-        return view('admin.permisos.index', compact('permisos'));  
+        return view('admin.permisos.index', compact('permisos','totalPermisos'));  
     } 
 
     /**

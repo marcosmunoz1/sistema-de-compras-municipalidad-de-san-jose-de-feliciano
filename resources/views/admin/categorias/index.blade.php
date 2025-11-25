@@ -145,7 +145,6 @@
                         @endforeach
                     </tbody>
                 </table>
-
             </div>
             @if ($categorias->hasPages())
                 <div class="flex flex-col md:flex-row justify-between items-center mt-6 px-3 gap-4">
