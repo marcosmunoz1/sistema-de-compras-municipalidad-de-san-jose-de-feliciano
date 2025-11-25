@@ -104,7 +104,7 @@
                                                 {{ json_encode($categoria) }}
                                             )"
                                             class="btn btn-info btn-sm">
-                                            <x-heroicon-s-eye class="w-4 h-4"/>
+                                            <x-heroicon-s-eye class="w-4 h-4" />
                                         </button>
 
 
@@ -118,7 +118,7 @@
                                                 {{ json_encode($categoria) }}
                                             )"
                                             class="btn btn-warning btn-sm">
-                                            <x-heroicon-s-pencil class="w-4 h-4"/>
+                                            <x-heroicon-s-pencil class="w-4 h-4" />
                                         </button>
 
 
@@ -342,8 +342,7 @@
                     </button>
 
                     <!-- Cancelar -->
-                    <button type="button" onclick="crearCategoriaModal.close()"
-                        class="btn btn-neutral">
+                    <button type="button" onclick="crearCategoriaModal.close()" class="btn btn-neutral">
                         Cancelar
                     </button>
                 </div>
@@ -397,31 +396,32 @@
             }
 
             const guardarBtn = document.getElementById("btnGuardarCategoria");
+            const slugInput = document.getElementById("slug");
 
             // --- SHOW MODE ---
             if (accion === "show") {
 
-                // Ocultar botón Guardar
                 guardarBtn.style.display = "none";
 
-                // Bloquear inputs
                 campos.forEach(campo => {
                     if (document.getElementById(campo)) {
                         document.getElementById(campo).setAttribute("readonly", true);
                     }
                 });
 
-                // Bloquear textarea de descripción
                 if (document.querySelector("textarea[name='descripcion']")) {
                     document.querySelector("textarea[name='descripcion']")
                         .setAttribute("readonly", true);
                 }
 
+                // 🔒 Slug también readonly en modo show
+                if (slugInput) slugInput.setAttribute("readonly", true);
+
             } else {
-                // --- MODO EDITAR / CREAR ---
+                // --- EDITAR / CREAR ---
+
                 guardarBtn.style.display = "inline-flex";
 
-                // Desbloquear inputs
                 campos.forEach(campo => {
                     if (document.getElementById(campo)) {
                         document.getElementById(campo).removeAttribute("readonly");
@@ -432,8 +432,12 @@
                     document.querySelector("textarea[name='descripcion']")
                         .removeAttribute("readonly");
                 }
+
+                // 🔒 Slug también readonly en modo editar/crear
+                if (slugInput) slugInput.setAttribute("readonly", true);
             }
         }
+
         document.addEventListener('DOMContentLoaded', () => {
 
             const modal = document.getElementById('crearCategoriaModal');

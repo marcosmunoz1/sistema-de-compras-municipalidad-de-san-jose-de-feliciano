@@ -217,7 +217,7 @@
         <div class="flex justify-end pt-4">
             <a href="{{ route('vehiculos.index') }}" class="btn btn-warning mr-2">
                 <x-heroicon-m-arrow-left class="w-4 h-4 inline" />
-                Volver
+                Cancelar
             </a>
 
             <button type="submit" class="btn btn-primary">
