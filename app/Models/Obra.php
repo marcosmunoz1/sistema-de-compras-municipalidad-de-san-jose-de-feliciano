@@ -37,4 +37,13 @@ class Obra extends Model
         'presupuesto' => 'decimal:2',
         'monto_ejecutado' => 'decimal:2',
     ];
+    public function movimientosComoOrigen()
+    {
+        return $this->morphMany(Movimiento::class, 'origen', 'origen_tipo', 'origen_id');
+    }
+
+    public function movimientosComoDestino()
+    {
+        return $this->morphMany(Movimiento::class, 'destino', 'destino_tipo', 'destino_id');
+    }
 }

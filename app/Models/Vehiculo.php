@@ -26,5 +26,15 @@ class Vehiculo extends Model
     public function combustible()
     {
       return $this->hasMany(Combustible::class);
-    } 
+    }
+    
+    public function movimientosComoOrigen()
+    {
+        return $this->morphMany(Movimiento::class, 'origen', 'origen_tipo', 'origen_id');
+    }
+
+    public function movimientosComoDestino()
+    {
+        return $this->morphMany(Movimiento::class, 'destino', 'destino_tipo', 'destino_id');
+    }
 }
