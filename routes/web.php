@@ -103,4 +103,13 @@ Route::get('/admin/empleados/{id}', [App\Http\Controllers\EmpleadoController::cl
 Route::delete('/admin/empleados/{id}', [App\Http\Controllers\EmpleadoController::class, 'destroy'])->name('empleados.destroy');
 Route::put('admin/empleados/{id}/restore', [App\Http\Controllers\EmpleadoController::class, 'restore'])->name('empleados.restore');
 
+//rutas para obras
+Route::get('/admin/obras', [App\Http\Controllers\ObraController::class, 'index'])->name('obras.index');
+Route::get('/admin/obras/create', [App\Http\Controllers\ObraController::class, 'create'])->name('obras.create');
+Route::post('/admin/obras/store', [App\Http\Controllers\ObraController::class, 'store'])->name('obras.store');
+Route::get('/admin/obras/{id}/edit', [App\Http\Controllers\ObraController::class, 'edit'])->name('obras.edit');
+Route::put('/admin/obras/{id}', [App\Http\Controllers\ObraController::class, 'update'])->name('obras.update');
+Route::get('/admin/obras/{id}', [App\Http\Controllers\ObraController::class, 'show'])->name('obras.show');
+Route::delete('/admin/obras/{id}', [App\Http\Controllers\ObraController::class, 'destroy'])->name('obras.destroy');
+Route::put('admin/obras/{id}/restore', [App\Http\Controllers\ObraController::class, 'restore'])->name('obras.restore');
 require __DIR__.'/auth.php';

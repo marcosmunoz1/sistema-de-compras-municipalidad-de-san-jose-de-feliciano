@@ -1,0 +1,40 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+
+class Obra extends Model
+{
+    use SoftDeletes;
+
+    // Campos que se pueden cargar masivamente
+    protected $fillable = [
+        'nombre',
+        'descripcion',
+        'direccion',
+        'barrio',
+        'ciudad',
+        'responsable',
+        'telefono_responsable',
+        'fecha_inicio',
+        'fecha_estimada_fin',
+        'fecha_fin',
+        'estado_obra',
+        'presupuesto',
+        'monto_ejecutado',
+        'observaciones',
+        'estado',
+    ];
+
+    // Cast automáticos para facilitar el uso en controladores y vistas
+    protected $casts = [
+        'estado' => 'boolean',
+        'fecha_inicio' => 'date',
+        'fecha_estimada_fin' => 'date',
+        'fecha_fin' => 'date',
+        'presupuesto' => 'decimal:2',
+        'monto_ejecutado' => 'decimal:2',
+    ];
+}
