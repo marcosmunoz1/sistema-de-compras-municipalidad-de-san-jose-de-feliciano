@@ -18,7 +18,7 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::get('/admin', function () {
-    return view('admin.index');
+    return view('admin.index'); 
 })->name('admin.index'); 
 
 Route::get('/admin/compras', function () {

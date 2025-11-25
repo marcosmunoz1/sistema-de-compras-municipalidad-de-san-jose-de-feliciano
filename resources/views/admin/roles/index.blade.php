@@ -8,11 +8,7 @@
         <button class="btn btn-primary btn-md" onclick="abrir_modal('ventana_modal','Agregar',0,[],[])">
             <x-heroicon-o-plus class="w-5 h-5" />Nuevo rol
         </button>
-
-
-
     </div>
-
     <div class="card bg-base-100 shadow">
         <div class="card-body p-4">
 
@@ -89,11 +85,13 @@
                 <!-- CAMPO -->
                 <div class="form-control mb-4">
                     <label for="nombre" class="label">
-                        <span class="label-text">Nombre del rol</span>
+                        <span class="label-text">Nombre del rol<span class="text-red-600">*</span></span>
                     </label>
                     <input type="text" name="name" value="{{ old('name') }}" id="name"
-                        class="input input-bordered w-full @error('name') input-error @enderror"
-                        placeholder="Nombre del rol" />
+                        class="w-full h-10 rounded-md border border-base-300 bg-base-200 
+                            px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
+                            focus:border-primary transition @error('name') input-error @enderror"
+                        placeholder="Nombre del rol" required/> 
                     @error('name')
                         <span class="text-red-500 text-sm error-message">{{ $message }}</span>
                     @enderror
