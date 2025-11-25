@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Compra;
+use App\Models\Empleado;
+use App\Models\Proveedor;
 use Illuminate\Http\Request;
 
 class CompraController extends Controller
@@ -12,7 +14,8 @@ class CompraController extends Controller
      */
     public function index()
     {
-        //
+        $compras = Compra::all();
+        return view('admin.compras.index', compact('compras')); 
     }
 
     /**
@@ -20,7 +23,9 @@ class CompraController extends Controller
      */
     public function create()
     {
-        //
+        $proveedores = Proveedor::all();
+        $empleados = Empleado::all(); 
+        return view('admin.compras.create', compact('proveedores', 'empleados'));
     }
 
     /**

@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('categoria_id')->constrained()->cascadeOnDelete();
             $table->string('nombre');
             $table->string('descripcion');
-            $table->string('unidad'); 
+            $table->string('unidad');   
             $table->boolean('estado')->default(true);   
             $table->timestamps();
             $table->softDeletes(); 
