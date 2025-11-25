@@ -13,7 +13,8 @@ class Tipo_combustibles extends Model
    protected $fillable = [
       'nombre',
       'valor',
-      'descripcion'
+      'descripcion',
+      'des'
     ];
     protected $attributes = [
       'estado' => true,

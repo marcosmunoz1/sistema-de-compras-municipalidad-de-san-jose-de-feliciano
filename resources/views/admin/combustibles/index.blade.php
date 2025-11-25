@@ -49,7 +49,7 @@
             <div class="flex items-center justify-between">
                 <div>
                     <p class="text-gray-500">Total del Mes</p>
-                    <h3 class="mt-2">$718.20</h3>
+                    <h3 class="mt-2">{{$totalMonto}}</h3>  
                 </div>
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                     viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -70,7 +70,7 @@
             <div class="flex items-center justify-between">
                 <div>
                     <p class="text-gray-500">Litros Consumidos</p>
-                    <h3 class="mt-2">185 L</h3>
+                    <h3 class="mt-2">{{ $totalLitros }} L</h3> 
                 </div>
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                     viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -112,7 +112,7 @@
             <div class="flex items-center justify-between">
                 <div>
                     <p class="text-gray-500">Total Cargas</p>
-                    <h3 class="mt-2">4</h3>
+                    <h3 class="mt-2">{{$totalCargas}}</h3>  
                 </div>
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                     viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -158,29 +158,47 @@
 <!-- Tabla -->
 <div class="card bg-base-100 shadow">
     <div class="card-body p-4">
-
-        <div class="overflow-x-auto">
+        <!-- HEADER COMPLETO -->
+        <div class="flex flex-col gap-3">
+            <!-- TÍTULO + BUSCADOR -->
+            <div class="flex items-center justify-between">
+                <h4 class="text-lg font-semibold">Historial de Cargas</h4>
+                <!-- BUSCADOR -->
+                <div class="relative">
+                      <!-- BOTÓN IMPRIMIR -->
+                        <div class="flex justify-start">
+                            <button onclick="window.print()" class="btn btn-outline btn-sm">
+                                <x-heroicon-o-printer class="w-4 h-4 mr-2"/>
+                                Imprimir Historial 
+                            </button>
+                        </div>
+                </div>
+            </div>
+        </div>
+        <!-- TABLA -->
+        <div class="overflow-x-auto mt-4">
             <table class="table table-zebra w-full">
                 <thead>
                     <tr>
                         <th class="text-center">Nr</th>
                         <th class="text-center">Nr orden</th> 
-                        <th class="text-center">fecha</th>
-                        <th class="text-center">Vehiculo</th> 
+                        <th class="text-center">Fecha</th>
+                        <th class="text-center">Vehículo</th> 
                         <th class="text-center">Conductor</th>
                         <th class="text-center">Tipo</th>
                         <th class="text-center">Litros</th>
                         <th class="text-center">Importe</th>
-                        <th class="text-center">Estacion</th> 
+                        <th class="text-center">Estación</th> 
                         <th class="text-center">Tipo de pago</th>
                         <th class="text-center">Acciones</th> 
                     </tr>
                 </thead>
                 <tbody>
                     @php
-                         $nr = $combustibles->currentPage() * $combustibles->perPage() - $combustibles->perPage() + 1; 
+                        $nr = $combustibles->firstItem();
                     @endphp
-                    @foreach ($combustibles as $combustible) 
+
+                    @foreach ($combustibles as $combustible)
                         <tr> 
                             <td class="text-center">{{ $nr++ }}</td>
                             <td class="text-center">{{ $combustible->codigo }}</td> 
@@ -192,50 +210,36 @@
                             <td class="text-center">{{ $combustible->monto }}</td>
                             <td class="text-center">{{ $combustible->estacion }}</td>
                             <td class="text-center">{{ $combustible->tipo_de_pago }}</td>
+
                             <td class="text-center">
                                 <div class="flex items-center justify-center gap-2">
 
-                                    {{-- Ver --}}
                                     <a href="{{ route('combustibles.show', $combustible->id) }}"  
-                                    class="btn btn-info btn-sm">
+                                       class="btn btn-info btn-sm">
                                         <x-heroicon-s-eye class="w-4 h-4"/>
                                     </a>
 
-                                    {{-- Editar --}}
                                     <a href="{{ route('combustibles.edit', $combustible->id) }}" 
-                                        class="btn btn-warning btn-sm"
-                                        
-                                    >
+                                       class="btn btn-warning btn-sm">
                                         <x-heroicon-s-pencil class="w-4 h-4"/>
                                     </a>
 
-                                    
-                                    {{-- Imprimir --}}
-                                    <a href="{{ route('combustibles.report',$combustible->id ) }}" 
-                                        class="btn  bg-primary btn-sm" 
-                                        target="_blank"
-                                    >
+                                    <a href="{{ route('combustibles.report', $combustible->id ) }}" 
+                                       class="btn bg-primary btn-sm" 
+                                       target="_blank">
                                         <x-heroicon-o-printer class="w-4 h-4"/>
                                     </a>
 
-
-
-
-
-                                    {{-- Eliminar (después lo convertís en form POST/DELETE) --}}
-                                      {{-- Si está eliminado (tiene deleted_at) --}}
                                     @if ($combustible->trashed())
-                                        {{-- Restaurar --}}
-                                            <button class="btn btn-sm btn-success"
-                                              onclick="abrirModalRestaurar('{{ url('/admin/combustibles/'. $combustible->id.'/restore') }}')">
-                                                <x-heroicon-s-arrow-uturn-left class="w-4 h-4"/>
-                                            </button>
-                                    {{-- Si NO está eliminado --}}
+                                        <button class="btn btn-success btn-sm"
+                                                onclick="abrirModalRestaurar('{{ url('/admin/combustibles/'. $combustible->id.'/restore') }}')">
+                                            <x-heroicon-s-arrow-uturn-left class="w-4 h-4"/>
+                                        </button>
                                     @else
-                                        {{-- Eliminar --}}
-                                      <button class="btn btn-error btn-sm" onclick="confirmarEliminacion({{ $combustible->id }})">
-                                          <x-heroicon-s-trash class="w-4 h-4"/>
-                                      </button>
+                                        <button class="btn btn-error btn-sm"
+                                                onclick="confirmarEliminacion({{ $combustible->id }})">
+                                            <x-heroicon-s-trash class="w-4 h-4"/>
+                                        </button>
                                     @endif
 
                                 </div>
@@ -244,45 +248,39 @@
                     @endforeach
                 </tbody>
             </table>
-            
         </div>
-          @if ($combustibles->hasPages())
-                <div class="flex flex-col md:flex-row justify-between items-center mt-6 px-3 gap-4">
+        <!-- PAGINACIÓN -->
+        @if ($combustibles->hasPages())
+            <div class="flex flex-col md:flex-row justify-between items-center mt-6 px-3 gap-4">
 
-                    <!-- Texto "Mostrando X - Y" -->
-                    <div class="text-sm text-gray-500">
-                        Mostrando {{ $combustibles->firstItem() }} - {{ $combustibles->lastItem() }} de {{ $combustibles->total() }} registros
-                    </div>
-
-                    <!-- Controles de paginación estilo DaisyUI -->
-                    <div class="join">
-
-                        {{-- Botón Anterior --}}
-                        @if ($combustibles->onFirstPage())
-                            <button class="join-item btn btn-square btn-disabled">«</button>
-                        @else
-                            <a href="{{ $combustibles->previousPageUrl() }}" class="join-item btn btn-square">«</a>
-                        @endif
-
-                        {{-- Números de página --}}
-                        @foreach ($combustibles->links()->elements[0] ?? [] as $page => $url)
-                            @if ($page == $combustibles->currentPage())
-                                <button class="join-item btn btn-square btn-active">{{ $page }}</button>
-                            @else
-                                <a href="{{ $url }}" class="join-item btn btn-square">{{ $page }}</a>
-                            @endif
-                        @endforeach
-
-                        {{-- Botón Siguiente --}}
-                        @if ($combustibles->hasMorePages())
-                            <a href="{{ $combustibles->nextPageUrl() }}" class="join-item btn btn-square">»</a>
-                        @else
-                            <button class="join-item btn btn-square btn-disabled">»</button>
-                        @endif
-
-                    </div>
+                <div class="text-sm text-gray-500">
+                    Mostrando {{ $combustibles->firstItem() }} - {{ $combustibles->lastItem() }} 
+                    de {{ $combustibles->total() }} registros
                 </div>
-            @endif
+
+                <div class="join">
+                    @if ($combustibles->onFirstPage())
+                        <button class="join-item btn btn-square btn-disabled">«</button>
+                    @else
+                        <a href="{{ $combustibles->previousPageUrl() }}" class="join-item btn btn-square">«</a>
+                    @endif
+
+                    @foreach ($combustibles->links()->elements[0] ?? [] as $page => $url)
+                        @if ($page == $combustibles->currentPage())
+                            <button class="join-item btn btn-square btn-active">{{ $page }}</button>
+                        @else
+                            <a href="{{ $url }}" class="join-item btn btn-square">{{ $page }}</a>
+                        @endif
+                    @endforeach
+
+                    @if ($combustibles->hasMorePages())
+                        <a href="{{ $combustibles->nextPageUrl() }}" class="join-item btn btn-square">»</a>
+                    @else
+                        <button class="join-item btn btn-square btn-disabled">»</button>
+                    @endif
+                </div>
+            </div>
+        @endif
 
     </div>
 </div>
