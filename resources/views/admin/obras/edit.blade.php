@@ -217,7 +217,7 @@
 
             <!-- BOTONES -->
             <div class="mt-6 flex justify-end gap-3">
-                <a href="{{ route('obras.index') }}" class="btn btn-neutral">
+                <a href="{{ route('obras.index') }}" class="btn btn-warning mr-2">
                     <x-heroicon-m-arrow-left class="w-4 h-4 inline" /> Cancelar
                 </a>
                 <button type="submit" class="btn btn-primary">

@@ -30,5 +30,10 @@ class Empleado extends Model
     public function combustible() 
     {
       return $this->hasMany(Combustible::class); 
-    }
+    } 
+
+    public function compra()
+    {
+        return $this->hasMany(Compra::class);
+    } 
 }

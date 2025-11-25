@@ -24,4 +24,13 @@ class Proveedor extends Model
         'direccion',
         'observaciones',
     ];
+
+    protected $attributes = [
+    'estado' => true,
+    ];
+
+    public function compras()
+    {
+        return $this->hasMany(Compra::class);
+    }
 }

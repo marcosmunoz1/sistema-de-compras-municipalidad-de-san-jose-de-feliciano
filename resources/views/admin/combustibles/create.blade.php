@@ -73,7 +73,7 @@
                 <!-- Código -->
                 <div class="space-y-2">
                     <label for="codigo" class="text-sm font-medium">Código de Orden<span class="text-red-600">*</span></label>
-                    <input 
+                    <input  
                         id="codigo"
                         name="codigo"
                         placeholder="Ejemplo: OCB-001..."
