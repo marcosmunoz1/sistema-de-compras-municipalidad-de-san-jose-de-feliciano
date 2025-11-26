@@ -24,6 +24,7 @@ class DatabaseSeeder extends Seeder
         ]); */ 
         $this->call(TipoCombustibleSeeder::class);
         $this->call(PermissionSeeder::class); 
-        $this->call(DepositoSeeder::class); 
+        $this->call(DepositoSeeder::class);
+        $this->call(EquipoSeeder::class);
     }
 }

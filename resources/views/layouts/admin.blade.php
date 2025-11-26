@@ -63,9 +63,9 @@
         </div>
 
         {{-- SIDEBAR --}}
-        <div class="drawer-side">
+        <div class="drawer-side"> 
             <label for="sidebar" class="drawer-overlay"></label>
-            <ul class="menu p-4 w-80 min-h-full bg-base-100 text-base-content">
+            <ul class="menu p-4 w-80 min-h-full bg-base-100 text-base-content"> 
                 <li class="text-xl font-bold mb-3">Menú Principal</li>
                 <li> <a href="{{ route('admin.index') }}">   
                     <svg

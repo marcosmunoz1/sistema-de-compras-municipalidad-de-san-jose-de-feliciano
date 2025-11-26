@@ -121,4 +121,18 @@ Route::put('admin/obras/{id}/restore', [App\Http\Controllers\ObraController::cla
 Route::get('/admin/permisos',[App\Http\Controllers\PermisoController::class, 'index'])->name('permisos.index');
 Route::post('/admin/permisos/store',[App\Http\Controllers\PermisoController::class, 'store'])->name('permisos.store'); 
 Route::delete('/admin/permisos/{id}', [App\Http\Controllers\PermisoController::class, 'destroy'])->name('permisos.destroy');
+
+
+Route::get('/api/destinos/{tipo}', function($tipo) { 
+
+    return match ($tipo) {
+        'deposito' => \App\Models\Deposito::select('id','nombre')->get(),
+        'obra'     => \App\Models\Obra::select('id','nombre')->get(),
+        'vehiculo'     => \App\Models\Vehiculo::select('id','marca')->get(), 
+        'equipo'     => \App\Models\Equipo::select('id','nombre')->get(), 
+
+        default    => []
+    };
+});
+ 
 require __DIR__.'/auth.php';
