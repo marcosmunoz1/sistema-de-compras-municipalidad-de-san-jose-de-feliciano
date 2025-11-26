@@ -122,7 +122,6 @@ Route::put('admin/obras/{id}/restore', [App\Http\Controllers\ObraController::cla
 Route::get('/admin/permisos',[App\Http\Controllers\PermisoController::class, 'index'])->name('permisos.index');
 Route::post('/admin/permisos/store',[App\Http\Controllers\PermisoController::class, 'store'])->name('permisos.store'); 
 Route::delete('/admin/permisos/{id}', [App\Http\Controllers\PermisoController::class, 'destroy'])->name('permisos.destroy');
-git 
 //Rutas para movimientos
 Route::get('/admin/movimientos', [App\Http\Controllers\MovimientoController::class, 'index'])->name('movimientos.index');
 Route::get('/admin/movimientos/create', [App\Http\Controllers\MovimientoController::class, 'create'])->name('movimientos.create');
