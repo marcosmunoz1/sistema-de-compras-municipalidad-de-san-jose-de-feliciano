@@ -38,11 +38,7 @@ class CompraController extends Controller
         $proveedores = Proveedor::all();
         $empleados = Empleado::all();
         $search = $request->input('search'); 
-        $productos = Producto::where('nombre', 'LIKE', "%{$search}%")  
-            ->orWhere('descripcion', 'LIKE', "%{$search}%")
-            ->orWhere('unidad', 'LIKE', "%{$search}%")
-            ->orWhere('estado', 'LIKE', "%{$search}%")
-            ->paginate(10);
+        $productos = Producto::all();
         return view('admin.compras.create', compact('proveedores', 'empleados', 'categorias', 'productos'));
     }
 
@@ -51,77 +47,73 @@ class CompraController extends Controller
      */
     public function store(Request $request)
     {
-      // return response()->json($request->all());
+        $request->validate([
+            'fecha_orden' => 'required',
+            'empleado_id' => 'required',
+            'proveedor_id' => 'required',
+            'sub_cuenta' => 'required', 
+            'productos' => 'required|array|min:1',
+            'cantidades' => 'required|array|min:1',
+            'asunto_obra_automotor' => 'required',  
+        ]);
 
-       $request->validate([
-           'fecha_orden' => 'required',
-           'empleado_id' => 'required',
-           'proveedor_id' => 'required',
-           'sub_cuenta' => 'required', 
-           'productos' => 'required|array|min:1',
-           'cantidades' => 'required|array|min:1',
-           'asunto_obra_automotor' => 'required',  
-       ]);
+        // Generar número de orden
+        $lastOrder = Compra::max('nr_orden');
 
-       $lastOrder = Compra::max('nr_orden');
-
-        if (!$lastOrder) { 
-            $newOrder = 13000; 
-        } else {
-            $newOrder = $lastOrder + 1;
-        }
+        $newOrder = $lastOrder ? $lastOrder + 1 : 13000;
 
         $nr_orden = str_pad($newOrder, 8, '0', STR_PAD_LEFT);
 
-       $compra = Compra::create([
-           'proveedor_id' => $request->proveedor_id,
-           'empleado_id' => $request->empleado_id,
-           'destino_tipo' => $request->destino_tipo,
-           'destino_id' => $request->destino_id,    
-           'area_solicitante' => 'Corralon Municipal - Compras', 
-           'nr_orden' => $nr_orden,   
-           'sub_cuenta' =>$request->sub_cuenta, 
-           'fecha_orden' => $request->fecha_orden, 
-           'estado_compra' => 'Registrado',  
-           'asunto_obra_automotor' => $request->asunto_obra_automotor, 
-           'observacion' => $request->observacion,  
-           'estado' => true, 
-       ]); 
+        // Crear la compra
+        $compra = Compra::create([
+            'proveedor_id' => $request->proveedor_id,
+            'empleado_id' => $request->empleado_id,
+            'destino_tipo' => modeloDestino($request->destino_tipo),   // <── helper
+            'destino_id' => $request->destino_id,    
+            'area_solicitante' => 'Corralon Municipal - Compras', 
+            'nr_orden' => $nr_orden,   
+            'sub_cuenta' => $request->sub_cuenta,
+            'fecha_orden' => $request->fecha_orden, 
+            'estado_compra' => 'Registrado',  
+            'asunto_obra_automotor' => $request->asunto_obra_automotor, 
+            'observacion' => $request->observacion,  
+            'estado' => true, 
+        ]);
 
-       // insertar detalle
-
-       foreach ($request->productos as $index => $producto_id) {
+        // Insertar detalles y movimientos
+        foreach ($request->productos as $index => $producto_id) {
 
             $cantidad = $request->cantidades[$index];
 
-            // guardar detalle
-            $detalle = Detalle_compra::create([
+            // Guardar detalle
+            Detalle_compra::create([
                 'compra_id' => $compra->id,
                 'producto_id' => $producto_id,
                 'cantidad' => $cantidad,
             ]);
- 
-            // guardar movimiento
+
+            // Guardar movimiento
             Movimiento::create([
                 'producto_id' => $producto_id,
                 'compra_id' => $compra->id,
                 'tipo' => 'entrada',
-                'origen_tipo' => 'proveedor',
-                'origen_id' => $request->proveedor_id,
-                'destino_tipo' => $request->destino_tipo,
-                'destino_id' => $request->destino_id,
-                'cantidad' => $cantidad,
-                'observacion' => $request->asunto_obra_automotor,
-                'fecha' => $request->fecha_orden,
-                'estado' => true
+                'origen_tipo'   => Proveedor::class,   // <── modelo REAL
+                'origen_id'     => $request->proveedor_id,
+                'destino_tipo'  => modeloDestino($request->destino_tipo),  // <── helper
+                'destino_id'    => $request->destino_id,
+                'cantidad'      => $cantidad,
+                'observacion'   => $request->asunto_obra_automotor,
+                'fecha'         => $request->fecha_orden,
+                'estado'        => true
             ]);
+        }
 
-        } 
-
-         return redirect()->route('compras.index') 
-        ->with('mensaje', 'Orden de compra realizada correctamente') 
-        ->with('icono', 'success');
+        return redirect()
+            ->route('compras.index')
+            ->with('mensaje', 'Orden de compra realizada correctamente')
+            ->with('icono', 'success');
     }
+
 
     /**
      * Display the specified resource.

@@ -1,2 +1,68 @@
 @import "tailwindcss";
 @plugin "daisyui"; 
+
+/* ---------- MODO CLARO ---------- */
+:root[data-theme="light"] {
+    --dt-bg: #ffffff;
+    --dt-text: #1f2937;
+    --dt-border: #d1d5db;
+    --dt-input-bg: #ffffff;
+}
+
+/* ---------- MODO OSCURO ---------- */
+:root[data-theme="dark"] {
+    --dt-bg: #1f1f1f;
+    --dt-text: #e5e7eb;
+    --dt-border: #4b5563;
+    --dt-input-bg: #2c2c2c;
+}
+
+/* ---------- APLICAMOS A DATATABLES ---------- */
+
+/* Contenedor de DataTable */
+table.dataTable,
+.dataTables_wrapper {
+    color: var(--dt-text) !important;
+}
+
+/* Paginación */
+.dataTables_wrapper .dataTables_paginate a {
+    color: var(--dt-text) !important;
+}
+
+/* Select "Mostrar X" */
+.dataTables_length select {
+    background: var(--dt-input-bg) !important;
+    color: var(--dt-text) !important;
+    border: 1px solid var(--dt-border) !important;
+}
+
+/* Buscador */
+.dataTables_filter input {
+    background: var(--dt-input-bg) !important;
+    color: var(--dt-text) !important;
+    border: 1px solid var(--dt-border) !important;
+}
+
+/* Información (Mostrando 1 a 10...) */
+.dataTables_info {
+    color: var(--dt-text) !important;
+}
+
+/* Paginación hover */
+.dataTables_wrapper .dataTables_paginate a:hover {
+    background: var(--dt-border) !important;
+    color: var(--dt-text) !important;
+}
+
+/* Cabecera */
+table.dataTable thead th {
+    color: var(--dt-text) !important;
+    background: var(--dt-bg) !important;
+}
+
+/* Celdas */
+table.dataTable tbody td {
+    color: var(--dt-text) !important;
+    background: var(--dt-bg) !important;
+}

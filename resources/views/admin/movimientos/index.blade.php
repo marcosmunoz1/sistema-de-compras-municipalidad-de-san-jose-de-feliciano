@@ -91,14 +91,15 @@
 
                             <td class="text-center">
                                 @if($mov->origen_tipo)
-                                    {{ ucfirst($mov->origen_tipo) }} #{{ $mov->origen_id }}
+                                    {{ $mov->origen_label }}
                                 @else
                                     ---
                                 @endif
                             </td>
 
                             <td class="text-center">
-                                {{ ucfirst($mov->destino_tipo) }} #{{ $mov->destino_id }}
+                                {{ $mov->destino_label }}
+
                             </td>
 
                             <td class="text-center">{{ $mov->cantidad }}</td>

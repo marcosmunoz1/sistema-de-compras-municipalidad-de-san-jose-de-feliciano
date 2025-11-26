@@ -340,7 +340,7 @@
                             </thead>
                             <tbody>
                                 @php
-                                    $nr = $productos->currentPage() * $productos->perPage() - $productos->perPage() + 1;
+                                    $nr = 1;
                                 @endphp
                                 @foreach ($productos as $producto)
                                     <tr>
@@ -506,23 +506,29 @@
 @endsection
 @section('js')
     <script>
-        document.getElementById('destino_tipo').addEventListener('change', function() {
-            const tipo = this.value;
-            const destinoSelect = document.getElementById('destino_id');
+    const oldDestinoId = "{{ old('destino_id') }}"; // <-- Blade se ejecuta acá
 
-            destinoSelect.innerHTML = '<option value="">Cargando...</option>';
+    document.getElementById('destino_tipo').addEventListener('change', function() {
+        const tipo = this.value;
+        const destinoSelect = document.getElementById('destino_id');
 
-            fetch('{{ url('api/destinos') }}/' + tipo)
-                .then(res => res.json())
-                .then(data => {
-                    destinoSelect.innerHTML = '<option value="">Seleccione...</option>';
+        destinoSelect.innerHTML = '<option value="">Cargando...</option>';
 
-                    data.forEach(dest => {
-                        destinoSelect.innerHTML += `<option value="${dest.id}">${dest.nombre}</option>`;
-                    });
+        fetch('{{ url('api/destinos') }}/' + tipo)
+            .then(res => res.json())
+            .then(data => {
+                destinoSelect.innerHTML = '<option value="">Seleccione...</option>';
+
+                data.forEach(dest => {
+                    destinoSelect.innerHTML += `
+                        <option value="${dest.id}" ${oldDestinoId == dest.id ? 'selected' : ''}>
+                            ${dest.nombre}
+                        </option>`;
                 });
-        });
-    </script>
+            });
+    });
+</script>
+
     <script>
         $('#mitabla').DataTable({
             "pageLength": 5,
@@ -640,7 +646,6 @@ function escapeHtml(text) {
 } 
 function agregarProducto(id, nombre) {
     const tabla = document.getElementById('tablaProductos'); 
-
     // ✅ Buscar si ya existe el producto
     const filaExistente = [...tabla.querySelectorAll('tr')].find(fila => {
         const inputHidden = fila.querySelector('input[type="hidden"][name="productos[]"]');
