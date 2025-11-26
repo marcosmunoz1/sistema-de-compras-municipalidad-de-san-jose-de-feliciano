@@ -21,6 +21,21 @@ class Movimiento extends Model
         'observacion'
     ];
 
+    public function getOrigenLabelAttribute()
+    {
+        if (!$this->origen) return '---';
+
+        return class_basename($this->origen) . ': ' . ($this->origen->nombre ?? 'Sin nombre');
+    }
+
+    public function getDestinoLabelAttribute()
+    {
+        if (!$this->destino) return '---';
+
+        return class_basename($this->destino) . ': ' . ($this->destino->nombre ?? 'Sin nombre');
+    }
+
+
     // Relación polimórfica con el origen
     public function origen()
     {

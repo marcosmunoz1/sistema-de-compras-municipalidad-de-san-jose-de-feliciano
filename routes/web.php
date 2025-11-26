@@ -139,17 +139,15 @@ Route::get('/admin/vehiculos/{vehiculo}/productos', [App\Http\Controllers\Vehicu
 Route::get('/admin/depositos/{deposito}/productos', [App\Http\Controllers\ProductoController::class, 'productos'])->name('ajax.depositos');
 
 
-Route::get('/api/destinos/{tipo}', function($tipo) { 
+Route::get('/api/destinos/{tipo}', function($tipo) {
 
-    return match ($tipo) {
-        'deposito' => \App\Models\Deposito::select('id','nombre')->get(),
-        'obra'     => \App\Models\Obra::select('id','nombre')->get(),
-        'vehiculo'     => \App\Models\Vehiculo::select('id','marca')->get(), 
-        'equipo'     => \App\Models\Equipo::select('id','nombre')->get(), 
+    $modelo = modeloDestino($tipo);
 
-        default    => []
-    };
+    return $modelo
+        ? $modelo::select('id','nombre')->get()
+        : [];
 });
+
 
  
 require __DIR__.'/auth.php';

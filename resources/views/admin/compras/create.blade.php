@@ -505,23 +505,29 @@
 @endsection
 @section('js')
     <script>
-        document.getElementById('destino_tipo').addEventListener('change', function() {
-            const tipo = this.value;
-            const destinoSelect = document.getElementById('destino_id');
+    const oldDestinoId = "{{ old('destino_id') }}"; // <-- Blade se ejecuta acá
 
-            destinoSelect.innerHTML = '<option value="">Cargando...</option>';
+    document.getElementById('destino_tipo').addEventListener('change', function() {
+        const tipo = this.value;
+        const destinoSelect = document.getElementById('destino_id');
 
-            fetch('{{ url('api/destinos') }}/' + tipo)
-                .then(res => res.json())
-                .then(data => {
-                    destinoSelect.innerHTML = '<option value="">Seleccione...</option>';
+        destinoSelect.innerHTML = '<option value="">Cargando...</option>';
 
-                    data.forEach(dest => {
-                        destinoSelect.innerHTML += `<option value="${dest.id}">${dest.nombre}</option>`;
-                    });
+        fetch('{{ url('api/destinos') }}/' + tipo)
+            .then(res => res.json())
+            .then(data => {
+                destinoSelect.innerHTML = '<option value="">Seleccione...</option>';
+
+                data.forEach(dest => {
+                    destinoSelect.innerHTML += `
+                        <option value="${dest.id}" ${oldDestinoId == dest.id ? 'selected' : ''}>
+                            ${dest.nombre}
+                        </option>`;
                 });
-        });
-    </script>
+            });
+    });
+</script>
+
     <script>
         $('#mitabla').DataTable({
             "pageLength": 5,
