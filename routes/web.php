@@ -149,5 +149,6 @@ Route::get('/api/destinos/{tipo}', function($tipo) {
         default    => []
     };
 });
+
  
 require __DIR__.'/auth.php';
