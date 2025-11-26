@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Categoria;
 use App\Models\Compra;
+use App\Models\Detalle_compra;
 use App\Models\Empleado;
+use App\Models\Movimiento;
 use App\Models\Producto;
 use App\Models\Proveedor;
 use Illuminate\Http\Request;
@@ -42,7 +44,53 @@ class CompraController extends Controller
      */
     public function store(Request $request)
     {
-       return response()->json($request->all()); 
+       return response()->json($request->all());
+
+       $request->validate([
+           'fecha_orden' => 'required',
+           'empleado_id' => 'required',
+           'area_solicitante' => 'required', 
+           'proveedor_id' => 'required',
+           'productos' => 'required',
+           'cantidades' => 'required',
+           'observaciones' => 'required',
+           'asunto_obra_automotor' => 'required', 
+       ]);
+
+       $compra = Compra::create([
+           'proveedor_id' => $request->proveedor_id,
+           'empleado_id' => $request->empleado_id,
+           'destino_tipo' => $request->destino_tipo,
+           'destino_id' => $request->destino_id,    
+           'area_solicitante' => 'Corralon Municipal - Compras', 
+           'nr_orden' => $id,
+           'sub_cuenta' =>$request->sub_cuenta, 
+           'fecha_orden' => $request->fecha_orden, 
+           'estado_compra' => 'Registrado',  
+           'asunto_obra_automotor' => $request->asunto_obra_automotor, 
+           'cantidades' => $request->cantidades,
+           'observacion' => $request->observacion,  
+           'estado' => true, 
+       ]); 
+
+       // insertar detalle
+
+       $detalle = Detalle_compra::create([ 
+        'compra_id' => $compra->id,
+        'producto_id' => $request->producto_id,
+        'cantidad' => $request->cantidad, 
+       ]);
+
+        Movimiento::create([ 
+        'producto_id' => $detalle->producto_id,
+        'tipo' => 'entrada',
+        'origen_tipo' => 'proveedor',
+        'origen_id' => $request->proveedor_id,
+        'destino_tipo' => $request->destino_tipo,
+        'destino_id' => $request->destino_id,
+        'cantidad' => $detalle->cantidad,
+        'fecha' => now(),
+        ]);
     }
 
     /**

@@ -122,14 +122,14 @@
 
                     <!-- Provincia -->
                     <div class="space-y-2">
-                        <label for="area_solicitante" class="text-sm font-medium">Sub cuenta<span class="text-red-600">*</span></label>
-                        <select id="area_solicitante" name="area_solicitante" class="select w-full h-10 rounded-md border-base-300 bg-base-200
+                        <label for="sub_cuenta" class="text-sm font-medium">Sub cuenta<span class="text-red-600">*</span></label>
+                        <select id="sub_cuenta" name="sub_cuenta" class="select w-full h-10 rounded-md border-base-300 bg-base-200
                         px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
-                        focus:border-primary transition @error('area_solicitante') input-error @enderror" required>
+                        focus:border-primary transition @error('sub_cuenta') input-error @enderror" required>
                             <option value="">Seleccione la sub cuenta</option>
                             <option>Corralon Municipal</option>
                         </select>
-                        @error('area_solicitante')
+                        @error('sub_cuenta')
                             <small class="text-red-500 error-message">{{ $message }}</small>
                         @enderror
                     </div> 
@@ -266,13 +266,13 @@
                     <div data-slot="table-container" class="relative w-full overflow-x-auto">
                     <table id="tablaItems" class="w-full caption-bottom text-sm hidden">
                         <thead data-slot="table-header" class="[&_tr]:border-b">
-                        <tr data-slot="table-row" class="border-b transition-colors">
+                        <tr data-slot="table-row" class="border-b border-gray-200 transition-colors"> 
                             <th class="text-foreground h-10 px-2 text-left align-middle font-medium whitespace-nowrap w-[300px]">Producto</th>
                             <th class="text-foreground h-10 px-2 text-left align-middle font-medium whitespace-nowrap w-[120px]">Cantidad</th>
                             <th class="text-foreground h-10 px-2 text-left align-middle font-medium whitespace-nowrap">Observaciones</th>
                             <th class="text-foreground h-10 px-2 text-left align-middle font-medium whitespace-nowrap w-[80px]"></th>
                         </tr>
-                        </thead>
+                        </thead> 
 
                         <tbody id="tablaProductos" data-slot="table-body" class="[&_tr:last-child]:border-0">
                         <!-- filas dinámicas -->
@@ -683,12 +683,12 @@ function agregarProducto(id, nombre) {
 <script>
 // Agregar producto a la tabla
 function agregarProducto(id, nombre) {
-  const tabla = document.getElementById('tablaProductos');
+  const tabla = document.getElementById('tablaProductos'); 
 
   // crear fila con la estructura y clases similares a tu ejemplo
   const fila = document.createElement('tr');
-  fila.setAttribute('data-slot','table-row');
-  fila.className = 'hover:bg-muted/50 border-b transition-colors';
+  fila.setAttribute('data-slot','table-row'); 
+  fila.className = 'hover:bg-muted/50 transition-colors';
 
   fila.innerHTML = `
     <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap">
@@ -699,15 +699,19 @@ function agregarProducto(id, nombre) {
       </div>
     </td>
 
-    <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap">
+    <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap"> 
       <input type="number" name="cantidades[]" min="1" value="1" required
-        class="border-input flex h-9 w-full min-w-0 rounded-md border px-3 py-1 text-base bg-input-background transition-[color,box-shadow] outline-none"
+        class="w-full h-10 rounded-md border border-base-300 bg-base-200
+                        px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
+                        focus:border-primary transition"
         oninput="actualizarTotales()">
     </td>
 
     <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap">
       <input name="observaciones[]" placeholder="Observaciones del item..." value=""
-        class="border-input flex h-9 w-full min-w-0 rounded-md border px-3 py-1 text-base bg-input-background transition-[color,box-shadow] outline-none">
+        class="w-full h-10 rounded-md border border-base-300 bg-base-200
+                        px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
+                        focus:border-primary transition">
     </td>
 
     <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap">
