@@ -263,4 +263,24 @@ class VehiculoController extends Controller
         $vehiculo->save();
         return redirect()->route('vehiculos.index')->with('success', 'Vehículo restaurado exitosamente.');
     }
+
+    public function productos(Vehiculo $vehiculo)
+    {
+        // Traemos los productos con la cantidad asignada
+        $productos = $vehiculo->productos()
+            ->select('productos.id', 'productos.nombre')
+            ->withPivot('cantidad')
+            ->get()
+            ->map(function ($p) {
+                return [
+                    'id' => $p->id,
+                    'nombre' => $p->nombre,
+                    'cantidad_asignada' => $p->pivot->cantidad,
+                ];
+            });
+
+        return response()->json($productos);
+    }
+
+
 }

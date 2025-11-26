@@ -61,6 +61,7 @@ Route::put('admin/categorias/{id}/restore', [App\Http\Controllers\CategoriaContr
 Route::get('/admin/productos', [ App\Http\Controllers\ProductoController::class, 'index'])->name('productos.index');
 Route::post('/admin/productos/store', [ App\Http\Controllers\ProductoController::class, 'store'])->name('productos.store');
 
+
 // ESTA VA PRIMERO
 Route::get('/admin/productos/{id}/data', [ App\Http\Controllers\ProductoController::class, 'data'])->name('productos.data');
 
@@ -116,4 +117,20 @@ Route::put('admin/obras/{id}/restore', [App\Http\Controllers\ObraController::cla
 Route::get('/admin/permisos',[App\Http\Controllers\PermisoController::class, 'index'])->name('permisos.index');
 Route::post('/admin/permisos/store',[App\Http\Controllers\PermisoController::class, 'store'])->name('permisos.store'); 
 Route::delete('/admin/permisos/{id}', [App\Http\Controllers\PermisoController::class, 'destroy'])->name('permisos.destroy');
+
+//Rutas para movimientos
+Route::get('/admin/movimientos', [App\Http\Controllers\MovimientoController::class, 'index'])->name('movimientos.index');
+Route::get('/admin/movimientos/create', [App\Http\Controllers\MovimientoController::class, 'create'])->name('movimientos.create');
+Route::post('/admin/movimientos/store', [App\Http\Controllers\MovimientoController::class, 'store'])->name('movimientos.store');
+Route::get('/admin/movimientos/{id}/edit', [App\Http\Controllers\MovimientoController::class, 'edit'])->name('movimientos.edit');
+Route::put('/admin/movimientos/{id}', [App\Http\Controllers\MovimientoController::class, 'update'])->name('movimientos.update');
+Route::get('/admin/movimientos/{id}', [App\Http\Controllers\MovimientoController::class, 'show'])->name('movimientos.show');
+Route::delete('/admin/movimientos/{id}', [App\Http\Controllers\MovimientoController::class, 'destroy'])->name('movimientos.destroy');
+Route::put('admin/movimientos/{id}/restore', [App\Http\Controllers\MovimientoController::class, 'restore'])->name('movimientos.restore');
+
+//Ajax para obtener productos segun el caso
+Route::get('/admin/obras/{obra}/productos', [App\Http\Controllers\ObraController::class, 'productosAsignados'])->name('ajax.obras');
+Route::get('/admin/vehiculos/{vehiculo}/productos', [App\Http\Controllers\VehiculoController::class, 'productos'])->name('ajax.vehiculos');
+Route::get('/admin/depositos/{deposito}/productos', [App\Http\Controllers\ProductoController::class, 'productos'])->name('ajax.depositos');
+
 require __DIR__.'/auth.php';

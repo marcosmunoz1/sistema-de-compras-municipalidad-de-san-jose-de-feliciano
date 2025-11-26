@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Producto; 
 use Illuminate\Http\Request;
 use App\Models\Categoria;
+use App\Models\Deposito;
+
 class ProductoController extends Controller
 {
     /**
@@ -111,4 +113,22 @@ class ProductoController extends Controller
         ->with('mensaje', 'Producto restaurado exitosamente.')
         ->with('icono', 'success'); 
     } 
+
+    public function productos(Deposito $deposito)
+    {
+        $productos = $deposito->productos()
+            ->select('productos.id', 'productos.nombre')
+            ->withPivot('cantidad')
+            ->get()
+            ->map(function ($p) {
+                return [
+                    'id' => $p->id,
+                    'nombre' => $p->nombre,
+                    'cantidad_asignada' => $p->pivot->cantidad,
+                ];
+            });
+
+        return response()->json($productos);
+    }
+
 }
