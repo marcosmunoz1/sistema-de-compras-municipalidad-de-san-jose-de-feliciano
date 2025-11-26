@@ -4,17 +4,26 @@ namespace App\Models;
 use App\Models\Proveedor;
 use App\Models\Empleado;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Compra extends Model
 {   
+    use SoftDeletes; 
     protected $table = 'compras';  
     protected $fillable = [
         'proveedor_id',
         'empleado_id',
+        'destino_tipo',
+        'destino_id',
+        'area_solicitante',
         'nr_orden',
+        'sub_cuenta',
         'fecha_orden',
         'estado_compra',
+        'asunto_obra_automotor',
         'total',
+        'observacion',
+        'total' 
     ];
     protected $attributes = [
     'estado' => true,

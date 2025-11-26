@@ -37,6 +37,13 @@ class Obra extends Model
         'presupuesto' => 'decimal:2',
         'monto_ejecutado' => 'decimal:2',
     ];
+    public function productos()
+    {
+        return $this->belongsToMany(Producto::class, 'obra_producto')
+            ->withPivot('cantidad_asignada')
+            ->withTimestamps();
+    }
+
     public function movimientosComoOrigen()
     {
         return $this->morphMany(Movimiento::class, 'origen', 'origen_tipo', 'origen_id');

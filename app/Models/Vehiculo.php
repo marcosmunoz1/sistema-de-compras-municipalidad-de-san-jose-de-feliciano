@@ -23,6 +23,14 @@ class Vehiculo extends Model
         'motor',
         'estado',
     ];
+
+    public function productos()
+    {
+        return $this->belongsToMany(Producto::class, 'producto_vehiculo')
+                    ->withPivot('cantidad')
+                    ->withTimestamps();
+    }
+
     public function combustible()
     {
       return $this->hasMany(Combustible::class);

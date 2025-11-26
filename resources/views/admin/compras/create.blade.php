@@ -196,7 +196,7 @@
                 <div class="grid grid-cols-1 gap-4">
                     <div class="space-y-2">
                         <label for="asunto_obra_automotor" class="text-sm font-medium">Asunto de la compra<span class="text-red-600">*</span></label>
-                        <textarea type="text" id="asunto_obra_automotor" name="asunto_obra_automotor"  placeholder="Ingrese una justificacion breve de la compra" 
+                        <textarea value="{{ old('asunto_obra_automotor') }}" type="text" id="asunto_obra_automotor" name="asunto_obra_automotor"  placeholder="Ingrese una justificacion breve de la compra" 
                         class="textarea w-full rounded-md border border-base-300 bg-base-200 focus:outline-none focus:ring-2 focus:ring-primary 
                         focus:border-primary transition @error('asunto_obra_automotor') input-error @enderror" required></textarea> 
                         @error('asunto_obra_automotor') 
@@ -779,7 +779,7 @@ function actualizarTotales() {
 function escapeHtml(text) {
   if (!text) return '';
   return text.replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;').replaceAll("'",'&#39;');
-}ñ
+}
 </script>
-
+ 
 @endsection 

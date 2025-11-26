@@ -21,6 +21,25 @@ class Producto extends Model
       'estado' => true,
     ];
 
+    public function obras()
+    {
+        return $this->belongsToMany(Obra::class, 'obra_producto')
+            ->withPivot('cantidad_asignada')
+            ->withTimestamps();
+    }
+    public function vehiculos()
+    {
+        return $this->belongsToMany(Vehiculo::class, 'producto_vehiculo')
+                    ->withPivot('cantidad')
+                    ->withTimestamps();
+    }
+
+
+    public function movimientos()
+    {
+        return $this->hasMany(Movimiento::class);
+    }
+
     public function categoria()
     {
       return $this->belongsTo(Categoria::class);

@@ -40,60 +40,151 @@
 </div>
 
 
+<!-- Buscador -->
+<form action="{{ route('compras.index') }}" method="GET"> 
+    <div class="card bg-base-100 shadow p-6 mb-6">
+        <div class="flex items-center gap-3">
+
+            <!-- INPUT -->
+            <label class="w-full"> 
+                <input name="search" value="{{ request('search') ?? '' }}"
+                    type="text" 
+                    placeholder="Buscar por vehiculo, combustible, fecha..."
+                    class="w-full h-10 rounded-md border border-base-300 bg-base-200 
+                        px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
+                        focus:border-primary transition"
+                />
+            </label>
+
+            <!-- BOTÓN -->
+            <button class="btn btn-primary">
+             <x-heroicon-o-magnifying-glass class="w-4 h-4" /> 
+                Buscar
+            </button>
+              @if(request('search'))
+                <a href="{{ route('compras.index') }}" class="btn btn-error"><x-heroicon-o-trash class="w-4 h-4" /> Limpiar</a>
+              @endif 
+        </div>
+    </div>
+</form>
+<!-- Tabla -->
 <div class="card bg-base-100 shadow">
     <div class="card-body p-4">
-
-        <div class="overflow-x-auto">
+        <!-- HEADER COMPLETO -->
+        <div class="flex flex-col gap-3">
+            <!-- TÍTULO + BUSCADOR -->
+            <div class="flex items-center justify-between">
+                <h4 class="text-lg font-semibold">Historial de Compras</h4> 
+                <!-- BUSCADOR -->
+                <div class="relative">
+                      <!-- BOTÓN IMPRIMIR -->
+                        <div class="flex justify-start">
+                            <button onclick="window.print()" class="btn btn-outline btn-sm">
+                                <x-heroicon-o-printer class="w-4 h-4 mr-2"/>
+                                Imprimir Historial  
+                            </button>
+                        </div>
+                </div>
+            </div>
+        </div>
+        <!-- TABLA -->
+        <div class="overflow-x-auto mt-4">
             <table class="table table-zebra w-full">
                 <thead>
                     <tr>
-                        <th>ID</th>
-                        <th>Proveedor</th>
-                        <th>Fecha</th>
-                        <th>Total</th>
-                        <th class="text-center">Acciones</th>
+                        <th class="text-center">Nr orden</th> 
+                        <th class="text-center">Fecha</th>
+                        <th class="text-center">Proveedor</th>  
+                        <th class="text-center">insumos</th> 
+                        <th class="text-center">total</th> 
+                        <th class="text-center">Estado</th>
+                        <th class="text-center">Acciones</th>  
                     </tr>
                 </thead>
-
                 <tbody>
+                    @php
+                        $nr = $compras->firstItem();
+                    @endphp
 
-                    {{-- EJEMPLO | Los vas a reemplazar con tus datos --}}
-                    <tr>
-                        <td>1</td>
-                        <td>Proveedor Municipal SRL</td>
-                        <td>2025-01-15</td>
-                        <td>$ 150.000</td>
+                    @foreach ($compras as $compra)
+                        <tr> 
+                            <td class="text-center">{{ $compra->nr_orden }}</td> 
+                            <td class="text-center">{{ $compra->fecha_orden }}</td> 
+                            <td class="text-center">{{ $compra->proveedor->nombre ?? 'N/A' }}</td>
+                            <td class="text-center">{{ $compra->detalle_compras->count() ?? 'N/A' }}</td> 
+                            <td class="text-center">{{ $compra->total ?? 'N/A' }}</td>  
+                            <td class="text-center">{{ $compra->estado_compra }}</td>  
+                            <td class="text-center">
+                                <div class="flex items-center justify-center gap-2">
 
-                        <td class="text-center">
-                            <div class="flex items-center justify-center gap-2">
+                                    <a href="{{ route('compras.show', $compra->id) }}"  
+                                       class="btn btn-info btn-sm">
+                                        <x-heroicon-s-eye class="w-4 h-4"/>
+                                    </a>
 
-                                {{-- Ver --}}
-                                <a href="" 
-                                   class="btn btn-info btn-sm">
-                                    Ver
-                                </a>
+                                    <a href="{{ route('compras.edit', $compra->id) }}" 
+                                       class="btn btn-warning btn-sm">
+                                        <x-heroicon-s-pencil class="w-4 h-4"/>
+                                    </a> 
 
-                                {{-- Editar --}}
-                                <a href="" 
-                                   class="btn btn-warning btn-sm">
-                                    Editar
-                                </a>
+                                   {{--  <a href="{{ route('compras.report', $compra->id ) }}"  
+                                       class="btn bg-primary btn-sm" 
+                                       target="_blank">
+                                        <x-heroicon-o-printer class="w-4 h-4"/>
+                                    </a> --}}
 
-                                {{-- Eliminar (después lo convertís en form POST/DELETE) --}}
-                                <button class="btn btn-error btn-sm">
-                                    Eliminar
-                                </button>
+                                    @if ($compra->trashed())
+                                        <button class="btn btn-success btn-sm"
+                                                onclick="abrirModalRestaurar('{{ url('/admin/compras/'. $compra->id.'/restore') }}')">
+                                            <x-heroicon-s-arrow-uturn-left class="w-4 h-4"/>
+                                        </button>
+                                    @else
+                                        <button class="btn btn-error btn-sm"
+                                                onclick="confirmarEliminacion({{ $compra->id }})">
+                                            <x-heroicon-s-trash class="w-4 h-4"/>
+                                        </button>
+                                    @endif
 
-                            </div>
-                        </td>
-                    </tr>
-                    {{-- Fin ejemplo --}}
-
+                                </div>
+                            </td>
+                        </tr>
+                    @endforeach
                 </tbody>
             </table>
         </div>
+        <!-- PAGINACIÓN -->
+        @if ($compras->hasPages())
+            <div class="flex flex-col md:flex-row justify-between items-center mt-6 px-3 gap-4">
+
+                <div class="text-sm text-gray-500">
+                    Mostrando {{ $compras->firstItem() }} - {{ $compras->lastItem() }} 
+                    de {{ $compras->total() }} registros
+                </div>
+
+                <div class="join">
+                    @if ($compras->onFirstPage())
+                        <button class="join-item btn btn-square btn-disabled">«</button>
+                    @else
+                        <a href="{{ $compras->previousPageUrl() }}" class="join-item btn btn-square">«</a>
+                    @endif
+
+                    @foreach ($compras->links()->elements[0] ?? [] as $page => $url)
+                        @if ($page == $compras->currentPage())
+                            <button class="join-item btn btn-square btn-active">{{ $page }}</button>
+                        @else
+                            <a href="{{ $url }}" class="join-item btn btn-square">{{ $page }}</a>
+                        @endif
+                    @endforeach
+
+                    @if ($compras->hasMorePages())
+                        <a href="{{ $compras->nextPageUrl() }}" class="join-item btn btn-square">»</a>
+                    @else
+                        <button class="join-item btn btn-square btn-disabled">»</button>
+                    @endif
+                </div>
+            </div>
+        @endif
 
     </div>
 </div>
-
 @endsection

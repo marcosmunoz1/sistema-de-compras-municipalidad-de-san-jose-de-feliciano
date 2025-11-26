@@ -210,4 +210,10 @@ class ObraController extends Controller
         return redirect()->route('obras.index')->with('mensaje', 'Obra restaurado exitosamente.')
                                                     ->with('icono', 'success');
     }
+    public function productosAsignados(Obra $obra)
+    {
+        return response()->json(
+            $obra->productos()->select('productos.id', 'productos.nombre', 'obra_producto.cantidad_asignada')->get()
+        );
+    }
 }

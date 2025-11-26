@@ -14,9 +14,6 @@ class Detalle_compra extends Model
         'subtotal',
         'cantidad',
     ];
-    protected $attributes = [
-    'estado' => true,
-    ]; 
 
     public function compra()
     {

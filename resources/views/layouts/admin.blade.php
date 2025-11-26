@@ -93,6 +93,7 @@
                 <li><a href="{{ url('/admin/empleados') }}"><x-heroicon-o-user-group class="w-6 h-6 inline" />Empleados</a></li>
                 <li><a href="{{ url('/admin/obras') }}"><x-bi-building class="w-6 h-6 inline" />Obras</a></li>
                 <li><a href="{{ url('/admin/permisos') }}"><x-heroicon-o-shield-check class="w-6 h-6 inline" />Permisos</a></li>
+                <li><a href="{{ url('/admin/movimientos') }}"><x-heroicon-o-arrow-path class="w-6 h-6 inline" />Movimientos</a></li>
 
             </ul>
         </div>
