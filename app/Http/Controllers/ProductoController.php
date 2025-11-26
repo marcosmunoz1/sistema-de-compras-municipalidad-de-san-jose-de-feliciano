@@ -131,4 +131,8 @@ class ProductoController extends Controller
         return response()->json($productos);
     }
 
+
+
+
+
 }
