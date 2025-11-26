@@ -42,7 +42,9 @@ return new class extends Migration
 
             // Observación
             $table->text('observacion')->nullable();
+             
 
+            $table->boolean('estado')->default(true);   
             $table->softDeletes();
             $table->timestamps();
         });

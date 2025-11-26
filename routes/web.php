@@ -24,10 +24,11 @@ Route::get('/admin', function () {
 Route::get('/admin/compras', [App\Http\Controllers\CompraController::class, 'index'])->name('compras.index');
 Route::get('/admin/compras/create', [App\Http\Controllers\CompraController::class, 'create'])->name('compras.create');
 Route::post('/admin/compras/store', [App\Http\Controllers\CompraController::class, 'store'])->name('compras.store');
-
-
-
-
+Route::get('/admin/compras/{id}/edit', [App\Http\Controllers\CompraController::class, 'edit'])->name('compras.edit');
+Route::put('/admin/compras/{id}', [App\Http\Controllers\CompraController::class, 'update'])->name('compras.update');
+Route::get('/admin/compras/{id}', [App\Http\Controllers\CompraController::class, 'show'])->name('compras.show');
+Route::delete('/admin/compras/{id}', [App\Http\Controllers\CompraController::class, 'destroy'])->name('compras.destroy');
+Route::put('/admin/compras/{id}/restore', [App\Http\Controllers\CompraController::class, 'restore'])->name('compras.restore');
 
 
 //rutas para roles

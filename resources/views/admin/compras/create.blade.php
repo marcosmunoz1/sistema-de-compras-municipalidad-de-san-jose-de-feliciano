@@ -109,26 +109,23 @@
                             @enderror
                         </div>
 
-                        <!-- Provincia -->
-                        <div class="space-y-2">
-                            <label for="area_solicitante" class="text-sm font-medium">Sub cuenta<span
-                                    class="text-red-600">*</span></label>
-                            <select id="area_solicitante" name="area_solicitante"
-                                class="select w-full h-10 rounded-md border-base-300 bg-base-200
+                    <!-- Provincia -->
+                    <div class="space-y-2">
+                        <label for="sub_cuenta" class="text-sm font-medium">Sub cuenta<span class="text-red-600">*</span></label>
+                        <select id="sub_cuenta" name="sub_cuenta" class="select w-full h-10 rounded-md border-base-300 bg-base-200
                         px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
-                        focus:border-primary transition @error('area_solicitante') input-error @enderror"
-                                required>
-                                <option value="">Seleccione la sub cuenta</option>
-                                <option>Corralon Municipal</option>
-                            </select>
-                            @error('area_solicitante')
-                                <small class="text-red-500 error-message">{{ $message }}</small>
-                            @enderror
-                        </div>
-                    </div>
+                        focus:border-primary transition @error('sub_cuenta') input-error @enderror" required>
+                            <option value="">Seleccione la sub cuenta</option>
+                            <option>Corralon Municipal</option>
+                        </select>
+                        @error('sub_cuenta')
+                            <small class="text-red-500 error-message">{{ $message }}</small>
+                        @enderror
+                    </div> 
                 </div>
             </div>
         </div>
+        </div> 
 
         <!-- Otra seccion -->
         <div data-slot="card" class="card bg-base-100 shadow-xl p-4 mt-4">
@@ -184,44 +181,38 @@
                             <select id="destino_id" name="destino_id"
                                 class="select w-full h-10 rounded-md border-base-300 bg-base-200
                         px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
-                        focus:border-primary transition @error('destino_id') input-error @enderror"
-                                required>
-                                <option value="">Seleccione un destino...</option>
-                            </select>
-                            @error('destino_id')
-                                <small class="text-red-500 error-message">{{ $message }}</small>
-                            @enderror
-                        </div>
-                    </div>
-                    <div class="grid grid-cols-1 gap-4">
-                        <div class="space-y-2">
-                            <label for="asunto_obra_automotor" class="text-sm font-medium">Asunto de la compra<span
-                                    class="text-red-600">*</span></label>
-                            <textarea type="text" id="asunto_obra_automotor" name="asunto_obra_automotor"
-                                placeholder="Ingrese una justificacion breve de la compra"
-                                class="textarea w-full rounded-md border border-base-300 bg-base-200 focus:outline-none focus:ring-2 focus:ring-primary 
-                        focus:border-primary transition @error('asunto_obra_automotor') input-error @enderror"
-                                required></textarea>
-                            @error('asunto_obra_automotor')
-                                <small class="text-red-500 error-message">{{ $message }}</small>
-                            @enderror
-                        </div>
-                    </div>
-                    <div class="grid grid-cols-1 gap-4">
-                        <div class="space-y-2">
-                            <label for="observacion" class="text-sm font-medium">Observaciones (Opcional)</label>
-                            <textarea type="text" id="observacion" name="observacion"
-                                placeholder="Ingrese una justificacion breve de la compra"
-                                class="textarea w-full rounded-md border border-base-300 bg-base-200 focus:outline-none focus:ring-2 focus:ring-primary 
-                        focus:border-primary transition @error('observacion') input-error @enderror"
-                                required></textarea>
-                            @error('observacion')
-                                <small class="text-red-500 error-message">{{ $message }}</small>
-                            @enderror
-                        </div>
+                        focus:border-primary transition @error('destino_id') input-error @enderror" required>
+                            <option value="">Seleccione un destino...</option>      
+                        </select> 
+                        @error('destino_id') 
+                            <small class="text-red-500 error-message">{{ $message }}</small>
+                        @enderror
                     </div>
                 </div>
+                <div class="grid grid-cols-1 gap-4">
+                    <div class="space-y-2">
+                        <label for="asunto_obra_automotor" class="text-sm font-medium">Asunto de la compra<span class="text-red-600">*</span></label>
+                        <textarea value="{{ old('asunto_obra_automotor') }}" type="text" id="asunto_obra_automotor" name="asunto_obra_automotor"  placeholder="Ingrese una justificacion breve de la compra" 
+                        class="textarea w-full rounded-md border border-base-300 bg-base-200 focus:outline-none focus:ring-2 focus:ring-primary 
+                        focus:border-primary transition @error('asunto_obra_automotor') input-error @enderror" required></textarea> 
+                        @error('asunto_obra_automotor') 
+                            <small class="text-red-500 error-message">{{ $message }}</small>
+                        @enderror
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 gap-4">
+                    <div class="space-y-2">
+                        <label for="observacion" class="text-sm font-medium">Observaciones (Opcional)</label>
+                        <textarea type="text" id="observacion" name="observacion"  placeholder="Ingrese una justificacion breve de la compra" 
+                        class="textarea w-full rounded-md border border-base-300 bg-base-200 focus:outline-none focus:ring-2 focus:ring-primary 
+                        focus:border-primary transition @error('observacion') input-error @enderror" required></textarea> 
+                        @error('observacion') 
+                            <small class="text-red-500 error-message">{{ $message }}</small>
+                        @enderror
+                    </div>
+                </div> 
             </div>
+        </div>
         </div>
         <div class="bg-base-100 shadow-xl rounded-xl  mt-6">
             <!-- Header -->
@@ -267,26 +258,18 @@
                     <p class="text-sm mt-1">Haz clic en "Agregar Insumo" para comenzar</p>
                 </div>
 
-                <div data-slot="card-content" class="px-6 [&:last-child]:pb-6">
-                    <div class="overflow-x-auto">
-                        <div data-slot="table-container" class="relative w-full overflow-x-auto">
-                            <table id="tablaItems" class="w-full caption-bottom text-sm hidden">
-                                <thead data-slot="table-header" class="[&_tr]:border-b">
-                                    <tr data-slot="table-row" class="border-b transition-colors">
-                                        <th
-                                            class="text-foreground h-10 px-2 text-left align-middle font-medium whitespace-nowrap w-[300px]">
-                                            Producto</th>
-                                        <th
-                                            class="text-foreground h-10 px-2 text-left align-middle font-medium whitespace-nowrap w-[120px]">
-                                            Cantidad</th>
-                                        <th
-                                            class="text-foreground h-10 px-2 text-left align-middle font-medium whitespace-nowrap">
-                                            Observaciones</th>
-                                        <th
-                                            class="text-foreground h-10 px-2 text-left align-middle font-medium whitespace-nowrap w-[80px]">
-                                        </th>
-                                    </tr>
-                                </thead>
+                <div data-slot="card-content" class="px-6 [&:last-child]:pb-6"> 
+                <div class="overflow-x-auto"> 
+                    <div data-slot="table-container" class="relative w-full overflow-x-auto">
+                    <table id="tablaItems" class="w-full caption-bottom text-sm hidden">
+                        <thead data-slot="table-header" class="[&_tr]:border-b">
+                        <tr data-slot="table-row" class="border-b border-gray-200 transition-colors"> 
+                            <th class="text-foreground h-10 px-2 text-left align-middle font-medium whitespace-nowrap w-[300px]">Producto</th>
+                            <th class="text-foreground h-10 px-2 text-left align-middle font-medium whitespace-nowrap w-[120px]">Cantidad</th>
+                            <th class="text-foreground h-10 px-2 text-left align-middle font-medium whitespace-nowrap">Observaciones</th>
+                            <th class="text-foreground h-10 px-2 text-left align-middle font-medium whitespace-nowrap w-[80px]"></th>
+                        </tr>
+                        </thead> 
 
                                 <tbody id="tablaProductos" data-slot="table-body" class="[&_tr:last-child]:border-0">
                                     <!-- filas dinámicas -->
@@ -660,16 +643,16 @@ function agregarProducto(id, nombre) {
     document.getElementById("tablaItems").classList.remove("hidden");
     document.getElementById("mensajeVacio").classList.add("hidden");    
 }
-</script> --}}
-    <script>
-        // Agregar producto a la tabla
-        function agregarProducto(id, nombre) {
-            const tabla = document.getElementById('tablaProductos');
+</script> --}} 
+<script>
+// Agregar producto a la tabla
+function agregarProducto(id, nombre) {
+  const tabla = document.getElementById('tablaProductos'); 
 
-            // crear fila con la estructura y clases similares a tu ejemplo
-            const fila = document.createElement('tr');
-            fila.setAttribute('data-slot', 'table-row');
-            fila.className = 'hover:bg-muted/50 border-b transition-colors';
+  // crear fila con la estructura y clases similares a tu ejemplo
+  const fila = document.createElement('tr');
+  fila.setAttribute('data-slot','table-row'); 
+  fila.className = 'hover:bg-muted/50 transition-colors';
 
             fila.innerHTML = `
     <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap">
@@ -680,15 +663,19 @@ function agregarProducto(id, nombre) {
       </div>
     </td>
 
-    <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap">
+    <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap"> 
       <input type="number" name="cantidades[]" min="1" value="1" required
-        class="border-input flex h-9 w-full min-w-0 rounded-md border px-3 py-1 text-base bg-input-background transition-[color,box-shadow] outline-none"
+        class="w-full h-10 rounded-md border border-base-300 bg-base-200
+                        px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
+                        focus:border-primary transition"
         oninput="actualizarTotales()">
     </td>
 
     <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap">
       <input name="observaciones[]" placeholder="Observaciones del item..." value=""
-        class="border-input flex h-9 w-full min-w-0 rounded-md border px-3 py-1 text-base bg-input-background transition-[color,box-shadow] outline-none">
+        class="w-full h-10 rounded-md border border-base-300 bg-base-200
+                        px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
+                        focus:border-primary transition">
     </td>
 
     <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap">
@@ -752,11 +739,11 @@ function agregarProducto(id, nombre) {
             document.getElementById('cantidadTotal').textContent = cantidadTotal;
         }
 
-        // Pequeña función para escapar texto (evita inyección al insertar nombre)
-        function escapeHtml(text) {
-            if (!text) return '';
-            return text.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;')
-                .replaceAll("'", '&#39;');
-        }
-    </script>
-@endsection
+// Pequeña función para escapar texto (evita inyección al insertar nombre)
+function escapeHtml(text) {
+  if (!text) return '';
+  return text.replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;').replaceAll("'",'&#39;');
+}
+</script>
+ 
+@endsection 
