@@ -29,11 +29,7 @@ class CompraController extends Controller
         $proveedores = Proveedor::all();
         $empleados = Empleado::all();
         $search = $request->input('search'); 
-        $productos = Producto::where('nombre', 'LIKE', "%{$search}%")  
-            ->orWhere('descripcion', 'LIKE', "%{$search}%")
-            ->orWhere('unidad', 'LIKE', "%{$search}%")
-            ->orWhere('estado', 'LIKE', "%{$search}%")
-            ->paginate(10);
+        $productos = Producto::all();
         return view('admin.compras.create', compact('proveedores', 'empleados', 'categorias', 'productos'));
     }
 
