@@ -3,7 +3,6 @@
 namespace App\Models;
 use App\Models\Proveedor;
 use App\Models\Empleado;
-use App\Models\DetalleCompra;
 use Illuminate\Database\Eloquent\Model;
 
 class Compra extends Model

@@ -2,7 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Categoria;
 use App\Models\Compra;
+use App\Models\Empleado;
+use App\Models\Producto;
+use App\Models\Proveedor;
 use Illuminate\Http\Request;
 
 class CompraController extends Controller
@@ -12,15 +16,25 @@ class CompraController extends Controller
      */
     public function index()
     {
-        //
+        $compras = Compra::all();
+        return view('admin.compras.index', compact('compras')); 
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
-    {
-        //
+    public function create(Request $request)  
+    {    
+        $categorias = Categoria::all();  
+        $proveedores = Proveedor::all();
+        $empleados = Empleado::all();
+        $search = $request->input('search'); 
+        $productos = Producto::where('nombre', 'LIKE', "%{$search}%")  
+            ->orWhere('descripcion', 'LIKE', "%{$search}%")
+            ->orWhere('unidad', 'LIKE', "%{$search}%")
+            ->orWhere('estado', 'LIKE', "%{$search}%")
+            ->paginate(10);
+        return view('admin.compras.create', compact('proveedores', 'empleados', 'categorias', 'productos'));
     }
 
     /**
@@ -28,7 +42,7 @@ class CompraController extends Controller
      */
     public function store(Request $request)
     {
-        //
+       return response()->json($request->all()); 
     }
 
     /**

@@ -21,9 +21,14 @@ Route::get('/admin', function () {
     return view('admin.index'); 
 })->name('admin.index'); 
 
-Route::get('/admin/compras', function () {
-    return view('admin.compras.index');
-})->name('compras.index'); 
+Route::get('/admin/compras', [App\Http\Controllers\CompraController::class, 'index'])->name('compras.index');
+Route::get('/admin/compras/create', [App\Http\Controllers\CompraController::class, 'create'])->name('compras.create');
+Route::post('/admin/compras/store', [App\Http\Controllers\CompraController::class, 'store'])->name('compras.store');
+
+
+
+
+
 
 //rutas para roles
 Route::get('/admin/roles', [App\Http\Controllers\RoleController::class, 'index'])->name('admin.roles.index');
@@ -117,7 +122,7 @@ Route::put('admin/obras/{id}/restore', [App\Http\Controllers\ObraController::cla
 Route::get('/admin/permisos',[App\Http\Controllers\PermisoController::class, 'index'])->name('permisos.index');
 Route::post('/admin/permisos/store',[App\Http\Controllers\PermisoController::class, 'store'])->name('permisos.store'); 
 Route::delete('/admin/permisos/{id}', [App\Http\Controllers\PermisoController::class, 'destroy'])->name('permisos.destroy');
-
+git 
 //Rutas para movimientos
 Route::get('/admin/movimientos', [App\Http\Controllers\MovimientoController::class, 'index'])->name('movimientos.index');
 Route::get('/admin/movimientos/create', [App\Http\Controllers\MovimientoController::class, 'create'])->name('movimientos.create');
@@ -133,4 +138,17 @@ Route::get('/admin/obras/{obra}/productos', [App\Http\Controllers\ObraController
 Route::get('/admin/vehiculos/{vehiculo}/productos', [App\Http\Controllers\VehiculoController::class, 'productos'])->name('ajax.vehiculos');
 Route::get('/admin/depositos/{deposito}/productos', [App\Http\Controllers\ProductoController::class, 'productos'])->name('ajax.depositos');
 
+
+Route::get('/api/destinos/{tipo}', function($tipo) { 
+
+    return match ($tipo) {
+        'deposito' => \App\Models\Deposito::select('id','nombre')->get(),
+        'obra'     => \App\Models\Obra::select('id','nombre')->get(),
+        'vehiculo'     => \App\Models\Vehiculo::select('id','marca')->get(), 
+        'equipo'     => \App\Models\Equipo::select('id','nombre')->get(), 
+
+        default    => []
+    };
+});
+ 
 require __DIR__.'/auth.php';
