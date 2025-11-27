@@ -29,7 +29,7 @@ Route::put('/admin/compras/{id}', [App\Http\Controllers\CompraController::class,
 Route::get('/admin/compras/{id}', [App\Http\Controllers\CompraController::class, 'show'])->name('compras.show');
 Route::delete('/admin/compras/{id}', [App\Http\Controllers\CompraController::class, 'destroy'])->name('compras.destroy');
 Route::put('/admin/compras/{id}/restore', [App\Http\Controllers\CompraController::class, 'restore'])->name('compras.restore');
-
+Route::get('/admin/compras/{id}/report', [App\Http\Controllers\PDFController::class, 'PdfOrdenCompra'])->name('compras.report');
 
 //rutas para roles
 Route::get('/admin/roles', [App\Http\Controllers\RoleController::class, 'index'])->name('admin.roles.index');

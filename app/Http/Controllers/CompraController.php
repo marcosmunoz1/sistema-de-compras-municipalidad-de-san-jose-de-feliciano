@@ -74,7 +74,7 @@ class CompraController extends Controller
             'nr_orden' => $nr_orden,   
             'sub_cuenta' => $request->sub_cuenta,
             'fecha_orden' => $request->fecha_orden, 
-            'estado_compra' => 'Registrado',  
+            'estado_compra' => 'Pendiente de factura',    
             'asunto_obra_automotor' => $request->asunto_obra_automotor, 
             'observacion' => $request->observacion,  
             'estado' => true, 

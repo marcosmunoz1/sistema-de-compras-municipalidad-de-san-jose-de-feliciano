@@ -505,7 +505,7 @@
     </dialog>
 @endsection
 @section('js')
-    <script>
+   {{--  <script>
     const oldDestinoId = "{{ old('destino_id') }}"; // <-- Blade se ejecuta acá
 
     document.getElementById('destino_tipo').addEventListener('change', function() {
@@ -527,8 +527,30 @@
                 });
             });
     });
-</script>
+</script> --}}
+ <script>
+    const oldDestinoId = "{{ old('destino_id') }}"; // <-- Blade se ejecuta acá
 
+    document.getElementById('destino_tipo').addEventListener('change', function() {
+        const tipo = this.value;
+        const destinoSelect = document.getElementById('destino_id');
+
+        destinoSelect.innerHTML = '<option value="">Cargando...</option>';
+
+        fetch('{{ url('api/destinos') }}/' + tipo)
+            .then(res => res.json())
+            .then(data => {
+                destinoSelect.innerHTML = '<option value="">Seleccione...</option>';
+
+                data.forEach(dest => {
+                    destinoSelect.innerHTML += `
+                        <option value="${dest.id}" ${oldDestinoId == dest.id ? 'selected' : ''}>
+                            ${dest.nombre}
+                        </option>`;
+                });
+            });
+    });
+</script> 
     <script>
         $('#mitabla').DataTable({
             "pageLength": 5,

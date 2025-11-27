@@ -127,13 +127,13 @@
                                         <x-heroicon-s-pencil class="w-4 h-4"/>
                                     </a> 
 
-                                   {{--  <a href="{{ route('compras.report', $compra->id ) }}"  
-                                       class="btn bg-primary btn-sm" 
-                                       target="_blank">
-                                        <x-heroicon-o-printer class="w-4 h-4"/>
-                                    </a> --}}
+                                     <a href="{{ route('compras.report', $compra->id ) }}"  
+                                        class="btn bg-primary btn-sm" 
+                                        target="_blank">
+                                            <x-heroicon-o-printer class="w-4 h-4"/> 
+                                     </a>
 
-                                    @if ($compra->trashed())
+                                   {{--  @if ($compra->trashed())
                                         <button class="btn btn-success btn-sm"
                                                 onclick="abrirModalRestaurar('{{ url('/admin/compras/'. $compra->id.'/restore') }}')">
                                             <x-heroicon-s-arrow-uturn-left class="w-4 h-4"/>
@@ -143,7 +143,7 @@
                                                 onclick="confirmarEliminacion({{ $compra->id }})">
                                             <x-heroicon-s-trash class="w-4 h-4"/>
                                         </button>
-                                    @endif
+                                    @endif --}}
 
                                 </div>
                             </td>
