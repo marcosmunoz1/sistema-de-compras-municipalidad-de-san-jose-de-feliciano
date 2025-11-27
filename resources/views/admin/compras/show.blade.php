@@ -194,7 +194,7 @@
 
                                 {{-- Precio: input editable --}}
                                 <td class="text-center">
-                                    <input type="nunber" step="0.01" min="0" class="input input-info precio"
+                                    <input type="number" step="0.01" min="0" class="input input-info precio" readonly
                                         name="precios[{{ $detalle->id }}]" value="{{ $detalle->precio ?? '' }}">
                                 </td>
 
