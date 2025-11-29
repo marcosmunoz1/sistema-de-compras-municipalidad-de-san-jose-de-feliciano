@@ -129,21 +129,62 @@ class CompraController extends Controller
      */
     public function edit($id)
     {
-        $compras = Compra::with('detalle_compras')->findOrFail($id);
+        $compra = Compra::with('detalle_compras','proveedor')->findOrFail($id);
         $categorias = Categoria::all();  
         $proveedores = Proveedor::all();
         $empleados = Empleado::all();
         $productos = Producto::all();
-        return view('admin.compras.edit', compact('proveedores', 'empleados', 'categorias', 'productos','compras'));
+        return view('admin.compras.edit', compact('empleados', 'categorias', 'productos','compra'));
     }
 
     /**
      * Update the specified resource in storage.
-     */
-    public function update(Request $request, Compra $compra)
+    */
+    public function update(Request $request, $id)
     {
-        //
+        //return response()->json($request->all());
+        // 1. Validación mínima
+        $request->validate([
+            'precios' => 'required|array',
+            'precios.*' => 'nullable|numeric|min:0',
+        ]);
+
+        // 2. Buscar la compra
+        $compra = Compra::with('detalle_compras')->findOrFail($id);
+
+        $total = 0;
+
+        // 3. Recorrer los detalles y actualizar
+        foreach ($compra->detalle_compras as $detalle) {
+
+            // Si vino precio para ese detalle
+            if (isset($request->precios[$detalle->id])) {
+
+                $nuevoPrecio = $request->precios[$detalle->id];
+
+                // Guardamos el precio
+                $detalle->precio = $nuevoPrecio;
+
+                // Recalculamos subtotal
+                $detalle->subtotal = $nuevoPrecio * $detalle->cantidad;
+
+                $detalle->save();
+            }
+
+            // Sumamos al total
+            $total += $detalle->subtotal;
+        }
+
+        // 4. Actualizamos el total de la compra
+        $compra->total = $total;
+        $compra->save();
+
+        return redirect()
+            ->route('compras.index')
+            ->with('mensaje', 'La compra fue actualizada  correctamente')
+            ->with('icono', 'success');
     }
+
 
     /**
      * Remove the specified resource from storage.

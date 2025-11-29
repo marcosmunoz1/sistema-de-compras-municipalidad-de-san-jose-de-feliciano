@@ -103,7 +103,7 @@
                             </td>
 
                             <td class="text-center">{{ $mov->cantidad }}</td>
-                            <td class="text-center">{{ $mov->fecha }}</td>
+                            <td class="text-center">{{ \Carbon\Carbon::parse($mov->fecha)->format('d/m/Y') }}</td>
 
                             <td class="text-center">
                                 <div class="flex items-center justify-center gap-2">
