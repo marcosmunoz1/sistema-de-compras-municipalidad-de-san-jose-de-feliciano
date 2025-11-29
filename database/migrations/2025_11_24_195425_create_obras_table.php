@@ -25,8 +25,8 @@ return new class extends Migration
 
             // Responsable del área
             $table->string('responsable')->nullable();
-            $table->string('telefono_responsable')->nullable();
-
+            $table->string('resolucion_decreto')->nullable();
+            $table->string('ejecutado_por');
             // Fechas importantes
             $table->date('fecha_inicio')->nullable();
             $table->date('fecha_estimada_fin')->nullable();
@@ -43,7 +43,6 @@ return new class extends Migration
 
             // Presupuesto
             $table->decimal('presupuesto', 15, 2)->nullable();
-            $table->decimal('monto_ejecutado', 15, 2)->default(0);
 
             // Notas o aclaraciones
             $table->text('observaciones')->nullable();

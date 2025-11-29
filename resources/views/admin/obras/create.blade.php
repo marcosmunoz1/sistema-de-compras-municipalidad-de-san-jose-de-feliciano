@@ -75,12 +75,12 @@
                     @enderror
                 </div>
 
-                <!-- Teléfono responsable -->
+                <!-- Ejecutado por: -->
                 <div class="form-control">
-                    <label class="label font-semibold">Teléfono Responsable (Opcional)</label>
-                    <input type="text" name="telefono_responsable" value="{{ old('telefono_responsable') }}"
-                        class="input input-bordered w-full" placeholder="Ej: 3458452814">
-                    @error('telefono_responsable')
+                    <label class="label font-semibold">Ejecutado por:</label>
+                    <input type="text" name="ejecutado_por" value="{{ old('ejecutado_por') }}"
+                        class="input input-bordered w-full" placeholder="Ej: Damian Arevalo">
+                    @error('ejecutado_por')
                         <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
                     @enderror
                 </div>
@@ -95,13 +95,13 @@
                     @enderror
                 </div>
 
-                <!-- Monto ejecutado -->
+                <!-- Resolución o decreto -->
                 <div class="form-control">
-                    <label class="label font-semibold">Monto Ejecutado</label>
-                    <input type="number" name="monto_ejecutado" min="0" step="0.01"
-                        value="{{ old('monto_ejecutado', 0) }}" class="input input-bordered w-full"
-                        placeholder="Ej: 2500000">
-                    @error('monto_ejecutado')
+                    <label class="label font-semibold">Resolución o decreto (Opcional)</label>
+                    <input type="text" name="resolucion_decreto"
+                        value="{{ old('resolucion_decreto') }}" class="input input-bordered w-full"
+                        placeholder="DECRETO MUNICIPAL N° 98/2024">
+                    @error('resolucion_decreto')
                         <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
                     @enderror
                 </div>
