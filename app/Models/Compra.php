@@ -29,7 +29,10 @@ class Compra extends Model
     'estado' => true,
     ];
 
-
+     public function destino()
+    {
+        return $this->morphTo(__FUNCTION__, 'destino_tipo', 'destino_id');
+    }
     public function proveedor()
     {
         return $this->belongsTo(Proveedor::class);

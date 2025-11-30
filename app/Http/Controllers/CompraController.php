@@ -118,17 +118,23 @@ class CompraController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Compra $compra)
+    public function show($id)
     {
-        //
+        $compra = Compra::with('detalle_compras','empleado','proveedor','destino')->findOrFail($id);
+        return view('admin.compras.show', compact('compra'));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Compra $compra)
+    public function edit($id)
     {
-        //
+        $compras = Compra::with('detalle_compras')->findOrFail($id);
+        $categorias = Categoria::all();  
+        $proveedores = Proveedor::all();
+        $empleados = Empleado::all();
+        $productos = Producto::all();
+        return view('admin.compras.edit', compact('proveedores', 'empleados', 'categorias', 'productos','compras'));
     }
 
     /**

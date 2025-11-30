@@ -17,7 +17,7 @@
                     Home
                 </a>
             </li>
-            <li> 
+            <li>
                 <a href="{{ route('compras.index') }}">
                     <x-heroicon-o-shopping-bag class="w-4 h-4 inline" />
                     Compras
@@ -46,17 +46,6 @@
                     <line x1="12" x2="12" y1="8" y2="12"></line>
                     <line x1="12" x2="12.01" y1="16" y2="16"></line>
                 </svg>
-
-                <div class="text-sm">
-                    <p class="font-semibold text-gray-700">Importante</p>
-                    <p class="text-gray-600">
-                        Este formulario es solo para solicitar insumos internamente.
-                        <strong class="text-blue-600">No incluye precios</strong>
-                        y no es válido como orden de compra.
-                        Los precios se registran posteriormente cuando se recibe la factura
-                        del proveedor en el módulo de Compras.
-                    </p>
-                </div>
             </div>
         </div>
     </div>
@@ -109,23 +98,26 @@
                             @enderror
                         </div>
 
-                    <!-- Provincia -->
-                    <div class="space-y-2">
-                        <label for="sub_cuenta" class="text-sm font-medium">Sub cuenta<span class="text-red-600">*</span></label>
-                        <select id="sub_cuenta" name="sub_cuenta" class="select w-full h-10 rounded-md border-base-300 bg-base-200
+                        <!-- Provincia -->
+                        <div class="space-y-2">
+                            <label for="sub_cuenta" class="text-sm font-medium">Sub cuenta<span
+                                    class="text-red-600">*</span></label>
+                            <select id="sub_cuenta" name="sub_cuenta"
+                                class="select w-full h-10 rounded-md border-base-300 bg-base-200
                         px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
-                        focus:border-primary transition @error('sub_cuenta') input-error @enderror" required>
-                            <option value="">Seleccione la sub cuenta</option>
-                            <option>Corralon Municipal</option>
-                        </select>
-                        @error('sub_cuenta')
-                            <small class="text-red-500 error-message">{{ $message }}</small>
-                        @enderror
-                    </div> 
+                        focus:border-primary transition @error('sub_cuenta') input-error @enderror"
+                                required>
+                                <option value="">Seleccione la sub cuenta</option>
+                                <option>Corralon Municipal</option>
+                            </select>
+                            @error('sub_cuenta')
+                                <small class="text-red-500 error-message">{{ $message }}</small>
+                            @enderror
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-        </div> 
 
         <!-- Otra seccion -->
         <div data-slot="card" class="card bg-base-100 shadow-xl p-4 mt-4">
@@ -181,39 +173,108 @@
                             <select id="destino_id" name="destino_id"
                                 class="select w-full h-10 rounded-md border-base-300 bg-base-200
                         px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
-                        focus:border-primary transition @error('destino_id') input-error @enderror" required>
-                            <option value="">Seleccione un destino...</option>      
-                        </select> 
-                        @error('destino_id') 
-                            <small class="text-red-500 error-message">{{ $message }}</small>
-                        @enderror
+                        focus:border-primary transition @error('destino_id') input-error @enderror"
+                                required>
+                                <option value="">Seleccione un destino...</option>
+                            </select>
+                            @error('destino_id')
+                                <small class="text-red-500 error-message">{{ $message }}</small>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 gap-4">
+                        <div class="space-y-2">
+                            <label for="asunto_obra_automotor" class="text-sm font-medium">Asunto de la compra<span
+                                    class="text-red-600">*</span></label>
+                            <textarea value="{{ old('asunto_obra_automotor') }}" type="text" id="asunto_obra_automotor"
+                                name="asunto_obra_automotor" placeholder="Ingrese una justificacion breve de la compra"
+                                class="textarea w-full rounded-md border border-base-300 bg-base-200 focus:outline-none focus:ring-2 focus:ring-primary 
+                        focus:border-primary transition @error('asunto_obra_automotor') input-error @enderror"
+                                required></textarea>
+                            @error('asunto_obra_automotor')
+                                <small class="text-red-500 error-message">{{ $message }}</small>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 gap-4">
+                        <div class="space-y-2">
+                            <label for="observacion" class="text-sm font-medium">Observaciones (Opcional)</label>
+                            <textarea type="text" id="observacion" name="observacion"
+                                placeholder="Ingrese una justificacion breve de la compra"
+                                class="textarea w-full rounded-md border border-base-300 bg-base-200 focus:outline-none focus:ring-2 focus:ring-primary 
+                        focus:border-primary transition @error('observacion') input-error @enderror"
+                                required></textarea>
+                            @error('observacion')
+                                <small class="text-red-500 error-message">{{ $message }}</small>
+                            @enderror
+                        </div>
                     </div>
                 </div>
-                <div class="grid grid-cols-1 gap-4">
-                    <div class="space-y-2">
-                        <label for="asunto_obra_automotor" class="text-sm font-medium">Asunto de la compra<span class="text-red-600">*</span></label>
-                        <textarea value="{{ old('asunto_obra_automotor') }}" type="text" id="asunto_obra_automotor" name="asunto_obra_automotor"  placeholder="Ingrese una justificacion breve de la compra" 
-                        class="textarea w-full rounded-md border border-base-300 bg-base-200 focus:outline-none focus:ring-2 focus:ring-primary 
-                        focus:border-primary transition @error('asunto_obra_automotor') input-error @enderror" required></textarea> 
-                        @error('asunto_obra_automotor') 
-                            <small class="text-red-500 error-message">{{ $message }}</small>
-                        @enderror
-                    </div>
-                </div>
-                <div class="grid grid-cols-1 gap-4">
-                    <div class="space-y-2">
-                        <label for="observacion" class="text-sm font-medium">Observaciones (Opcional)</label>
-                        <textarea type="text" id="observacion" name="observacion"  placeholder="Ingrese una justificacion breve de la compra" 
-                        class="textarea w-full rounded-md border border-base-300 bg-base-200 focus:outline-none focus:ring-2 focus:ring-primary 
-                        focus:border-primary transition @error('observacion') input-error @enderror"></textarea> 
-                        @error('observacion') 
-                            <small class="text-red-500 error-message">{{ $message }}</small>
-                        @enderror
-                    </div>
-                </div> 
             </div>
         </div>
+
+        <div data-slot="card" class="card bg-base-100 shadow-xl p-4 mt-4">
+            <div data-slot="card-header"
+                class="@container/card-header grid auto-rows-min grid-rows-[auto_auto] items-start gap-1.5 px-6 pt-6">
+                <h4 class="text-1xl font-semibold">Datos de la compra</h4>
+                <p class="text-muted-foreground"></p>
+            </div>
+
+            <div data-slot="card-content" class="px-6 [&:last-child]:pb-6">
+                <div class="grid gap-4">
+                    <table class="table table-zebra w-full">
+                        <thead>
+                            <tr>
+                                <th class="text-center">Nr</th>
+                                <th class="text-center">Producto</th>
+                                <th class="text-center">Precio</th>
+                                <th class="text-center">Cantidad</th>
+                                <th class="text-center">Subtotal</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @php $nr = 1; @endphp
+
+                            @foreach ($compras->detalle_compras as $detalle)
+                                <tr>
+                                    <td class="text-center">{{ $nr++ }}</td>
+                                    <td class="text-center">{{ $detalle->producto->nombre }}</td>
+
+                                    {{-- Precio: input editable --}}
+                                    <td class="text-center">
+                                        <input type="number" step="0.01" min="0" class="input input-info precio"
+                                            name="precios[{{ $detalle->id }}]" value="{{ $detalle->precio ?? '' }}">
+                                    </td>
+
+                                    {{-- Cantidad --}}
+                                    <td class="text-center">
+                                        <input type="number" class="cantidad" readonly
+                                            value="{{ $detalle->cantidad }}">
+                                    </td>
+
+                                    {{-- Subtotal --}}
+                                    <td class="text-center">
+                                        <input type="number" class="subtotal" readonly>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+
+                        {{-- Total --}}
+                        <tfoot>
+                            <tr>
+                                <td colspan="4" class="text-right font-bold">Total:</td>
+                                <td class="text-center">
+                                    <input type="number" id="total_compra" readonly>
+                                </td>
+                            </tr>
+                        </tfoot>
+
+                    </table>
+                </div>
+            </div>
         </div>
+
         <div class="bg-base-100 shadow-xl rounded-xl  mt-6">
             <!-- Header -->
             <div class="px-6 pt-6 pb-4">
@@ -258,17 +319,26 @@
                     <p class="text-sm mt-1">Haz clic en "Agregar Insumo" para comenzar</p>
                 </div>
 
-                <div data-slot="card-content" class="px-6 [&:last-child]:pb-6"> 
-                <div class="overflow-x-auto"> 
-                    <div data-slot="table-container" class="relative w-full overflow-x-auto">
-                    <table id="tablaItems" class="w-full caption-bottom text-sm hidden">
-                        <thead data-slot="table-header" class="[&_tr]:border-b">
-                        <tr data-slot="table-row" class="border-b border-gray-200 transition-colors"> 
-                            <th class="text-foreground h-10 px-2 text-left align-middle font-medium whitespace-nowrap w-[300px]">Producto</th>
-                            <th class="text-foreground h-10 px-2 text-left align-middle font-medium whitespace-nowrap w-[120px]">Cantidad</th>
-                            <th class="text-foreground h-10 px-2 text-left align-middle font-medium whitespace-nowrap w-[80px]"></th>
-                        </tr>
-                        </thead> 
+                <div data-slot="card-content" class="px-6 [&:last-child]:pb-6">
+                    <div class="overflow-x-auto">
+                        <div data-slot="table-container" class="relative w-full overflow-x-auto">
+                            <table id="tablaItems" class="w-full caption-bottom text-sm hidden">
+                                <thead data-slot="table-header" class="[&_tr]:border-b">
+                                    <tr data-slot="table-row" class="border-b border-gray-200 transition-colors">
+                                        <th
+                                            class="text-foreground h-10 px-2 text-left align-middle font-medium whitespace-nowrap w-[300px]">
+                                            Producto</th>
+                                        <th
+                                            class="text-foreground h-10 px-2 text-left align-middle font-medium whitespace-nowrap w-[120px]">
+                                            Cantidad</th>
+                                        <th
+                                            class="text-foreground h-10 px-2 text-left align-middle font-medium whitespace-nowrap">
+                                            Observaciones</th>
+                                        <th
+                                            class="text-foreground h-10 px-2 text-left align-middle font-medium whitespace-nowrap w-[80px]">
+                                        </th>
+                                    </tr>
+                                </thead>
 
                                 <tbody id="tablaProductos" data-slot="table-body" class="[&_tr:last-child]:border-0">
                                     <!-- filas dinámicas -->
@@ -277,12 +347,10 @@
                         </div>
                     </div>
 
-                    <div id="resumenItems" class="mt-4 p-4 rounded-lg hidden
-                                bg-gray-50 text-gray-700
-                                dark:bg-gray-800 dark:text-gray-200">
-                        <p class="text-sm text-gray-400"><strong>Total de items:</strong> <span id="totalItems">0</span>
+                    <div id="resumenItems" class="mt-4 p-4 bg-gray-50 rounded-lg hidden">
+                        <p class="text-sm text-gray-600"><strong>Total de items:</strong> <span id="totalItems">0</span>
                             producto(s)</p>
-                        <p class="text-sm text-gray-400 mt-1"><strong>Cantidad total:</strong> <span
+                        <p class="text-sm text-gray-600 mt-1"><strong>Cantidad total:</strong> <span
                                 id="cantidadTotal">0</span> unidades</p>
                     </div>
                 </div>
@@ -505,52 +573,56 @@
     </dialog>
 @endsection
 @section('js')
-   {{--  <script>
-    const oldDestinoId = "{{ old('destino_id') }}"; // <-- Blade se ejecuta acá
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            function calcularTotal() {
+                let total = 0;
+                document.querySelectorAll('tbody tr').forEach(function(row) {
+                    const precio = parseFloat(row.querySelector('.precio').value) || 0;
+                    const cantidad = parseFloat(row.querySelector('.cantidad').value) || 0;
+                    const subtotal = precio * cantidad;
 
-    document.getElementById('destino_tipo').addEventListener('change', function() {
-        const tipo = this.value;
-        const destinoSelect = document.getElementById('destino_id');
+                    row.querySelector('.subtotal').value = subtotal.toFixed(2);
+                    total += subtotal;
+                });
 
-        destinoSelect.innerHTML = '<option value="">Cargando...</option>';
+                document.getElementById('total_compra').value = total.toFixed(2);
+            }
 
-        fetch('{{ url('api/destinos') }}/' + tipo)
-            .then(res => res.json())
-            .then(data => {
-                destinoSelect.innerHTML = '<option value="">Seleccione...</option>';
+            // recalcular al cambiar cualquier precio
+            document.querySelectorAll('.precio').forEach(function(input) {
+                input.addEventListener('input', calcularTotal);
+            });
 
-                data.forEach(dest => {
-                    destinoSelect.innerHTML += `
+            // calcular al cargar la página
+            calcularTotal();
+        });
+    </script>
+
+    <script>
+        const oldDestinoId = "{{ old('destino_id') }}"; // <-- Blade se ejecuta acá
+
+        document.getElementById('destino_tipo').addEventListener('change', function() {
+            const tipo = this.value;
+            const destinoSelect = document.getElementById('destino_id');
+
+            destinoSelect.innerHTML = '<option value="">Cargando...</option>';
+
+            fetch('{{ url('api/destinos') }}/' + tipo)
+                .then(res => res.json())
+                .then(data => {
+                    destinoSelect.innerHTML = '<option value="">Seleccione...</option>';
+
+                    data.forEach(dest => {
+                        destinoSelect.innerHTML += `
                         <option value="${dest.id}" ${oldDestinoId == dest.id ? 'selected' : ''}>
                             ${dest.nombre}
                         </option>`;
+                    });
                 });
-            });
-    });
-</script> --}}
- <script>
-    const oldDestinoId = "{{ old('destino_id') }}"; // <-- Blade se ejecuta acá
+        });
+    </script>
 
-    document.getElementById('destino_tipo').addEventListener('change', function() {
-        const tipo = this.value;
-        const destinoSelect = document.getElementById('destino_id');
-
-        destinoSelect.innerHTML = '<option value="">Cargando...</option>';
-
-        fetch('{{ url('api/destinos') }}/' + tipo)
-            .then(res => res.json())
-            .then(data => {
-                destinoSelect.innerHTML = '<option value="">Seleccione...</option>';
-
-                data.forEach(dest => {
-                    destinoSelect.innerHTML += `
-                        <option value="${dest.id}" ${oldDestinoId == dest.id ? 'selected' : ''}>
-                            ${dest.nombre}
-                        </option>`;
-                });
-            });
-    });
-</script> 
     <script>
         $('#mitabla').DataTable({
             "pageLength": 5,
@@ -575,165 +647,65 @@
             }
         });
     </script>
-    <style>
-        /* Texto dentro de la tabla */
-        #mitabla_wrapper,
-        #mitabla_wrapper * {
-            color: var(--fallback-bc, #e5e7eb) !important;
-            /* gris claro */
+    <script>
+        // Agregar producto a la tabla
+        function agregarProducto(id, nombre) {
+            const tabla = document.getElementById('tablaProductos');
+
+            // crear fila con la estructura y clases similares a tu ejemplo
+            const fila = document.createElement('tr');
+            fila.setAttribute('data-slot', 'table-row');
+            fila.className = 'hover:bg-muted/50 transition-colors';
+
+            fila.innerHTML = `
+                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap">
+                <div class="flex flex-col">
+                    <span class="font-medium text-sm truncate">${escapeHtml(nombre)}</span>
+                    <small class="text-xs text-gray-500">ID: ${id}</small>
+                    <input type="hidden" name="productos[]" value="${id}">
+                </div>
+                </td>
+
+                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap"> 
+                <input type="number" name="cantidades[]" min="1" value="1" required
+                    class="w-full h-10 rounded-md border border-base-300 bg-base-200
+                                    px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
+                                    focus:border-primary transition"
+                    oninput="actualizarTotales()">
+                </td>
+
+                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap">
+                <input name="observaciones[]" placeholder="Observaciones del item..." value=""
+                    class="w-full h-10 rounded-md border border-base-300 bg-base-200
+                                    px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
+                                    focus:border-primary transition">
+                </td>
+
+                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap">
+                <button type="button" class="inline-flex items-center justify-center text-sm font-medium h-8 rounded-md gap-1.5 px-3 text-red-600"
+                    onclick="eliminarFila(this)">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trash-2">
+                    <path d="M10 11v6"></path>
+                    <path d="M14 11v6"></path>
+                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"></path>
+                    <path d="M3 6h18"></path>
+                    <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                    </svg>
+                </button>
+                </td>
+            `;
+
+            tabla.appendChild(fila);
+
+            // Mostrar tabla y resumen
+            document.getElementById('tablaItems').classList.remove('hidden');
+            document.getElementById('mensajeVacio').classList.add('hidden');
+            document.getElementById('resumenItems').classList.remove('hidden');
+
+            // actualizar contadores
+            actualizarTotales();
         }
-
-        /* Inputs del buscador */
-        .dataTables_filter input {
-            background-color: #1f2937 !important;
-            /* gris oscuro */
-            color: #f3f4f6 !important;
-            /* texto claro */
-            border: 1px solid #4b5563 !important;
-            padding: 4px 8px;
-            border-radius: 6px;
-        }
-
-        /* Select de cantidad (Mostrar X) */
-        .dataTables_length select {
-            background-color: #1f2937 !important;
-            color: #f3f4f6 !important;
-            border: 1px solid #4b5563 !important;
-            border-radius: 6px;
-        }
-
-        /* Paginación */
-        .dataTables_paginate a {
-            color: #f3f4f6 !important;
-        }
-
-        .dataTables_paginate .current {
-            background-color: #374151 !important;
-            color: #ffffff !important;
-            border: none !important;
-        }
-
-        /* Contenedor general de DataTables */
-        .dataTables_wrapper {
-            color: #fff !important;
-            /* texto general blanco */
-        }
-
-        /* Select de cantidad por página */
-        .dataTables_length select {
-            color: #fff !important;
-            /* color del número */
-            background-color: #1f1f1f !important;
-            /* fondo oscuro */
-            border: 1px solid #444 !important;
-        }
-
-        /* Texto "Mostrar X productos" */
-        .dataTables_length label {
-            color: #fff !important;
-        }
-
-        /* Buscador */
-        .dataTables_filter label {
-            color: #fff !important;
-        }
-
-        .dataTables_filter input {
-            color: #fff !important;
-            background-color: #1f1f1f !important;
-            border: 1px solid #444 !important;
-        }
-
-        /* Paginación */
-        .dataTables_paginate a {
-            color: #fff !important;
-        }
-
-        .dataTables_paginate .current {
-            background-color: #444 !important;
-            border: 1px solid #666 !important;
-        }
-    </style>
-<script>
-// Agregar producto a la tabla
-// Colocá esto arriba de agregarProducto(), en el mismo scope global
-function escapeHtml(text) {
-  if (text === null || text === undefined) return '';
-  return String(text)
-    .replaceAll('&','&amp;')
-    .replaceAll('<','&lt;')
-    .replaceAll('>','&gt;')
-    .replaceAll('"','&quot;')
-    .replaceAll("'",'&#39;');
-} 
-function agregarProducto(id, nombre) {
-    const tabla = document.getElementById('tablaProductos'); 
-    // ✅ Buscar si ya existe el producto
-    const filaExistente = [...tabla.querySelectorAll('tr')].find(fila => {
-        const inputHidden = fila.querySelector('input[type="hidden"][name="productos[]"]');
-        return inputHidden && inputHidden.value == id;
-    });
-
-    // ✅ Si ya existe: aumentar cantidad
-    if (filaExistente) {
-        const inputCant = filaExistente.querySelector('input[type="number"][name="cantidades[]"]');
-        inputCant.value = parseInt(inputCant.value) + 1;
-
-        // pequeño efecto visual
-        filaExistente.classList.add("bg-green-100");
-        setTimeout(() => filaExistente.classList.remove("bg-green-100"), 300);
-
-        actualizarTotales();
-        return; // ✅ NO crear nueva fila
-    }
-
-    // ✅ Si NO existe crear la fila con TUS ESTILOS
-    const fila = document.createElement('tr');
-    fila.setAttribute('data-slot','table-row'); 
-    fila.className = 'hover:bg-muted/50 transition-colors';
-
-    fila.innerHTML = `
-        <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap">
-        <div class="flex flex-col">
-            <span class="font-medium text-sm truncate">${escapeHtml(nombre)}</span>
-            <small class="text-xs text-gray-500">ID: ${id}</small>
-            <input type="hidden" name="productos[]" value="${id}">
-        </div>
-        </td>
-
-        <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap"> 
-        <input type="number" name="cantidades[]" min="1" value="1" required
-            class="w-full h-10 rounded-md border border-base-300 bg-base-200
-                        px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
-                        focus:border-primary transition"
-            oninput="actualizarTotales()">
-        </td>
-
-        <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap">
-        <button type="button" class="inline-flex items-center justify-center text-sm font-medium h-8 rounded-md gap-1.5 px-3 text-red-600"
-            onclick="eliminarFila(this)">
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
-            stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trash-2">
-            <path d="M10 11v6"></path>
-            <path d="M14 11v6"></path>
-            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"></path>
-            <path d="M3 6h18"></path>
-            <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-            </svg>
-        </button>
-        </td>
-    `;
-
-    tabla.appendChild(fila);
-
-    // ✅ Mostrar tabla y resumen
-    document.getElementById('tablaItems').classList.remove('hidden');
-    document.getElementById('mensajeVacio').classList.add('hidden');
-    document.getElementById('resumenItems').classList.remove('hidden');
-
-    actualizarTotales();
-}
-
 
         // Eliminar fila (botón)
         function eliminarFila(btn) {
@@ -770,11 +742,11 @@ function agregarProducto(id, nombre) {
             document.getElementById('cantidadTotal').textContent = cantidadTotal;
         }
 
-// Pequeña función para escapar texto (evita inyección al insertar nombre)
-function escapeHtml(text) {
-  if (!text) return '';
-  return text.replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;').replaceAll("'",'&#39;');
-}
-</script>
- 
-@endsection 
+        // Pequeña función para escapar texto (evita inyección al insertar nombre)
+        function escapeHtml(text) {
+            if (!text) return '';
+            return text.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;')
+                .replaceAll("'", '&#39;');
+        }
+    </script>
+@endsection
