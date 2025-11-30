@@ -81,10 +81,10 @@
                     class="input input-bordered w-full" readonly>
             </div>
 
-            <!-- Teléfono responsable -->
+            <!-- Ejecutado por: -->
             <div class="form-control">
-                <label class="label font-semibold">Teléfono Responsable</label>
-                <input type="text" name="telefono_responsable" value="{{ $obra->telefono_responsable }}"
+                <label class="label font-semibold">Ejecutado por:</label>
+                <input type="text" name="ejecutado_por" value="{{ $obra->ejecutado_por }}"
                     class="input input-bordered w-full" readonly>
             </div>
 
@@ -95,11 +95,11 @@
                     class="input input-bordered w-full" readonly>
             </div>
 
-            <!-- Monto ejecutado -->
+            <!-- Resolución o decreto -->
             <div class="form-control">
                 <label class="label font-semibold">Monto Ejecutado</label>
-                <input type="number" name="monto_ejecutado" min="0" step="0.01"
-                    value="{{ $obra->monto_ejecutado }}" class="input input-bordered w-full" readonly>
+                <input type="text" name="resolucion_decreto"
+                    value="{{ $obra->resolucion_decreto }}" class="input input-bordered w-full" readonly>
             </div>
 
             <!-- Dirección -->

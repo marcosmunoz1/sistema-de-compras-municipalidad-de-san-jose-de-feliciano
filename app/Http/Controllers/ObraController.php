@@ -37,13 +37,13 @@ class ObraController extends Controller
                     ->orWhere('barrio', 'LIKE', "%{$search}%")
                     ->orWhere('ciudad', 'LIKE', "%{$search}%")
                     ->orWhere('responsable', 'LIKE', "%{$search}%")
-                    ->orWhere('telefono_responsable', 'LIKE', "%{$search}%")
+                    ->orWhere('resolucion_decreto', 'LIKE', "%{$search}%")
                     ->orWhere('fecha_inicio', 'LIKE', "%{$search}%")
                     ->orWhere('fecha_estimada_fin', 'LIKE', "%{$search}%")
                     ->orWhere('fecha_fin', 'LIKE', "%{$search}%")
                     ->orWhere('estado_obra', 'LIKE', "%{$search}%")
                     ->orWhere('presupuesto', 'LIKE', "%{$search}%")
-                    ->orWhere('monto_ejecutado', 'LIKE', "%{$search}%")
+                    ->orWhere('ejecutado_por', 'LIKE', "%{$search}%")
                     ->orWhere('observaciones', 'LIKE', "%{$search}%");
 
                 // Si escriben "activo" o "inactivo"
@@ -76,13 +76,13 @@ class ObraController extends Controller
         'barrio' => 'nullable|string|max:100',
         'ciudad' => 'nullable|string|max:150',
         'responsable' => 'nullable|string|max:255',
-        'telefono_responsable' => 'nullable|string|max:30',
+        'resolucion_decreto' => 'nullable|string|max:255',
         'fecha_inicio' => 'nullable|date',
         'fecha_estimada_fin' => 'nullable|date|after_or_equal:fecha_inicio',
         'fecha_fin' => 'nullable|date|after_or_equal:fecha_inicio',
         'estado_obra' => 'required|in:planificada,en_ejecucion,demorada,finalizada,cancelada',
         'presupuesto' => 'nullable|numeric|min:0',
-        'monto_ejecutado' => 'nullable|numeric|min:0',
+        'ejecutado_por' => 'required|string|max:255',
         'observaciones' => 'nullable|string',
         ],
         [
@@ -96,13 +96,13 @@ class ObraController extends Controller
         $obra->direccion = $request->direccion;
         $obra->barrio = $request->barrio;
         $obra->responsable = $request->responsable;
-        $obra->telefono_responsable = $request->telefono_responsable;
+        $obra->resolucion_decreto = $request->resolucion_decreto;
         $obra->fecha_inicio = $request->fecha_inicio;
         $obra->fecha_estimada_fin = $request->fecha_estimada_fin;
         $obra->fecha_fin = $request->fecha_fin;
         $obra->estado_obra = $request->estado_obra;
         $obra->presupuesto = $request->presupuesto;
-        $obra->monto_ejecutado = $request->monto_ejecutado;
+        $obra->ejecutado_por = $request->ejecutado_por;
         $obra->observaciones = $request->observaciones;
 
         $obra->save();

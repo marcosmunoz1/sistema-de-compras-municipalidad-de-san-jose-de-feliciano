@@ -21,6 +21,7 @@ Route::get('/admin', function () {
     return view('admin.index'); 
 })->name('admin.index'); 
 
+//Rutas para compras
 Route::get('/admin/compras', [App\Http\Controllers\CompraController::class, 'index'])->name('compras.index');
 Route::get('/admin/compras/create', [App\Http\Controllers\CompraController::class, 'create'])->name('compras.create');
 Route::post('/admin/compras/store', [App\Http\Controllers\CompraController::class, 'store'])->name('compras.store');
