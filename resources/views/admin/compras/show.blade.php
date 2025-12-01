@@ -194,18 +194,17 @@
 
                                 {{-- Precio: input editable --}}
                                 <td class="text-center">
-                                    <input type="number" step="0.01" min="0" class="input input-info precio" readonly
-                                        name="precios[{{ $detalle->id }}]" value="{{ $detalle->precio ?? '' }}">
+                                    ${{ number_format($detalle->precio, 2) ?? '' }}
                                 </td>
 
                                 {{-- Cantidad --}}
                                 <td class="text-center">
-                                    <input type="number" class="cantidad" readonly value="{{ $detalle->cantidad }}">
+                                    <input type="text" class="text-center cantidad" readonly value="{{ $detalle->cantidad }}">
                                 </td>
 
                                 {{-- Subtotal --}}
                                 <td class="text-center">
-                                    <input type="number" class="subtotal" readonly>
+                                    ${{ number_format($detalle->subtotal, 2) ?? ''}}
                                 </td>
                             </tr>
                         @endforeach
@@ -216,7 +215,7 @@
                         <tr>
                             <td colspan="4" class="text-right font-bold">Total:</td>
                             <td class="text-center">
-                                <input type="number" id="total_compra" readonly>
+                                ${{ number_format($compra->total, 2) }}
                             </td>
                         </tr>
                     </tfoot>
