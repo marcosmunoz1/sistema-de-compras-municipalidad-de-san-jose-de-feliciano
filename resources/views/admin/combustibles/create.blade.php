@@ -137,7 +137,7 @@ gap-1.5 px-6 pt-6">
 
 
 <!-- Select Vehículo -->
-<div class="space-y-2">
+{{-- <div class="space-y-2">
 <label for="vehiculo_id" class="text-sm font-medium">Vehículo<span class="text-red-600">*</span></label>
 <select id="vehiculo_id" name="vehiculo_id"
     class="w-full h-10 rounded-md border border-base-300 bg-base-200
@@ -149,7 +149,7 @@ gap-1.5 px-6 pt-6">
         data-marca="{{ $vehiculo->marca }}"
         data-modelo="{{ $vehiculo->modelo }}"
         data-tipo="{{ $vehiculo->tipo }}" 
-        data-combustible="{{ $vehiculo->tipo_combustible }}" 
+        data-combustible="{{ $vehiculo->tipo_combustible_id }}" 
         data-ultima="{{ $vehiculo->created_at }}">
         Patente: {{ $vehiculo->patente }} 
         - Marca: {{ $vehiculo->marca }}  
@@ -159,7 +159,23 @@ gap-1.5 px-6 pt-6">
  @error('vehiculo_id') 
     <small class="text-red-500 error-message">{{ $message }}</small>
 @enderror
-</div>
+</div> --}}
+ <div class="space-y-2">
+    <label for="destino_tipo" class="text-sm font-medium">Destino de la carga</label>
+    <select id="destino_tipo" name="destino_tipo"
+        class="select w-full h-10 rounded-md border-base-300 bg-base-200
+        px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
+        focus:border-primary transition @error('destino_tipo') input-error @enderror"
+                required>
+        <option value="">Seleccione el destino de la carga</option>
+        <option value="vehiculo">Vehiculo</option>
+        <option value="destino">Destino</option>  
+        <option value="equipo">Equipo</option>  
+    </select>
+    @error('destino_tipo')
+        <small class="text-red-500 error-message">{{ $message }}</small>
+    @enderror
+</div> 
 
 
 <!-- Select Conductor / Chofer -->
@@ -398,7 +414,7 @@ focus:border-primary transition @error('empleado_id') input-error @enderror" req
             // Cargar datos reales
             $('#v_marca_modelo').text(selected.data('marca') + " " + selected.data('modelo'));
             $('#v_tipo').text(selected.data('tipo'));
-            $('#v_tipo_combustible').text(selected.data('combustible'));
+            $('#v_tipo_combustible').text(selected.data('combustible')); 
             $('#v_ultima_carga').text(selected.data('ultima')); 
         }
 

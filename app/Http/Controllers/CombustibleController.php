@@ -9,6 +9,7 @@ use App\Models\User;
 use App\Models\Vehiculo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 
 class CombustibleController extends Controller
@@ -50,7 +51,7 @@ class CombustibleController extends Controller
     public function store(Request $request)
     { 
 
-        /* return response()->json($request->all());  */
+        return response()->json($request->all()); 
         
         $request->validate([
             'vehiculo_id' => 'required',
@@ -64,35 +65,48 @@ class CombustibleController extends Controller
             'sub_cuenta' => 'required',
             'observaciones' => 'required' 
         ]); 
-        
-         // Generar número de orden 
+         
+      
         $lastOrder = Combustible::max('codigo');   
         $newOrder = $lastOrder ? $lastOrder + 1 : 13000;  
-          
         $codigo = str_pad($newOrder, 8, '0', STR_PAD_LEFT);
+    
         $monto = $request->litros * $request->precio; 
-        $user_id = Auth::user()->id; 
+        $user_id = Auth::user()->id;
 
-        $combustible = Combustible::create([ 
-            'vehiculo_id' => $request->vehiculo_id,
+        DB::beginTransaction();
+        try{ 
+            Combustible::create([ 
             'empleado_id' => $request->empleado_id,
             'user_id' => $user_id,  
             'codigo' =>  $codigo,
-            'litros' => $request->litros,
+            'litros' => $request->litros, 
             'tipo' => $request->combustible,  
             'sub_cuenta' => $request->sub_cuenta,
             'precio' => $request->precio,
-            'estacion' => $request->estacion, 
-            'fecha' => $request->fecha,
-            'monto' => $monto,
+            'estacion' => $request->estacion,  
+            'fecha' => $request->fecha, 
+            'destino_tipo' => modeloDestinoCobustible($request->destino_tipo),           
+            'destino_id' => $request->destino_id,   
+            'monto' => $monto, 
             'tipo_de_pago' => $request->tipo_de_pago,
             'observaciones' => $request->observaciones,
             'estado' => true, 
-        ]); 
+            ]); 
 
-        return redirect()->route('combustibles.index')
-        ->with('mensaje', 'Combustible creado exitosamente')
-        ->with('icono', 'success'); 
+            DB::commit();
+            return redirect()->route('combustibles.index')
+            ->with('mensaje', 'Combustible creado exitosamente')
+            ->with('icono', 'success');
+            
+        } catch (\Exception $e) {
+            DB::rollback();
+            // Log the error for debugging
+            \Illuminate\Support\Facades\Log::error('Error creating combustible: ' . $e->getMessage());
+            \Illuminate\Support\Facades\Log::error('Error trace: ' . $e->getTraceAsString());
+            return redirect()->back()->with('error', 'Error al crear el combustible. Por favor intente nuevamente.');
+        }
+      
     }
 
     /**

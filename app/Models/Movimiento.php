@@ -28,7 +28,7 @@ class Movimiento extends Model
         return class_basename($this->origen) . ': ' . ($this->origen->nombre ?? 'Sin nombre');
     }
 
-    public function getDestinoLabelAttribute()
+    public function getDestinoLabelAttribute() 
     {
         if (!$this->destino) return '---';
 
@@ -39,7 +39,7 @@ class Movimiento extends Model
     // Relación polimórfica con el origen
     public function origen()
     {
-        return $this->morphTo(__FUNCTION__, 'origen_tipo', 'origen_id');
+        return $this->morphTo(__FUNCTION__, 'origen_tipo', 'origen_id'); 
     }
 
     // Relación polimórfica con el destino

@@ -26,7 +26,10 @@ return new class extends Migration
             $table->string('observacion')->nullable(); // listo 
             $table->boolean('estado')->default(true); // listo store 
             $table->softDeletes(); // listo  
-            $table->timestamps(); //listo 
+            $table->timestamps(); //listo  
+
+            // Polimorfismo manual
+            $table->index(['destino_tipo', 'destino_id']); // no esta hecha esta modificacion en la base de datos
         });
     }
 
