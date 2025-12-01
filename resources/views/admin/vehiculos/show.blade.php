@@ -88,7 +88,7 @@
                             <label for="tipo" class="text-sm font-medium">Tipo</label>
                             <select id="tipo" name="tipo" class="select select-bordered w-full h-10" disabled>
                                 @php
-                                    $tipos = ['Auto', 'Moto', 'Camioneta', 'Camión', 'Acoplado', 'Especial'];
+                                    $tipos = ['AUTO', 'MOTO', 'CAMIONETA', 'CAMION', 'ACOPLADO', 'Especial', 'COLECTIVO', 'MINI BUS', 'RETRO ESCAVADORA', 'TRACTOR', 'UTILITARIO'];
                                 @endphp
 
                                 @foreach ($tipos as $tipo)

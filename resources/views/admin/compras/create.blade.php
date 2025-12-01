@@ -579,83 +579,61 @@
         });
     </script>
     <style>
-        /* Texto dentro de la tabla */
-        #mitabla_wrapper,
-        #mitabla_wrapper * {
+       /* SOLO SE APLICA SI EL BODY TIENE LA CLASE "dark" */
+        .dark #mitabla_wrapper,
+        .dark #mitabla_wrapper * {
             color: var(--fallback-bc, #e5e7eb) !important;
-            /* gris claro */
         }
 
-        /* Inputs del buscador */
-        .dataTables_filter input {
+        .dark .dataTables_filter input {
             background-color: #1f2937 !important;
-            /* gris oscuro */
             color: #f3f4f6 !important;
-            /* texto claro */
             border: 1px solid #4b5563 !important;
             padding: 4px 8px;
             border-radius: 6px;
         }
 
-        /* Select de cantidad (Mostrar X) */
-        .dataTables_length select {
+        .dark .dataTables_length select {
             background-color: #1f2937 !important;
             color: #f3f4f6 !important;
             border: 1px solid #4b5563 !important;
             border-radius: 6px;
         }
 
-        /* Paginación */
-        .dataTables_paginate a {
+        .dark .dataTables_paginate a {
             color: #f3f4f6 !important;
         }
 
-        .dataTables_paginate .current {
+        .dark .dataTables_paginate .current {
             background-color: #374151 !important;
             color: #ffffff !important;
             border: none !important;
         }
 
-        /* Contenedor general de DataTables */
-        .dataTables_wrapper {
-            color: #fff !important;
-            /* texto general blanco */
-        }
-
-        /* Select de cantidad por página */
-        .dataTables_length select {
-            color: #fff !important;
-            /* color del número */
-            background-color: #1f1f1f !important;
-            /* fondo oscuro */
-            border: 1px solid #444 !important;
-        }
-
-        /* Texto "Mostrar X productos" */
-        .dataTables_length label {
+        .dark .dataTables_wrapper {
             color: #fff !important;
         }
 
-        /* Buscador */
-        .dataTables_filter label {
+        .dark .dataTables_length label,
+        .dark .dataTables_filter label {
             color: #fff !important;
         }
 
-        .dataTables_filter input {
+        .dark .dataTables_filter input {
             color: #fff !important;
             background-color: #1f1f1f !important;
             border: 1px solid #444 !important;
         }
 
-        /* Paginación */
-        .dataTables_paginate a {
+        .dark .dataTables_paginate a {
             color: #fff !important;
         }
 
-        .dataTables_paginate .current {
+        .dark .dataTables_paginate .current {
             background-color: #444 !important;
             border: 1px solid #666 !important;
         }
+
     </style>
 <script>
 // Agregar producto a la tabla
