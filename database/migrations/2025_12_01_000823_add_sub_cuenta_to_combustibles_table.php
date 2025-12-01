@@ -8,11 +8,11 @@ return new class extends Migration
 {
     /**
      * Run the migrations.
-     */
+     */ 
     public function up(): void
     {
-        Schema::table('vehiculos', function (Blueprint $table) {
-             $table->foreignId('tipo_combustible_id')->constrained('tipo_combustibles')->cascadeOnDelete();  // Diesel etc... 
+        Schema::table('combustibles', function (Blueprint $table) {
+            $table->string('sub_cuenta')->after('tipo');  
         });
     }
 
@@ -21,8 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('vehiculos', function (Blueprint $table) {
-            $table->dropColumn('tipo_combustible');
+        Schema::table('combustibles', function (Blueprint $table) {
+            $table->dropColumn('sub_cuenta')->after('tipo');   
         });
     }
 };

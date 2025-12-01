@@ -70,23 +70,8 @@
             <!-- FILA 3 INPUTS -->
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
 
-                <!-- Código -->
-                <div class="space-y-2">
-                    <label for="codigo" class="text-sm font-medium">Código de Orden<span class="text-red-600">*</span></label>
-                    <input  
-                        id="codigo"
-                        name="codigo"
-                        placeholder="Ejemplo: OCB-001..."
-                        value="{{ old('codigo') }}"
-                        class="w-full h-10 rounded-md border border-base-300 bg-base-200 
-                        px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
-                        focus:border-primary transition @error('codigo') input-error @enderror"> 
-                        @error('codigo')
-                            <small class="text-red-500 error-message">{{ $message }}</small>
-                        @enderror
-                </div>
-
-                <!-- Fecha -->
+                <!-- Código --> 
+                <!-- Fecha --> 
                 <div class="space-y-2">
                     <label for="fecha" class="text-sm font-medium">Fecha de Emisión<span class="text-red-600">*</span></label>
                     <input 
@@ -104,20 +89,21 @@
 
                 <!-- Usuario -->
                 <div class="space-y-2">
-                    <label for="user_id" class="text-sm font-medium">Usuario que Autoriza<span class="text-red-600">*</span></label>
+                    <label for="sub_cuenta" class="text-sm font-medium">Sub cuenta<span class="text-red-600">*</span></label>
 
                     <select 
-                        id="user_id"
-                        name="user_id"
+                        id="sub_cuenta"
+                        name="sub_cuenta"
                         class="select w-full h-10 rounded-md border-base-300 bg-base-200
                         px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
-                        focus:border-primary transition @error('user_id') input-error @enderror" required> 
-                        <option value="">Seleccione un usuario</option>   
-                        @foreach ($users as $usuario) 
-                            <option value="{{ $usuario->id }}">{{ $usuario->name }} - {{ $usuario->roles->pluck('name')->join(', ') }}</option>  
-                        @endforeach 
+                        focus:border-primary transition @error('sub_cuenta') input-error @enderror" required> 
+                        <option value="">Seleccione una sub cuenta</option>
+                        <option value="Secretaria de obras publicas">Secretaria de obras publicas</option>
+                        <option value="Secretaria de desarrollos humanos">Secretaria de desarrollos humanos</option>
+                        <option value="Secretaria de gobierno">Secretaria de gobierno</option>
+                        <option value="Departamento ejecutivo municipal">Departamento ejecutivo municipal</option> 
                     </select>
-                    @error('user_id')
+                    @error('sub_cuenta')
                         <small class="text-red-500 error-message">{{ $message }}</small>
                     @enderror
                 </div>
@@ -326,9 +312,7 @@ focus:border-primary transition @error('empleado_id') input-error @enderror" req
                         px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary
                         focus:border-primary @error('estacion') input-error @enderror transition" required>
                         <option value="">Cualquier estación autorizada</option>
-                        <option>YPF Ruta 14</option> 
-                        <option>SHELL Centro</option>
-                        <option>AXION Norte</option>
+                        <option>YPF Feliciano</option> 
                     </select>
                     @error('estacion')
                         <small class="text-red-500 error-message">{{ $message }}</small>

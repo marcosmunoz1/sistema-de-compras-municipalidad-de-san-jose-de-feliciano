@@ -17,7 +17,12 @@ class Tipo_combustibles extends Model
     ];
     protected $attributes = [
       'estado' => true,
-    ];
+    ]; 
+    
+    public function vehiculos()
+    {
+      return $this->hasMany(Vehiculo::class);
+    }
    
 
 }

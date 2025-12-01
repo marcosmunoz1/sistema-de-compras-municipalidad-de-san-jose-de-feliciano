@@ -8,6 +8,7 @@ use App\Models\Tipo_combustibles;
 use App\Models\User;
 use App\Models\Vehiculo;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 
 class CombustibleController extends Controller
@@ -53,26 +54,33 @@ class CombustibleController extends Controller
         
         $request->validate([
             'vehiculo_id' => 'required',
-            'empleado_id' => 'required',
-            'user_id' => 'required',
-            'codigo' => 'required|unique:combustibles,codigo',
+            'empleado_id' => 'required', 
             'fecha' => 'required',
             'litros' => 'required|numeric',
             'precio' => 'required|numeric',
             'combustible' => 'required',
             'estacion' => 'required',
             'tipo_de_pago' => 'required',
+            'sub_cuenta' => 'required',
             'observaciones' => 'required' 
         ]); 
-        $monto = $request->litros * $request->precio; 
         
+         // Generar número de orden 
+        $lastOrder = Combustible::max('codigo');   
+        $newOrder = $lastOrder ? $lastOrder + 1 : 13000;  
+          
+        $codigo = str_pad($newOrder, 8, '0', STR_PAD_LEFT);
+        $monto = $request->litros * $request->precio; 
+        $user_id = Auth::user()->id; 
+
         $combustible = Combustible::create([ 
             'vehiculo_id' => $request->vehiculo_id,
             'empleado_id' => $request->empleado_id,
-            'user_id' => $request->user_id,
-            'codigo' => $request->codigo,
+            'user_id' => $user_id,  
+            'codigo' =>  $codigo,
             'litros' => $request->litros,
-            'tipo' => $request->combustible, 
+            'tipo' => $request->combustible,  
+            'sub_cuenta' => $request->sub_cuenta,
             'precio' => $request->precio,
             'estacion' => $request->estacion, 
             'fecha' => $request->fecha,
@@ -80,7 +88,7 @@ class CombustibleController extends Controller
             'tipo_de_pago' => $request->tipo_de_pago,
             'observaciones' => $request->observaciones,
             'estado' => true, 
-        ]);
+        ]); 
 
         return redirect()->route('combustibles.index')
         ->with('mensaje', 'Combustible creado exitosamente')

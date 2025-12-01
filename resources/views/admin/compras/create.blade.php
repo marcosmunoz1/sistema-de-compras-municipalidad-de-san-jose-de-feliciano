@@ -115,8 +115,11 @@
                         <select id="sub_cuenta" name="sub_cuenta" class="select w-full h-10 rounded-md border-base-300 bg-base-200
                         px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
                         focus:border-primary transition @error('sub_cuenta') input-error @enderror" required>
-                            <option value="">Seleccione la sub cuenta</option>
-                            <option>Corralon Municipal</option>
+                            <option value="">Seleccione la sub cuenta</option> 
+                            <option value="Secretaria de obras publicas">Secretaria de obras publicas</option>
+                            <option value="Secretaria de desarrollos humanos">Secretaria de desarrollos humanos</option>
+                            <option value="Secretaria de gobierno">Secretaria de gobierno</option>
+                            <option value="Departamento ejecutivo municipal">Departamento ejecutivo municipal</option> 
                         </select>
                         @error('sub_cuenta')
                             <small class="text-red-500 error-message">{{ $message }}</small>

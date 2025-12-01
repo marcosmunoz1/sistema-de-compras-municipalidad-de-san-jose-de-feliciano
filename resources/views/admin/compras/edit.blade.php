@@ -279,9 +279,12 @@
                                     <td class="text-center">
                                         <div class="flex items-center gap-1 justify-center">
                                             <span class="text-gray-600 select-none">$</span>
-                                            <input type="number" step="0.01" min="0"
-                                                class="input input-info precio w-28" name="precios[{{ $detalle->id }}]"
-                                                value="{{ $detalle->precio ?? '' }}">
+                                            <input
+                                                type="text"
+                                                class="input input-info precio w-28"
+                                                name="precios[{{ $detalle->id }}]"
+                                                value="{{ $detalle->precio !== null ? number_format($detalle->precio, 2, ',', '.') : '' }}"
+                                            >
                                         </div>
                                     </td>
 
@@ -339,29 +342,141 @@
     </form>
 @endsection
 @section('js')
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            function calcularTotal() {
-                let total = 0;
-                document.querySelectorAll('tbody tr').forEach(function(row) {
-                    const precio = parseFloat(row.querySelector('.precio').value) || 0;
-                    const cantidad = parseFloat(row.querySelector('.cantidad').value) || 0;
-                    const subtotal = precio * cantidad;
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const form = document.querySelector('form'); // el form de edición
+    const precioInputs = document.querySelectorAll('input.precio');
+    const filas = document.querySelectorAll('tbody tr');
+    const totalInput = document.getElementById('total_compra');
 
-                    row.querySelector('.subtotal').value = subtotal.toFixed(2);
-                    total += subtotal;
-                });
+    function normalizarPrecio(valor) {
+        if (!valor) return 0;
+        let raw = valor.toString().replace(/[^0-9,\.]/g, ''); // solo dígitos/coma/punto
+        raw = raw.replace(/\./g, '');  // quita puntos de miles
+        raw = raw.replace(',', '.');   // coma decimal -> punto
+        const num = parseFloat(raw);
+        return isNaN(num) ? 0 : num;
+    }
 
-                document.getElementById('total_compra').value = total.toFixed(2);
-            }
+    function formatearPrecio(num) {
+        if (!num) return '';
+        const partes = Number(num).toFixed(2).split('.');
+        const entero = partes[0].replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+        const decimal = partes[1];
+        return `${entero},${decimal}`;
+    }
 
-            // recalcular al cambiar cualquier precio
-            document.querySelectorAll('.precio').forEach(function(input) {
-                input.addEventListener('input', calcularTotal);
-            });
+    function calcularTotal() {
+        let total = 0;
 
-            // calcular al cargar la página
-            calcularTotal();
+        filas.forEach(function(row) {
+            const precioInput = row.querySelector('.precio');
+            const cantidadInput = row.querySelector('.cantidad');
+            const subtotalInput = row.querySelector('.subtotal');
+
+            if (!precioInput || !cantidadInput || !subtotalInput) return;
+
+            const precio = normalizarPrecio(precioInput.value);
+            const cantidad = parseFloat(cantidadInput.value) || 0;
+            const subtotal = precio * cantidad;
+
+            subtotalInput.value = subtotal.toFixed(2);
+            total += subtotal;
         });
-    </script>
+
+        if (totalInput) {
+            totalInput.value = total.toFixed(2);
+        }
+    }
+
+    precioInputs.forEach(input => {
+    // Inicial: formatear lo que viene del servidor
+    if (input.value) {
+        const n = normalizarPrecio(input.value);
+        input.value = formatearPrecio(n);
+    }
+
+    // Mientras escribís: NO formatear, solo recalcular
+   input.addEventListener('input', function () {
+        // quitar todo lo que no sea dígito
+        let digits = input.value.replace(/\D/g, '');
+
+        // eliminar ceros a la izquierda
+        digits = digits.replace(/^0+/, '');
+
+        // si no hay nada, limpiar y recalcular
+        if (!digits) {
+            input.value = '';
+            calcularTotal();
+            return;
+        }
+
+        let entero, centavos;
+
+        if (digits.length === 1) {
+            // 1 dígito → 0,0X
+            entero = '0';
+            centavos = digits.padStart(2, '0'); // '1' -> '01'
+        } else if (digits.length === 2) {
+            // 2 dígitos → 0,XY
+            entero = '0';
+            centavos = digits;
+        } else {
+            // 3+ dígitos: últimos 2 son centavos
+            entero = digits.slice(0, -2);
+            centavos = digits.slice(-2);
+        }
+
+        // formatear parte entera con puntos de miles
+        const enteroFormateado = entero.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+        input.value = `${enteroFormateado},${centavos}`;
+
+        // recalcular total usando el valor numérico
+        calcularTotal(); 
+    });
+
+    // Al salir del campo: ahí sí formateamos lindo
+      input.addEventListener('blur', function () {
+        if (!input.value.trim()) {
+            input.value = '';
+            calcularTotal();
+            return;
+        }
+
+        // normalizamos usando la máscara ya aplicada
+        const n = normalizarPrecio(input.value);  // "1.234,56" -> 1234.56
+        if (!n) {
+            input.value = '';
+        } else {
+            // volvemos a aplicar la máscara de moneda
+            let cents = Math.round(n * 100).toString();
+            while (cents.length < 3) {
+                cents = '0' + cents;
+            }
+            const entero = cents.slice(0, -2);
+            const centavos = cents.slice(-2);
+            const enteroFormateado = entero.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+            input.value = `${enteroFormateado},${centavos}`;
+        }
+
+        calcularTotal();
+    });
+       });
+    });
+
+    // Calcular total al cargar
+    calcularTotal();
+
+    // Antes de enviar: pasar todo a "10000.00"
+    if (form) {
+        form.addEventListener('submit', function () {
+            precioInputs.forEach(input => {
+                const n = normalizarPrecio(input.value);
+                input.value = n ? n.toFixed(2) : '';
+            });
+        });
+    }
+
+</script>
 @endsection
+

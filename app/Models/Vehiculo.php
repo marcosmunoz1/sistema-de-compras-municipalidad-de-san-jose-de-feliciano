@@ -45,4 +45,9 @@ class Vehiculo extends Model
     {
         return $this->morphMany(Movimiento::class, 'destino', 'destino_tipo', 'destino_id');
     }
+
+    public function tipo_combustible()
+    {
+        return $this->belongsTo(Tipo_combustibles::class);  
+    } 
 }

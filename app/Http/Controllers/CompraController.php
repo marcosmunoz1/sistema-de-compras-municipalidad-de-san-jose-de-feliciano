@@ -101,7 +101,7 @@ class CompraController extends Controller
                 'origen_id'     => $request->proveedor_id,
                 'destino_tipo'  => modeloDestino($request->destino_tipo),  // <── helper
                 'destino_id'    => $request->destino_id,
-                'cantidad'      => $cantidad,
+                'cantidad'      => $cantidad, 
                 'observacion'   => $request->asunto_obra_automotor,
                 'fecha'         => $request->fecha_orden,
                 'estado'        => true
@@ -142,11 +142,11 @@ class CompraController extends Controller
     */
     public function update(Request $request, $id)
     {
-        //return response()->json($request->all());
+       //return response()->json($request->all());
         // 1. Validación mínima
         $request->validate([
             'precios' => 'required|array',
-            'precios.*' => 'nullable|numeric|min:0',
+            'precios.*' => 'nullable',
         ]);
 
         // 2. Buscar la compra
@@ -160,9 +160,14 @@ class CompraController extends Controller
             // Si vino precio para ese detalle
             if (isset($request->precios[$detalle->id])) {
 
-                $nuevoPrecio = $request->precios[$detalle->id];
+                 $raw = $request->precios[$detalle->id];
 
-                // Guardamos el precio
+                // Normalizar: "5.000,43" -> "5000.43"
+                $sinMiles = str_replace('.', '', $raw);       // quita puntos de miles
+                $estandar = str_replace(',', '.', $sinMiles); // coma -> punto
+                $nuevoPrecio = (float) $estandar;
+
+                // Guardamos el precio limpio
                 $detalle->precio = $nuevoPrecio;
 
                 // Recalculamos subtotal

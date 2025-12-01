@@ -23,7 +23,7 @@ return new class extends Migration
             $table->string('color');
             $table->string('chasis')->unique()->nullable();
             $table->string('motor')->unique()->nullable();
-            $table->boolean('estado')->default(true);
+            $table->boolean('estado')->default(true); 
             $table->softDeletes();
 
             $table->timestamps();
