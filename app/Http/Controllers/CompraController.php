@@ -162,9 +162,9 @@ class CompraController extends Controller
 
                  $raw = $request->precios[$detalle->id];
 
-                // Normalizar: "5.000,43" -> "5000.43"
-                $sinMiles = str_replace('.', '', $raw);       // quita puntos de miles
-                $estandar = str_replace(',', '.', $sinMiles); // coma -> punto
+                // Normalizar  
+                $sinMiles = str_replace('.', '', $raw);       // quita puntos de miles(formato local)
+                $estandar = str_replace(',', '.', $sinMiles); // coma -> punto (formato decimal)
                 $nuevoPrecio = (float) $estandar;
 
                 // Guardamos el precio limpio

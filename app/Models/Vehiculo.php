@@ -21,7 +21,8 @@ class Vehiculo extends Model
         'color',
         'chasis',
         'motor',
-        'estado',
+        'tipo_combustible_id',
+        'estado', 
     ];
 
     public function productos()

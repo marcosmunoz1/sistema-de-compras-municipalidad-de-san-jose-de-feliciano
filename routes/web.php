@@ -140,13 +140,18 @@ Route::get('/admin/vehiculos/{vehiculo}/productos', [App\Http\Controllers\Vehicu
 Route::get('/admin/depositos/{deposito}/productos', [App\Http\Controllers\ProductoController::class, 'productos'])->name('ajax.depositos');
 
 
-Route::get('/api/destinos/{tipo}', function($tipo) {
+Route::get('/api/destinos/{tipo}', function($tipo) { 
 
-    $modelo = modeloDestino($tipo);
+    $info = modeloDestino($tipo);
 
-    return $modelo
-        ? $modelo::select('id','nombre')->get()
-        : [];
+    if (!$info) {
+        return [];
+    }
+
+    $modelo = $info['model'];
+    $campo = $info['campo']; 
+
+    return $modelo::select('id', "$campo as nombre")->get(); 
 });
 
 
