@@ -28,7 +28,19 @@ class DestinoController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // Validar los datos del formulario
+        $request->validate([
+            'nombre' => 'required|string|max:255',
+            'tipo' => 'required|string|in:persona,policia,empresa,institucion,organismo_publico',
+            'descripcion' => 'nullable|string|max:5000',  
+        ]);
+
+        // Crear el destino
+        Destino::create($request->all()); 
+
+         return redirect()->route('combustibles.create')
+        ->with('mensaje', 'Destino creado exitosamente.')
+        ->with('icono', 'success'); 
     }
 
     /**

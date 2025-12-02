@@ -81,16 +81,16 @@ Route::delete('/admin/productos/{id}', [ App\Http\Controllers\ProductoController
 Route::put('/admin/productos/{id}/restore', [ App\Http\Controllers\ProductoController::class, 'restore'])->name('productos.restore');
 
 //rutas para combustibles
-Route::get('/admin/combustibles', [App\Http\Controllers\CombustibleController::class, 'index'])->name('combustibles.index');
-Route::get('/admin/combustibles/create', [App\Http\Controllers\CombustibleController::class, 'create'])->name('combustibles.create');
-Route::post('/admin/combustibles/store', [App\Http\Controllers\CombustibleController::class, 'store'])->name('combustibles.store');
-Route::get('/admin/combustibles/{id}/edit', [App\Http\Controllers\CombustibleController::class, 'edit'])->name('combustibles.edit');
-Route::put('/admin/combustibles/{id}', [App\Http\Controllers\CombustibleController::class, 'update'])->name('combustibles.update');
-Route::get('/admin/combustibles/{id}', [App\Http\Controllers\CombustibleController::class, 'show'])->name('combustibles.show');
-Route::delete('/admin/combustibles/{id}', [App\Http\Controllers\CombustibleController::class, 'destroy'])->name('combustibles.destroy');
-Route::put('/admin/combustibles/{id}/restore', [App\Http\Controllers\CombustibleController::class, 'restore'])->name('combustibles.restore');
-Route::post('/admin/combustibles/update-prices', [App\Http\Controllers\CombustibleController::class, 'updatePrices'])->name('combustibles.update-prices');
-Route::get('/admin/combustibles/report/{id}', [App\Http\Controllers\PDFController::class, 'PdfOrdenCarga'])->name('combustibles.report'); 
+Route::get('/admin/combustibles', [App\Http\Controllers\CombustibleController::class, 'index'])->name('combustibles.index')->middleware('auth');
+Route::get('/admin/combustibles/create', [App\Http\Controllers\CombustibleController::class, 'create'])->name('combustibles.create')->middleware('auth');
+Route::post('/admin/combustibles/store', [App\Http\Controllers\CombustibleController::class, 'store'])->name('combustibles.store')->middleware('auth'); 
+Route::get('/admin/combustibles/{id}/edit', [App\Http\Controllers\CombustibleController::class, 'edit'])->name('combustibles.edit')->middleware('auth');
+Route::put('/admin/combustibles/{id}', [App\Http\Controllers\CombustibleController::class, 'update'])->name('combustibles.update')->middleware('auth');
+Route::get('/admin/combustibles/{id}', [App\Http\Controllers\CombustibleController::class, 'show'])->name('combustibles.show')->middleware('auth');
+Route::delete('/admin/combustibles/{id}', [App\Http\Controllers\CombustibleController::class, 'destroy'])->name('combustibles.destroy')->middleware('auth');
+Route::put('/admin/combustibles/{id}/restore', [App\Http\Controllers\CombustibleController::class, 'restore'])->name('combustibles.restore')->middleware('auth');
+Route::post('/admin/combustibles/update-prices', [App\Http\Controllers\CombustibleController::class, 'updatePrices'])->name('combustibles.update-prices')->middleware('auth');
+Route::get('/admin/combustibles/report/{id}', [App\Http\Controllers\PDFController::class, 'PdfOrdenCarga'])->name('combustibles.report')->middleware('auth'); 
 //rutas para vehiculos
 Route::get('/admin/vehiculos', [App\Http\Controllers\VehiculoController::class, 'index'])->name('vehiculos.index');
 Route::get('/admin/vehiculos/create', [App\Http\Controllers\VehiculoController::class, 'create'])->name('vehiculos.create');
@@ -143,6 +143,9 @@ Route::get('/admin/obras/{obra}/productos', [App\Http\Controllers\ObraController
 Route::get('/admin/vehiculos/{vehiculo}/productos', [App\Http\Controllers\VehiculoController::class, 'productos'])->name('ajax.vehiculos');
 Route::get('/admin/depositos/{deposito}/productos', [App\Http\Controllers\ProductoController::class, 'productos'])->name('ajax.depositos');
 
+// Rutas para Destinos 
+Route::post('/admin/destinos/store', [App\Http\Controllers\DestinoController::class, 'store'])->name('destinos.store');
+
 
 Route::get('/api/destinos/{tipo}', function ($tipo) {
 
@@ -164,6 +167,32 @@ Route::get('/api/destinos/{tipo}', function ($tipo) {
 
     // SELECT seguro, sin confundir columnas
     return $modelo::select('id', "$campo as nombre")->get();
+});
+Route::get('/api/destinos/combustible/{tipo}', function($tipo) { 
+
+    $map = [
+        'vehiculo' => [
+            'model'  => \App\Models\Vehiculo::class,
+            'fields' => ['id', 'patente', 'marca', 'modelo', 'anio', 'color', 'tipo'],
+        ],
+        'equipo'   => [
+            'model'  => \App\Models\Equipo::class,
+            'fields' => ['id','nombre', 'tipo_equipo', 'marca', 'modelo', 'numero_serie'],
+        ],
+        'destino'  => [
+            'model'  => \App\Models\Destino::class,
+            'fields' => ['id', 'nombre', 'tipo', 'descripcion'],
+        ],
+    ];
+
+    if (!isset($map[$tipo])) {
+        return response()->json([]);
+    }
+
+    $modelo = $map[$tipo]['model'];
+    $fields = $map[$tipo]['fields']; 
+
+    return $modelo::select($fields)->get();
 });
 
 

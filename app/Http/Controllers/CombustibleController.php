@@ -51,43 +51,43 @@ class CombustibleController extends Controller
     public function store(Request $request)
     { 
 
-        return response()->json($request->all()); 
+       // return response()->json($request->all()); 
         
         $request->validate([
-            'vehiculo_id' => 'required',
-            'empleado_id' => 'required', 
             'fecha' => 'required',
+            'sub_cuenta' => 'required', 
+            'destino_tipo' => 'required',
+            'destino_id' => 'required', 
+            'combustible' => 'required',
             'litros' => 'required|numeric',
             'precio' => 'required|numeric',
-            'combustible' => 'required',
             'estacion' => 'required',
             'tipo_de_pago' => 'required',
-            'sub_cuenta' => 'required',
             'observaciones' => 'required' 
         ]); 
          
       
         $lastOrder = Combustible::max('codigo');   
-        $newOrder = $lastOrder ? $lastOrder + 1 : 13000;  
+        $newOrder = $lastOrder ? $lastOrder + 1 : 13000;
+
         $codigo = str_pad($newOrder, 8, '0', STR_PAD_LEFT);
-    
         $monto = $request->litros * $request->precio; 
-        $user_id = Auth::user()->id;
+        $user_id = Auth::id();
 
         DB::beginTransaction();
         try{ 
             Combustible::create([ 
-            'empleado_id' => $request->empleado_id,
+            'empleado_id' => $request->empleado_id ?? null, 
             'user_id' => $user_id,  
             'codigo' =>  $codigo,
             'litros' => $request->litros, 
             'tipo' => $request->combustible,  
-            'sub_cuenta' => $request->sub_cuenta,
+            'sub_cuenta' => $request->sub_cuenta, 
             'precio' => $request->precio,
             'estacion' => $request->estacion,  
             'fecha' => $request->fecha, 
-            'destino_tipo' => modeloDestinoCobustible($request->destino_tipo),           
-            'destino_id' => $request->destino_id,   
+            'destino_tipo' => $request->destino_tipo,           
+            'destino_id' => $request->destino_id,    
             'monto' => $monto, 
             'tipo_de_pago' => $request->tipo_de_pago,
             'observaciones' => $request->observaciones,

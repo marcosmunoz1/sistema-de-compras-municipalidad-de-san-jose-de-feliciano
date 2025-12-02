@@ -1,6 +1,6 @@
 <?php
 
-if (!function_exists('modeloDestino')) {
+if (!function_exists('modeloDestino')) { 
     function modeloDestino($tipo)
     {
         return match ($tipo) {
@@ -9,7 +9,7 @@ if (!function_exists('modeloDestino')) {
             'vehiculo' => ['model' => \App\Models\Vehiculo::class, 'campo' => 'cantidad'], // ✔ pivote correcto
             'equipo'   => ['model' => \App\Models\Equipo::class,   'campo' => 'cantidad'], // cuando lo agregues
             default    => null
-        };
+        }; 
     }
 }
 

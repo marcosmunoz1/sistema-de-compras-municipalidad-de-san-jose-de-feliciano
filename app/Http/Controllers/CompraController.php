@@ -47,7 +47,9 @@ class CompraController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-    {
+    {   
+
+        // return response()->json($request->all());
         $request->validate([
             'fecha_orden' => 'required',
             'empleado_id' => 'required',

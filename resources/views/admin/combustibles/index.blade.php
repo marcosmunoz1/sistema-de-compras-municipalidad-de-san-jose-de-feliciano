@@ -11,7 +11,7 @@
         </button> 
         <a href="{{ route('combustibles.create') }}" 
            class="btn btn-primary tooltip tooltip-primary tooltip-bottom mb-1" data-tip="Crear orden de carga">
-            + Nuevo Combustible
+            + Nueva Orden de Carga
         </a>
     </div>
  </div>
