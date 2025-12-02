@@ -121,7 +121,7 @@
         <h4 class="text-1xl font-semibold">Datos del Destino de la carga</h4> 
 
         {{-- Botón para abrir el modal de nuevo destino --}}
-        <label for="crear_destino_modal" class="btn btn-sm btn-outline btn-primary">
+        <label for="crear_destino_modal" class="btn btn-sm btn-success">
             + Nuevo destino
         </label>
     </div>
@@ -157,8 +157,8 @@
  @error('vehiculo_id') 
     <small class="text-red-500 error-message">{{ $message }}</small>
 @enderror
-</div> --}}
- <div class="space-y-2">
+</div> --}} 
+ <div class="space-y-2 mb-2">
     <label for="destino_tipo" class="text-sm font-medium">Destino de la carga</label>
     <select id="destino_tipo" name="destino_tipo"
         class="select w-full h-10 rounded-md border-base-300 bg-base-200
@@ -174,8 +174,14 @@
         <small class="text-red-500 error-message">{{ $message }}</small> 
     @enderror
 </div>  
-<div class="space-y-2">
-    <label class="text-sm font-medium">Destinar a:</label>
+<div class="space-y-2 -mt-4">
+    <div class="flex items-center justify-between gap-4">
+        <label class="text-sm font-medium mb-0">Destinar a:</label>
+        <button type="button" id="btn_elegir_destino" class="btn btn-sm btn-warning"
+            onclick="document.getElementById('modal_elegir_destino').checked = true">
+            Buscar / seleccionar destino
+        </button>
+    </div>
 
     {{-- id oculto que se envía en el request --}}
     <input type="hidden" id="destino_id" name="destino_id" value="{{ old('destino_id') }}">
@@ -184,11 +190,6 @@
     <input type="text" id="destino_nombre_visble"
         class="w-full h-10 rounded-md border border-base-300 bg-base-200 px-3 text-sm"
         placeholder="Ningún destino seleccionado" readonly>
-
-    <button type="button" id="btn_elegir_destino" class="btn btn-sm btn-outline mt-2"
-        onclick="document.getElementById('modal_elegir_destino').checked = true">
-        Buscar / seleccionar destino
-    </button>
 
     @error('destino_id') 
         <small class="text-red-500 error-message">{{ $message }}</small>
@@ -200,19 +201,36 @@
     <h3 class="font-bold text-lg mb-4" id="titulo_modal_destinos">
       Seleccionar destino
     </h3>
+    <input type="text" id="buscador_destinos"
+    class="w-full h-10 rounded-md border border-base-300 bg-base-200 
+                        px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
+                        focus:border-primary transition"
+    placeholder="Buscar por nombre, patente, etc."> 
 
     <div class="overflow-x-auto">
       <table class="table table-zebra w-full text-sm">
-        <thead>
-          <tr>
-            <th>Nombre</th>
-            {{-- Si luego amplías el API puedes agregar más columnas --}}
-          </tr>
-        </thead>
+       <thead>
+            <tr id="tabla_destinos_head">
+            {{-- cabeceras generadas por JS --}}
+            </tr>
+        </thead> 
         <tbody id="tabla_destinos_body">
           {{-- Se llena por JS --}}
         </tbody>
       </table>
+      <div class="flex justify-between items-center mt-3 text-xs">
+            <button type="button" class="btn btn-xs" id="destinos_prev_page">
+                « Anterior
+            </button>
+
+            <span id="destinos_pagination_info" class="mx-2">
+                {{-- se completa por JS --}}
+            </span>
+
+            <button type="button" class="btn btn-xs" id="destinos_next_page">
+                Siguiente »
+            </button>
+        </div>
     </div>
 
     <div class="modal-action">
@@ -526,71 +544,188 @@ focus:border-primary transition @error('empleado_id') input-error @enderror" req
     });
 </script>
 <script>
-    const oldDestinoId = "{{ old('destino_id') }}"; 
+    let destinosCache = [];
+    let columnasGlobal = [];
+    let tipoActual     = null;
+    let paginaActual    = 1;
+    const itemsPorPagina = 5; // o 10, como prefieras
 
     function cargarDestinosEnTabla(tipo) {
-        const tbody = document.getElementById('tabla_destinos_body');
+        const tbody  = document.getElementById('tabla_destinos_body');
+        const thead  = document.getElementById('tabla_destinos_head');
         const titulo = document.getElementById('titulo_modal_destinos');
 
+        tipoActual = tipo;
+
         if (!tipo) {
+            columnasGlobal = [];
+            thead.innerHTML = '';
             tbody.innerHTML = '<tr><td class="py-4 text-center text-sm text-gray-500">Primero seleccione un tipo de destino.</td></tr>';
             return;
         }
 
-        // Título según tipo (opcional)
+        // Título según tipo
         if (tipo === 'vehiculo') titulo.textContent = 'Seleccionar vehículo';
         else if (tipo === 'equipo') titulo.textContent = 'Seleccionar equipo';
         else titulo.textContent = 'Seleccionar destino';
 
-        tbody.innerHTML = '<tr><td class="py-4 text-center text-sm">Cargando...</td></tr>';
+        // Definir columnas por tipo
+        if (tipo === 'vehiculo') {
+            columnasGlobal = [
+                { key: 'patente', label: 'Patente' },
+                { key: 'marca',   label: 'Marca' },
+                { key: 'modelo',  label: 'Modelo' },
+                { key: 'anio',    label: 'Año' },
+                { key: 'color',   label: 'Color' },
+                { key: 'tipo',    label: 'Tipo' },
+            ];
+        } else if (tipo === 'equipo') {
+            columnasGlobal = [
+                { key: 'nombre',      label: 'Nombre' }, 
+                { key: 'tipo_equipo', label: 'Tipo equipo' },
+                { key: 'marca',       label: 'Marca' },
+                { key: 'modelo',      label: 'Modelo' },
+                { key: 'numero_serie',label: 'N° serie' },
+            ];
+        } else { // destino / otros
+            columnasGlobal = [
+                { key: 'nombre',      label: 'Nombre' },
+                { key: 'tipo',        label: 'Tipo' },
+                { key: 'descripcion', label: 'Descripción' },
+            ];
+        }
 
-        fetch('{{ url('api/destinos/combustible') }}/' + tipo)
+        // Pintar cabecera
+        thead.innerHTML = columnasGlobal.map(col => `<th>${col.label}</th>`).join('');
+
+        tbody.innerHTML = '<tr><td class="py-4 text-center text-sm" colspan="'+columnasGlobal.length+'">Cargando...</td></tr>';
+
+        fetch('{{ url('api/destinos/combustible') }}/' + tipo) 
             .then(res => res.json())
             .then(data => {
-                if (!data.length) {
-                    tbody.innerHTML = '<tr><td class="py-4 text-center text-sm text-gray-500">No se encontraron destinos.</td></tr>';
-                    return;
-                }
-
-                tbody.innerHTML = '';
-
-                data.forEach(dest => {
-                    const tr = document.createElement('tr');
-                    tr.classList.add('cursor-pointer','hover');
-
-                    tr.innerHTML = `
-                        <td>${dest.nombre}</td>
-                    `;
-
-                    tr.addEventListener('click', function () {
-                        // Setear valores en el formulario principal
-                        document.getElementById('destino_id').value = dest.id;
-                        document.getElementById('destino_nombre_visble').value = dest.nombre;
-
-                        // Cerrar modal
-                        document.getElementById('modal_elegir_destino').checked = false;
-                    });
-
-                    tbody.appendChild(tr);
-                });
+                destinosCache = data;
+                paginaActual = 1;   
+                renderTablaDestinos(destinosCache);
             });
     }
 
-    // cuando cambie destino_tipo, recargamos la tabla (si el modal se abre)
+    function renderTablaDestinos(data) {
+        const tbody = document.getElementById('tabla_destinos_body');
+        const info  = document.getElementById('destinos_pagination_info');
+        tbody.innerHTML = ''; 
+
+        const total = data.length; 
+
+       if (!total) {
+        tbody.innerHTML = '<tr><td class="py-4 text-center text-sm text-gray-500" colspan="'+columnasGlobal.length+'">No se encontraron destinos.</td></tr>';
+        if (info) info.textContent = '0 de 0';
+        return;
+        } 
+
+        const totalPaginas = Math.ceil(total / itemsPorPagina) 
+        // asegurar que paginaActual esté en rango
+        if (paginaActual > totalPaginas) paginaActual = totalPaginas;
+        if (paginaActual < 1) paginaActual = 1;
+
+        const inicio = (paginaActual - 1) * itemsPorPagina;
+        const fin    = inicio + itemsPorPagina;
+
+        const pagina = data.slice(inicio, fin);
+
+
+        pagina .forEach(dest => { 
+            const tr = document.createElement('tr');
+            tr.classList.add('cursor-pointer','hover:bg-base-300'); 
+
+            tr.innerHTML = columnasGlobal.map(col => `<td>${dest[col.key] ?? ''}</td>`).join('');
+
+            tr.addEventListener('click', function () {
+                // Setear valores en el formulario principal
+                document.getElementById('destino_id').value = dest.id;
+
+                // Texto visible amigable
+                const visibleName =
+                    tipoActual === 'vehiculo'
+                        ? (dest.patente
+                            ? `${dest.patente} - ${dest.marca ?? ''} ${dest.modelo ?? ''}`.trim()
+                            : (dest.nombre ?? 'Sin datos'))
+                    : tipoActual === 'equipo'
+                        ? (dest.nombre
+                            ? `${dest.nombre} - ${dest.tipo_equipo ?? ''} ${dest.marca ?? ''} ${dest.modelo ?? ''}`.trim()
+                            : 'Sin datos')
+                    : (dest.nombre ?? 'Sin datos'); 
+
+                document.getElementById('destino_nombre_visble').value = visibleName;
+                document.getElementById('modal_elegir_destino').checked = false;
+            });
+
+            tbody.appendChild(tr);
+        });
+
+        if (info) {
+        const desde = inicio + 1;
+        const hasta = Math.min(fin, total);
+        info.textContent = `Mostrando ${desde}-${hasta} de ${total}`;
+       }
+    }
+
+    // Cambio de tipo
     document.getElementById('destino_tipo').addEventListener('change', function () {
         const tipo = this.value;
         cargarDestinosEnTabla(tipo);
-        // también conviene limpiar selección anterior:
         document.getElementById('destino_id').value = '';
         document.getElementById('destino_nombre_visble').value = '';
+        document.getElementById('buscador_destinos').value = '';
     });
 
-    // cuando se haga clic en el botón, cargamos la tabla para el tipo actual
+    // Botón para abrir modal
     document.getElementById('btn_elegir_destino').addEventListener('click', function () {
         const tipo = document.getElementById('destino_tipo').value;
         cargarDestinosEnTabla(tipo);
     });
+
+    // Buscador
+    document.getElementById('buscador_destinos').addEventListener('input', function () {
+        const term = this.value.toLowerCase();
+
+        const filtrados = destinosCache.filter(dest => {
+            const texto = Object.values(dest).join(' ').toLowerCase();
+            return texto.includes(term);
+        });
+
+        renderTablaDestinos(filtrados);
+    });
+
+    document.getElementById('destinos_prev_page').addEventListener('click', function () {
+    if (paginaActual > 1) {
+        paginaActual--;
+        renderTablaDestinos(destinosCache);
+    }
+   });
+
+    document.getElementById('destinos_next_page').addEventListener('click', function () {
+        const totalPaginas = Math.ceil(destinosCache.length / itemsPorPagina);
+        if (paginaActual < totalPaginas) {
+            paginaActual++;
+            renderTablaDestinos(destinosCache);
+        }
+    });
 </script>
+<script> 
+document.getElementById('buscador_destinos').addEventListener('input', function () {
+    const term = this.value.toLowerCase();
+
+    const filtrados = destinosCache.filter(dest => {
+        // Concatenar campos relevantes a un string
+        const texto = Object.values(dest).join(' ').toLowerCase();
+        return texto.includes(term);
+    });
+
+      paginaActual = 1;   
+
+    renderTablaDestinos(filtrados, document.getElementById('destino_tipo').value);
+}); 
+</script> 
  <script>
     $(document).ready(function () {
 
@@ -625,7 +760,4 @@ focus:border-primary transition @error('empleado_id') input-error @enderror" req
         MostrarValorDelCombustible();  
     });
 </script>
-
-@endsection
-
- 
+@endsection 

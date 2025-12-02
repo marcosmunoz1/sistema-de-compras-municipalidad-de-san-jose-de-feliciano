@@ -47,4 +47,20 @@ class Compra extends Model
     {
         return $this->hasMany(Detalle_Compra::class); 
     }
+    public function getDestinoNombreAttribute()
+    {
+        if (!$this->destino) {
+            return 'No asignado';
+        }
+
+        // Dependiendo del modelo destino, devolvemos su atributo real
+        return match ($this->destino_tipo) {
+            \App\Models\Vehiculo::class => $this->destino->patente,
+            \App\Models\Deposito::class => $this->destino->nombre,
+            \App\Models\Obra::class     => $this->destino->nombre,
+            \App\Models\Equipo::class   => $this->destino->nombre ?? 'Sin nombre',
+            default                     => 'No disponible'
+        };
+    }
+
 }

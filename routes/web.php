@@ -143,32 +143,54 @@ Route::get('/admin/depositos/{deposito}/productos', [App\Http\Controllers\Produc
 Route::post('/admin/destinos/store', [App\Http\Controllers\DestinoController::class, 'store'])->name('destinos.store');
 
 
-Route::get('/api/destinos/{tipo}', function($tipo) { 
+Route::get('/api/destinos/{tipo}', function ($tipo) {
 
-    $info = modeloDestino($tipo);
+    // Config de modelos y campos correctos
+    $map = [
+        'deposito' => ['model' => \App\Models\Deposito::class, 'campo' => 'nombre'],
+        'obra'     => ['model' => \App\Models\Obra::class,     'campo' => 'nombre'],
+        'vehiculo' => ['model' => \App\Models\Vehiculo::class, 'campo' => 'patente'],
+        'equipo'   => ['model' => \App\Models\Equipo::class,   'campo' => 'nombre'],
+    ];
 
-    if (!$info) {
-        return [];
+    // Si no existe el tipo → devolver lista vacía (evita error 500)
+    if (!isset($map[$tipo])) {
+        return response()->json([]);
     }
 
-    $modelo = $info['model'];
-    $campo = $info['campo']; 
+    $modelo = $map[$tipo]['model'];
+    $campo  = $map[$tipo]['campo'];
 
-    return $modelo::select('id', "$campo as nombre")->get(); 
+    // SELECT seguro, sin confundir columnas
+    return $modelo::select('id', "$campo as nombre")->get();
 });
 Route::get('/api/destinos/combustible/{tipo}', function($tipo) { 
 
-    $info = modeloDestinoCombustible($tipo); 
+    $map = [
+        'vehiculo' => [
+            'model'  => \App\Models\Vehiculo::class,
+            'fields' => ['id', 'patente', 'marca', 'modelo', 'anio', 'color', 'tipo'],
+        ],
+        'equipo'   => [
+            'model'  => \App\Models\Equipo::class,
+            'fields' => ['id','nombre', 'tipo_equipo', 'marca', 'modelo', 'numero_serie'],
+        ],
+        'destino'  => [
+            'model'  => \App\Models\Destino::class,
+            'fields' => ['id', 'nombre', 'tipo', 'descripcion'],
+        ],
+    ];
 
-    if (!$info) {
-        return response()->json([]);  
+    if (!isset($map[$tipo])) {
+        return response()->json([]);
     }
 
-    $modelo = $info['model'];
-    $campo = $info['campo']; 
+    $modelo = $map[$tipo]['model'];
+    $fields = $map[$tipo]['fields']; 
 
-    return $modelo::select('id', "$campo as nombre")->get(); 
+    return $modelo::select($fields)->get();
 });
+
 
 
  

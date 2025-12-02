@@ -28,9 +28,13 @@ class Vehiculo extends Model
     public function productos()
     {
         return $this->belongsToMany(Producto::class, 'producto_vehiculo')
-                    ->withPivot('cantidad')
+                    ->withPivot('cantidad', 'detalle_compra_id')
+                    ->using(ProductoVehiculo::class)
                     ->withTimestamps();
     }
+
+
+
 
     public function combustible()
     {

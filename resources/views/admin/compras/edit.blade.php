@@ -138,10 +138,7 @@
                         px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
                         focus:border-primary transition @error('destino_id') input-error @enderror"
                             disabled>
-                            <option value="">
-                                {{ $compra->destino ? $compra->destino->nombre : 'No asignado' }}
-                            </option>
-
+                                <option value="">{{ $compra->destino_nombre }}</option>
 
                         </select>
                     </div>
@@ -171,80 +168,7 @@
     </div>
 
     <!-- Otra seccion -->
-    <div data-slot="card" class="card bg-base-100 shadow-xl p-4 mt-4">
-        <div data-slot="card-header"
-            class="@container/card-header grid auto-rows-min grid-rows-[auto_auto] items-start gap-1.5 px-6 pt-6">
-            <h4 class="text-1xl font-semibold">Informacion General</h4>
-            <p class="text-muted-foreground"></p>
-        </div>
-
-        <div data-slot="card-content" class="px-6 [&:last-child]:pb-6">
-            <div class="grid gap-4">
-
-                <div class="grid grid-cols-3 gap-4">
-                    <div class="space-y-2">
-                        <label for="proveedor_id" class="text-sm font-medium">Proveedor</label>
-                        <select id="proveedor_id" name="proveedor_id"
-                            class="select w-full h-10 rounded-md border-base-300 bg-base-200
-                        px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
-                        focus:border-primary transition @error('proveedor_id') input-error @enderror"
-                            disabled>
-                            <option value="">{{ $compra->proveedor->nombre }}</option>
-                        </select>
-                        @error('proveedor_id')
-                            <small class="text-red-500 error-message">{{ $message }}</small>
-                        @enderror
-                    </div>
-
-                    <!-- entregar a -->
-                    <div class="space-y-2">
-                        <label for="destino_tipo" class="text-sm font-medium">Destino de la compra</label>
-                        <select id="destino_tipo" name="destino_tipo"
-                            class="select w-full h-10 rounded-md border-base-300 bg-base-200
-                        px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
-                        focus:border-primary transition @error('destino_tipo') input-error @enderror"
-                            disabled>
-                            <option value="">{{ class_basename($compra->destino_tipo) }}</option>
-                        </select>
-                    </div>
-                    <div class="space-y-2">
-                        <label for="destino_id" class="text-sm font-medium">Enviar a:</label>
-                        <select id="destino_id" name="destino_id"
-                            class="select w-full h-10 rounded-md border-base-300 bg-base-200
-                        px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
-                        focus:border-primary transition @error('destino_id') input-error @enderror"
-                            disabled>
-                            <option value="">
-                                {{ $compra->destino ? $compra->destino->nombre : 'No asignado' }}
-                            </option>
-
-
-                        </select>
-                    </div>
-                </div>
-                <div class="grid grid-cols-1 gap-4">
-                    <div class="space-y-2">
-                        <label for="asunto_obra_automotor" class="text-sm font-medium">Asunto de la compra</label>
-                        <textarea value="" type="text" id="asunto_obra_automotor" name="asunto_obra_automotor"
-                            placeholder="Ingrese una justificacion breve de la compra"
-                            class="textarea w-full rounded-md border border-base-300 bg-base-200 focus:outline-none focus:ring-2 focus:ring-primary 
-                        focus:border-primary transition @error('asunto_obra_automotor') input-error @enderror"
-                            disabled>{{ $compra->asunto_obra_automotor }}</textarea>
-                    </div>
-                </div>
-                <div class="grid grid-cols-1 gap-4">
-                    <div class="space-y-2">
-                        <label for="observacion" class="text-sm font-medium">Observaciones</label>
-                        <textarea type="text" id="observacion" name="observacion"
-                            placeholder="Ingrese una justificacion breve de la compra"
-                            class="textarea w-full rounded-md border border-base-300 bg-base-200 focus:outline-none focus:ring-2 focus:ring-primary 
-                        focus:border-primary transition @error('observacion') input-error @enderror"
-                            disabled>{{ $compra->observacion }}</textarea>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    
     <form action="{{ route('compras.update', $compra->id) }}" method="POST">
         @csrf
         @method('PUT')

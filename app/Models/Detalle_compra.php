@@ -23,7 +23,11 @@ class Detalle_compra extends Model
     public function producto()
     {
         return $this->belongsTo(Producto::class);
-    } 
+    }
+    public function vehiculosAsignados()
+    {
+        return $this->hasMany(ProductoVehiculo::class, 'detalle_compra_id');
+    }
 
 }
  
