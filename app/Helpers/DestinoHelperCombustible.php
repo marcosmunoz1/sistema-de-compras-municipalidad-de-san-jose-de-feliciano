@@ -1,12 +1,12 @@
 <?php
 
-if (!function_exists('modeloDestinoCobustible')) {
-    function modeloDestinoCobustible($tipo)  
+if (!function_exists('modeloDestinoCombustible')) {
+    function modeloDestinoCombustible($tipo)   
     {
         return match ($tipo) {
-            'vehiculo' => \App\Models\Vehiculo::class,
-            'destino' => \App\Models\Destino::class, 
-            'equipo'   => \App\Models\Equipo::class,
+            'vehiculo' => ['model' => \App\Models\Vehiculo::class, 'campo' => 'patente'], // <-- CAMPO A USAR
+            'destino' => ['model' => \App\Models\Destino::class,   'campo' => 'nombre'],  
+            'equipo'   => ['model' => \App\Models\Equipo::class,   'campo' => 'nombre'],
             default    => null
         };
     }

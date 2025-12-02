@@ -43,12 +43,11 @@
             stroke-width="2"
             d="M9 13h6m-3-3v6m5 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
         </svg>
-        Crear Orden de Combustible 
+        Crear Orden de Combustible  
       </span>
     </li>
   </ul>
-</div>
-
+</div> 
 <!-- Formulario --> 
 <form action="{{ route('combustibles.store') }}" method="POST" class="space-y-6">
     @csrf 
@@ -64,18 +63,18 @@
     </div>
 
     <!-- CONTENT -->
-    <div data-slot="card-content" class="px-6 [&:last-child]:pb-6">
-        <div class="grid gap-4">
+    <div data-slot="card-content" class="px-6 [&:last-child]:pb-6"> 
+        <div class="grid gap-4"> 
 
             <!-- FILA 3 INPUTS -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4"> 
 
                 <!-- Código --> 
                 <!-- Fecha --> 
                 <div class="space-y-2">
                     <label for="fecha" class="text-sm font-medium">Fecha de Emisión<span class="text-red-600">*</span></label>
                     <input 
-                        type="date"
+                        type="date" 
                         id="fecha"
                         name="fecha"
                         value="{{ old('fecha') }}"
@@ -86,11 +85,9 @@
                             <small class="text-red-500 error-message">{{ $message }}</small>
                         @enderror
                 </div>
-
                 <!-- Usuario -->
                 <div class="space-y-2">
                     <label for="sub_cuenta" class="text-sm font-medium">Sub cuenta<span class="text-red-600">*</span></label>
-
                     <select 
                         id="sub_cuenta"
                         name="sub_cuenta"
@@ -107,9 +104,7 @@
                         <small class="text-red-500 error-message">{{ $message }}</small>
                     @enderror
                 </div>
-
             </div>
-
         </div>
     </div>
 </div>
@@ -120,21 +115,24 @@
 
 <!-- HEADER -->
 <div data-slot="card-header"
-class="@container/card-header grid auto-rows-min grid-rows-[auto_auto] items-start
-gap-1.5 px-6 pt-6">
-<h4 class="text-1xl font-semibold">Datos del Vehículo y Conductor</h4>
-<p class="text-muted-foreground">Información del vehículo a cargar combustible</p>
-</div>
+    class="@container/card-header grid auto-rows-min grid-rows-[auto_auto] items-start
+    gap-1.5 px-6 pt-6">
+    <div class="flex items-center justify-between w-full">
+        <h4 class="text-1xl font-semibold">Datos del Destino de la carga</h4> 
 
+        {{-- Botón para abrir el modal de nuevo destino --}}
+        <label for="crear_destino_modal" class="btn btn-sm btn-outline btn-primary">
+            + Nuevo destino
+        </label>
+    </div>
+</div>
 
 <!-- CONTENT -->
 <div data-slot="card-content" class="px-6 [&:last-child]:pb-6">
 <div class="grid gap-4">
 
-
 <!-- FILA SELECT VEHÍCULO & SELECT CHOFER -->
-<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
 
 <!-- Select Vehículo -->
 {{-- <div class="space-y-2">
@@ -167,20 +165,65 @@ gap-1.5 px-6 pt-6">
         px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
         focus:border-primary transition @error('destino_tipo') input-error @enderror"
                 required>
-        <option value="">Seleccione el destino de la carga</option>
-        <option value="vehiculo">Vehiculo</option>
-        <option value="destino">Destino</option>  
-        <option value="equipo">Equipo</option>  
-    </select>
+        <option  value="">Seleccione el destino de la carga</option>
+        <option  value="vehiculo">Vehiculo</option> 
+        <option  value="equipo">Equipo</option>  
+        <option  value="destino">Otros (Acuerdo policial, Área de obras públicas, Personas)</option>    
+    </select>  
     @error('destino_tipo')
+        <small class="text-red-500 error-message">{{ $message }}</small> 
+    @enderror
+</div>  
+<div class="space-y-2">
+    <label class="text-sm font-medium">Destinar a:</label>
+
+    {{-- id oculto que se envía en el request --}}
+    <input type="hidden" id="destino_id" name="destino_id" value="{{ old('destino_id') }}">
+
+    {{-- campo solo lectura mostrando el nombre elegido --}}
+    <input type="text" id="destino_nombre_visble"
+        class="w-full h-10 rounded-md border border-base-300 bg-base-200 px-3 text-sm"
+        placeholder="Ningún destino seleccionado" readonly>
+
+    <button type="button" id="btn_elegir_destino" class="btn btn-sm btn-outline mt-2"
+        onclick="document.getElementById('modal_elegir_destino').checked = true">
+        Buscar / seleccionar destino
+    </button>
+
+    @error('destino_id') 
         <small class="text-red-500 error-message">{{ $message }}</small>
     @enderror
-</div> 
+</div>
+<input type="checkbox" id="modal_elegir_destino" class="modal-toggle" />
+<div class="modal">
+  <div class="modal-box max-w-4xl">
+    <h3 class="font-bold text-lg mb-4" id="titulo_modal_destinos">
+      Seleccionar destino
+    </h3>
 
+    <div class="overflow-x-auto">
+      <table class="table table-zebra w-full text-sm">
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            {{-- Si luego amplías el API puedes agregar más columnas --}}
+          </tr>
+        </thead>
+        <tbody id="tabla_destinos_body">
+          {{-- Se llena por JS --}}
+        </tbody>
+      </table>
+    </div>
 
+    <div class="modal-action">
+      <label for="modal_elegir_destino" class="btn btn-ghost">Cerrar</label>
+    </div>
+  </div>
+  <label class="modal-backdrop" for="modal_elegir_destino">Close</label>
+</div>
 <!-- Select Conductor / Chofer -->
-<div class="space-y-2">
-<label for="empleado_id" class="text-sm font-medium">Conductor / Chofer<span class="text-red-600">*</span></label>
+<div id="empleado-card" class="space-y-2 hidden"> 
+<label for="empleado_id" class="text-sm font-medium">Empleado que efectua la carga<span class="text-red-600">*</span></label>
 <select
 id="empleado_id"
 name="empleado_id"
@@ -195,11 +238,8 @@ focus:border-primary transition @error('empleado_id') input-error @enderror" req
  @error('empleado_id')  
     <small class="text-red-500 error-message">{{ $message }}</small>
 @enderror
+</div> 
 </div>
-
-
-</div>
-
 
 </div>
 
@@ -278,7 +318,8 @@ focus:border-primary transition @error('empleado_id') input-error @enderror" req
                         focus:border-primary @error('combustible') input-error @enderror transition" required>
                         <option value="">Seleccionar</option>
                         @foreach ($tipo_combustible as $combustible_tipo)
-                         <option value="{{ $combustible_tipo->nombre }}">{{$combustible_tipo->nombre }}</option>  
+                         <option value="{{ $combustible_tipo->nombre }}"  
+                         data-valor="{{ $combustible_tipo->valor }}">{{$combustible_tipo->nombre }}</option>  
                         @endforeach
                     </select> 
                      @error('combustible')
@@ -307,12 +348,11 @@ focus:border-primary transition @error('empleado_id') input-error @enderror" req
                         placeholder="0" step="0.01"
                         class="w-full h-10 rounded-md border border-base-300 bg-base-200 
                         px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary
-                        focus:border-primary @error('precio') input-error @enderror transition" required>
+                        focus:border-primary @error('precio') input-error @enderror transition" required readonly> 
                     @error('precio')
                         <small class="text-red-500 error-message">{{ $message }}</small>
                     @enderror   
-                </div>
-
+                </div> 
             </div>
 
             <!-- FILA: 2 SELECT -->
@@ -393,6 +433,68 @@ focus:border-primary transition @error('empleado_id') input-error @enderror" req
         </button>
     </div>
 </form>
+{{-- Modal para crear un nuevo destino --}}
+<input type="checkbox" id="crear_destino_modal" class="modal-toggle" />
+<div class="modal" role="dialog">
+    <div class="modal-box">
+        <h3 class="font-bold text-lg mb-4">Nuevo destino</h3>
+
+        <form method="POST" action="{{ route('destinos.store') }}"> 
+            @csrf
+
+            {{-- Nombre --}}
+            <div class="form-control mb-3">
+                <label for="nuevo_destino_nombre" class="label">
+                    <span class="label-text font-medium">Nombre <span class="text-red-600">*</span></span>
+                </label>
+                <input type="text" id="nuevo_destino_nombre" name="nombre"
+                    class="w-full h-10 rounded-md border border-base-300 bg-base-200 px-3 
+                    text-sm focus:outline-none focus:ring-2 focus:ring-primary 
+                    focus:border-primary transition"
+                    placeholder="Ej: Juan Pérez, Policía Local, Walter Motos" required>
+            </div>
+
+            {{-- Tipo --}}
+            <div class="form-control mb-3">
+                <label for="nuevo_destino_tipo" class="label">
+                    <span class="label-text font-medium">Tipo <span class="text-red-600">*</span></span>
+                </label>
+                <select id="nuevo_destino_tipo" name="tipo"
+                    class="select select-bordered w-full rounded-md border border-base-300 bg-base-200 focus:outline-none focus:ring-2 focus:ring-primary 
+                    focus:border-primary transition" required>
+                    <option value="">Seleccione un tipo</option>
+                    <option value="persona">Persona</option>
+                    <option value="organismo_publico">Organismo público</option>
+                    <option value="empresa">Empresa</option>
+                    <option value="institucion">Institución</option>
+                    <option value="policia">Policía</option>
+                </select>
+            </div>
+
+            {{-- Descripción --}}
+            <div class="form-control mb-4">
+                <label for="nuevo_destino_descripcion" class="label">
+                    <span class="label-text font-medium">Descripción <span class="text-red-600">*</span></span>
+                </label>
+                <textarea id="nuevo_destino_descripcion" name="descripcion" rows="3"
+                    class="textarea w-full rounded-md border border-base-300 bg-base-200 focus:outline-none focus:ring-2 focus:ring-primary 
+                    focus:border-primary transition"
+                    placeholder="Ej: Acuerdo policial, Apoyo operativo, Empleado municipal, etc."></textarea>
+            </div>
+
+            <div class="modal-action">
+                <label for="crear_destino_modal" class="btn btn-ghost">
+                    Cancelar
+                </label>
+                <button type="submit" class="btn btn-primary">
+                    Guardar destino
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <label class="modal-backdrop" for="crear_destino_modal">Close</label>
+</div>
 @endsection
 
 @section('js')
@@ -423,6 +525,107 @@ focus:border-primary transition @error('empleado_id') input-error @enderror" req
         actualizarDatosVehiculo(); // por si ya viene seleccionado
     });
 </script>
+<script>
+    const oldDestinoId = "{{ old('destino_id') }}"; 
+
+    function cargarDestinosEnTabla(tipo) {
+        const tbody = document.getElementById('tabla_destinos_body');
+        const titulo = document.getElementById('titulo_modal_destinos');
+
+        if (!tipo) {
+            tbody.innerHTML = '<tr><td class="py-4 text-center text-sm text-gray-500">Primero seleccione un tipo de destino.</td></tr>';
+            return;
+        }
+
+        // Título según tipo (opcional)
+        if (tipo === 'vehiculo') titulo.textContent = 'Seleccionar vehículo';
+        else if (tipo === 'equipo') titulo.textContent = 'Seleccionar equipo';
+        else titulo.textContent = 'Seleccionar destino';
+
+        tbody.innerHTML = '<tr><td class="py-4 text-center text-sm">Cargando...</td></tr>';
+
+        fetch('{{ url('api/destinos/combustible') }}/' + tipo)
+            .then(res => res.json())
+            .then(data => {
+                if (!data.length) {
+                    tbody.innerHTML = '<tr><td class="py-4 text-center text-sm text-gray-500">No se encontraron destinos.</td></tr>';
+                    return;
+                }
+
+                tbody.innerHTML = '';
+
+                data.forEach(dest => {
+                    const tr = document.createElement('tr');
+                    tr.classList.add('cursor-pointer','hover');
+
+                    tr.innerHTML = `
+                        <td>${dest.nombre}</td>
+                    `;
+
+                    tr.addEventListener('click', function () {
+                        // Setear valores en el formulario principal
+                        document.getElementById('destino_id').value = dest.id;
+                        document.getElementById('destino_nombre_visble').value = dest.nombre;
+
+                        // Cerrar modal
+                        document.getElementById('modal_elegir_destino').checked = false;
+                    });
+
+                    tbody.appendChild(tr);
+                });
+            });
+    }
+
+    // cuando cambie destino_tipo, recargamos la tabla (si el modal se abre)
+    document.getElementById('destino_tipo').addEventListener('change', function () {
+        const tipo = this.value;
+        cargarDestinosEnTabla(tipo);
+        // también conviene limpiar selección anterior:
+        document.getElementById('destino_id').value = '';
+        document.getElementById('destino_nombre_visble').value = '';
+    });
+
+    // cuando se haga clic en el botón, cargamos la tabla para el tipo actual
+    document.getElementById('btn_elegir_destino').addEventListener('click', function () {
+        const tipo = document.getElementById('destino_tipo').value;
+        cargarDestinosEnTabla(tipo);
+    });
+</script>
+ <script>
+    $(document).ready(function () {
+
+        function toggleEmpleadoCard() {
+            const tipo = $('#destino_tipo').val(); 
+
+            if (tipo === 'vehiculo' || tipo === 'equipo' ) {  
+                // Mostrar solo cuando el destino es vehiculo
+                $('#empleado-card').removeClass('hidden');
+            } else {
+                // Ocultar para equipo / destino / vacío
+                $('#empleado-card').addClass('hidden');
+            }
+        }
+
+        // Cuando cambie el select
+        $('#destino_tipo').on('change', toggleEmpleadoCard);
+
+        // Para aplicar la lógica si viene con old('destino_tipo')
+        toggleEmpleadoCard();
+    });
+</script>
+<script>
+    $(document).ready(function () {
+    function MostrarValorDelCombustible() {
+        var selected = $('#combustible option:selected');  
+            
+         $('#precio').val(selected.data('valor'));    
+        }
+        $('#combustible').change(MostrarValorDelCombustible); 
+        // Para aplicar la lógica si viene con old('destino_tipo')
+        MostrarValorDelCombustible();  
+    });
+</script>
+
 @endsection
 
  

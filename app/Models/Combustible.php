@@ -14,15 +14,17 @@ class  Combustible extends Model
     use HasFactory,SoftDeletes;  
     protected $table = 'combustibles';
     protected $fillable = [
-        'vehiculo_id',
-        'empleado_id',
+        'empleado_id', 
         'user_id',
         'codigo',
         'litros',
         'tipo',
+        'sub_cuenta',
         'precio',
         'estacion',
         'fecha',
+        'destino_tipo',
+        'destino_id',
         'monto',
         'tipo_de_pago',
         'observaciones',

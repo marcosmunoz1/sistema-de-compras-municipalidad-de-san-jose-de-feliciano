@@ -11,11 +11,12 @@ return new class extends Migration
     {
         Schema::create('combustibles', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('empleado_id')->constrained('empleados')->cascadeOnDelete(); 
+            $table->foreignId('empleado_id')->nullable()->constrained('empleados')->cascadeOnDelete();  
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete(); //Usuario que registro el combustible 
             $table->string('codigo');  // nr de factura   
             $table->decimal('litros', 12, 2)->nullable(); //Litros consumidos 
-            $table->string('tipo')->nullable(); //Tipo de combustible (Ej.: Gasolina, Diesel, Etanol)
+            $table->string('tipo')->nullable(); //Tipo de combustible (Ej.: Gasolina, Diesel, Etanol) 
+            $table->string('sub_cuenta')->nullable(); //Subcuenta contable 
             $table->decimal('precio', 12, 2)->nullable(); //Precio por litro 
             $table->string('estacion'); //Estación de combustible
             $table->date('fecha');
