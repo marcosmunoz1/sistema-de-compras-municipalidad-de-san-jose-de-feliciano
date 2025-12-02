@@ -133,11 +133,7 @@
                         px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
                         focus:border-primary transition @error('destino_id') input-error @enderror"
                             disabled>
-                            <option value="">
-                                {{ $compra->destino ? $compra->destino->nombre : 'No asignado' }}
-                            </option>
-
-
+                           <option value="">{{ $compra->destino_nombre }}</option>
                         </select>
                     </div>
                 </div>

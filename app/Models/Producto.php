@@ -21,18 +21,29 @@ class Producto extends Model
       'estado' => true,
     ];
 
-    public function obras()
-    {
-        return $this->belongsToMany(Obra::class, 'obra_producto')
-            ->withPivot('cantidad_asignada')
-            ->withTimestamps();
-    }
+   public function detalle_compras()
+  {
+      return $this->hasMany(Detalle_Compra::class);
+  }
+
+ 
+
+
+   public function obras()
+  {
+      return $this->belongsToMany(Obra::class)
+          ->using(ObraProducto::class)
+          ->withPivot(['cantidad_asignada', 'detalle_compra_id'])
+          ->withTimestamps();
+  }
+
     public function vehiculos()
     {
         return $this->belongsToMany(Vehiculo::class, 'producto_vehiculo')
-                    ->withPivot('cantidad')
-                    ->withTimestamps();
+            ->withPivot('cantidad', 'detalle_compra_id')
+            ->withTimestamps();
     }
+
 
 
     public function movimientos()

@@ -88,7 +88,19 @@
                             <label for="tipo" class="text-sm font-medium">Tipo</label>
                             <select id="tipo" name="tipo" class="select select-bordered w-full h-10" disabled>
                                 @php
-                                    $tipos = ['AUTO', 'MOTO', 'CAMIONETA', 'CAMION', 'ACOPLADO', 'Especial', 'COLECTIVO', 'MINI BUS', 'RETRO ESCAVADORA', 'TRACTOR', 'UTILITARIO'];
+                                    $tipos = [
+                                        'AUTO',
+                                        'MOTO',
+                                        'CAMIONETA',
+                                        'CAMION',
+                                        'ACOPLADO',
+                                        'Especial',
+                                        'COLECTIVO',
+                                        'MINI BUS',
+                                        'RETRO ESCAVADORA',
+                                        'TRACTOR',
+                                        'UTILITARIO',
+                                    ];
                                 @endphp
 
                                 @foreach ($tipos as $tipo)
@@ -193,6 +205,143 @@
 
         </div>
     </div>
+    <div data-slot="card" class="card bg-base-100 shadow-xl p-4">
+        <table class="table table-zebra w-full">
+            <thead>
+                <tr>
+                    <th>Producto</th>
+                    <th>Precio</th>
+                    <th>Cantidad</th>
+                    <th>Subtotal</th>
+                </tr>
+            </thead>
+
+            <tbody id="tablaProductosVehiculo">
+                @foreach ($vehiculo->productos as $producto)
+                    @php
+                        $detalle = $producto->pivot->detalleCompra; // trae el detalle de compra
+                        $precioUnit = $detalle ? $detalle->precio : 0;
+                        $cantidad = $producto->pivot->cantidad;
+                        $subtotal = $detalle ? $detalle->subtotal : 0;
+                    @endphp
+
+                    <tr class="item-producto">
+                        <td>{{ $producto->nombre }}</td>
+
+                        <!-- PRECIO UNITARIO -->
+                       <td class="precio">${{ number_format($producto->pivot->precio_original, 2) }}</td>
+
+
+                        <!-- CANTIDAD -->
+                        <td class="cantidad" data-cantidad="{{ $cantidad }}">
+                            {{ $cantidad }}
+                        </td>
+
+                        <!-- SUBTOTAL -->
+                        <td class="subtotal" data-subtotal="{{ $subtotal }}">
+                            ${{ number_format($subtotal, 2) }}
+                        </td>
+                    </tr>
+                @endforeach
+            </tbody>
+
+            <tfoot>
+                <tr>
+                    <td colspan="3" class="text-right font-bold">Total:</td>
+                    <td id="totalFinal" class="text-center font-bold"></td>
+                </tr>
+            </tfoot>
+        </table>
+
+
+
+    </div>
 @endsection
 @section('js')
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            // Parseador robusto de moneda que soporta formatos con . y , (es-AR y en-US)
+            function parseCurrency(str) {
+                if (!str) return NaN;
+
+                // quitar todo menos dígitos, puntos y comas
+                str = String(str).replace(/[^\d\.,-]/g, '').trim();
+
+                if (str === '') return NaN;
+
+                const hasDot = str.indexOf('.') !== -1;
+                const hasComma = str.indexOf(',') !== -1;
+
+                // Si tiene ambos, asumimos que el separador decimal es el que aparece más a la derecha
+                if (hasDot && hasComma) {
+                    if (str.lastIndexOf(',') > str.lastIndexOf('.')) {
+                        // formato tipo 1.234.567,89 -> eliminar puntos y cambiar coma por punto
+                        str = str.replace(/\./g, '').replace(/,/g, '.');
+                    } else {
+                        // formato tipo 1,234,567.89 -> eliminar comas
+                        str = str.replace(/,/g, '');
+                    }
+                } else if (hasComma && !hasDot) {
+                    // solo coma: puede ser 1000,50 (decimal) o 1,000 (miles). Si hay más de 1 coma, son miles.
+                    const commas = (str.match(/,/g) || []).length;
+                    if (commas > 1) {
+                        str = str.replace(/,/g, ''); // 1,000,000 -> 1000000
+                    } else {
+                        // 1000,50 -> 1000.50
+                        str = str.replace(/,/g, '.');
+                    }
+                } else if (hasDot && !hasComma) {
+                    // solo punto: similar a arriba (puede ser miles o decimal)
+                    const dots = (str.match(/\./g) || []).length;
+                    if (dots > 1) {
+                        str = str.replace(/\./g, ''); // 1.000.000 -> 1000000
+                    } // si solo 1 punto, lo dejamos como decimal
+                }
+
+                // Ahora parseamos
+                const num = parseFloat(str);
+                return isNaN(num) ? NaN : num;
+            }
+
+            let total = 0;
+
+            document.querySelectorAll('.item-producto').forEach(row => {
+
+                const precioText = row.querySelector('.precio').textContent || '';
+                const cantidadText = row.querySelector('.cantidad').textContent || '';
+
+                const precioUnitario = parseCurrency(precioText);
+                const cantidad = parseFloat(
+                    String(cantidadText).replace(/\s+/g, '').replace(',', '.')
+                );
+
+                if (!isNaN(precioUnitario) && !isNaN(cantidad)) {
+                    const subtotal = precioUnitario * cantidad;
+                    total += subtotal;
+
+                    // mostrar subtotal con formateo es-AR
+                    row.querySelector('.subtotal').textContent =
+                        '$' + subtotal.toLocaleString('es-AR', {
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2
+                        });
+
+                    // opcional: si querés también mostrar el precio unitario formateado
+                    // row.querySelector('.precio').textContent =
+                    //     '$' + precioUnitario.toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                } else {
+                    row.querySelector('.subtotal').textContent = '-';
+                }
+            });
+
+            const totalEl = document.getElementById('totalFinal');
+            if (totalEl) {
+                totalEl.textContent = '$' + total.toLocaleString('es-AR', {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                });
+            }
+        });
+    </script>
 @endsection

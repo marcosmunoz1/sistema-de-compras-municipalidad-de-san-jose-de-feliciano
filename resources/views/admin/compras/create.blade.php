@@ -116,10 +116,10 @@
                         px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
                         focus:border-primary transition @error('sub_cuenta') input-error @enderror" required>
                             <option value="">Seleccione la sub cuenta</option> 
-                            <option value="Secretaria de obras publicas">Secretaria de obras publicas</option>
-                            <option value="Secretaria de desarrollos humanos">Secretaria de desarrollos humanos</option>
-                            <option value="Secretaria de gobierno">Secretaria de gobierno</option>
-                            <option value="Departamento ejecutivo municipal">Departamento ejecutivo municipal</option> 
+                            <option value="Secretaria de obras publicas">Secretaria de Obras Publicas</option>
+                            <option value="Secretaria de desarrollos humanos">Secretaria de Desarrollo Humano</option>
+                            <option value="Secretaria de gobierno">Secretaria de Gobierno</option>
+                            <option value="Departamento ejecutivo municipal">Departamento Ejecutivo Municipal</option> 
                         </select>
                         @error('sub_cuenta')
                             <small class="text-red-500 error-message">{{ $message }}</small>

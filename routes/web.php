@@ -140,19 +140,28 @@ Route::get('/admin/vehiculos/{vehiculo}/productos', [App\Http\Controllers\Vehicu
 Route::get('/admin/depositos/{deposito}/productos', [App\Http\Controllers\ProductoController::class, 'productos'])->name('ajax.depositos');
 
 
-Route::get('/api/destinos/{tipo}', function($tipo) { 
+Route::get('/api/destinos/{tipo}', function ($tipo) {
 
-    $info = modeloDestino($tipo);
+    // Config de modelos y campos correctos
+    $map = [
+        'deposito' => ['model' => \App\Models\Deposito::class, 'campo' => 'nombre'],
+        'obra'     => ['model' => \App\Models\Obra::class,     'campo' => 'nombre'],
+        'vehiculo' => ['model' => \App\Models\Vehiculo::class, 'campo' => 'patente'],
+        'equipo'   => ['model' => \App\Models\Equipo::class,   'campo' => 'nombre'],
+    ];
 
-    if (!$info) {
-        return [];
+    // Si no existe el tipo → devolver lista vacía (evita error 500)
+    if (!isset($map[$tipo])) {
+        return response()->json([]);
     }
 
-    $modelo = $info['model'];
-    $campo = $info['campo']; 
+    $modelo = $map[$tipo]['model'];
+    $campo  = $map[$tipo]['campo'];
 
-    return $modelo::select('id', "$campo as nombre")->get(); 
+    // SELECT seguro, sin confundir columnas
+    return $modelo::select('id', "$campo as nombre")->get();
 });
+
 
 
  

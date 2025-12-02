@@ -10,6 +10,7 @@ use App\Models\Movimiento;
 use App\Models\Producto;
 use App\Models\Proveedor;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class CompraController extends Controller
 {
@@ -25,7 +26,7 @@ class CompraController extends Controller
                 $query->where('nr_orden', 'like', "%{$search}%")
                       ->orWhere('fecha_orden', 'like', "%{$search}%");
             }
-            $compras = $query->paginate(2); 
+            $compras = $query->paginate(10); 
         return view('admin.compras.index', compact('compras'));  
     }
 
@@ -68,7 +69,7 @@ class CompraController extends Controller
         $compra = Compra::create([
             'proveedor_id' => $request->proveedor_id,
             'empleado_id' => $request->empleado_id,
-            'destino_tipo' => modeloDestino($request->destino_tipo),   // <── helper
+            'destino_tipo' => modeloDestino($request->destino_tipo)['model'],
             'destino_id' => $request->destino_id,    
             'area_solicitante' => 'Corralon Municipal - Compras', 
             'nr_orden' => $nr_orden,   
@@ -99,13 +100,52 @@ class CompraController extends Controller
                 'tipo' => 'entrada',
                 'origen_tipo'   => Proveedor::class,   // <── modelo REAL
                 'origen_id'     => $request->proveedor_id,
-                'destino_tipo'  => modeloDestino($request->destino_tipo),  // <── helper
+                'destino_tipo' => modeloDestino($request->destino_tipo)['model'],  // <── helper
                 'destino_id'    => $request->destino_id,
                 'cantidad'      => $cantidad, 
                 'observacion'   => $request->asunto_obra_automotor,
                 'fecha'         => $request->fecha_orden,
                 'estado'        => true
             ]);
+
+            // ─────────────────────────────────────────────
+            // SUMAR STOCK AL DESTINO (obra / depósito / vehículo)
+            // ─────────────────────────────────────────────
+
+            $destinoInfo  = modeloDestino($request->destino_tipo);   // array: [model => ..., campo => ...]
+            $destinoClass = $destinoInfo['model'];                  // modelo destino
+            $campoPivot   = $destinoInfo['campo'];                  // 'cantidad' o 'cantidad_asignada'
+
+            $destinoModel = $destinoClass::find($request->destino_id);
+
+            // Buscar el detalle de compra recién creado
+            $detalleCompra = Detalle_compra::where('compra_id', $compra->id)
+                                            ->where('producto_id', $producto_id)
+                                            ->first();
+
+            // Buscar si ese producto ya está asignado en la tabla pivote
+            $actual = $destinoModel->productos()
+                ->where('producto_id', $producto_id)
+                ->first();
+
+            if ($actual) {
+                // Ya existe → sumar
+                $nuevoTotal = $actual->pivot->{$campoPivot} + $cantidad;
+
+                $destinoModel->productos()
+                    ->updateExistingPivot($producto_id, [
+                        $campoPivot => $nuevoTotal,
+                        'detalle_compra_id' => $detalleCompra->id // <-- asignamos detalle
+                    ]);
+
+            } else {
+                // No existe → crear registro en pivote
+                $destinoModel->productos()
+                    ->attach($producto_id, [
+                        $campoPivot => $cantidad,
+                        'detalle_compra_id' => $detalleCompra->id // <-- asignamos detalle
+                    ]);
+            }
         }
 
         return redirect()

@@ -39,10 +39,12 @@ class Obra extends Model
     ];
     public function productos()
     {
-        return $this->belongsToMany(Producto::class, 'obra_producto')
-            ->withPivot('cantidad_asignada')
+        return $this->belongsToMany(Producto::class)
+            ->using(ObraProducto::class)
+            ->withPivot(['cantidad_asignada', 'detalle_compra_id'])
             ->withTimestamps();
     }
+
 
     public function movimientosComoOrigen()
     {
