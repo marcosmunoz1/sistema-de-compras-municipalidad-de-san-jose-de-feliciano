@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Obra;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ObraController extends Controller
 {
@@ -115,11 +116,51 @@ class ObraController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show($id)
+   public function show(Request $request, $id)
     {
-        $obra = Obra::withTrashed()->findOrFail($id);
-        return view('admin.obras.show', compact('obra'));
+        $obra = Obra::findOrFail($id);
+        $search = $request->input('search');
+
+        $productos = DB::table('obra_producto as op')
+            ->join('productos as p', 'p.id', '=', 'op.producto_id')
+            ->leftJoin('detalle_compras as dc', 'dc.id', '=', 'op.detalle_compra_id')
+            ->leftJoin('compras as c', 'c.id', '=', 'dc.compra_id')
+            ->select(
+                'p.nombre',
+                'op.cantidad_asignada',
+                'dc.precio as precio_unitario',
+                DB::raw('op.cantidad_asignada * dc.precio as subtotal'),
+                'c.fecha_orden'
+            )
+            ->where('op.obra_id', $obra->id)
+
+            // 🔍 BUSCADOR
+            ->when($search, function ($query) use ($search) {
+                $query->where(function ($q) use ($search) {
+                    $q->where('p.nombre', 'LIKE', "%{$search}%")
+                        ->orWhere('op.cantidad_asignada', 'LIKE', "%{$search}%")
+                        ->orWhere('dc.precio', 'LIKE', "%{$search}%")
+                        ->orWhere(DB::raw('op.cantidad_asignada * dc.precio'), 'LIKE', "%{$search}%")
+                        ->orWhere('c.fecha_orden', 'LIKE', "%{$search}%");
+                });
+            })
+
+            ->orderBy('c.fecha_orden', 'desc')
+            ->paginate(10);
+
+        // Total general de la obra
+        $totalGeneral = DB::table('obra_producto as op')
+            ->leftJoin('detalle_compras as dc', 'dc.id', '=', 'op.detalle_compra_id')
+            ->where('op.obra_id', $obra->id)
+            ->select(DB::raw('SUM(op.cantidad_asignada * dc.precio) as total'))
+            ->value('total');
+
+        return view('admin.obras.show', compact('obra', 'productos', 'totalGeneral', 'search'));
     }
+
+
+
+
 
     /**
      * Show the form for editing the specified resource.

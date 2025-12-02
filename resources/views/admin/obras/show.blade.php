@@ -98,8 +98,8 @@
             <!-- Resolución o decreto -->
             <div class="form-control">
                 <label class="label font-semibold">Monto Ejecutado</label>
-                <input type="text" name="resolucion_decreto"
-                    value="{{ $obra->resolucion_decreto }}" class="input input-bordered w-full" readonly>
+                <input type="text" name="resolucion_decreto" value="{{ $obra->resolucion_decreto }}"
+                    class="input input-bordered w-full" readonly>
             </div>
 
             <!-- Dirección -->
@@ -174,6 +174,123 @@
             </div>
 
         </div>
-
     </div>
+    <div class="card bg-base-100 shadow-xl p-4">
+        <h1 class="text-2xl font-semibold">Detalles de materiales asignados a la obra</h1>
+        <br>
+
+        <!-- BUSCADOR -->
+        <form method="GET">
+            <div class="card bg-base-100 shadow p-6 mb-6">
+                <div class="flex items-center gap-3">
+                    <input type="text" name="search" value="{{ $search }}" class="input input-bordered"
+                        placeholder="Buscar...">
+                    <!-- BOTÓN -->
+                    <button class="btn btn-primary">
+                        <x-heroicon-o-magnifying-glass class="w-4 h-4" />
+                        Buscar
+                    </button>
+                    @if (request('search'))
+                        <a href="{{ route('obras.show', $obra->id) }}" class="btn btn-error"><x-heroicon-o-trash
+                                class="w-4 h-4" /> Limpiar</a>
+                    @endif
+                </div>
+            </div>
+        </form>
+
+        <table class="table table-zebra w-full">
+            <thead>
+                <tr>
+                    <th>Producto</th>
+                    <th>Fecha Compra</th>
+                    <th>Precio</th>
+                    <th>Cantidad</th>
+                    <th>Subtotal</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @php
+                    $nr = $productos->currentPage() * $productos->perPage() - $productos->perPage() + 1;
+                @endphp
+                @foreach ($productos as $producto)
+                    <tr>
+                        <td>{{ $nr++ }}</td>
+                        <td>{{ $producto->nombre }}</td>
+
+                        <td>{{ \Carbon\Carbon::parse($producto->fecha_orden)->format('d/m/Y') }}</td>
+
+                        <td>${{ number_format($producto->precio_unitario, 2) }}</td>
+
+                        <td>{{ $producto->cantidad_asignada }}</td>
+
+                        <td>${{ number_format($producto->subtotal, 2) }}</td>
+                    </tr>
+                @endforeach
+
+            </tbody>
+
+            <tfoot>
+                <tr>
+                    <td colspan="4" class="text-right font-bold">Total:</td>
+                    <td class="font-bold">
+                        ${{ number_format($totalGeneral, 2) }}
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+
+        @if ($productos->hasPages())
+            <div class="flex flex-col md:flex-row justify-between items-center mt-6 px-3 gap-4">
+
+                <!-- Texto "Mostrando X - Y" -->
+                <div class="text-sm text-gray-500">
+                    Mostrando {{ $productos->firstItem() }} - {{ $productos->lastItem() }}
+                    de {{ $productos->total() }} registros
+                </div>
+
+                <!-- Controles de paginación -->
+                <div class="join">
+
+                    {{-- Botón Anterior --}}
+                    @if ($productos->onFirstPage())
+                        <button class="join-item btn btn-square btn-disabled">«</button>
+                    @else
+                        <a href="{{ $productos->previousPageUrl() }}" class="join-item btn btn-square">«</a>
+                    @endif
+
+                    {{-- Números de página --}}
+                    @foreach ($productos->links()->elements[0] ?? [] as $page => $url)
+                        @if ($page == $productos->currentPage())
+                            <button class="join-item btn btn-square btn-active">{{ $page }}</button>
+                        @else
+                            <a href="{{ $url }}" class="join-item btn btn-square">{{ $page }}</a>
+                        @endif
+                    @endforeach
+
+                    {{-- Botón Siguiente --}}
+                    @if ($productos->hasMorePages())
+                        <a href="{{ $productos->nextPageUrl() }}" class="join-item btn btn-square">»</a>
+                    @else
+                        <button class="join-item btn btn-square btn-disabled">»</button>
+                    @endif
+
+                </div>
+            </div>
+        @endif
+    </div>
+@endsection
+@section('js')
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            let total = 0;
+
+            document.querySelectorAll('#tablaProductosObra .subtotal').forEach(item => {
+                const val = parseFloat(item.dataset.subtotal || 0);
+                total += val;
+            });
+
+            document.getElementById('totalFinalObra').textContent = '$' + total.toFixed(2);
+        });
+    </script>
 @endsection
