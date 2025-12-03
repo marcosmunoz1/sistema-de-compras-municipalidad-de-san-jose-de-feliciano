@@ -27,8 +27,6 @@ class Producto extends Model
   }
 
  
-
-
    public function obras()
   {
       return $this->belongsToMany(Obra::class)
@@ -42,6 +40,14 @@ class Producto extends Model
         return $this->belongsToMany(Vehiculo::class, 'producto_vehiculo')
             ->withPivot('cantidad', 'detalle_compra_id')
             ->withTimestamps();
+    }
+
+    public function depositos()
+    {
+        return $this->belongsToMany(Deposito::class, 'deposito_producto')
+                    ->using(DepositoProducto::class)
+                    ->withPivot(['cantidad', 'detalle_compra_id'])
+                    ->withTimestamps();
     }
 
 

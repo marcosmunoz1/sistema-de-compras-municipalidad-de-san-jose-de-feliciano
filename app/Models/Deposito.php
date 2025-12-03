@@ -9,12 +9,14 @@ class Deposito extends Model
     protected $fillable = ['nombre','descripcion'];
     
 
-    public function productos()
+   public function productos()
     {
         return $this->belongsToMany(Producto::class, 'deposito_producto')
-                    ->withPivot('cantidad')
+                    ->using(DepositoProducto::class)
+                    ->withPivot(['cantidad', 'detalle_compra_id'])
                     ->withTimestamps();
     }
+
 
 
     public function movimientosComoOrigen()

@@ -54,33 +54,31 @@ class CompraController extends Controller
             'fecha_orden' => 'required',
             'empleado_id' => 'required',
             'proveedor_id' => 'required',
-            'sub_cuenta' => 'required', 
+            'sub_cuenta' => 'required',
             'productos' => 'required|array|min:1',
             'cantidades' => 'required|array|min:1',
-            'asunto_obra_automotor' => 'required',  
+            'asunto_obra_automotor' => 'required',
         ]);
 
         // Generar número de orden
         $lastOrder = Compra::max('nr_orden');
-
         $newOrder = $lastOrder ? $lastOrder + 1 : 13000;
-
         $nr_orden = str_pad($newOrder, 8, '0', STR_PAD_LEFT);
 
         // Crear la compra
         $compra = Compra::create([
-            'proveedor_id' => $request->proveedor_id,
-            'empleado_id' => $request->empleado_id,
-            'destino_tipo' => modeloDestino($request->destino_tipo)['model'],
-            'destino_id' => $request->destino_id,    
-            'area_solicitante' => 'Corralon Municipal - Compras', 
-            'nr_orden' => $nr_orden,   
-            'sub_cuenta' => $request->sub_cuenta,
-            'fecha_orden' => $request->fecha_orden, 
-            'estado_compra' => 'Pendiente de factura',    
-            'asunto_obra_automotor' => $request->asunto_obra_automotor, 
-            'observacion' => $request->observacion,  
-            'estado' => true, 
+            'proveedor_id'   => $request->proveedor_id,
+            'empleado_id'    => $request->empleado_id,
+            'destino_tipo'   => modeloDestino($request->destino_tipo)['model'],
+            'destino_id'     => $request->destino_id,
+            'area_solicitante' => 'Corralon Municipal - Compras',
+            'nr_orden'       => $nr_orden,
+            'sub_cuenta'     => $request->sub_cuenta,
+            'fecha_orden'    => $request->fecha_orden,
+            'estado_compra'  => 'Pendiente de factura',
+            'asunto_obra_automotor' => $request->asunto_obra_automotor,
+            'observacion'    => $request->observacion,
+            'estado'         => true,
         ]);
 
         // Insertar detalles y movimientos
@@ -89,64 +87,56 @@ class CompraController extends Controller
             $cantidad = $request->cantidades[$index];
 
             // Guardar detalle
-            Detalle_compra::create([
-                'compra_id' => $compra->id,
+            $detalleCompra = Detalle_compra::create([
+                'compra_id'   => $compra->id,
                 'producto_id' => $producto_id,
-                'cantidad' => $cantidad,
+                'cantidad'    => $cantidad,
             ]);
 
             // Guardar movimiento
             Movimiento::create([
-                'producto_id' => $producto_id,
-                'compra_id' => $compra->id,
-                'tipo' => 'entrada',
-                'origen_tipo'   => Proveedor::class,   // <── modelo REAL
+                'producto_id'   => $producto_id,
+                'compra_id'     => $compra->id,
+                'tipo'          => 'entrada',
+                'origen_tipo'   => Proveedor::class,
                 'origen_id'     => $request->proveedor_id,
-                'destino_tipo' => modeloDestino($request->destino_tipo)['model'],  // <── helper
+                'destino_tipo'  => modeloDestino($request->destino_tipo)['model'],
                 'destino_id'    => $request->destino_id,
-                'cantidad'      => $cantidad, 
+                'cantidad'      => $cantidad,
                 'observacion'   => $request->asunto_obra_automotor,
                 'fecha'         => $request->fecha_orden,
                 'estado'        => true
             ]);
 
             // ─────────────────────────────────────────────
-            // SUMAR STOCK AL DESTINO (obra / depósito / vehículo)
+            // CARGA AL DESTINO (deposito / obra / vehículo)
             // ─────────────────────────────────────────────
 
-            $destinoInfo  = modeloDestino($request->destino_tipo);   // array: [model => ..., campo => ...]
-            $destinoClass = $destinoInfo['model'];                  // modelo destino
-            $campoPivot   = $destinoInfo['campo'];                  // 'cantidad' o 'cantidad_asignada'
+            $destinoInfo  = modeloDestino($request->destino_tipo);
+            $destinoClass = $destinoInfo['model'];
+            $campoPivot   = $destinoInfo['campo']; // cantidad o cantidad_asignada
 
             $destinoModel = $destinoClass::find($request->destino_id);
 
-            // Buscar el detalle de compra recién creado
-            $detalleCompra = Detalle_compra::where('compra_id', $compra->id)
-                                            ->where('producto_id', $producto_id)
-                                            ->first();
-
-            // Buscar si ese producto ya está asignado en la tabla pivote
-            $actual = $destinoModel->productos()
-                ->where('producto_id', $producto_id)
+            // ¿Existe una fila pivote EXACTA para ESTA MISMA compra?
+            $filaMismaCompra = $destinoModel->productos()
+                ->wherePivot('detalle_compra_id', $detalleCompra->id)
+                ->wherePivot('producto_id', $producto_id)
                 ->first();
 
-            if ($actual) {
-                // Ya existe → sumar
-                $nuevoTotal = $actual->pivot->{$campoPivot} + $cantidad;
+            if ($filaMismaCompra) {
 
-                $destinoModel->productos()
-                    ->updateExistingPivot($producto_id, [
-                        $campoPivot => $nuevoTotal,
-                        'detalle_compra_id' => $detalleCompra->id // <-- asignamos detalle
-                    ]);
+                // Si existe UNA entrada del MISMO detalle_compra → sumar cantidades
+                $destinoModel->productos()->updateExistingPivot($producto_id, [
+                    $campoPivot => $filaMismaCompra->pivot->{$campoPivot} + $cantidad,
+                ]);
 
             } else {
-                // No existe → crear registro en pivote
-                $destinoModel->productos()
-                    ->attach($producto_id, [
-                        $campoPivot => $cantidad,
-                        'detalle_compra_id' => $detalleCompra->id // <-- asignamos detalle
-                    ]);
+                // SIEMPRE crear una nueva entrada pivote para cada compra diferente
+                $destinoModel->productos()->attach($producto_id, [
+                    $campoPivot        => $cantidad,
+                    'detalle_compra_id' => $detalleCompra->id
+                ]);
             }
         }
 

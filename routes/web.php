@@ -134,6 +134,10 @@ Route::get('/admin/movimientos/{id}', [App\Http\Controllers\MovimientoController
 Route::delete('/admin/movimientos/{id}', [App\Http\Controllers\MovimientoController::class, 'destroy'])->name('movimientos.destroy')->middleware('auth');
 Route::put('admin/movimientos/{id}/restore', [App\Http\Controllers\MovimientoController::class, 'restore'])->name('movimientos.restore')->middleware('auth');
 
+//Rutas para depositos
+Route::get('/admin/depositos', [App\Http\Controllers\DepositoController::class, 'index'])->name('depositos.index');
+Route::get('/admin/depositos/{id}', [App\Http\Controllers\DepositoController::class, 'show'])->name('depositos.show');
+
 //Ajax para obtener productos segun el caso
 Route::get('/admin/obras/{obra}/productos', [App\Http\Controllers\ObraController::class, 'productosAsignados'])->name('ajax.obras')->middleware('auth');
 Route::get('/admin/vehiculos/{vehiculo}/productos', [App\Http\Controllers\VehiculoController::class, 'productos'])->name('ajax.vehiculos')->middleware('auth');

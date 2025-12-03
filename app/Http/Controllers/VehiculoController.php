@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Vehiculo;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 class VehiculoController extends Controller
@@ -143,11 +144,52 @@ class VehiculoController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show($id)
+    public function show(Request $request, $id)
     {
-        $vehiculo = Vehiculo::withTrashed()->findOrFail($id);
-        return view('admin.vehiculos.show', compact('vehiculo'));
+        $vehiculo = Vehiculo::findOrFail($id);
+
+        $search = $request->input('search'); // ← buscador
+
+        $productos = DB::table('producto_vehiculo as pv')
+            ->join('productos as p', 'p.id', '=', 'pv.producto_id')
+            ->leftJoin('detalle_compras as dc', 'dc.id', '=', 'pv.detalle_compra_id')
+            ->leftJoin('compras as c', 'c.id', '=', 'dc.compra_id')
+            ->select(
+                'p.nombre',
+                'p.descripcion',
+                'pv.cantidad',
+                'dc.precio',
+                'dc.subtotal',
+                'c.fecha_orden'
+            )
+            ->where('pv.vehiculo_id', $vehiculo->id)
+            ->when($search, function ($query, $search) {
+
+                $query->where(function ($q) use ($search) {
+
+                    $q->where('p.nombre', 'LIKE', "%{$search}%")
+                        ->orWhere('p.descripcion', 'LIKE', "%{$search}%")
+                        ->orWhere('pv.cantidad', 'LIKE', "%{$search}%")
+                        ->orWhere('dc.precio', 'LIKE', "%{$search}%")
+                        ->orWhere('dc.subtotal', 'LIKE', "%{$search}%")
+                        ->orWhere('c.fecha_orden', 'LIKE', "%{$search}%");
+                });
+            })
+            ->orderBy('c.fecha_orden', 'desc') // sigue ordenando por fecha
+            ->paginate(10);
+
+        // Total general
+        $totalGeneral = DB::table('producto_vehiculo as pv')
+            ->leftJoin('detalle_compras as dc', 'dc.id', '=', 'pv.detalle_compra_id')
+            ->where('pv.vehiculo_id', $vehiculo->id)
+            ->sum('dc.subtotal');
+
+        return view('admin.vehiculos.show', compact('vehiculo', 'productos', 'totalGeneral', 'search'));
     }
+
+
+
+
 
     /**
      * Show the form for editing the specified resource.
