@@ -150,10 +150,15 @@ class CompraController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show($id)
+    public function show(Request $request, $id)
     {
+        $from = $request->input('from');  
+        $vehiculoId = $request->input('vehiculo_id'); // si vino desde vehículo
+        $obraId = $request->input('obra_id');
+        $depositoId = $request->input('deposito_id');
+
         $compra = Compra::with('detalle_compras','empleado','proveedor','destino')->findOrFail($id);
-        return view('admin.compras.show', compact('compra'));
+        return view('admin.compras.show', compact('compra','from','vehiculoId','obraId','depositoId'));
     }
 
     /**

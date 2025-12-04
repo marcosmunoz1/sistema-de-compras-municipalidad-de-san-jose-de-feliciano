@@ -130,7 +130,8 @@ class ObraController extends Controller
                 'op.cantidad_asignada',
                 'dc.precio as precio_unitario',
                 DB::raw('op.cantidad_asignada * dc.precio as subtotal'),
-                'c.fecha_orden'
+                'c.fecha_orden',
+                'c.id as compra_id'
             )
             ->where('op.obra_id', $obra->id)
 

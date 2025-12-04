@@ -4,6 +4,20 @@
     <!-- Titulo y boton -->
     <div class="flex items-center justify-between mb-6">
         <h1 class="text-2xl font-semibold">Ver datos de la compra</h1>
+        @if ($from === 'vehiculo' && $vehiculoId)
+            <a href="{{ route('vehiculos.show', $vehiculoId) }}" class="btn btn-secondary mb-3">
+                ← Volver al vehículo
+            </a>
+        @elseif($from === 'obra' && $obraId)
+            <a href="{{ route('obras.show', $obraId) }}" class="btn btn-secondary mb-3">
+                ← Volver a obra
+            </a>
+        @elseif($from === 'deposito' && $depositoId)
+            <a href="{{ route('depositos.show', $depositoId) }}" class="btn btn-secondary mb-3">
+                ← Volver a depósito
+            </a>
+        @endif
+
     </div>
 
     <div class="breadcrumbs text-sm mb-6">
@@ -31,7 +45,7 @@
             </li>
         </ul>
     </div>
-    
+
 
 
 
@@ -133,15 +147,15 @@
                         px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
                         focus:border-primary transition @error('destino_id') input-error @enderror"
                             disabled>
-                           <option value="">{{ $compra->destino_nombre }}</option>
+                            <option value="">{{ $compra->destino_nombre }}</option>
                         </select>
                     </div>
                 </div>
                 <div class="grid grid-cols-1 gap-4">
                     <div class="space-y-2">
                         <label for="asunto_obra_automotor" class="text-sm font-medium">Asunto de la compra</label>
-                        <textarea value="" type="text" id="asunto_obra_automotor"
-                            name="asunto_obra_automotor" placeholder="Ingrese una justificacion breve de la compra"
+                        <textarea value="" type="text" id="asunto_obra_automotor" name="asunto_obra_automotor"
+                            placeholder="Ingrese una justificacion breve de la compra"
                             class="textarea w-full rounded-md border border-base-300 bg-base-200 focus:outline-none focus:ring-2 focus:ring-primary 
                         focus:border-primary transition @error('asunto_obra_automotor') input-error @enderror"
                             disabled>{{ $compra->asunto_obra_automotor }}</textarea>
@@ -150,8 +164,7 @@
                 <div class="grid grid-cols-1 gap-4">
                     <div class="space-y-2">
                         <label for="observacion" class="text-sm font-medium">Observaciones</label>
-                        <textarea type="text" id="observacion" name="observacion"
-                            placeholder="Ingrese una justificacion breve de la compra"
+                        <textarea type="text" id="observacion" name="observacion" placeholder="Ingrese una justificacion breve de la compra"
                             class="textarea w-full rounded-md border border-base-300 bg-base-200 focus:outline-none focus:ring-2 focus:ring-primary 
                         focus:border-primary transition @error('observacion') input-error @enderror"
                             disabled>{{ $compra->observacion }}</textarea>
@@ -195,12 +208,13 @@
 
                                 {{-- Cantidad --}}
                                 <td class="text-center">
-                                    <input type="text" class="text-center cantidad" readonly value="{{ $detalle->cantidad }}">
+                                    <input type="text" class="text-center cantidad" readonly
+                                        value="{{ $detalle->cantidad }}">
                                 </td>
 
                                 {{-- Subtotal --}}
                                 <td class="text-center">
-                                    ${{ number_format($detalle->subtotal, 2) ?? ''}}
+                                    ${{ number_format($detalle->subtotal, 2) ?? '' }}
                                 </td>
                             </tr>
                         @endforeach

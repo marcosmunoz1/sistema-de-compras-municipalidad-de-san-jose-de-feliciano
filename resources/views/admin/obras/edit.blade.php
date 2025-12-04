@@ -69,7 +69,9 @@
 
                 <!-- Responsable -->
                 <div class="form-control">
-                    <label class="label font-semibold">Responsable (Opcional)</label>
+                    <label class="label font-semibold">
+                        Responsable <span class="text-red-600">*</span>
+                    </label>
                     <input type="text" name="responsable" value="{{ old('responsable', $obra->responsable) }}"
                         class="input input-bordered w-full">
                     @error('responsable')
@@ -77,13 +79,15 @@
                     @enderror
                 </div>
 
-                <!-- Teléfono responsable -->
+                <!-- Ejecutado por: -->
                 <div class="form-control">
-                    <label class="label font-semibold">Teléfono Responsable (Opcional)</label>
-                    <input type="text" name="telefono_responsable"
-                        value="{{ old('telefono_responsable', $obra->telefono_responsable) }}"
-                        class="input input-bordered w-full">
-                    @error('telefono_responsable')
+                    <label class="label font-semibold">
+                        Ejecutado por: <span class="text-red-600">*</span>
+                    </label>
+                    <input type="text" name="ejecutado_por"
+                        value="{{ old('ejecutado_por', $obra->ejecutado_por) }}"
+                        class="input input-bordered w-full" required>
+                    @error('ejecutado_por')
                         <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
                     @enderror
                 </div>
@@ -98,12 +102,12 @@
                     @enderror
                 </div>
 
-                <!-- Monto ejecutado -->
+                <!-- Resolución o decreto -->
                 <div class="form-control">
-                    <label class="label font-semibold">Monto Ejecutado</label>
-                    <input type="number" name="monto_ejecutado" min="0" step="0.01"
-                        value="{{ old('monto_ejecutado', $obra->monto_ejecutado) }}" class="input input-bordered w-full">
-                    @error('monto_ejecutado')
+                    <label class="label font-semibold">Resolución o decreto (Opcional)</label>
+                    <input type="text" name="resolucion_decreto"
+                        value="{{ old('resolucion_decreto', $obra->resolucion_decreto) }}" class="input input-bordered w-full">
+                    @error('resolucion_decreto')
                         <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
                     @enderror
                 </div>
