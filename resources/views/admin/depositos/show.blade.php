@@ -40,7 +40,7 @@
             </li>
         </ul>
     </div>
-    <form method="GET">
+    <form method="GET" action="{{ route('depositos.show', $deposito->id) }}#tabla-productos">
         <div class="card bg-base-100 shadow p-6 mb-6">
             <div class="flex items-center gap-3">
                 <input type="text" name="search" value="{{ $search }}" class="input input-bordered"
@@ -51,13 +51,13 @@
                     Buscar
                 </button>
                 @if (request('search'))
-                    <a href="{{ route('depositos.show', $deposito->id) }}" class="btn btn-error"><x-heroicon-o-trash
+                    <a href="{{ route('depositos.show', $deposito->id) }}#tabla-productos" class="btn btn-error"><x-heroicon-o-trash
                             class="w-4 h-4" /> Limpiar</a>
                 @endif
             </div>
         </div>
     </form>
-    <div class="card bg-base-100 shadow-xl p-4">
+    <div class="card bg-base-100 shadow-xl p-4" id="tabla-productos">
         <table class="table table-zebra w-full">
             <thead>
                 <tr>
@@ -67,6 +67,7 @@
                     <th class="text-center">Precio</th>
                     <th class="text-center">Cantidad</th>
                     <th class="text-center">Subtotal</th>
+                    <th class="text-center">Acciones</th>
                 </tr>
             </thead>
 
@@ -95,14 +96,24 @@
                         <td class="text-center">
                             ${{ number_format($producto->subtotal ?? 0, 2) }}
                         </td>
+                        <td class="text-center">
+                            @if ($producto->compra_id)
+                                <a href="{{ route('compras.show', ['id' => $producto->compra_id, 'from' => 'deposito', 'deposito_id' => $deposito->id]) }}"
+                                    class="btn btn-sm btn-primary">
+                                    Ver compra
+                                </a>
+                            @else
+                                —
+                            @endif
+                        </td>
                     </tr>
                 @endforeach
             </tbody>
 
             <tfoot>
                 <tr>
-                    <td colspan="5" class="text-right font-bold">Total:</td>
-                    <td class="text-center font-bold">
+                    <td colspan="6" class="text-right font-bold text-2xl">Total:</td>
+                    <td class="text-center font-bold text-2xl">
                         ${{ number_format($totalGeneral, 2) }}
                     </td>
                 </tr>
@@ -126,7 +137,7 @@
                     @if ($productos->onFirstPage())
                         <button class="join-item btn btn-square btn-disabled">«</button>
                     @else
-                        <a href="{{ $productos->previousPageUrl() }}" class="join-item btn btn-square">«</a>
+                        <a href="{{ $productos->previousPageUrl() }}#tabla-productos" class="join-item btn btn-square">«</a>
                     @endif
 
                     {{-- Números de página --}}
@@ -134,13 +145,13 @@
                         @if ($page == $productos->currentPage())
                             <button class="join-item btn btn-square btn-active">{{ $page }}</button>
                         @else
-                            <a href="{{ $url }}" class="join-item btn btn-square">{{ $page }}</a>
+                            <a href="{{ $url }}#tabla-productos" class="join-item btn btn-square">{{ $page }}</a>
                         @endif
                     @endforeach
 
                     {{-- Botón Siguiente --}}
                     @if ($productos->hasMorePages())
-                        <a href="{{ $productos->nextPageUrl() }}" class="join-item btn btn-square">»</a>
+                        <a href="{{ $productos->nextPageUrl() }}#tabla-productos" class="join-item btn btn-square">»</a>
                     @else
                         <button class="join-item btn btn-square btn-disabled">»</button>
                     @endif

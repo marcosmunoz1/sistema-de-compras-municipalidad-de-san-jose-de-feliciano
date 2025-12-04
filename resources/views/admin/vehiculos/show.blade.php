@@ -6,7 +6,8 @@
 
         <!-- Título + badge -->
         <div>
-            <h1 class="text-2xl font-semibold">Información del Vehículo: {{$vehiculo->marca .' '. $vehiculo->modelo .' '. $vehiculo->anio}}</h1>
+            <h1 class="text-2xl font-semibold">Información del Vehículo:
+                {{ $vehiculo->marca . ' ' . $vehiculo->modelo . ' ' . $vehiculo->anio }}</h1>
 
             @if ($vehiculo->estado)
                 <span class="badge badge-success gap-2 px-3 py-2 mt-1">Activo</span>
@@ -205,30 +206,33 @@
 
         </div>
     </div>
-    <div data-slot="card" class="card bg-base-100 shadow-xl p-4">
+    <div data-slot="card" class="card bg-base-100 shadow-xl p-4" id="tabla-productos">
         <h1 class="text-2xl font-semibold">Detalles de productos asignados al vehiculo</h1><br>
-        <form method="GET">
-            <input type="text" name="search" value="{{ $search }}" class="input input-bordered" placeholder="Buscar...">
+        <form method="GET" action="{{ route('vehiculos.show', $vehiculo->id) }}#tabla-productos">
+            <input type="text" name="search" value="{{ $search }}" class="input input-bordered"
+                placeholder="Buscar...">
             <!-- BOTÓN -->
             <button class="btn btn-primary">
-             <x-heroicon-o-magnifying-glass class="w-4 h-4" /> 
+                <x-heroicon-o-magnifying-glass class="w-4 h-4" />
                 Buscar
             </button>
-              @if(request('search'))
-                <a href="{{ route('vehiculos.show',$vehiculo->id) }}" class="btn btn-error"><x-heroicon-o-trash class="w-4 h-4" /> Limpiar</a>
-              @endif 
+            @if (request('search'))
+                <a href="{{ route('vehiculos.show', $vehiculo->id) }}#tabla-productos" class="btn btn-error">
+                    <x-heroicon-o-trash class="w-4 h-4" /> Limpiar</a>
+            @endif
         </form>
 
         <br>
         <table class="table table-zebra w-full">
             <thead>
                 <tr>
-                    <th>Nr</th>
-                    <th>Producto</th>
-                    <th>Fecha Compra</th>
-                    <th>Precio</th>
-                    <th>Cantidad</th>
-                    <th>Subtotal</th>
+                    <th class="text-center">Nr</th>
+                    <th class="text-center">Producto</th>
+                    <th class="text-center">Fecha Compra</th>
+                    <th class="text-center">Precio</th>
+                    <th class="text-center">Cantidad</th>
+                    <th class="text-center">Subtotal</th>
+                    <th class="text-center">Acciones</th>
                 </tr>
             </thead>
             <tbody>
@@ -237,13 +241,24 @@
                 @endphp
                 @foreach ($productos as $item)
                     <tr>
-                        <td>{{ $nr++ }}</td>
-                        <td>{{ $item->nombre }}</td>
-                        <td>{{ $item->fecha_orden ? \Carbon\Carbon::parse($item->fecha_orden)->format('d/m/Y') : '—' }}
+                        <td class="text-center">{{ $nr++ }}</td>
+                        <td class="text-center">{{ $item->nombre }}</td>
+                        <td class="text-center">{{ $item->fecha_orden ? \Carbon\Carbon::parse($item->fecha_orden)->format('d/m/Y') : '—' }}
                         </td>
-                        <td>${{ number_format($item->precio ?? 0, 2) }}</td>
-                        <td>{{ $item->cantidad }}</td>
-                        <td>${{ number_format($item->subtotal ?? 0, 2) }}</td>
+                        <td class="text-center">${{ number_format($item->precio ?? 0, 2) }}</td>
+                        <td class="text-center">{{ $item->cantidad }}</td>
+                        <td class="text-center">${{ number_format($item->subtotal ?? 0, 2) }}</td>
+                        <td class="text-center">
+                            @if ($item->compra_id)
+                                <a href="{{ route('compras.show', ['id' => $item->compra_id, 'from' => 'vehiculo', 'vehiculo_id' => $vehiculo->id]) }}"
+                                    class="btn btn-sm btn-primary">
+                                    Ver compra
+                                </a>
+                            @else
+                                —
+                            @endif
+                        </td>
+
                     </tr>
                 @endforeach
             </tbody>
@@ -272,7 +287,7 @@
                     @if ($productos->onFirstPage())
                         <button class="join-item btn btn-square btn-disabled">«</button>
                     @else
-                        <a href="{{ $productos->previousPageUrl() }}" class="join-item btn btn-square">«</a>
+                        <a href="{{ $productos->previousPageUrl() }}#tabla-productos" class="join-item btn btn-square">«</a>
                     @endif
 
                     {{-- Números de página --}}
@@ -280,13 +295,13 @@
                         @if ($page == $productos->currentPage())
                             <button class="join-item btn btn-square btn-active">{{ $page }}</button>
                         @else
-                            <a href="{{ $url }}" class="join-item btn btn-square">{{ $page }}</a>
+                            <a href="{{ $url }}#tabla-productos" class="join-item btn btn-square">{{ $page }}</a>
                         @endif
                     @endforeach
 
                     {{-- Botón Siguiente --}}
                     @if ($productos->hasMorePages())
-                        <a href="{{ $productos->nextPageUrl() }}" class="join-item btn btn-square">»</a>
+                        <a href="{{ $productos->nextPageUrl() }}#tabla-productos" class="join-item btn btn-square">»</a>
                     @else
                         <button class="join-item btn btn-square btn-disabled">»</button>
                     @endif

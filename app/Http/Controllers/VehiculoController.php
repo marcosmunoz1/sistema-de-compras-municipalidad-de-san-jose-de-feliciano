@@ -160,7 +160,8 @@ class VehiculoController extends Controller
                 'pv.cantidad',
                 'dc.precio',
                 'dc.subtotal',
-                'c.fecha_orden'
+                'c.fecha_orden',
+                'c.id as compra_id'
             )
             ->where('pv.vehiculo_id', $vehiculo->id)
             ->when($search, function ($query, $search) {

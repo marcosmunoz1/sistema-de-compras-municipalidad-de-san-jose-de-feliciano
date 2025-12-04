@@ -52,7 +52,8 @@ class DepositoController extends Controller
                 'dp.cantidad',
                 'dc.precio',
                 'dc.subtotal',
-                'c.fecha_orden'
+                'c.fecha_orden',
+                'c.id as compra_id'
             )
             ->where('dp.deposito_id', $deposito->id)
             ->when($search, function ($query) use ($search) {

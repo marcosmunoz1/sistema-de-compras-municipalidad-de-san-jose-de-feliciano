@@ -3,7 +3,7 @@
 @section('content')
     <!-- Título -->
     <div class="flex items-center justify-between mb-6">
-        <h1 class="text-2xl font-semibold">Editar Vehículo: {{ $vehiculo->modelo .' '. $vehiculo->anio}}</h1>
+        <h1 class="text-2xl font-semibold">Editar Vehículo: {{ $vehiculo->modelo . ' ' . $vehiculo->anio }}</h1>
     </div>
 
     <!-- Breadcrumbs -->
@@ -63,15 +63,26 @@
                             <div class="space-y-2">
                                 <label for="tipo" class="text-sm font-medium">Tipo <span
                                         class="text-red-600">*</span></label>
-                                <select id="tipo" name="tipo" class="select select-bordered w-full h-10 @error('tipo') input-error @enderror" required>
+                                <select id="tipo" name="tipo" class="select select-bordered w-full h-10" required>
                                     @php
-                                        $tipos = ['Auto', 'Moto', 'Camioneta', 'Camión'];
+                                        $tipos = [
+                                            'AUTO',
+                                            'MOTO',
+                                            'CAMIONETA',
+                                            'CAMION',
+                                            'ACOPLADO',
+                                            'Especial',
+                                            'COLECTIVO',
+                                            'MINI BUS',
+                                            'RETRO ESCAVADORA',
+                                            'TRACTOR',
+                                            'UTILITARIO',
+                                        ];
                                     @endphp
-                                    <option value="">Seleccione...</option>
 
                                     @foreach ($tipos as $tipo)
                                         <option value="{{ $tipo }}"
-                                            {{ old('tipo', $vehiculo->tipo) === $tipo ? 'selected' : '' }}>
+                                            {{ $vehiculo->tipo === $tipo ? 'selected' : '' }}>
                                             {{ $tipo }}
                                         </option>
                                     @endforeach
@@ -196,7 +207,7 @@
                             class="w-full h-55 mt-4 border border-base-300 bg-base-200 rounded-md flex items-center justify-center overflow-hidden">
 
                             @if ($vehiculo->imagen)
-                                <img id="preview-image" src="{{ asset('storage/'.$vehiculo->imagen) }}"
+                                <img id="preview-image" src="{{ asset('storage/' . $vehiculo->imagen) }}"
                                     class="max-h-full object-cover">
                             @else
                                 <span class="text-gray-500 text-sm">Vista previa</span>
@@ -230,7 +241,7 @@
 @endsection
 @section('js')
     <script>
-        document.getElementById('imagen').addEventListener('change', function (e) {
+        document.getElementById('imagen').addEventListener('change', function(e) {
             const file = e.target.files[0];
             const previewContainer = document.getElementById('preview-container');
 
@@ -239,7 +250,7 @@
                 // Crear lector
                 const reader = new FileReader();
 
-                reader.onload = function (event) {
+                reader.onload = function(event) {
                     // Si ya existe una imagen previa, la reemplaza
                     let img = document.getElementById('preview-image');
 
@@ -260,5 +271,4 @@
             }
         });
     </script>
-
 @endsection
