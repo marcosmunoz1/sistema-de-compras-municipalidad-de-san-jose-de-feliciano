@@ -31,10 +31,6 @@ class  Combustible extends Model
         'imagen_factura',
         'estado',
     ];
-    public function vehiculo()
-    {
-        return $this->belongsTo(Vehiculo::class);
-    }
     public function empleado()
     {
         return $this->belongsTo(Empleado::class, 'empleado_id')->withDefault(); 
@@ -42,5 +38,10 @@ class  Combustible extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
-    } 
+    }
+    public function destino()
+{
+    return $this->morphTo(__FUNCTION__, 'destino_tipo', 'destino_id');
+} 
+
 }

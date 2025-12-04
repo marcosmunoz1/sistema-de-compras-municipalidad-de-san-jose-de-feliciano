@@ -51,7 +51,7 @@ class CombustibleController extends Controller
     public function store(Request $request)
     { 
 
-       // return response()->json($request->all()); 
+        // return response()->json($request->all()); 
         
         $request->validate([
             'fecha' => 'required',
@@ -86,7 +86,7 @@ class CombustibleController extends Controller
             'precio' => $request->precio,
             'estacion' => $request->estacion,  
             'fecha' => $request->fecha, 
-            'destino_tipo' => $request->destino_tipo,           
+            'destino_tipo' => modeloDestino($request->destino_tipo)['model'],           
             'destino_id' => $request->destino_id,    
             'monto' => $monto, 
             'tipo_de_pago' => $request->tipo_de_pago,
@@ -114,7 +114,7 @@ class CombustibleController extends Controller
      */
     public function show($id)
     {   
-        $combustible = Combustible::findOrFail($id); 
+        $combustible = Combustible::with('destino')->findOrFail($id); 
         return view('admin.combustibles.show', compact('combustible'));
     }
 
