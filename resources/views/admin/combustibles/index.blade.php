@@ -189,7 +189,6 @@
                         <th class="text-center">Litros</th>
                         <th class="text-center">Importe</th>
                         <th class="text-center">Estación</th> 
-                        <th class="text-center">Tipo de pago</th>
                         <th class="text-center">Acciones</th> 
                     </tr>
                 </thead>
@@ -209,12 +208,10 @@
                             <td class="text-center">{{ $combustible->litros }}</td>
                             <td class="text-center">{{ $combustible->monto }}</td>
                             <td class="text-center">{{ $combustible->estacion }}</td>
-                            <td class="text-center">{{ $combustible->tipo_de_pago }}</td>
-
                             <td class="text-center">
                                 <div class="flex items-center justify-center gap-2">
 
-                                    <a href="{{ route('combustibles.show', $combustible->id) }}"  
+                                    <a href="{{ route('combustibles.show', Crypt::encrypt($combustible->id)) }}"  
                                        class="btn btn-info btn-sm">
                                         <x-heroicon-s-eye class="w-4 h-4"/>
                                     </a>
@@ -224,7 +221,7 @@
                                         <x-heroicon-s-pencil class="w-4 h-4"/>
                                     </a>
 
-                                    <a href="{{ route('combustibles.report', $combustible->id ) }}" 
+                                    <a href="{{ route('combustibles.report', Crypt::encrypt($combustible->id)) }}" 
                                        class="btn bg-primary btn-sm" 
                                        target="_blank">
                                         <x-heroicon-o-printer class="w-4 h-4"/>
