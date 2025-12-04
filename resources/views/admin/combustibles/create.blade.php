@@ -117,18 +117,18 @@
 <div data-slot="card-header"
     class="@container/card-header grid auto-rows-min grid-rows-[auto_auto] items-start
     gap-1.5 px-6 pt-6">
-    <div class="flex items-center justify-between w-full">
-        <h4 class="text-1xl font-semibold">Datos del Destino de la carga</h4> 
+    <div class="flex items-center justify-between w-full mb-6">
+        <h4 class="text-1xl font-semibold">Datos del Destino de la carga</h4>   
 
         {{-- Botón para abrir el modal de nuevo destino --}}
         <label for="crear_destino_modal" class="btn btn-sm btn-success">
             + Nuevo destino
         </label>
     </div>
-</div>
+</div> 
 
 <!-- CONTENT -->
-<div data-slot="card-content" class="px-6 [&:last-child]:pb-6">
+<div data-slot="card-content" class="px-6 [&:last-child]:pb-6"> 
 <div class="grid gap-4">
 
 <!-- FILA SELECT VEHÍCULO & SELECT CHOFER -->
@@ -159,11 +159,11 @@
 @enderror
 </div> --}} 
  <div class="space-y-2 mb-2">
-    <label for="destino_tipo" class="text-sm font-medium">Destino de la carga</label>
+    <label for="destino_tipo" class="text-sm font-medium">Tipo de destino <span class="text-red-600">*</span></label> 
     <select id="destino_tipo" name="destino_tipo"
         class="select w-full h-10 rounded-md border-base-300 bg-base-200
         px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
-        focus:border-primary transition @error('destino_tipo') input-error @enderror"
+        focus:border-primary transition @error('destino_tipo') input-error @enderror" 
                 required>
         <option  value="">Seleccione el destino de la carga</option>
         <option  value="vehiculo">Vehiculo</option> 
@@ -176,7 +176,7 @@
 </div>  
 <div class="space-y-2 -mt-4">
     <div class="flex items-center justify-between gap-4">
-        <label class="text-sm font-medium mb-0">Destinar a:</label>
+        <label class="text-sm font-medium mb-0">Destinar a: <span class="text-red-600">*</span></label>
         <button type="button" id="btn_elegir_destino" class="btn btn-sm btn-warning"
             onclick="document.getElementById('modal_elegir_destino').checked = true">
             Buscar / seleccionar destino
@@ -247,8 +247,8 @@ id="empleado_id"
 name="empleado_id"
 class="w-full h-10 rounded-md border border-base-300 bg-base-200
 px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary
-focus:border-primary transition @error('empleado_id') input-error @enderror" required>
-<option selected>Seleccione un conductor</option>
+focus:border-primary transition @error('empleado_id') input-error @enderror">
+<option value="">Seleccione un conductor</option> 
 @foreach ($empleados as $empleado) 
 <option value="{{ $empleado->id }}">Nombre: {{ $empleado->nombre }} - DNI: {{ $empleado->dni }}</option> 
 @endforeach

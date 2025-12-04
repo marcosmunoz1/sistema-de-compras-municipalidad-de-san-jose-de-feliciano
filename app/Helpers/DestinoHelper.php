@@ -8,6 +8,7 @@ if (!function_exists('modeloDestino')) {
             'obra'     => ['model' => \App\Models\Obra::class,     'campo' => 'cantidad_asignada'],
             'vehiculo' => ['model' => \App\Models\Vehiculo::class, 'campo' => 'cantidad'], // ✔ pivote correcto
             'equipo'   => ['model' => \App\Models\Equipo::class,   'campo' => 'cantidad'], // cuando lo agregues
+            'destino' =>  ['model' => \App\Models\Destino::class,  'campo' => 'cantidad'], 
             default    => null
         }; 
     }

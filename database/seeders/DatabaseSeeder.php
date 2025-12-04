@@ -34,6 +34,5 @@ class DatabaseSeeder extends Seeder
         $this->call(VehiculoSeeder::class);
         $this->call(DestinoSeeder::class); 
         Producto::factory()->count(1900)->create(); 
-        
     }
 }
