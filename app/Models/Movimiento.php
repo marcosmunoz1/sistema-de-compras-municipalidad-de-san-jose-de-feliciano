@@ -9,17 +9,20 @@ class Movimiento extends Model
 {
     use SoftDeletes;
     protected $fillable = [
-        'producto_id',
         'compra_id',
         'tipo',
         'origen_tipo',
         'origen_id',
         'destino_tipo',
         'destino_id',
-        'cantidad',
         'fecha',
         'observacion'
     ];
+    
+    public function detalles()
+    {
+        return $this->hasMany(MovimientoDetalle::class);
+    }
 
     public function getOrigenLabelAttribute()
     {
@@ -32,7 +35,7 @@ class Movimiento extends Model
     {
         if (!$this->destino) return '---';
 
-        return class_basename($this->destino) . ': ' . ($this->destino->nombre ?? 'Sin nombre');
+        return class_basename($this->destino) . ': ' . ($this->destino->nombre ?? $this->destino->marca.' '.$this->destino->modelo ?? 'Sin nombre');
     }
 
 

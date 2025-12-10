@@ -11,11 +11,7 @@ return new class extends Migration
         Schema::create('movimientos', function (Blueprint $table) {
             $table->id();
 
-            // Producto relacionado
-            $table->unsignedBigInteger('producto_id');
-            $table->foreign('producto_id')
-                  ->references('id')->on('productos')
-                  ->onDelete('cascade');
+            ;
 
             // Si viene de una compra
             $table->unsignedBigInteger('compra_id')->nullable();
@@ -31,11 +27,9 @@ return new class extends Migration
             $table->unsignedBigInteger('origen_id')->nullable();
 
             // DESTINO polimórfico
-            $table->string('destino_tipo'); // deposito, obra, vehiculo
-            $table->unsignedBigInteger('destino_id');
+            $table->string('destino_tipo')->nullable(); // deposito, obra, vehiculo
+            $table->unsignedBigInteger('destino_id')->nullable();
 
-            // Cantidad movida
-            $table->decimal('cantidad', 12, 2);
 
             // Fecha del movimiento
             $table->date('fecha');
