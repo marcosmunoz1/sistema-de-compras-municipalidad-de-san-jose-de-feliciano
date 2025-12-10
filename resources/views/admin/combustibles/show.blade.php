@@ -400,7 +400,7 @@
                                     {{ $item['value'] }}
                                 </span>
                             @else
-                                <p class="font-medium">{{ $item['value'] }}</p>
+                                <p class="font-medium ">{{ $item['value'] }}</p>
                             @endif
                         </div>
 

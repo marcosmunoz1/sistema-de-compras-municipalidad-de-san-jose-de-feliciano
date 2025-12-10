@@ -9,6 +9,7 @@ use App\Models\User;
 use App\Models\Vehiculo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 
@@ -114,6 +115,7 @@ class CombustibleController extends Controller
      */
     public function show($id)
     {   
+        $id = Crypt::decrypt($id); 
         $combustible = Combustible::with('destino')->findOrFail($id); 
         return view('admin.combustibles.show', compact('combustible'));
     }

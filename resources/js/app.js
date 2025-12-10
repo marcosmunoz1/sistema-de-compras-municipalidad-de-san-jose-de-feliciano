@@ -11,20 +11,28 @@ Alpine.start();
 
 document.addEventListener("DOMContentLoaded", () => {
     const html = document.documentElement;
-    const btn = document.getElementById("darkModeBtn");
+    const toggle = document.getElementById("themeToggle");
+    if (!toggle) return;
 
-    // Cargar modo guardado
-    const savedTheme = localStorage.getItem("theme");
+    const THEME_KEY = "theme";
+    const LIGHT = "light";
+    const DARK = "dark";
 
-    if (savedTheme) {
-        html.setAttribute("data-theme", savedTheme);
+    function applyTheme(theme) {
+        html.setAttribute("data-theme", theme);
+        toggle.checked = theme === DARK;
+        localStorage.setItem(THEME_KEY, theme);
     }
 
-    btn.addEventListener("click", () => {
-        const current = html.getAttribute("data-theme");
-        const newTheme = current === "light" ? "dark" : "light";
+    const savedTheme = localStorage.getItem(THEME_KEY);
+    if (savedTheme === LIGHT || savedTheme === DARK) {
+        applyTheme(savedTheme);
+    } else {
+        const prefersDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+        applyTheme(prefersDark ? DARK : LIGHT);
+    }
 
-        html.setAttribute("data-theme", newTheme);
-        localStorage.setItem("theme", newTheme);
+    toggle.addEventListener("change", () => {
+        applyTheme(toggle.checked ? DARK : LIGHT);
     });
 });
