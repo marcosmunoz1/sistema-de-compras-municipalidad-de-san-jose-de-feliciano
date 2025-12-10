@@ -127,21 +127,35 @@ class ObraController extends Controller
             ->leftJoin('compras as c', 'c.id', '=', 'dc.compra_id')
             ->select(
                 'p.nombre',
-                'op.cantidad_asignada',
-                'dc.precio as precio_unitario',
-                DB::raw('op.cantidad_asignada * dc.precio as subtotal'),
+                'p.descripcion',
+
+                // cantidad comprada originalmente
+                'dc.cantidad as cantidad_original',
+
+                // cantidad que tiene la obra
+                'op.cantidad_asignada as cantidad_usada',
+
+                // precio unitario
+                'dc.precio',
+
+                // ⭐ SUBTOTAL REAL SEGÚN LA COMPRA ORIGINAL ⭐
+                DB::raw('(dc.cantidad * dc.precio) as subtotal_original'),
+
                 'c.fecha_orden',
                 'c.id as compra_id'
             )
             ->where('op.obra_id', $obra->id)
 
-            // 🔍 BUSCADOR
-            ->when($search, function ($query) use ($search) {
+            // 🔍 BUSCADOR (adaptado a toda la nueva info)
+            ->when($search, function ($query, $search) {
                 $query->where(function ($q) use ($search) {
                     $q->where('p.nombre', 'LIKE', "%{$search}%")
                         ->orWhere('op.cantidad_asignada', 'LIKE', "%{$search}%")
                         ->orWhere('dc.precio', 'LIKE', "%{$search}%")
-                        ->orWhere(DB::raw('op.cantidad_asignada * dc.precio'), 'LIKE', "%{$search}%")
+
+                        // Buscamos por subtotal original también
+                        ->orWhere(DB::raw('(dc.cantidad * dc.precio)'), 'LIKE', "%{$search}%")
+
                         ->orWhere('c.fecha_orden', 'LIKE', "%{$search}%");
                 });
             })
@@ -149,12 +163,15 @@ class ObraController extends Controller
             ->orderBy('c.fecha_orden', 'desc')
             ->paginate(10);
 
+
         // Total general de la obra
         $totalGeneral = DB::table('obra_producto as op')
             ->leftJoin('detalle_compras as dc', 'dc.id', '=', 'op.detalle_compra_id')
             ->where('op.obra_id', $obra->id)
-            ->select(DB::raw('SUM(op.cantidad_asignada * dc.precio) as total'))
+            ->selectRaw('SUM(dc.cantidad * COALESCE(dc.precio, 0)) as total')
             ->value('total');
+
+
 
         return view('admin.obras.show', compact('obra', 'productos', 'totalGeneral', 'search'));
     }

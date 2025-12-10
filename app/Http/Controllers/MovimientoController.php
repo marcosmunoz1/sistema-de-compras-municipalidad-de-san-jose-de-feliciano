@@ -194,15 +194,22 @@ class MovimientoController extends Controller
                 // 4.a) RESTAR stock en origen
                 $campoOrigen = $origenInfo['campo'];
                 $nuevoStock = floatval($pivotOrigen->pivot->{$campoOrigen}) - $cantidadMovida;
+
                 if ($nuevoStock < 0) {
                     throw new \Exception("Stock insuficiente del producto (id={$productoId}) en el origen.");
                 }
-                // guardar nuevo stock en pivot
-                $pivotOrigen->pivot->{$campoOrigen} = $nuevoStock;
-                $pivotOrigen->pivot->save();
 
-                // 4.b) SI ES TRANSFERENCIA -> SUMAR en destino
+                // guardar nuevo stock en pivot o eliminar si llega a 0
+                if ($nuevoStock <= 0) {
+                    $origenModel->productos()->detach($productoId);
+                } else {
+                    $pivotOrigen->pivot->{$campoOrigen} = $nuevoStock;
+                    $pivotOrigen->pivot->save();
+                }
+
+                // 4.b) SI ES TRANSFERENCIA -> CREAR SIEMPRE UNA NUEVA FILA EN DESTINO
                 if ($request->tipo === 'transferencia') {
+
                     $destinoInfo = modeloDestino($request->destino_tipo);
                     if (!$destinoInfo) {
                         throw new \Exception("Tipo de destino no válido: {$request->destino_tipo}");
@@ -213,21 +220,17 @@ class MovimientoController extends Controller
                         throw new \Exception("Destino no encontrado (ID: {$request->destino_id})");
                     }
 
-                    $pivotDestino = $destinoModel->productos()->where('producto_id', $productoId)->first();
+                    // preservar detalle de compra del origen (si existe)
+                    $detalleCompraId = $pivotOrigen->pivot->detalle_compra_id ?? null;
 
-                    if ($pivotDestino) {
-                        // sumar al pivot existente
-                        $pivotDestino->pivot->{$destinoInfo['campo']} = floatval($pivotDestino->pivot->{$destinoInfo['campo']}) + $cantidadMovida;
-                        $pivotDestino->pivot->save();
-                    } else {
-                        // crear nueva fila en el pivot (si no existía)
-                        // intentamos preservar detalle_compra_id si existe en el pivotOrigen
-                        $detalleCompraId = $pivotOrigen->pivot->detalle_compra_id ?? null;
-                        $destinoModel->productos()->attach($productoId, [
-                            $destinoInfo['campo'] => $cantidadMovida,
-                            'detalle_compra_id' => $detalleCompraId
-                        ]);
-                    }
+                    // Crear siempre una nueva fila en el pivot del destino
+                    // attach() forza una fila nueva aunque ya exista otra para este producto
+                    $destinoModel->productos()->attach($productoId, [
+                        $destinoInfo['campo'] => $cantidadMovida,
+                        'detalle_compra_id' => $detalleCompraId,
+                        'created_at' => now(),
+                        'updated_at' => now()
+                    ]);
                 }
 
                 // 5) Guardar detalle del movimiento (si no tenés el modelo por otro nombre, usa el tuyo)

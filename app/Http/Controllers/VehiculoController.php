@@ -157,7 +157,8 @@ class VehiculoController extends Controller
             ->select(
                 'p.nombre',
                 'p.descripcion',
-                'pv.cantidad',
+                'dc.cantidad as cantidad_original',
+                'pv.cantidad as cantidad_usada',
                 'dc.precio',
                 'dc.subtotal',
                 'c.fecha_orden',
@@ -183,7 +184,9 @@ class VehiculoController extends Controller
         $totalGeneral = DB::table('producto_vehiculo as pv')
             ->leftJoin('detalle_compras as dc', 'dc.id', '=', 'pv.detalle_compra_id')
             ->where('pv.vehiculo_id', $vehiculo->id)
-            ->sum('dc.subtotal');
+            ->selectRaw('SUM(pv.cantidad * COALESCE(dc.precio, 0)) as total')
+            ->value('total');
+
 
         return view('admin.vehiculos.show', compact('vehiculo', 'productos', 'totalGeneral', 'search'));
     }

@@ -190,21 +190,25 @@
                 </div>
             </div>
         </form>
-        <div class="flex items-center justify-between"> 
-            <h4 data-slot="card-title" class="leading-none flex items-center gap-2"><svg
-                    xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                    class="lucide lucide-package size-5" aria-hidden="true">
-                    <path
-                        d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z">
-                    </path>
-                    <path d="M12 22V12"></path>
-                    <polyline points="3.29 7 12 12 20.71 7"></polyline>
-                    <path d="m7.5 4.27 9 5.15"></path>
-                </svg>Productos Asignados a la Obra</h4>
-            <div class="text-right">
-                <p class="text-sm text-gray-500">Total Invertido</p>
-                <p class="text-xl">$ 1.052.000,00</p>
+        <div data-slot="card-header"
+            class="@container/card-header grid auto-rows-min grid-rows-[auto_auto] items-start gap-1.5 
+             px-4  has-data-[slot=card-action]:grid-cols-[1fr_auto] [.border-b]:pb-6">
+            <div class="flex items-center justify-between">
+                <h4 data-slot="card-title" class="leading-none flex items-center gap-2"><svg
+                        xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round" class="lucide lucide-package size-5" aria-hidden="true">
+                        <path
+                            d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z">
+                        </path>
+                        <path d="M12 22V12"></path>
+                        <polyline points="3.29 7 12 12 20.71 7"></polyline>
+                        <path d="m7.5 4.27 9 5.15"></path>
+                    </svg>Productos Asignados a la Obra</h4> 
+                <div class="text-right">
+                    <p class="text-sm text-gray-500">Total Invertido</p>
+                    <p class="text-xl">$ 1.052.000,00</p>
+                </div>
             </div>
         </div>
         <div class="overflow-x-auto rounded-box border border-base-content/5 bg-base-100">
@@ -215,7 +219,8 @@
                         <th class="text-center">Producto</th>
                         <th class="text-center">Fecha Compra</th>
                         <th class="text-center">Precio</th>
-                        <th class="text-center">Cantidad</th>
+                        <th class="text-center">Cantidad asignada</th>
+                        <th class="text-center">Cantidad/Stock</th>
                         <th class="text-center">Subtotal</th>
                         <th class="text-center">Acciones</th>
                     </tr>
@@ -233,11 +238,16 @@
                             <td class="text-center">{{ \Carbon\Carbon::parse($producto->fecha_orden)->format('d/m/Y') }}
                             </td>
 
-                            <td class="text-center">${{ number_format($producto->precio_unitario, 2) }}</td>
+                            <td class="text-center">${{ number_format($producto->precio, 2) }}</td>
 
-                            <td class="text-center">{{ $producto->cantidad_asignada }}</td>
+                            <td class="text-center">{{ $producto->cantidad_original }}</td>
 
-                            <td class="text-center">${{ number_format($producto->subtotal, 2) }}</td>
+                            <td class="text-center">{{ $producto->cantidad_usada }}</td>
+
+                            <td class="text-center">
+                                ${{ number_format($producto->subtotal_original, 2) }}
+                            </td>
+
                             <td class="text-center">
                                 @if ($producto->compra_id)
                                     <a href="{{ route('compras.show', ['id' => $producto->compra_id, 'from' => 'obra', 'obra_id' => $obra->id]) }}"
@@ -304,18 +314,4 @@
             </div>
         @endif
     </div>
-@endsection
-@section('js')
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            let total = 0;
-
-            document.querySelectorAll('#tablaProductosObra .subtotal').forEach(item => {
-                const val = parseFloat(item.dataset.subtotal || 0);
-                total += val;
-            });
-
-            document.getElementById('totalFinalObra').textContent = '$' + total.toFixed(2);
-        });
-    </script>
 @endsection
