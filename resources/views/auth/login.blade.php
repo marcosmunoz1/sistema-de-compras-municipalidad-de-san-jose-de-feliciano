@@ -52,11 +52,11 @@
 
 <body class="font-display">
 
-    <div class="relative flex h-auto min-h-screen w-full flex-col bg-background-light dark:bg-background-dark">
+    <div class="relative flex h-auto min-h-screen w-full flex-col bg-background-light dark:bg-background-dark overflow-x-hidden">
         <div class="layout-container flex h-full grow flex-col">
-            <div class="flex flex-1 justify-center items-stretch">
+            <div class="flex flex-1 justify-center">
 
-                <div class="flex flex-col lg:flex-row w-full">
+                <div class="flex flex-col lg:flex-row w-full mx-auto">
 
                     <!-- Panel Izquierdo -->
                     <div class="relative w-full lg:w-1/2 flex flex-col items-center justify-center p-8 lg:p-12 text-white"
@@ -68,7 +68,7 @@
                         <!-- Capa oscura encima de la imagen -->
                         <div class="absolute inset-0 bg-black/60"></div>
 
-                        <div class="relative z-10 flex flex-col items-start w-full max-w-md ml-[-300px]">
+                        <div class="relative z-10 flex flex-col items-start w-full max-w-md px-4 sm:px-0">
                             <img class="w-14 h-14 mb-6"
                                 src="{{ asset('storage/login/logo.png') }}" />
 
@@ -83,119 +83,125 @@
 
                     <!-- Panel Derecho (Formulario) -->
                     <div
-                        class="w-full lg:w-1/2 flex items-center justify-center bg-background-light dark:bg-background-dark py-12 px-6 sm:px-12">
-                        <div class="flex flex-col w-full max-w-md">
+                        class="w-full lg:w-1/2 flex items-center justify-center bg-background-light dark:bg-background-dark py-10 px-4 sm:px-8">
+                        <div class="w-full max-w-lg">
 
-                            <h1 class="text-text-light dark:text-white text-[22px] font-bold mb-6">Acceso al Sistema
-                            </h1>
+                            <div
+                                class="bg-white/90 dark:bg-gray-900/90 backdrop-blur shadow-xl rounded-xl border border-border-light/70 dark:border-gray-800 px-6 py-8 sm:px-8 sm:py-10 mx-auto">
 
-                            <!-- FORM LOGIN LARAVEL -->
-                            <form class="w-full flex flex-col gap-5" method="POST" action="{{ route('login') }}">
-                                @csrf
+                                <h1 class="text-text-light dark:text-white text-[22px] sm:text-2xl font-bold mb-6 text-center sm:text-left">
+                                    Acceso al Sistema
+                                </h1>
 
-                                <!-- EMAIL -->
-                                <div class="flex flex-col">
-                                    <label class="text-text-light dark:text-gray-300 text-sm font-medium pb-2"
-                                        for="email">
-                                        Correo Electrónico
-                                    </label>
+                                <!-- FORM LOGIN LARAVEL -->
+                                <form class="w-full flex flex-col gap-5" method="POST" action="{{ route('login') }}">
+                                    @csrf
 
-                                    <div class="flex w-full items-stretch rounded-lg shadow-sm">
-                                        <div
-                                            class="text-gray-400 flex border border-border-light dark:border-gray-700 bg-white dark:bg-gray-800 items-center justify-center pl-4 rounded-l-lg border-r-0">
-                                            <span class="material-symbols-outlined text-lg">mail</span>
+                                    <!-- EMAIL -->
+                                    <div class="flex flex-col">
+                                        <label class="text-text-light dark:text-gray-300 text-sm font-medium pb-2"
+                                            for="email">
+                                            Correo Electrónico
+                                        </label>
+
+                                        <div class="flex w-full items-stretch rounded-lg shadow-sm">
+                                            <div
+                                                class="text-gray-400 flex border border-border-light dark:border-gray-700 bg-white dark:bg-gray-800 items-center justify-center pl-4 rounded-l-lg border-r-0">
+                                                <span class="material-symbols-outlined text-lg">mail</span>
+                                            </div>
+
+                                            <input
+                                                class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg
+                                                   text-text-light dark:text-white focus:outline-0 focus:ring-2
+                                                   focus:ring-primary/50 focus:border-primary border border-border-light
+                                                   dark:border-gray-700 bg-white dark:bg-gray-800 h-12
+                                                   placeholder:text-gray-400 p-3 rounded-l-none text-base"
+                                                id="email" name="email" type="email"
+                                                placeholder="su.correo@ejemplo.com" value="{{ old('email') }}"
+                                                required autofocus autocomplete="username" />
                                         </div>
 
-                                        <input
-                                            class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg
-                                               text-text-light dark:text-white focus:outline-0 focus:ring-2
-                                               focus:ring-primary/50 focus:border-primary border border-border-light
-                                               dark:border-gray-700 bg-white dark:bg-gray-800 h-12
-                                               placeholder:text-gray-400 p-3 rounded-l-none text-base"
-                                            id="email" name="email" type="email"
-                                            placeholder="su.correo@ejemplo.com" value="{{ old('email') }}" required
-                                            autofocus autocomplete="username" />
+                                        @error('email')
+                                            <span class="text-red-500 text-sm mt-1">{{ $message }}</span>
+                                        @enderror
                                     </div>
 
-                                    @error('email')
-                                        <span class="text-red-500 text-sm mt-1">{{ $message }}</span>
-                                    @enderror
-                                </div>
+                                    <!-- PASSWORD -->
+                                    <div class="flex flex-col">
+                                        <label class="text-text-light dark:text-gray-300 text-sm font-medium pb-2"
+                                            for="password">
+                                            Contraseña
+                                        </label>
 
-                                <!-- PASSWORD -->
-                                <div class="flex flex-col">
-                                    <label class="text-text-light dark:text-gray-300 text-sm font-medium pb-2"
-                                        for="password">
-                                        Contraseña
-                                    </label>
+                                        <div class="flex w-full items-stretch rounded-lg shadow-sm relative">
 
-                                    <div class="flex w-full items-stretch rounded-lg shadow-sm relative">
+                                            <!-- Ícono a la izquierda (el tuyo) -->
+                                            <div
+                                                class="text-gray-400 flex border border-border-light dark:border-gray-700 bg-white dark:bg-gray-800 
+                                                items-center justify-center pl-4 rounded-l-lg border-r-0">
+                                                <span class="material-symbols-outlined text-lg">lock</span>
+                                            </div>
 
-                                        <!-- Ícono a la izquierda (el tuyo) -->
-                                        <div
-                                            class="text-gray-400 flex border border-border-light dark:border-gray-700 bg-white dark:bg-gray-800 
-                                            items-center justify-center pl-4 rounded-l-lg border-r-0">
-                                            <span class="material-symbols-outlined text-lg">lock</span>
+                                            <!-- Input -->
+                                            <input id="password" name="password" type="password"
+                                                placeholder="Ingrese su contraseña" required
+                                                autocomplete="current-password"
+                                                class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg
+                                                text-text-light dark:text-white focus:outline-0 focus:ring-2
+                                                focus:ring-primary/50 focus:border-primary border border-border-light
+                                                dark:border-gray-700 bg-white dark:bg-gray-800 h-12
+                                                placeholder:text-gray-400 p-3 rounded-l-none text-base pr-12" />
+
+                                            <!-- Botón mostrar/ocultar -->
+                                            <button type="button" onclick="togglePassword()"
+                                                class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 dark:text-gray-300 dark:hover:text-gray-100">
+                                                <span id="eyeOpen"
+                                                    class="material-symbols-outlined text-xl">visibility</span>
+                                                <span id="eyeClosed"
+                                                    class="material-symbols-outlined text-xl hidden">visibility_off</span>
+                                            </button>
                                         </div>
 
-                                        <!-- Input -->
-                                        <input id="password" name="password" type="password"
-                                            placeholder="Ingrese su contraseña" required autocomplete="current-password"
-                                            class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg
-                                            text-text-light dark:text-white focus:outline-0 focus:ring-2
-                                            focus:ring-primary/50 focus:border-primary border border-border-light
-                                            dark:border-gray-700 bg-white dark:bg-gray-800 h-12
-                                            placeholder:text-gray-400 p-3 rounded-l-none text-base pr-12" />
 
-                                        <!-- Botón mostrar/ocultar -->
-                                        <button type="button" onclick="togglePassword()"
-                                            class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 dark:text-gray-300 dark:hover:text-gray-100">
-                                            <span id="eyeOpen"
-                                                class="material-symbols-outlined text-xl">visibility</span>
-                                            <span id="eyeClosed"
-                                                class="material-symbols-outlined text-xl hidden">visibility_off</span>
-                                        </button>
+
+
+                                        @error('password')
+                                            <span class="text-red-500 text-sm mt-1">{{ $message }}</span>
+                                        @enderror
                                     </div>
 
+                                    <!-- REMEMBER -->
+                                    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mt-2">
+                                        <label class="flex items-center gap-2 cursor-pointer">
+                                            <input
+                                                class="form-checkbox h-4 w-4 rounded text-primary border-border-light dark:border-gray-600
+                                                   focus:ring-primary/50 bg-white dark:bg-gray-800"
+                                                type="checkbox" id="remember_me" name="remember" />
+                                            <span class="text-sm text-text-light dark:text-gray-300">Recordarme</span>
+                                        </label>
 
+                                        @if (Route::has('password.request'))
+                                            <a class="text-sm font-medium text-primary hover:underline text-left sm:text-right"
+                                                href="{{ route('password.request') }}">
+                                                ¿Olvidaste tu contraseña?
+                                            </a>
+                                        @endif
+                                    </div>
 
+                                    <!-- BUTTON -->
+                                    <button
+                                        class="w-full h-12 flex items-center justify-center bg-primary text-white text-base font-medium
+                                           rounded-lg shadow-md hover:bg-[#D17950] focus:outline-none focus:ring-2
+                                           focus:ring-offset-2 focus:ring-primary dark:focus:ring-offset-background-dark
+                                           transition-colors duration-200 mt-4">
+                                        Iniciar Sesión
+                                    </button>
 
-                                    @error('password')
-                                        <span class="text-red-500 text-sm mt-1">{{ $message }}</span>
-                                    @enderror
-                                </div>
+                                </form>
 
-                                <!-- REMEMBER -->
-                                <div class="flex items-center justify-between mt-2">
-                                    <label class="flex items-center gap-2 cursor-pointer">
-                                        <input
-                                            class="form-checkbox h-4 w-4 rounded text-primary border-border-light dark:border-gray-600
-                                               focus:ring-primary/50 bg-white dark:bg-gray-800"
-                                            type="checkbox" id="remember_me" name="remember" />
-                                        <span class="text-sm text-text-light dark:text-gray-300">Recordarme</span>
-                                    </label>
+                            </div>
 
-                                    @if (Route::has('password.request'))
-                                        <a class="text-sm font-medium text-primary hover:underline"
-                                            href="{{ route('password.request') }}">
-                                            ¿Olvidaste tu contraseña?
-                                        </a>
-                                    @endif
-                                </div>
-
-                                <!-- BUTTON -->
-                                <button
-                                    class="w-full h-12 flex items-center justify-center bg-primary text-white text-base font-medium
-                                       rounded-lg shadow-md hover:bg-[#D17950] focus:outline-none focus:ring-2
-                                       focus:ring-offset-2 focus:ring-primary dark:focus:ring-offset-background-dark
-                                       transition-colors duration-200 mt-4"
-                                    type="submit">
-                                    Iniciar Sesión
-                                </button>
-
-                            </form>
-
-                            <p class="text-center text-gray-500 dark:text-gray-400 text-xs mt-8">
+                            <p class="text-center text-gray-500 dark:text-gray-400 text-xs mt-6">
                                 © {{ date('Y') }} Municipalidad de San José de Feliciano. Todos los derechos
                                 reservados.
                             </p>

@@ -38,196 +38,240 @@
     </div>
 
     <!-- FORMULARIO -->
-    <div class="card bg-base-100 shadow p-6">
+    <div class="space-y-6"> 
         <form action="{{ route('obras.update', $obra->id) }}" method="POST">
             @csrf
             @method('PUT')
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- CARD 1: Información general -->
+        <div class="card bg-base-100 shadow p-6">
+            <h2 class="text-lg font-semibold mb-4">Información General</h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6"> 
 
                 <!-- Nombre -->
                 <div class="form-control">
                     <label class="label font-semibold">
                         Nombre de la Obra <span class="text-red-600">*</span>
                     </label>
-                    <input type="text" name="nombre" value="{{ old('nombre', $obra->nombre) }}"
-                        class="input input-bordered w-full" required>
-                    @error('nombre')
-                        <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
-                    @enderror
+                    <input type="text" name="nombre" value="{{ $obra->nombre }}"
+                        class="w-full h-10 rounded-md border border-base-300 bg-base-200 px-3 
+                                text-sm focus:outline-none focus:ring-2 focus:ring-primary 
+                                focus:border-primary transition"
+                        placeholder="Ej: Predio Multi-Eventos" required>
+                        @error('nombre')
+                            <span class="text-red-600 mt-2 text-sm">{{ $message }}</span>
+                        @enderror 
                 </div>
 
                 <!-- Descripción -->
-                <div class="form-control">
+                <div class="form-control"> 
                     <label class="label font-semibold">Descripción (Opcional)</label>
-                    <input type="text" name="descripcion" value="{{ old('descripcion', $obra->descripcion) }}"
-                        class="input input-bordered w-full">
-                    @error('descripcion')
-                        <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
-                    @enderror
+                    <textarea name="descripcion" rows="3"
+                        class="textarea w-full rounded-md border border-base-300 bg-base-200 focus:outline-none focus:ring-2 focus:ring-primary 
+                                focus:border-primary transition"
+                        placeholder="Ej: Mejoras y expansión del predio">{{ $obra->descripcion }}</textarea>
+                        @error('descripcion')
+                            <span class="text-red-600 mt-2 text-sm">{{ $message }}</span>
+                        @enderror 
                 </div>
 
                 <!-- Responsable -->
                 <div class="form-control">
-                    <label class="label font-semibold">
-                        Responsable <span class="text-red-600">*</span>
-                    </label>
-                    <input type="text" name="responsable" value="{{ old('responsable', $obra->responsable) }}"
-                        class="input input-bordered w-full">
-                    @error('responsable')
-                        <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
-                    @enderror
+                    <label class="label font-semibold">Responsable <span class="text-red-600">*</span></label>
+                    <input type="text" name="responsable" value="{{ $obra->responsable }}"
+                        class="w-full h-10 rounded-md border border-base-300 bg-base-200 px-3 
+                                text-sm focus:outline-none focus:ring-2 focus:ring-primary 
+                                focus:border-primary transition"
+                        placeholder="Ej: Carlos Pérez">
+                        @error('responsable')
+                            <span class="text-red-600 mt-2 text-sm">{{ $message }}</span>
+                        @enderror 
                 </div>
 
-                <!-- Ejecutado por: -->
+                <!-- Ejecutado por -->
                 <div class="form-control">
-                    <label class="label font-semibold">
-                        Ejecutado por: <span class="text-red-600">*</span>
-                    </label>
-                    <input type="text" name="ejecutado_por"
-                        value="{{ old('ejecutado_por', $obra->ejecutado_por) }}"
-                        class="input input-bordered w-full" required>
-                    @error('ejecutado_por')
-                        <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
-                    @enderror
+                    <label class="label font-semibold">Ejecutado por <span class="text-red-600">*</span></label>
+                    <input type="text" name="ejecutado_por" value="{{ $obra->ejecutado_por }}"
+                        class="w-full h-10 rounded-md border border-base-300 bg-base-200 px-3 
+                                text-sm focus:outline-none focus:ring-2 focus:ring-primary 
+                                focus:border-primary transition"
+                        placeholder="Ej: Damián Arévalo" required>
+                        @error('ejecutado_por')
+                            <span class="text-red-600 mt-2 text-sm">{{ $message }}</span>
+                        @enderror 
                 </div>
 
                 <!-- Presupuesto -->
                 <div class="form-control">
                     <label class="label font-semibold">Presupuesto (Opcional)</label>
-                    <input type="number" name="presupuesto" min="0" step="0.01"
-                        value="{{ old('presupuesto', $obra->presupuesto) }}" class="input input-bordered w-full">
-                    @error('presupuesto')
-                        <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
-                    @enderror
+                    <input type="number" name="presupuesto" value="{{ $obra->presupuesto }}"
+                        class="w-full h-10 rounded-md border border-base-300 bg-base-200 px-3 
+                                    text-sm focus:outline-none focus:ring-2 focus:ring-primary 
+                                    focus:border-primary transition"
+                        placeholder="Ej: 10000000">
+                        @error('presupuesto')
+                            <span class="text-red-600 mt-2 text-sm">{{ $message }}</span>
+                        @enderror 
                 </div>
 
-                <!-- Resolución o decreto -->
+                <!-- Resolución -->
                 <div class="form-control">
-                    <label class="label font-semibold">Resolución o decreto (Opcional)</label>
+                    <label class="label font-semibold">Resolución o decreto</label>
                     <input type="text" name="resolucion_decreto"
-                        value="{{ old('resolucion_decreto', $obra->resolucion_decreto) }}" class="input input-bordered w-full">
-                    @error('resolucion_decreto')
-                        <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
-                    @enderror
+                        value="{{ $obra->resolucion_decreto }}"
+                        class="w-full h-10 rounded-md border border-base-300 bg-base-200 px-3 
+                                text-sm focus:outline-none focus:ring-2 focus:ring-primary 
+                                focus:border-primary transition"
+                        placeholder="DECRETO MUNICIPAL N° 98/2024">
+                        @error('resolucion_decreto')
+                            <span class="text-red-600 mt-2 text-sm">{{ $message }}</span>
+                        @enderror 
                 </div>
+            </div>
+        </div>
+
+        <!-- CARD 2: Ubicación -->
+        <div class="card bg-base-100 shadow p-6 mt-4">
+            <h2 class="text-lg font-semibold mb-4">Ubicación</h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 
                 <!-- Dirección -->
                 <div class="form-control">
-                    <label class="label font-semibold">Dirección (Opcional)</label>
-                    <input type="text" name="direccion" value="{{ old('direccion', $obra->direccion) }}"
-                        class="input input-bordered w-full">
-                    @error('direccion')
-                        <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
-                    @enderror
+                    <label class="label font-semibold">Dirección</label>
+                    <input type="text" name="direccion" value="{{ $obra->direccion }}"
+                        class="w-full h-10 rounded-md border border-base-300 bg-base-200 px-3 
+                                text-sm focus:outline-none focus:ring-2 focus:ring-primary 
+                                focus:border-primary transition"
+                        placeholder="Ej: Calle Buenos Aires 150">
+                        @error('direccion')
+                            <span class="text-red-600 mt-2 text-sm">{{ $message }}</span>
+                        @enderror 
                 </div>
 
                 <!-- Barrio -->
                 <div class="form-control">
-                    <label class="label font-semibold">Barrio (Opcional)</label>
-                    <input type="text" name="barrio" value="{{ old('barrio', $obra->barrio) }}"
-                        class="input input-bordered w-full">
-                    @error('barrio')
-                        <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
-                    @enderror
+                    <label class="label font-semibold">Barrio</label>
+                    <input type="text" name="barrio" value="{{ $obra->barrio }}"
+                        class="w-full h-10 rounded-md border border-base-300 bg-base-200 px-3 
+                                text-sm focus:outline-none focus:ring-2 focus:ring-primary 
+                                focus:border-primary transition"
+                        placeholder="Ej: Barrio Córdoba">
+                        @error('barrio')
+                            <span class="text-red-600 mt-2 text-sm">{{ $message }}</span>
+                        @enderror 
                 </div>
 
-                <!-- Ciudad - ocupa toda la fila -->
+                <!-- Ciudad (ocupa ambas columnas) -->
                 <div class="form-control md:col-span-2">
-                    <label class="label font-semibold">Ciudad (Opcional)</label>
-                    <input type="text" name="ciudad" value="{{ old('ciudad', 'San José de Feliciano', $obra->ciudad) }}"
-                        class="input input-bordered w-full">
-                    @error('ciudad')
-                        <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
-                    @enderror
+                    <label class="label font-semibold">Ciudad</label>
+                    <input type="text" name="ciudad"
+                        value="{{ $obra->ciudad }}"
+                        class="w-full h-10 rounded-md border border-base-300 bg-base-200 px-3 
+                                text-sm focus:outline-none focus:ring-2 focus:ring-primary 
+                                focus:border-primary transition"
+                        placeholder="San José de Feliciano">
+                        @error('ciudad')
+                            <span class="text-red-600 mt-2 text-sm">{{ $message }}</span>
+                        @enderror 
                 </div>
+            </div>
+        </div>
 
+        <!-- CARD 3: Fechas -->
+        <div class="card bg-base-100 shadow p-6 mt-4">
+            <h2 class="text-lg font-semibold mb-4">Fechas</h2>
 
-                <!-- Fechas agrupadas -->
-                <div class="md:col-span-2 grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
 
-                    <!-- Fecha inicio -->
-                    <div class="form-control">
-                        <label class="label font-semibold">Fecha de Inicio</label>
-                        <input type="date" name="fecha_inicio" value="{{ old('fecha_inicio', $obra->fecha_inicio?->format('Y-m-d')) }}"
-                            class="input input-bordered w-full">
+                <!-- Fecha inicio -->
+                <div class="form-control">
+                    <label class="label font-semibold">Fecha de Inicio</label>
+                    <input type="date" name="fecha_inicio" value="{{ $obra->fecha_inicio }}"
+                        class="w-full h-10 rounded-md border border-base-300 bg-base-200 px-3 
+                                text-sm focus:outline-none focus:ring-2 focus:ring-primary 
+                                focus:border-primary transition">
                         @error('fecha_inicio')
-                            <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
-                        @enderror
-                    </div>
+                            <span class="text-red-600 mt-2 text-sm">{{ $message }}</span>
+                        @enderror 
+                </div>
 
-                    <!-- Fecha Estimada -->
-                    <div class="form-control">
-                        <label class="label font-semibold">Fecha Estimada de Finalización</label>
-                        <input type="date" name="fecha_estimada_fin"
-                            value="{{ old('fecha_estimada_fin', $obra->fecha_estimada_fin?->format('Y-m-d')) }}"
-                            class="input input-bordered w-full">
+                <!-- Fecha estimada -->
+                <div class="form-control">
+                    <label class="label font-semibold">Fecha Estimada</label>
+                    <input type="date" name="fecha_estimada_fin"
+                        value="{{ $obra->fecha_estimada_fin }}"
+                        class="w-full h-10 rounded-md border border-base-300 bg-base-200 px-3 
+                                text-sm focus:outline-none focus:ring-2 focus:ring-primary 
+                                focus:border-primary transition">
                         @error('fecha_estimada_fin')
-                            <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
-                        @enderror
-                    </div>
+                            <span class="text-red-600 mt-2 text-sm">{{ $message }}</span>
+                        @enderror 
+                </div>
 
-                    <!-- Fecha fin -->
-                    <div class="form-control">
-                        <label class="label font-semibold">Fecha de Finalización (Opcional)</label>
-                        <input type="date" name="fecha_fin" value="{{ old('fecha_fin', $obra->fecha_fin?->format('Y-m-d')) }}"
-                            class="input input-bordered w-full">
+                <!-- Fecha fin -->
+                <div class="form-control">
+                    <label class="label font-semibold">Fecha de Finalización</label>
+                    <input type="date" name="fecha_fin"
+                        value="{{ $obra->fecha_fin }}"
+                        class="w-full h-10 rounded-md border border-base-300 bg-base-200 px-3 
+                                text-sm focus:outline-none focus:ring-2 focus:ring-primary 
+                                focus:border-primary transition">
                         @error('fecha_fin')
-                            <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
-                        @enderror
-                    </div>
+                            <span class="text-red-600 mt-2 text-sm">{{ $message }}</span>
+                        @enderror 
                 </div>
+            </div>
+        </div>
 
-                <!-- Estado obra -->
-                <div class="form-control md:col-span-2">
-                    <label class="label font-semibold">
-                        Estado de la Obra <span class="text-red-600">*</span>
-                    </label>
+        <!-- CARD 4: Estado, observaciones y botones -->
+        <div class="card bg-base-100 shadow p-6 mt-4">
+            <h2 class="text-lg font-semibold mb-4">Estado y Observaciones</h2>
 
-                    <select name="estado_obra" class="select select-bordered w-full">
-                        <option value="planificada" @selected(old('estado_obra', $obra->estado_obra) === 'planificada')>
-                            Planificada
-                        </option>
-                        <option value="en_ejecucion" @selected(old('estado_obra', $obra->estado_obra) === 'en_ejecucion')>
-                            En ejecución
-                        </option>
-                        <option value="demorada" @selected(old('estado_obra', $obra->estado_obra) === 'demorada')>
-                            Demorada
-                        </option>
-                        <option value="finalizada" @selected(old('estado_obra', $obra->estado_obra) === 'finalizada')>
-                            Finalizada
-                        </option>
-                        <option value="cancelada" @selected(old('estado_obra', $obra->estado_obra) === 'cancelada')>
-                            Cancelada
-                        </option>
+            <div class="grid grid-cols-1 gap-6">
+
+                <!-- Estado -->
+                <div class="form-control">
+                    <label class="label font-semibold">Estado de la Obra *</label>
+                    <select name="estado_obra"
+                        class="w-full h-10 rounded-md border border-base-300 bg-base-200 px-3 
+                                text-sm focus:outline-none focus:ring-2 focus:ring-primary 
+                                focus:border-primary transition">
+                        <option value="planificada">Planificada</option>
+                        <option value="en_ejecucion">En ejecución</option>
+                        <option value="demorada">Demorada</option>
+                        <option value="finalizada">Finalizada</option>
+                        <option value="cancelada">Cancelada</option>
                     </select>
-
                     @error('estado_obra')
-                        <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
-                    @enderror
+                        <span class="text-red-600 mt-2 text-sm">{{ $message }}</span>
+                    @enderror 
                 </div>
-
 
                 <!-- Observaciones -->
-                <div class="form-control md:col-span-2">
-                    <label class="label font-semibold">Observaciones (Opcional)</label>
-                    <textarea name="observaciones" rows="4" class="textarea textarea-bordered w-full">{{ old('observaciones',$obra->observaciones) }}</textarea>
-                    @error('observaciones')
-                        <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
-                    @enderror
+                <div class="form-control">
+                    <label class="label font-semibold">Observaciones</label>
+                    <textarea name="observaciones" rows="4"
+                        class="textarea w-full rounded-md border border-base-300 bg-base-200 focus:outline-none focus:ring-2 focus:ring-primary 
+                                focus:border-primary transition"
+                        placeholder="Notas o aclaraciones">{{ $obra->observaciones }}</textarea>
+                        @error('observaciones')
+                            <span class="text-red-600 mt-2 text-sm">{{ $message }}</span>
+                        @enderror 
                 </div>
-
             </div>
 
-            <!-- BOTONES -->
+            <!-- Botones -->
             <div class="mt-6 flex justify-end gap-3">
-                <a href="{{ route('obras.index') }}" class="btn btn-warning mr-2">
-                    <x-heroicon-m-arrow-left class="w-4 h-4 inline" /> Cancelar
+                <a href="{{ route('obras.index') }}" class="btn btn-warning mr-2"> 
+                   <x-heroicon-m-arrow-left class="w-4 h-4 inline" />  Cancelar
                 </a>
                 <button type="submit" class="btn btn-primary">
                     <x-heroicon-m-arrow-down-tray class="w-4 h-4 inline" /> Guardar Obra
                 </button>
             </div>
+        </div>
 
         </form>
     </div>
