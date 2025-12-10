@@ -13,7 +13,7 @@ if (!function_exists('modeloDestino')) {
         return match ($tipo) {
             'deposito' => [
                 'model' => \App\Models\Deposito::class,
-                'campo' => 'cantidad'
+                'campo' => 'cantidad_asignada'
             ],
 
             'obra' => [
@@ -23,17 +23,17 @@ if (!function_exists('modeloDestino')) {
 
             'vehiculo' => [
                 'model' => \App\Models\Vehiculo::class,
-                'campo' => 'cantidad'
+                'campo' => 'cantidad_asignada'
             ],
 
             'equipo' => [
                 'model' => \App\Models\Equipo::class,
-                'campo' => 'cantidad'
+                'campo' => 'cantidad_asignada'
             ],
 
             'destino' => [
                 'model' => \App\Models\Destino::class,
-                'campo' => 'cantidad'
+                'campo' => 'cantidad_asignada'
             ],
 
             default => null

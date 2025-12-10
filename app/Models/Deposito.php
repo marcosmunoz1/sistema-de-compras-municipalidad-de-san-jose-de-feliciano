@@ -13,7 +13,7 @@ class Deposito extends Model
     {
         return $this->belongsToMany(Producto::class, 'deposito_producto')
                     ->using(DepositoProducto::class)
-                    ->withPivot(['cantidad', 'detalle_compra_id'])
+                    ->withPivot(['cantidad_asignada','stock', 'detalle_compra_id'])
                     ->withTimestamps();
     }
 

@@ -205,8 +205,8 @@
                     <th class="text-center">Producto</th>
                     <th class="text-center">Fecha Compra</th>
                     <th class="text-center">Precio</th>
-                    <th class="text-center">Cantidad asignada</th>
-                    <th class="text-center">Cantidad/Stock</th>
+                    <th class="text-center">Cantidad Asignada</th>
+                    <th class="text-center">Stock Actual</th>
                     <th class="text-center">Subtotal</th>
                     <th class="text-center">Acciones</th>
                 </tr>
@@ -216,21 +216,24 @@
                 @php
                     $nr = $productos->currentPage() * $productos->perPage() - $productos->perPage() + 1;
                 @endphp
+
                 @foreach ($productos as $producto)
                     <tr>
                         <td class="text-center">{{ $nr++ }}</td>
                         <td class="text-center">{{ $producto->nombre }}</td>
 
-                        <td class="text-center">{{ \Carbon\Carbon::parse($producto->fecha_orden)->format('d/m/Y') }}</td>
+                        <td class="text-center">
+                            {{ $producto->fecha_orden ? \Carbon\Carbon::parse($producto->fecha_orden)->format('d/m/Y') : '—' }}
+                        </td>
 
                         <td class="text-center">${{ number_format($producto->precio, 2) }}</td>
 
-                        <td class="text-center">{{ $producto->cantidad_original }}</td>
+                        <td class="text-center">{{ $producto->cantidad_asignada }}</td>
 
-                        <td class="text-center">{{ $producto->cantidad_usada }}</td>
+                        <td class="text-center">{{ $producto->stock_obra }}</td>
 
                         <td class="text-center">
-                            ${{ number_format($producto->subtotal_original, 2) }}
+                            ${{ number_format($producto->subtotal_real, 2) }}
                         </td>
 
                         <td class="text-center">
@@ -245,18 +248,16 @@
                         </td>
                     </tr>
                 @endforeach
-
             </tbody>
 
             <tfoot>
                 <tr>
                     <td colspan="6" class="text-right font-bold text-2xl">Total:</td>
-                    <td class="font-bold text-2xl">
-                        ${{ number_format($totalGeneral, 2) }}
-                    </td>
+                    <td class="font-bold text-2xl">${{ number_format($totalGeneral, 2) }}</td>
                 </tr>
             </tfoot>
         </table>
+
 
         @if ($productos->hasPages())
             <div class="flex flex-col md:flex-row justify-between items-center mt-6 px-3 gap-4">

@@ -144,52 +144,55 @@ class VehiculoController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Request $request, $id)
-    {
-        $vehiculo = Vehiculo::findOrFail($id);
+ public function show(Request $request, $id)
+{
+    $vehiculo = Vehiculo::findOrFail($id);
+    $search = $request->input('search');
 
-        $search = $request->input('search'); // ← buscador
+    // Traemos productos del vehículo con relación pivot
+    $productos = DB::table('producto_vehiculo as pv')
+        ->join('productos as p', 'p.id', '=', 'pv.producto_id')
+        ->leftJoin('detalle_compras as dc', 'dc.id', '=', 'pv.detalle_compra_id')
+        ->leftJoin('compras as c', 'c.id', '=', 'dc.compra_id')
+        ->select(
+            'p.nombre',
+            'p.descripcion',
+            'pv.cantidad_asignada',
+            'pv.stock',
+            'dc.precio',
+            'c.fecha_orden',
+            'c.id as compra_id',
+            // Subtotal basado en stock actual
+            DB::raw('(pv.stock * COALESCE(dc.precio, 0)) as subtotal_real')
+        )
+        ->where('pv.vehiculo_id', $vehiculo->id)
+        ->when($search, function ($query, $search) {
+            $query->where(function ($q) use ($search) {
+                $q->where('p.nombre', 'LIKE', "%{$search}%")
+                    ->orWhere('p.descripcion', 'LIKE', "%{$search}%")
+                    ->orWhere('pv.cantidad_asignada', 'LIKE', "%{$search}%")
+                    ->orWhere('pv.stock', 'LIKE', "%{$search}%")
+                    ->orWhere('dc.precio', 'LIKE', "%{$search}%")
+                    ->orWhere(DB::raw('(pv.stock * COALESCE(dc.precio, 0))'), 'LIKE', "%{$search}%")
+                    ->orWhere('c.fecha_orden', 'LIKE', "%{$search}%");
+            });
+        })
+        ->orderBy('c.fecha_orden', 'desc')
+        ->paginate(10);
 
-        $productos = DB::table('producto_vehiculo as pv')
-            ->join('productos as p', 'p.id', '=', 'pv.producto_id')
-            ->leftJoin('detalle_compras as dc', 'dc.id', '=', 'pv.detalle_compra_id')
-            ->leftJoin('compras as c', 'c.id', '=', 'dc.compra_id')
-            ->select(
-                'p.nombre',
-                'p.descripcion',
-                'dc.cantidad as cantidad_original',
-                'pv.cantidad as cantidad_usada',
-                'dc.precio',
-                'dc.subtotal',
-                'c.fecha_orden',
-                'c.id as compra_id'
-            )
-            ->where('pv.vehiculo_id', $vehiculo->id)
-            ->when($search, function ($query, $search) {
+    // Total general usando stock
+    $totalGeneral = DB::table('producto_vehiculo as pv')
+        ->leftJoin('detalle_compras as dc', 'dc.id', '=', 'pv.detalle_compra_id')
+        ->where('pv.vehiculo_id', $vehiculo->id)
+        ->selectRaw('SUM(pv.stock * COALESCE(dc.precio, 0)) as total')
+        ->value('total');
 
-                $query->where(function ($q) use ($search) {
-
-                    $q->where('p.nombre', 'LIKE', "%{$search}%")
-                        ->orWhere('p.descripcion', 'LIKE', "%{$search}%")
-                        ->orWhere('pv.cantidad', 'LIKE', "%{$search}%")
-                        ->orWhere('dc.precio', 'LIKE', "%{$search}%")
-                        ->orWhere('dc.subtotal', 'LIKE', "%{$search}%")
-                        ->orWhere('c.fecha_orden', 'LIKE', "%{$search}%");
-                });
-            })
-            ->orderBy('c.fecha_orden', 'desc') // sigue ordenando por fecha
-            ->paginate(10);
-
-        // Total general
-        $totalGeneral = DB::table('producto_vehiculo as pv')
-            ->leftJoin('detalle_compras as dc', 'dc.id', '=', 'pv.detalle_compra_id')
-            ->where('pv.vehiculo_id', $vehiculo->id)
-            ->selectRaw('SUM(pv.cantidad * COALESCE(dc.precio, 0)) as total')
-            ->value('total');
+    return view('admin.vehiculos.show', compact('vehiculo', 'productos', 'totalGeneral', 'search'));
+}
 
 
-        return view('admin.vehiculos.show', compact('vehiculo', 'productos', 'totalGeneral', 'search'));
-    }
+
+
 
 
 

@@ -32,26 +32,21 @@ class OrigenController extends Controller
     }
 
     // Devuelve productos asignados al elemento (usando relaciones y pivote)
-    public function productos($tipo, $id)
+   public function productos($tipo, $id)
     {
-        // Usamos tu helper modeloDestino() si lo prefieres; aquí uso mapeo simple
-        $campoPivot = match ($tipo) {
-            'obra'     => 'cantidad_asignada',
-            'deposito' => 'cantidad',
-            'vehiculo' => 'cantidad',
-            default    => null,
-        };
+        // SIEMPRE usamos stock para mostrar lo que se puede mover
+        $campoPivot = 'stock';
 
-        if (!$campoPivot) {
-            return response()->json([], 400);
-        }
-
-        // Recuperar el modelo instanciado
         $modelClass = match ($tipo) {
             'obra' => \App\Models\Obra::class,
             'deposito' => \App\Models\Deposito::class,
             'vehiculo' => \App\Models\Vehiculo::class,
+            default => null,
         };
+
+        if (!$modelClass) {
+            return response()->json([], 400);
+        }
 
         $elemento = $modelClass::with(['productos'])->find($id);
 
@@ -59,18 +54,17 @@ class OrigenController extends Controller
             return response()->json([], 404);
         }
 
-        // Mapear productos y tomar la cantidad según el pivot
         $productos = $elemento->productos->map(function ($p) use ($campoPivot) {
-            // el nombre para vehiculo/otros asume campo nombre en producto
             return [
                 'id' => $p->id,
                 'nombre' => $p->nombre,
-                'cantidad' => $p->pivot->{$campoPivot} ?? ($p->pivot->cantidad ?? 0),
+                'stock' => $p->pivot->{$campoPivot} ?? 0,
+                'cantidad_asignada' => $p->pivot->cantidad_asignada ?? 0,
                 'detalle_compra_id' => $p->pivot->detalle_compra_id ?? null,
-                // agregá más campos si los necesitás (precio, subtotal, etc.)
             ];
         })->values();
 
         return response()->json($productos);
     }
+
 }

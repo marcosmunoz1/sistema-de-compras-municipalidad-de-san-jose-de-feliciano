@@ -51,8 +51,8 @@
                     Buscar
                 </button>
                 @if (request('search'))
-                    <a href="{{ route('depositos.show', $deposito->id) }}#tabla-productos" class="btn btn-error"><x-heroicon-o-trash
-                            class="w-4 h-4" /> Limpiar</a>
+                    <a href="{{ route('depositos.show', $deposito->id) }}#tabla-productos"
+                        class="btn btn-error"><x-heroicon-o-trash class="w-4 h-4" /> Limpiar</a>
                 @endif
             </div>
         </div>
@@ -63,9 +63,10 @@
                 <tr>
                     <th class="text-center">Nr</th>
                     <th class="text-center">Producto</th>
-                    <th class="text-center">Fecha de compra</th>
+                    <th class="text-center">Fecha Compra</th>
                     <th class="text-center">Precio</th>
-                    <th class="text-center">Cantidad</th>
+                    <th class="text-center">Cantidad Asignada</th>
+                    <th class="text-center">Stock</th>
                     <th class="text-center">Subtotal</th>
                     <th class="text-center">Acciones</th>
                 </tr>
@@ -80,22 +81,13 @@
                     <tr>
                         <td class="text-center">{{ $nr++ }}</td>
                         <td class="text-center">{{ $producto->nombre }}</td>
-
                         <td class="text-center">
-                            {{ $producto->fecha_orden ? date('d/m/Y', strtotime($producto->fecha_orden)) : 'N/A' }}
+                            {{ $producto->fecha_orden ? \Carbon\Carbon::parse($producto->fecha_orden)->format('d/m/Y') : '—' }}
                         </td>
-
-                        <td class="text-center">
-                            ${{ number_format($producto->precio ?? 0, 2) }}
-                        </td>
-
-                        <td class="text-center">
-                            {{ $producto->cantidad }}
-                        </td>
-
-                        <td class="text-center">
-                            ${{ number_format($producto->subtotal ?? 0, 2) }}
-                        </td>
+                        <td class="text-center">${{ number_format($producto->precio ?? 0, 2) }}</td>
+                        <td class="text-center">{{ $producto->cantidad_asignada ?? 0 }}</td>
+                        <td class="text-center">{{ $producto->stock ?? 0 }}</td>
+                        <td class="text-center">${{ number_format($producto->subtotal_real ?? 0, 2) }}</td>
                         <td class="text-center">
                             @if ($producto->compra_id)
                                 <a href="{{ route('compras.show', ['id' => $producto->compra_id, 'from' => 'deposito', 'deposito_id' => $deposito->id]) }}"
@@ -112,10 +104,8 @@
 
             <tfoot>
                 <tr>
-                    <td colspan="6" class="text-right font-bold text-2xl">Total:</td>
-                    <td class="text-center font-bold text-2xl">
-                        ${{ number_format($totalGeneral, 2) }}
-                    </td>
+                    <td colspan="6" class="text-right font-bold text-xl">Total:</td>
+                    <td class="font-bold text-xl">${{ number_format($totalGeneral ?? 0, 2) }}</td>
                 </tr>
             </tfoot>
         </table>
@@ -137,7 +127,8 @@
                     @if ($productos->onFirstPage())
                         <button class="join-item btn btn-square btn-disabled">«</button>
                     @else
-                        <a href="{{ $productos->previousPageUrl() }}#tabla-productos" class="join-item btn btn-square">«</a>
+                        <a href="{{ $productos->previousPageUrl() }}#tabla-productos"
+                            class="join-item btn btn-square">«</a>
                     @endif
 
                     {{-- Números de página --}}
@@ -145,7 +136,8 @@
                         @if ($page == $productos->currentPage())
                             <button class="join-item btn btn-square btn-active">{{ $page }}</button>
                         @else
-                            <a href="{{ $url }}#tabla-productos" class="join-item btn btn-square">{{ $page }}</a>
+                            <a href="{{ $url }}#tabla-productos"
+                                class="join-item btn btn-square">{{ $page }}</a>
                         @endif
                     @endforeach
 

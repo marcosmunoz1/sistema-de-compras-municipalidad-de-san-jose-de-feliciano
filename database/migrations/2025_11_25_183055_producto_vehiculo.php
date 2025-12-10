@@ -22,7 +22,8 @@ return new class extends Migration
                 ->constrained('vehiculos')
                 ->onDelete('cascade');
 
-            $table->decimal('cantidad', 10, 2)->default(0);
+            $table->decimal('cantidad_asignada', 10, 2);
+            $table->decimal('stock', 10, 2)->default(0);
 
             $table->timestamps();
         });

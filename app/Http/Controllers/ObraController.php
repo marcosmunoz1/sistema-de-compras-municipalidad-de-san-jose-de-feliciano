@@ -116,65 +116,67 @@ class ObraController extends Controller
     /**
      * Display the specified resource.
      */
-   public function show(Request $request, $id)
-    {
-        $obra = Obra::findOrFail($id);
-        $search = $request->input('search');
+  public function show(Request $request, $id)
+{
+    $obra = Obra::findOrFail($id);
+    $search = $request->input('search');
 
-        $productos = DB::table('obra_producto as op')
-            ->join('productos as p', 'p.id', '=', 'op.producto_id')
-            ->leftJoin('detalle_compras as dc', 'dc.id', '=', 'op.detalle_compra_id')
-            ->leftJoin('compras as c', 'c.id', '=', 'dc.compra_id')
-            ->select(
-                'p.nombre',
-                'p.descripcion',
+    $productos = DB::table('obra_producto as op')
+        ->join('productos as p', 'p.id', '=', 'op.producto_id')
+        ->leftJoin('detalle_compras as dc', 'dc.id', '=', 'op.detalle_compra_id')
+        ->leftJoin('compras as c', 'c.id', '=', 'dc.compra_id')
+        ->select(
+            'p.nombre',
+            'p.descripcion',
 
-                // cantidad comprada originalmente
-                'dc.cantidad as cantidad_original',
+            // ⭐ Cantidad asignada originalmente a la obra
+            'op.cantidad_asignada',
 
-                // cantidad que tiene la obra
-                'op.cantidad_asignada as cantidad_usada',
+            // ⭐ Stock REAL que tiene actualmente la obra
+            'op.stock as stock_obra',
 
-                // precio unitario
-                'dc.precio',
+            // precio
+            'dc.precio',
 
-                // ⭐ SUBTOTAL REAL SEGÚN LA COMPRA ORIGINAL ⭐
-                DB::raw('(dc.cantidad * dc.precio) as subtotal_original'),
+            // fecha compra
+            'c.fecha_orden',
 
-                'c.fecha_orden',
-                'c.id as compra_id'
-            )
-            ->where('op.obra_id', $obra->id)
+            // id compra
+            'c.id as compra_id',
 
-            // 🔍 BUSCADOR (adaptado a toda la nueva info)
-            ->when($search, function ($query, $search) {
-                $query->where(function ($q) use ($search) {
-                    $q->where('p.nombre', 'LIKE', "%{$search}%")
-                        ->orWhere('op.cantidad_asignada', 'LIKE', "%{$search}%")
-                        ->orWhere('dc.precio', 'LIKE', "%{$search}%")
+            // ⭐ Subtotal real según lo asignado
+            DB::raw('(op.cantidad_asignada * COALESCE(dc.precio, 0)) as subtotal_real')
+        )
+        ->where('op.obra_id', $obra->id)
 
-                        // Buscamos por subtotal original también
-                        ->orWhere(DB::raw('(dc.cantidad * dc.precio)'), 'LIKE', "%{$search}%")
+        // BUSCADOR
+        ->when($search, function ($query, $search) {
+            $query->where(function ($q) use ($search) {
+                $q->where('p.nombre', 'LIKE', "%{$search}%")
+                  ->orWhere('op.cantidad_asignada', 'LIKE', "%{$search}%")
+                  ->orWhere('op.stock', 'LIKE', "%{$search}%")
+                  ->orWhere('dc.precio', 'LIKE', "%{$search}%")
+                  ->orWhere('c.fecha_orden', 'LIKE', "%{$search}%");
+            });
+        })
 
-                        ->orWhere('c.fecha_orden', 'LIKE', "%{$search}%");
-                });
-            })
-
-            ->orderBy('c.fecha_orden', 'desc')
-            ->paginate(10);
-
-
-        // Total general de la obra
-        $totalGeneral = DB::table('obra_producto as op')
-            ->leftJoin('detalle_compras as dc', 'dc.id', '=', 'op.detalle_compra_id')
-            ->where('op.obra_id', $obra->id)
-            ->selectRaw('SUM(dc.cantidad * COALESCE(dc.precio, 0)) as total')
-            ->value('total');
+        ->orderBy('c.fecha_orden', 'desc')
+        ->paginate(10);
 
 
+    // TOTAL GENERAL
+    $totalGeneral = DB::table('obra_producto as op')
+        ->leftJoin('detalle_compras as dc', 'dc.id', '=', 'op.detalle_compra_id')
+        ->where('op.obra_id', $obra->id)
+        ->selectRaw('SUM(op.cantidad_asignada * COALESCE(dc.precio, 0)) as total')
+        ->value('total');
 
-        return view('admin.obras.show', compact('obra', 'productos', 'totalGeneral', 'search'));
-    }
+
+    return view('admin.obras.show', compact('obra', 'productos', 'totalGeneral', 'search'));
+}
+
+
+
 
 
 
