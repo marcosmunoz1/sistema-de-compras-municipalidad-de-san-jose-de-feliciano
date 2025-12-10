@@ -191,8 +191,8 @@
                         Buscar
                     </button>
                     @if (request('search'))
-                        <a href="{{ route('obras.show', $obra->id) }}#tabla-productos" class="btn btn-error"><x-heroicon-o-trash
-                                class="w-4 h-4" /> Limpiar</a>
+                        <a href="{{ route('obras.show', $obra->id) }}#tabla-productos"
+                            class="btn btn-error"><x-heroicon-o-trash class="w-4 h-4" /> Limpiar</a>
                     @endif
                 </div>
             </div>
@@ -205,7 +205,8 @@
                     <th class="text-center">Producto</th>
                     <th class="text-center">Fecha Compra</th>
                     <th class="text-center">Precio</th>
-                    <th class="text-center">Cantidad</th>
+                    <th class="text-center">Cantidad asignada</th>
+                    <th class="text-center">Cantidad/Stock</th>
                     <th class="text-center">Subtotal</th>
                     <th class="text-center">Acciones</th>
                 </tr>
@@ -222,11 +223,16 @@
 
                         <td class="text-center">{{ \Carbon\Carbon::parse($producto->fecha_orden)->format('d/m/Y') }}</td>
 
-                        <td class="text-center">${{ number_format($producto->precio_unitario, 2) }}</td>
+                        <td class="text-center">${{ number_format($producto->precio, 2) }}</td>
 
-                        <td class="text-center">{{ $producto->cantidad_asignada }}</td>
+                        <td class="text-center">{{ $producto->cantidad_original }}</td>
 
-                        <td class="text-center">${{ number_format($producto->subtotal, 2) }}</td>
+                        <td class="text-center">{{ $producto->cantidad_usada }}</td>
+
+                        <td class="text-center">
+                            ${{ number_format($producto->subtotal_original, 2) }}
+                        </td>
+
                         <td class="text-center">
                             @if ($producto->compra_id)
                                 <a href="{{ route('compras.show', ['id' => $producto->compra_id, 'from' => 'obra', 'obra_id' => $obra->id]) }}"
@@ -268,7 +274,8 @@
                     @if ($productos->onFirstPage())
                         <button class="join-item btn btn-square btn-disabled">«</button>
                     @else
-                        <a href="{{ $productos->previousPageUrl() }}#tabla-productos" class="join-item btn btn-square">«</a>
+                        <a href="{{ $productos->previousPageUrl() }}#tabla-productos"
+                            class="join-item btn btn-square">«</a>
                     @endif
 
                     {{-- Números de página --}}
@@ -276,7 +283,8 @@
                         @if ($page == $productos->currentPage())
                             <button class="join-item btn btn-square btn-active">{{ $page }}</button>
                         @else
-                            <a href="{{ $url }}#tabla-productos" class="join-item btn btn-square">{{ $page }}</a>
+                            <a href="{{ $url }}#tabla-productos"
+                                class="join-item btn btn-square">{{ $page }}</a>
                         @endif
                     @endforeach
 
@@ -293,16 +301,4 @@
     </div>
 @endsection
 @section('js')
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            let total = 0;
-
-            document.querySelectorAll('#tablaProductosObra .subtotal').forEach(item => {
-                const val = parseFloat(item.dataset.subtotal || 0);
-                total += val;
-            });
-
-            document.getElementById('totalFinalObra').textContent = '$' + total.toFixed(2);
-        });
-    </script>
 @endsection

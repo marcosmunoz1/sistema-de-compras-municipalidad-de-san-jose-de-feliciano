@@ -230,7 +230,8 @@
                     <th class="text-center">Producto</th>
                     <th class="text-center">Fecha Compra</th>
                     <th class="text-center">Precio</th>
-                    <th class="text-center">Cantidad</th>
+                    <th class="text-center">Cantidad asignada</th>
+                    <th class="text-center">Cantidad/stock</th>
                     <th class="text-center">Subtotal</th>
                     <th class="text-center">Acciones</th>
                 </tr>
@@ -246,7 +247,8 @@
                         <td class="text-center">{{ $item->fecha_orden ? \Carbon\Carbon::parse($item->fecha_orden)->format('d/m/Y') : '—' }}
                         </td>
                         <td class="text-center">${{ number_format($item->precio ?? 0, 2) }}</td>
-                        <td class="text-center">{{ $item->cantidad }}</td>
+                        <td class="text-center">{{ $item->cantidad_original }}</td>
+                        <td class="text-center">{{ $item->cantidad_usada }}</td>
                         <td class="text-center">${{ number_format($item->subtotal ?? 0, 2) }}</td>
                         <td class="text-center">
                             @if ($item->compra_id)
