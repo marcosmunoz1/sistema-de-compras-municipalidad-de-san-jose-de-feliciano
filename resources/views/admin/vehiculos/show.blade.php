@@ -265,8 +265,8 @@
 
             <tfoot>
                 <tr>
-                    <td colspan="4" class="text-right font-bold">Total general:</td>
-                    <td class="font-bold">${{ number_format($totalGeneral, 2) }}</td>
+                    <td colspan="6" class="text-right font-bold text-2xl">Total general:</td>
+                    <td class="font-bold text-2xl">${{ number_format($totalGeneral, 2) }}</td>
                 </tr>
             </tfoot>
         </table>

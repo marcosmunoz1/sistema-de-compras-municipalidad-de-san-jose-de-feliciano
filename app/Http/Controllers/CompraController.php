@@ -95,14 +95,12 @@ class CompraController extends Controller
 
             // Guardar movimiento
             Movimiento::create([
-                'producto_id'   => $producto_id,
                 'compra_id'     => $compra->id,
                 'tipo'          => 'entrada',
                 'origen_tipo'   => Proveedor::class,
                 'origen_id'     => $request->proveedor_id,
                 'destino_tipo'  => modeloDestino($request->destino_tipo)['model'],
                 'destino_id'    => $request->destino_id,
-                'cantidad'      => $cantidad,
                 'observacion'   => $request->asunto_obra_automotor,
                 'fecha'         => $request->fecha_orden,
                 'estado'        => true

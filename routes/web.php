@@ -90,7 +90,8 @@ Route::get('/admin/combustibles/{id}', [App\Http\Controllers\CombustibleControll
 Route::delete('/admin/combustibles/{id}', [App\Http\Controllers\CombustibleController::class, 'destroy'])->name('combustibles.destroy')->middleware('auth');
 Route::put('/admin/combustibles/{id}/restore', [App\Http\Controllers\CombustibleController::class, 'restore'])->name('combustibles.restore')->middleware('auth');
 Route::post('/admin/combustibles/update-prices', [App\Http\Controllers\CombustibleController::class, 'updatePrices'])->name('combustibles.update-prices')->middleware('auth');
-Route::get('/admin/combustibles/report/{id}', [App\Http\Controllers\PDFController::class, 'PdfOrdenCarga'])->name('combustibles.report')->middleware('auth'); 
+Route::get('/admin/combustibles/report/{id}', [App\Http\Controllers\PDFController::class, 'PdfOrdenCarga'])->name('combustibles.report')->middleware('auth');
+
 //rutas para vehiculos
 Route::get('/admin/vehiculos', [App\Http\Controllers\VehiculoController::class, 'index'])->name('vehiculos.index')->middleware('auth');
 Route::get('/admin/vehiculos/create', [App\Http\Controllers\VehiculoController::class, 'create'])->name('vehiculos.create')->middleware('auth');
@@ -120,10 +121,12 @@ Route::put('/admin/obras/{id}', [App\Http\Controllers\ObraController::class, 'up
 Route::get('/admin/obras/{id}', [App\Http\Controllers\ObraController::class, 'show'])->name('obras.show')->middleware('auth');
 Route::delete('/admin/obras/{id}', [App\Http\Controllers\ObraController::class, 'destroy'])->name('obras.destroy')->middleware('auth');
 Route::put('admin/obras/{id}/restore', [App\Http\Controllers\ObraController::class, 'restore'])->name('obras.restore')->middleware('auth');
+
 // Rutas para permisos 
 Route::get('/admin/permisos',[App\Http\Controllers\PermisoController::class, 'index'])->name('permisos.index')->middleware('auth');
 Route::post('/admin/permisos/store',[App\Http\Controllers\PermisoController::class, 'store'])->name('permisos.store')->middleware('auth'); 
 Route::delete('/admin/permisos/{id}', [App\Http\Controllers\PermisoController::class, 'destroy'])->name('permisos.destroy')->middleware('auth');
+
 //Rutas para movimientos
 Route::get('/admin/movimientos', [App\Http\Controllers\MovimientoController::class, 'index'])->name('movimientos.index')->middleware('auth');
 Route::get('/admin/movimientos/create', [App\Http\Controllers\MovimientoController::class, 'create'])->name('movimientos.create')->middleware('auth');
@@ -194,6 +197,11 @@ Route::get('/api/destinos/combustible/{tipo}', function($tipo) {
 
     return $modelo::select($fields)->get();
 });
+
+//Rutas para los selects de movimientos
+Route::get('origen/listar/{tipo}', [App\Http\Controllers\OrigenController::class, 'listar'])->name('origen.listar');
+Route::get('origen/{tipo}/{id}/productos', [App\Http\Controllers\OrigenController::class, 'productos'])->name('origen.productos');
+
 
 
 

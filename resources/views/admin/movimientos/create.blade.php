@@ -38,137 +38,115 @@
 
             <h2 class="text-lg font-semibold mb-4">Datos del Movimiento</h2>
 
-            <div class="grid grid-cols-2 gap-6">
+            <div class="space-y-6">
 
-                <!-- PRODUCTO (DINÁMICO SEGÚN ORIGEN) -->
-                <div class="space-y-2">
-                    <button id="abrirModalProductos" class="btn btn-primary" disabled>
-                        Seleccionar Productos
-                    </button>
+                <!-- FILA 1: ORIGEN -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
 
-                    <label for="producto_id" class="text-sm font-medium">
-                        Producto <span class="text-red-600">*</span>
-                    </label>
-                    <select id="producto_id" name="producto_id"
-                        class="select select-bordered w-full @error('producto_id') select-error @enderror" required
-                        disabled>
-                        <option value="">Seleccione un origen primero...</option>
-                    </select>
-                    @error('producto_id')
-                        <small class="text-red-500">{{ $message }}</small>
-                    @enderror
+                    <!-- ORIGEN TIPO -->
+                    <div class="space-y-1">
+                        <label class="text-sm font-medium">Origen <span class="text-red-600">*</span></label>
+                        <select id="origen_tipo" name="origen_tipo"
+                            class="select select-bordered w-full @error('origen_tipo') select-error @enderror" required>
+                            <option value="">Seleccione origen...</option>
+                            <option value="App\Models\Obra">Obra</option>
+                            <option value="App\Models\Deposito">Depósito</option>
+                            <option value="App\Models\Vehiculo">Vehículo</option>
+                        </select>
+                        @error('origen_tipo')
+                            <small class="text-red-500">{{ $message }}</small>
+                        @enderror
+                    </div>
+
+                    <!-- ORIGEN ID -->
+                    <div class="space-y-1">
+                        <label class="text-sm font-medium">Elemento <span class="text-red-600">*</span></label>
+                        <select id="origen_id" name="origen_id"
+                            class="select select-bordered w-full @error('origen_id') select-error @enderror" required>
+                            <option value="">Seleccione un tipo...</option>
+                        </select>
+                        @error('origen_id')
+                            <small class="text-red-500">{{ $message }}</small>
+                        @enderror
+                    </div>
+
+                    <!-- TIPO DE MOVIMIENTO -->
+                    <div class="space-y-1">
+                        <label class="text-sm font-medium">Tipo de movimiento <span class="text-red-600">*</span></label>
+                        <select id="tipo" name="tipo"
+                            class="select select-bordered w-full @error('tipo') select-error @enderror" required>
+                            <option value="">Seleccione tipo...</option>
+                            <option value="consumo">Consumo</option>
+                            <option value="transferencia">Transferencia</option>
+                        </select>
+                        @error('tipo')
+                            <small class="text-red-500">{{ $message }}</small>
+                        @enderror
+                    </div>
+
                 </div>
 
-                <!-- TIPO -->
-                <div class="space-y-2">
-                    <label for="tipo" class="text-sm font-medium">
-                        Tipo de movimiento <span class="text-red-600">*</span>
-                    </label>
-                    <select id="tipo" name="tipo"
-                        class="select select-bordered w-full @error('tipo') select-error @enderror" required>
-                        <option value="">Seleccione tipo...</option>
-                        <option value="entrada">Entrada</option>
-                        <option value="salida">Salida</option>
-                        <option value="transferencia">Transferencia</option>
-                    </select>
-                    @error('tipo')
-                        <small class="text-red-500">{{ $message }}</small>
-                    @enderror
+                <!-- FILA 2: DESTINO -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+
+                    <!-- DESTINO TIPO -->
+                    <div class="space-y-1">
+                        <label class="text-sm font-medium">Destino <span class="text-red-600">*</span></label>
+                        <select id="destino_tipo" name="destino_tipo"
+                            class="select select-bordered w-full @error('destino_tipo') select-error @enderror" required>
+                            <option value="">Seleccione destino...</option>
+                            <option value="App\Models\Deposito">Depósito</option>
+                            <option value="App\Models\Obra">Obra</option>
+                            <option value="App\Models\Vehiculo">Vehículo</option>
+                        </select>
+                        @error('destino_tipo')
+                            <small class="text-red-500">{{ $message }}</small>
+                        @enderror
+                    </div>
+
+                    <!-- DESTINO ID -->
+                    <div class="space-y-1">
+                        <label class="text-sm font-medium">Elemento <span class="text-red-600">*</span></label>
+                        <select id="destino_id" name="destino_id"
+                            class="select select-bordered w-full @error('destino_id') select-error @enderror" required>
+                            <option value="">Seleccione una opción...</option>
+
+                            @foreach ($depositos as $depo)
+                                <option value="{{ $depo->id }}" data-tipo="App\Models\Deposito">
+                                    Depósito: {{ $depo->nombre }}
+                                </option>
+                            @endforeach
+                            @foreach ($obras as $obra)
+                                <option value="{{ $obra->id }}" data-tipo="App\Models\Obra">
+                                    Obra: {{ $obra->nombre }}
+                                </option>
+                            @endforeach
+                            @foreach ($vehiculos as $veh)
+                                <option value="{{ $veh->id }}" data-tipo="App\Models\Vehiculo">
+                                    Vehículo: {{ $veh->patente }} - {{ $veh->modelo }}
+                                </option>
+                            @endforeach
+                        </select>
+
+                        @error('destino_id')
+                            <small class="text-red-500">{{ $message }}</small>
+                        @enderror
+                    </div>
+
+                    <!-- FECHA -->
+                    <div class="space-y-1">
+                        <label for="fecha" class="text-sm font-medium">Fecha</label>
+                        <input id="fecha" name="fecha" type="date" value="{{ old('fecha', date('Y-m-d')) }}"
+                            class="input input-bordered w-full @error('fecha') input-error @enderror">
+                        @error('fecha')
+                            <small class="text-red-500">{{ $message }}</small>
+                        @enderror
+                    </div>
+
                 </div>
 
-                <!-- ORIGEN -->
+                <!-- FILA 3: OBSERVACIONES -->
                 <div class="space-y-2">
-                    <label class="text-sm font-medium">Origen <span class="text-red-600">*</span></label>
-
-                    <!-- Tipo -->
-                    <select id="origen_tipo" name="origen_tipo"
-                        class="select select-bordered w-full @error('origen_tipo') select-error @enderror" required>
-                        <option value="">Seleccione origen...</option>
-                        <option value="App\Models\Obra">Obra</option>
-                        <option value="App\Models\Deposito">Depósito</option>
-                        <option value="App\Models\Vehiculo">Vehículo</option>
-                    </select>
-
-                    <!-- ID -->
-                    <select id="origen_id" name="origen_id"
-                        class="select select-bordered w-full mt-2 @error('origen_id') select-error @enderror" required>
-                        <option value="">Seleccione un tipo...</option>
-                    </select>
-
-                    @error('origen_tipo')
-                        <small class="text-red-500">{{ $message }}</small>
-                    @enderror
-                    @error('origen_id')
-                        <small class="text-red-500">{{ $message }}</small>
-                    @enderror
-                </div>
-
-                <!-- DESTINO -->
-                <div class="space-y-2">
-                    <label class="text-sm font-medium">Destino <span class="text-red-600">*</span></label>
-
-                    <select id="destino_tipo" name="destino_tipo"
-                        class="select select-bordered w-full @error('destino_tipo') select-error @enderror" required>
-                        <option value="">Seleccione destino...</option>
-                        <option value="App\Models\Deposito">Depósito</option>
-                        <option value="App\Models\Obra">Obra</option>
-                        <option value="App\Models\Vehiculo">Vehículo</option>
-                    </select>
-
-                    <select id="destino_id" name="destino_id"
-                        class="select select-bordered w-full mt-2 @error('destino_id') select-error @enderror" required>
-                        <option value="">Seleccione una opción...</option>
-
-                        @foreach ($depositos as $depo)
-                            <option value="{{ $depo->id }}" data-tipo="App\Models\Deposito">
-                                Depósito: {{ $depo->nombre }}
-                            </option>
-                        @endforeach
-
-                        @foreach ($obras as $obra)
-                            <option value="{{ $obra->id }}" data-tipo="App\Models\Obra">
-                                Obra: {{ $obra->nombre }}
-                            </option>
-                        @endforeach
-
-                        @foreach ($vehiculos as $veh)
-                            <option value="{{ $veh->id }}" data-tipo="App\Models\Vehiculo">
-                                Vehículo: {{ $veh->patente }} - {{ $veh->modelo }}
-                            </option>
-                        @endforeach
-                    </select>
-
-                    @error('destino_tipo')
-                        <small class="text-red-500">{{ $message }}</small>
-                    @enderror
-                    @error('destino_id')
-                        <small class="text-red-500">{{ $message }}</small>
-                    @enderror
-                </div>
-
-                <!-- Cantidad -->
-                <div class="space-y-2">
-                    <label for="cantidad" class="text-sm font-medium">Cantidad <span class="text-red-600">*</span></label>
-                    <input id="cantidad" name="cantidad" value="{{ old('cantidad') }}" type="number"
-                        class="input input-bordered w-full @error('cantidad') input-error @enderror"
-                        placeholder="Cantidad..." required>
-                    @error('cantidad')
-                        <small class="text-red-500">{{ $message }}</small>
-                    @enderror
-                </div>
-
-                <!-- Fecha -->
-                <div class="space-y-2">
-                    <label for="fecha" class="text-sm font-medium">Fecha</label>
-                    <input id="fecha" name="fecha" type="date" value="{{ old('fecha', date('Y-m-d')) }}"
-                        class="input input-bordered w-full @error('fecha') input-error @enderror">
-                    @error('fecha')
-                        <small class="text-red-500">{{ $message }}</small>
-                    @enderror
-                </div>
-
-                <!-- Observaciones -->
-                <div class="col-span-2 space-y-2">
                     <label for="observacion" class="text-sm font-medium">Observaciones</label>
                     <textarea id="observacion" name="observacion" rows="3"
                         class="textarea textarea-bordered w-full @error('observacion') textarea-error @enderror"
@@ -179,8 +157,27 @@
                 </div>
 
             </div>
-        </div>
 
+
+        </div>
+        <div class="card bg-base-100 shadow-xl p-4">
+            <h1 class="text-2xl font-semibold">Productos</h1>
+            <br>
+            <table class="table table-bordered" id="tablaProductos">
+                <thead>
+                    <tr>
+                        <th class="text-center">Nr</th>
+                        <th class="text-center">Producto</th>
+                        <th class="text-center">Stock</th>
+                        <th class="text-center">Cantidad a mover</th>
+                        <th class="text-center">Acción</th>
+                    </tr>
+                </thead>
+                <tbody id="tbodyProductos"></tbody>
+            </table>
+
+        </div>
+        
         <!-- Botones -->
         <div class="flex justify-end mt-4">
             <a href="{{ route('movimientos.index') }}" class="btn btn-warning mr-2">
@@ -194,183 +191,218 @@
             </button>
         </div>
     </form>
-    <!-- Modal DaisyUI con <dialog> -->
-    <dialog id="modalProductos" class="modal">
-        <form method="dialog" class="modal-box w-3/4 max-w-5xl">
-            <h3 class="font-bold text-lg">Productos asignados al origen</h3>
-
-            <table class="table-auto w-full mt-4">
-                <thead>
-                    <tr>
-                        <th>Seleccionar</th>
-                        <th>Producto</th>
-                        <th>Cantidad disponible</th>
-                        <th>Cantidad a mover</th>
-                    </tr>
-                </thead>
-                <tbody id="tablaProductos">
-                    <!-- Filas generadas por JS -->
-                </tbody>
-            </table>
-
-            <div class="modal-action">
-                <button type="button" class="btn btn-primary" id="guardarProductosSeleccionados">Guardar
-                    selección</button>
-                <button type="button" class="btn" id="cerrarModal">Cerrar</button>
-            </div>
-        </form>
-    </dialog>
-
-    <!-- Input oculto en el formulario principal para enviar productos seleccionados -->
-    <input type="hidden" name="productos_seleccionados" id="productosSeleccionadosInput">
 @endsection
 
 @section('js')
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const btnModal = document.getElementById('abrirModalProductos');
-            const modal = document.getElementById('modalProductos');
-            const tablaProductos = document.getElementById('tablaProductos');
-            const productosSeleccionadosInput = document.getElementById('productosSeleccionadosInput');
-            const origenTipoSelect = document.getElementById('origen_tipo');
-            const origenIdSelect = document.getElementById('origen_id');
+        document.addEventListener("DOMContentLoaded", function() {
 
-            // ================================
-            // Base URLs
-            // ================================
-            const URL_ORIGEN = {
-                "App\\Models\\Obra": "{{ url('admin/obras') }}",
-                "App\\Models\\Vehiculo": "{{ url('admin/vehiculos') }}",
-                "App\\Models\\Deposito": "{{ url('admin/depositos') }}"
-            };
+            const baseUrlListar = "{{ url('origen/listar') }}";
+            const baseUrlProductos = "{{ url('origen') }}";
 
-            const URL_PRODUCTOS = {
-                "App\\Models\\Obra": "{{ url('admin/obras/ID/productos') }}",
-                "App\\Models\\Vehiculo": "{{ url('admin/vehiculos/ID/productos') }}",
-                "App\\Models\\Deposito": "{{ url('admin/depositos/ID/productos') }}"
-            };
+            const tipoSelect = document.getElementById("origen_tipo");
+            const origenSelect = document.getElementById("origen_id");
+            const tbody = document.getElementById("tbodyProductos");
 
-            // ================================
-            // Cargar opciones de origen_id según tipo
-            // ================================
-            origenTipoSelect.addEventListener('change', function() {
+            // --- AGRUPADOR DE PRODUCTOS (se mantiene igual) ---
+            function agruparProductos(lista) {
+                const mapa = {};
+
+                lista.forEach(item => {
+                    if (!mapa[item.id]) {
+                        mapa[item.id] = {
+                            id: item.id,
+                            nombre: item.nombre,
+                            cantidad: 0
+                        };
+                    }
+                    mapa[item.id].cantidad += parseFloat(item.cantidad);
+                });
+
+                return Object.values(mapa);
+            }
+            // ---------------------------------------------------
+
+            tipoSelect?.addEventListener("change", function() {
                 const tipo = this.value;
-                origenIdSelect.innerHTML = `<option value="">Cargando...</option>`;
-                btnModal.disabled = true;
 
-                if (!tipo || !URL_ORIGEN[tipo]) {
-                    origenIdSelect.innerHTML = `<option value="">Seleccione un tipo válido</option>`;
-                    return;
-                }
+                if (!origenSelect || !tbody) return; // <-- evita el error
 
-                fetch(URL_ORIGEN[tipo])
-                    .then(res => res.json())
-                    .then(data => {
-                        origenIdSelect.innerHTML = `<option value="">Seleccione...</option>`;
-                        data.forEach(item => {
-                            let texto = '';
-                            if (tipo === "App\\Models\\Obra") texto = `Obra: ${item.nombre}`;
-                            if (tipo === "App\\Models\\Vehiculo") texto =
-                                `Vehículo: ${item.patente} - ${item.modelo}`;
-                            if (tipo === "App\\Models\\Deposito") texto =
-                                `Depósito: ${item.nombre}`;
-                            origenIdSelect.innerHTML +=
-                                `<option value="${item.id}">${texto}</option>`;
+                origenSelect.innerHTML = `<option>Cargando...</option>`;
+
+                tbody.innerHTML =
+                    `<tr><td colspan="5" class="text-center">Seleccione un elemento...</td></tr>`;
+
+                if (!tipo) return;
+
+                let tipoShort = tipo.includes('Obra') ? 'obra' :
+                    tipo.includes('Deposito') ? 'deposito' :
+                    'vehiculo';
+
+                fetch(`${baseUrlListar}/${tipoShort}`)
+                    .then(r => r.json())
+                    .then(items => {
+                        origenSelect.innerHTML = `<option value="">Seleccione...</option>`;
+                        items.forEach(it => {
+                            origenSelect.innerHTML +=
+                                `<option value="${it.id}">${it.nombre}</option>`;
                         });
                     })
-                    .catch(err => {
-                        console.error(err);
-                        origenIdSelect.innerHTML = `<option value="">Error al cargar opciones</option>`;
-                    });
+                    .catch(err => console.error(err));
             });
 
-            // ================================
-            // Habilitar botón solo si hay origen
-            // ================================
-            origenIdSelect.addEventListener('change', function() {
-                btnModal.disabled = !this.value;
-            });
+            origenSelect?.addEventListener("change", function() {
+                const id = this.value;
+                const tipo = tipoSelect.value;
 
-            // =========================================
-            // Abrir modal y cargar productos según origen
-            // =========================================
-            btnModal.addEventListener('click', function() {
-                const origenTipo = origenTipoSelect.value;
-                const origenId = origenIdSelect.value;
+                tbody.innerHTML = `<tr><td colspan="5" class="text-center">Cargando productos...</td></tr>`;
 
-                if (!origenId) return;
+                let tipoShort = tipo.includes('Obra') ? 'obra' :
+                    tipo.includes('Deposito') ? 'deposito' :
+                    'vehiculo';
 
-                const urlTemplate = URL_PRODUCTOS[origenTipo];
-                if (!urlTemplate) return;
+                fetch(`${baseUrlProductos}/${tipoShort}/${id}/productos`)
+                    .then(r => r.json())
+                    .then(productos => {
 
-                const url = urlTemplate.replace('ID', origenId);
+                        const productosAgrupados = agruparProductos(productos);
 
-                fetch(url)
-                    .then(res => res.json())
-                    .then(data => {
-                        tablaProductos.innerHTML = '';
-                        if (!data.length) {
-                            tablaProductos.innerHTML =
-                                `<tr><td colspan="4" class="text-center">No hay productos asignados</td></tr>`;
-                            modal.showModal();
-                            return;
-                        }
+                        tbody.innerHTML = "";
+                        let nr = 1;
 
-                        data.forEach((p, index) => {
-                            tablaProductos.innerHTML += `
+                        productosAgrupados.forEach(p => {
+
+                            const stock = parseFloat(p.cantidad);
+
+                            tbody.innerHTML += `
                         <tr>
-                            <td><input type="checkbox" class="checkProducto" data-index="${index}" value="${p.id}"></td>
-                            <td>${p.nombre}</td>
-                            <td>${p.cantidad_asignada}</td>
-                            <td>
-                                <input type="number" class="cantidadMover input input-bordered w-20" 
-                                    min="1" max="${p.cantidad_asignada}" value="1" data-index="${index}" disabled>
+                            <td class="text-center">${nr++}</td>
+                            <td class="text-center">${p.nombre}</td>
+
+                            <!-- STOCK -->
+                            <td class="text-center">
+                                <span class="badge badge-info">${stock}</span>
+                            </td>
+
+                            <!-- CANTIDAD A MOVER -->
+                            <td class="text-center">
+                                <!-- Hidden para mandar array con los productos seleccionados -->
+                                <input type="hidden" name="productos[${p.id}][id]" value="${p.id}">
+                                <input 
+                                    type="number"
+                                    class="form-control cantidad-mover"
+                                    name="productos[${p.id}][cantidad]"
+                                    data-id="${p.id}"
+                                    disabled
+                                    min="1"
+                                    max="${stock}"
+                                    placeholder="0"
+                                >
+                            </td>
+
+                            <!-- BOTÓN -->
+                            <td class="text-center">
+                                <button
+                                    type="button" 
+                                    class="btn btn-primary seleccionar-producto"
+                                    data-id="${p.id}"
+                                    data-stock="${p.cantidad}">
+                                    Seleccionar
+                                </button>
                             </td>
                         </tr>
                     `;
                         });
 
-                        // Habilitar input cantidad solo si el checkbox está marcado
-                        document.querySelectorAll('.checkProducto').forEach(cb => {
-                            cb.addEventListener('change', function() {
-                                const idx = this.dataset.index;
-                                document.querySelector(
-                                        `.cantidadMover[data-index="${idx}"]`)
-                                    .disabled = !this.checked;
-                            });
-                        });
-
-                        modal.showModal();
+                        activarSeleccion();
                     })
-                    .catch(err => {
-                        console.error(err);
-                    });
+                    .catch(err => console.error(err));
             });
 
-            // ================================
-            // Guardar selección en input oculto
-            // ================================
-            document.getElementById('guardarProductosSeleccionados').addEventListener('click', function() {
-                const seleccion = [];
-                document.querySelectorAll('.checkProducto:checked').forEach(cb => {
-                    const idx = cb.dataset.index;
-                    const cantidad = document.querySelector(`.cantidadMover[data-index="${idx}"]`)
-                        .value;
-                    seleccion.push({
-                        id: cb.value,
-                        cantidad
+            // --- HABILITAR INPUT AL SELECCIONAR ---
+            function activarSeleccion() {
+                document.querySelectorAll(".seleccionar-producto").forEach(btn => {
+                    btn.addEventListener("click", function() {
+                        const id = this.dataset.id;
+
+                        const input = document.querySelector(
+                            `.cantidad-mover[data-id="${id}"]`
+                        );
+
+                        input.disabled = false;
+                        input.focus();
+
+                        this.closest("tr").classList.add("table-success");
                     });
                 });
-                productosSeleccionadosInput.value = JSON.stringify(seleccion);
-                modal.close();
+            }
+            // --- VALIDAR QUE NO SUPERE EL STOCK ---
+            document.addEventListener("input", function(e) {
+                if (e.target.classList.contains("cantidad-mover")) {
+
+                    let input = e.target;
+                    let stockMax = parseFloat(input.getAttribute("max"));
+                    let valor = parseFloat(input.value);
+
+                    if (isNaN(valor) || valor < 1) {
+                        input.value = "";
+                        return;
+                    }
+
+                    if (valor > stockMax) {
+                        input.value = stockMax;
+                    }
+                }
             });
 
-            // ================================
-            // Cerrar modal
-            // ================================
-            document.getElementById('cerrarModal').addEventListener('click', function() {
-                modal.close();
-            });
+
+        });
+        document.addEventListener("DOMContentLoaded", function () {
+            const tipoMovimiento = document.getElementById("tipo"); // CAMBIAR si se llama distinto
+            const destinoTipo = document.getElementById("destino_tipo");
+            const destinoId = document.getElementById("destino_id");
+
+            function actualizarCampos() {
+                const tipo = tipoMovimiento.value;
+
+                if (tipo === "transferencia") {
+
+                    // HABILITAR CAMPOS
+                    destinoTipo.disabled = false;
+                    destinoId.disabled = false;
+
+                    // MARCAR COMO OBLIGATORIOS
+                    destinoTipo.setAttribute("required", true);
+                    destinoId.setAttribute("required", true);
+
+                } else if (tipo === "consumo") {
+
+                    // DESHABILITAR + QUITAR REQUIRED
+                    destinoTipo.disabled = true;
+                    destinoId.disabled = true;
+
+                    destinoTipo.removeAttribute("required");
+                    destinoId.removeAttribute("required");
+
+                    // LIMPIAR selección
+                    destinoTipo.value = "";
+                    destinoId.value = "";
+
+                } else {
+
+                    // OTROS TIPOS: habilitados pero sin required
+                    destinoTipo.disabled = false;
+                    destinoId.disabled = false;
+
+                    destinoTipo.removeAttribute("required");
+                    destinoId.removeAttribute("required");
+                }
+            }
+
+            tipoMovimiento.addEventListener("change", actualizarCampos);
+
+            // Ejecutar al cargar la página
+            actualizarCampos();
         });
     </script>
 @endsection

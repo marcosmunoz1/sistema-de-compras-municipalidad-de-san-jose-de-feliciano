@@ -4,10 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\Deposito;
 use App\Models\Movimiento;
+use App\Models\MovimientoDetalle;
 use App\Models\Obra;
 use App\Models\Producto;
+use App\Models\Proveedor;
 use App\Models\Vehiculo;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class MovimientoController extends Controller
 {
@@ -29,7 +32,7 @@ class MovimientoController extends Controller
             }
         }
 
-        $movimientos = Movimiento::with(['producto', 'origen', 'destino'])
+        $movimientos = Movimiento::with(['origen', 'destino'])
             ->where(function ($query) use ($search, $tipoBuscado) {
 
                 // --- Buscar por tipo ---
@@ -38,19 +41,23 @@ class MovimientoController extends Controller
                 }
 
                 // --- Campos propios de movimiento ---
-                $query->orWhere('cantidad', 'LIKE', "%{$search}%")
-                    ->orWhere('fecha', 'LIKE', "%{$search}%")
-                    ->orWhere('observacion', 'LIKE', "%{$search}%");
-
-                // --- Producto ---
-                $query->orWhereHas('producto', function ($q) use ($search) {
-                    $q->where('nombre', 'LIKE', "%{$search}%");
-                });
+                $query->orWhere('fecha', 'LIKE', "%{$search}%")
+                        ->orWhere('observacion', 'LIKE', "%{$search}%");
 
                 // --- Buscar por texto en tipo de origen/destino (no muy útil, pero lo dejé) ---
                 $query->orWhere('origen_tipo', 'LIKE', "%{$search}%")
                     ->orWhere('destino_tipo', 'LIKE', "%{$search}%");
-
+                    
+                // --- ORIGEN: si es proveedor ---
+                $query->orWhereHasMorph(
+                    'origen',
+                    Proveedor::class,
+                    function ($m) use ($search) {
+                        $m->where('nombre', 'LIKE', "%{$search}%")
+                            ->orWhere('telefono', 'LIKE', "%{$search}%")
+                            ->orWhere('cuit', 'LIKE', "%{$search}%");
+                    }
+                );
                 // --- ORIGEN: si es VEHÍCULO ---
                 $query->orWhereHasMorph(
                     'origen',
@@ -117,16 +124,143 @@ class MovimientoController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        //return response()->json($request->all());
+        // 1) Filtrar productos seleccionados (sólo los que tienen cantidad > 0)
+        $productosFiltrados = collect($request->input('productos', []))
+            ->filter(fn($p) => isset($p['cantidad']) && $p['cantidad'] !== '' && floatval($p['cantidad']) > 0)
+            ->values()
+            ->all();
+
+        // Reemplazo el arreglo en el request para validar y procesar luego
+        $request->merge(['productos' => $productosFiltrados]);
+
+        // 2) Validación
+        $request->validate([
+            'tipo' => 'required|in:consumo,transferencia',
+            'origen_tipo' => 'required|string',
+            'origen_id' => 'required|integer',
+            'fecha' => 'required|date',
+            'productos' => 'required|array|min:1',
+            'productos.*.id' => 'required|integer|exists:productos,id',
+            'productos.*.cantidad' => 'required|numeric|min:0.0001',
+            // destino solo si transferencia
+            'destino_tipo' => 'required_if:tipo,transferencia',
+            'destino_id'   => 'required_if:tipo,transferencia',
+        ]);
+
+        DB::beginTransaction();
+
+        try {
+            // 3) Crear movimiento
+            $movimiento = Movimiento::create([
+                'tipo'          => $request->tipo,
+                'origen_tipo'   => $request->origen_tipo,
+                'origen_id'     => $request->origen_id,
+                'destino_tipo'  => $request->tipo === 'transferencia' ? $request->destino_tipo : null,
+                'destino_id'    => $request->tipo === 'transferencia' ? $request->destino_id : null,
+                'fecha'         => $request->fecha,
+                'observacion'   => $request->observacion,
+            ]);
+
+            // 4) Procesar cada producto (ya todos tienen 'cantidad')
+            foreach ($request->productos as $item) {
+
+                // defensivo: extraer con índice seguro
+                $productoId = intval($item['id']);
+                $cantidadMovida = floatval($item['cantidad']);
+
+                if ($cantidadMovida <= 0) {
+                    continue; // por seguridad
+                }
+
+                // obtener meta info de origen/destino
+                $origenInfo = modeloDestino($request->origen_tipo);
+                if (!$origenInfo) {
+                    throw new \Exception("Tipo de origen no válido: {$request->origen_tipo}");
+                }
+
+                // Cargar el modelo origen
+                $origenModel = ($origenInfo['model'])::find($request->origen_id);
+                if (!$origenModel) {
+                    throw new \Exception("Origen no encontrado (ID: {$request->origen_id})");
+                }
+
+                // Buscar pivot origen (producto en origen)
+                $pivotOrigen = $origenModel->productos()->where('producto_id', $productoId)->first();
+                if (!$pivotOrigen) {
+                    throw new \Exception("El producto (id={$productoId}) no existe en el origen.");
+                }
+
+                // 4.a) RESTAR stock en origen
+                $campoOrigen = $origenInfo['campo'];
+                $nuevoStock = floatval($pivotOrigen->pivot->{$campoOrigen}) - $cantidadMovida;
+                if ($nuevoStock < 0) {
+                    throw new \Exception("Stock insuficiente del producto (id={$productoId}) en el origen.");
+                }
+                // guardar nuevo stock en pivot
+                $pivotOrigen->pivot->{$campoOrigen} = $nuevoStock;
+                $pivotOrigen->pivot->save();
+
+                // 4.b) SI ES TRANSFERENCIA -> SUMAR en destino
+                if ($request->tipo === 'transferencia') {
+                    $destinoInfo = modeloDestino($request->destino_tipo);
+                    if (!$destinoInfo) {
+                        throw new \Exception("Tipo de destino no válido: {$request->destino_tipo}");
+                    }
+
+                    $destinoModel = ($destinoInfo['model'])::find($request->destino_id);
+                    if (!$destinoModel) {
+                        throw new \Exception("Destino no encontrado (ID: {$request->destino_id})");
+                    }
+
+                    $pivotDestino = $destinoModel->productos()->where('producto_id', $productoId)->first();
+
+                    if ($pivotDestino) {
+                        // sumar al pivot existente
+                        $pivotDestino->pivot->{$destinoInfo['campo']} = floatval($pivotDestino->pivot->{$destinoInfo['campo']}) + $cantidadMovida;
+                        $pivotDestino->pivot->save();
+                    } else {
+                        // crear nueva fila en el pivot (si no existía)
+                        // intentamos preservar detalle_compra_id si existe en el pivotOrigen
+                        $detalleCompraId = $pivotOrigen->pivot->detalle_compra_id ?? null;
+                        $destinoModel->productos()->attach($productoId, [
+                            $destinoInfo['campo'] => $cantidadMovida,
+                            'detalle_compra_id' => $detalleCompraId
+                        ]);
+                    }
+                }
+
+                // 5) Guardar detalle del movimiento (si no tenés el modelo por otro nombre, usa el tuyo)
+                MovimientoDetalle::create([
+                    'movimiento_id' => $movimiento->id,
+                    'producto_id'   => $productoId,
+                    'cantidad'      => $cantidadMovida,
+                ]);
+            }
+
+            DB::commit();
+
+            return redirect()->route('movimientos.index')
+                ->with('mensaje', 'Movimiento registrado exitosamente.')
+                ->with('icono', 'success');
+        } catch (\Throwable $e) {
+            DB::rollBack();
+            // para debug en desarrollo: throw $e;
+            return back()->with('error', $e->getMessage());
+        }
     }
+
 
     /**
      * Display the specified resource.
      */
-    public function show(Movimiento $movimiento)
+    public function show($id)
     {
-        //
+        $movimiento = Movimiento::with(['detalles.producto', 'origen', 'destino'])->find($id);
+
+        return view('admin.movimientos.show', compact('movimiento'));
     }
+
 
     /**
      * Show the form for editing the specified resource.
