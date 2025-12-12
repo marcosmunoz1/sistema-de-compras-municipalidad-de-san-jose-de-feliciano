@@ -96,7 +96,6 @@
                     </ul>
                 </div>
             </div>
-
             <div class="p-6">
                 @yield('content')
             </div>
@@ -104,31 +103,35 @@
 
         {{-- SIDEBAR --}}
         <div class="drawer-side">
-            <label for="sidebar" class="drawer-overlay"></label>
-            <ul class="menu p-4 w-80 min-h-full bg-base-100 text-base-content">
+            <label for="sidebar" class="drawer-overlay"></label> 
+            <ul class="menu p-4 w-68 min-h-full bg-base-100 text-base-content">
                 <li class="text-xl font-bold mb-3">Menú Principal</li>
-                <li> <a href="{{ route('admin.index') }}">
+                <li> 
+                    <a href="{{ route('admin.index') }}"
+                     class="flex items-center gap-2 px-3 py-2 rounded-md 
+                            hover:bg-base-200 hover:text-primary transition-colors 
+                            {{ request()->is('admin') ? 'bg-blue-500 text-white' : '' }}">  
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
                             stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
                         </svg>
-                        Home
-                    </a></li>
-                <li><a href="{{ route('compras.index') }}"><x-heroicon-o-shopping-bag
-                            class="w-6 h-6 inline" />Compras</a></li>
-                <li><a href="{{ route('proveedores.index') }}"><x-heroicon-o-truck
-                            class="w-6 h-6 inline" />Proveedores</a></li>
-                <li><a href="{{ route('categorias.index') }}"><x-heroicon-o-tag class="w-6 h-6 inline" />Categorias</a>
+                        <b>Home</b></a>
                 </li>
-                <li><a href="{{ route('productos.index') }}"><x-heroicon-o-cog class="w-6 h-6 inline" />Productos</a>
+                <li>
+                    <a href="{{ route('compras.index') }}"
+                    class="flex items-center gap-2 px-3 py-2 rounded-md 
+                            hover:bg-base-200 hover:text-primary transition-colors 
+                            {{ request()->is('admin/compras*') ? 'bg-blue-500 text-white' : '' }}">
+                        <x-heroicon-o-shopping-bag class="w-6 h-6 inline" /><b>Compras</b>  
+                    </a>
                 </li>
-                <li><a href="{{ route('usuarios.index') }}"><x-heroicon-o-user-group
-                            class="w-6 h-6 inline" />Usuarios</a></li>
-                <li><a href="{{ url('/admin/roles') }}"><x-heroicon-o-cog class="w-6 h-6 inline" />Roles</a></li>
-                <li><a href="{{ route('vehiculos.index') }}"><x-heroicon-o-truck class="w-6 h-6 inline" />Vehículos</a>
-                </li>
-                <li><a href="{{ url('/admin/combustibles') }}"><svg xmlns="http://www.w3.org/2000/svg" width="24"
+                <li>
+                    <a href="{{ url('/admin/combustibles') }}"
+                    class="flex items-center gap-2 px-3 py-2 rounded-md 
+                    hover:bg-base-200 hover:text-primary transition-colors
+                            {{ request()->is('admin/combustibles*') ? 'bg-base-200 text-primary' : '' }}">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24"
                             height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                             stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-fuel w-5 h-5"
                             aria-hidden="true">
@@ -136,15 +139,91 @@
                             <path d="M14 21V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v16"></path>
                             <path d="M2 21h13"></path>
                             <path d="M3 9h11"></path>
-                        </svg>Combustibles</a></li>
-                <li><a href="{{ url('/admin/empleados') }}"><x-heroicon-o-user-group
-                            class="w-6 h-6 inline" />Empleados</a></li>
-                <li><a href="{{ url('/admin/obras') }}"><x-bi-building class="w-6 h-6 inline" />Obras</a></li>
-                <li><a href="{{ url('/admin/depositos') }}"><x-heroicon-o-home-modern  class="w-6 h-6 inline" />Depósitos</a></li>
-                <li><a href="{{ url('/admin/permisos') }}"><x-heroicon-o-shield-check
-                            class="w-6 h-6 inline" />Permisos</a></li>
-                <li><a href="{{ url('/admin/movimientos') }}"><x-heroicon-o-arrow-path
-                            class="w-6 h-6 inline" />Movimientos</a></li>
+                        </svg><b>Combustibles</b></a>
+                    </li> 
+                    <li>
+                        <a href="{{ url('/admin/obras') }}"
+                    class="flex items-center gap-2 px-3 py-2 rounded-md 
+                            hover:bg-base-200 hover:text-primary transition-colors
+                            {{ request()->is('admin/obras*') ? 'bg-blue-500 text-white' : '' }}">
+                            <x-bi-building class="w-6 h-6 inline" /><b>Obras</b></a>
+                    </li>
+                    <li>
+                        <a href="{{ url('/admin/movimientos') }}"
+                        class="flex items-center gap-2 px-3 py-2 rounded-md 
+                                hover:bg-base-200 hover:text-primary transition-colors
+                                {{ request()->is('admin/movimientos*') ? 'bg-blue-500 text-white' : '' }}">
+                            <x-heroicon-o-arrow-path
+                                class="w-6 h-6 inline" /><b>Movimientos</b></a>
+                    </li>
+                    <li>
+                        <li>
+                            <a href="{{ route('proveedores.index') }}"
+                            class="flex items-center gap-2 px-3 py-2 rounded-md 
+                            hover:bg-base-200 hover:text-primary transition-colors
+                            {{ request()->is('admin/proveedores*') ? 'bg-blue-500 text-white' : '' }}">
+                            <x-heroicon-o-truck class="w-6 h-6 inline" /><b>Proveedores</b>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('categorias.index') }}"
+                    class="flex items-center gap-2 px-3 py-2 rounded-md 
+                            hover:bg-base-200 hover:text-primary transition-colors
+                            {{ request()->is('admin/categorias*') ? 'bg-blue-500 text-white' : '' }}">
+                        <x-heroicon-o-tag class="w-6 h-6 inline" /><b>Categorias</b>
+                    </a>
+                </li>
+                <li> 
+                <li>
+                    <a href="{{ route('productos.index') }}"
+                    class="flex items-center gap-2 px-3 py-2 rounded-md 
+                            hover:bg-base-200 hover:text-primary transition-colors
+                            {{ request()->is('admin/productos*') ? 'bg-blue-500 text-white' : '' }}">
+                        <x-heroicon-o-cog class="w-6 h-6 inline" /><b>Productos</b>
+                    </a> 
+                </li>
+                <li>
+                    <a href="{{ route('usuarios.index') }}"
+                    class="flex items-center gap-2 px-3 py-2 rounded-md 
+                            hover:bg-base-200 hover:text-primary transition-colors
+                            {{ request()->is('admin/usuarios*') ? 'bg-blue-500 text-white' : '' }}">
+                        <x-heroicon-o-user-group class="w-6 h-6 inline" /><b>Usuarios</b>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ url('/admin/roles') }}"
+                    class="flex items-center gap-2 px-3 py-2 rounded-md 
+                            hover:bg-base-200 hover:text-primary transition-colors
+                            {{ request()->is('admin/roles*') ? 'bg-blue-500 text-white' : '' }}">
+                        <x-heroicon-o-cog class="w-6 h-6 inline" /><b>Roles</b>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('vehiculos.index') }}"
+                    class="flex items-center gap-2 px-3 py-2 rounded-md 
+                            hover:bg-base-200 hover:text-primary transition-colors
+                            {{ request()->is('admin/vehiculos*') ? 'bg-blue-500 text-white' : '' }}">
+                        <x-heroicon-o-truck class="w-6 h-6 inline" /><b>Vehículos</b>
+                    </a>
+                </li>
+                    <a href="{{ url('/admin/empleados') }}"
+                    class="flex items-center gap-2 px-3 py-2 rounded-md 
+                            hover:bg-base-200 hover:text-primary transition-colors
+                            {{ request()->is('admin/empleados*') ? 'bg-blue-500 text-white' : '' }}">
+                        <x-heroicon-o-user-group
+                            class="w-6 h-6 inline" /><b>Empleados</b></a></li>
+                    <a href="{{ url('/admin/depositos') }}"
+                    class="flex items-center gap-2 px-3 py-2 rounded-md 
+                            hover:bg-base-200 hover:text-primary transition-colors
+                            {{ request()->is('admin/depositos*') ? 'bg-blue-500 text-white' : '' }}">
+                        <x-heroicon-o-home-modern  class="w-6 h-6 inline" /><b>Depósitos</b></a></li>
+                <li>
+                    <a href="{{ url('/admin/permisos') }}"
+                    class="flex items-center gap-2 px-3 py-2 rounded-md 
+                            hover:bg-base-200 hover:text-primary transition-colors
+                            {{ request()->is('admin/permisos*') ? 'bg-blue-500 text-white' : '' }}">
+                        <x-heroicon-o-shield-check
+                            class="w-6 h-6 inline" /><b>Permisos</b></a></li>
 
             </ul>
         </div>

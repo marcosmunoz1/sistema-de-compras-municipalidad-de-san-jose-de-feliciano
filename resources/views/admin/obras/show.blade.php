@@ -5,12 +5,6 @@
     <div class="flex items-start justify-between mb-6">
         <div>
             <h1 class="text-2xl font-semibold">Información de la obra: {{ $obra->nombre }}</h1>
-
-            @if ($obra->estado)
-                <span class="badge badge-success gap-2 px-3 py-2 mt-1">Activo</span>
-            @else
-                <span class="badge badge-error gap-2 px-3 py-2 mt-1">Inactivo</span>
-            @endif
         </div>
         <!-- Botones -->
         <div class="flex gap-2">
@@ -192,7 +186,7 @@
         </form>
         <div data-slot="card-header"
             class="@container/card-header grid auto-rows-min grid-rows-[auto_auto] items-start gap-1.5 
-             px-4  has-data-[slot=card-action]:grid-cols-[1fr_auto] [.border-b]:pb-6">
+             px-4  has-data-[slot=card-action]:grid-cols-[1fr_auto] [.border-b]:pb-6"> 
             <div class="flex items-center justify-between">
                 <h4 data-slot="card-title" class="leading-none flex items-center gap-2"><svg
                         xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
