@@ -744,10 +744,10 @@
                         mapa[item.id] = {
                             id: item.id,
                             nombre: item.nombre,
-                            cantidad: 0
+                            stock: 0
                         };
                     }
-                    mapa[item.id].cantidad += parseFloat(item.cantidad);
+                    mapa[item.id].stock += parseFloat(item.stock);
                 });
 
                 return Object.values(mapa);
@@ -793,7 +793,7 @@
 
                         productosAgrupados.forEach(p => {
 
-                            const stock = parseFloat(p.cantidad);
+                            const stock = parseFloat(p.stock);
 
                             tbody.innerHTML += `
                         <tr>
@@ -827,7 +827,7 @@
                                     type="button" 
                                     class="btn btn-primary seleccionar-producto"
                                     data-id="${p.id}"
-                                    data-stock="${p.cantidad}">
+                                    data-stock="${p.stock}">
                                     Seleccionar
                                 </button>
                             </td>

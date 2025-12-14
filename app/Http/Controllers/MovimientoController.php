@@ -164,81 +164,85 @@ class MovimientoController extends Controller
             // 4) Procesar cada producto (ya todos tienen 'cantidad')
             foreach ($request->productos as $item) {
 
-                // defensivo: extraer con índice seguro
                 $productoId = intval($item['id']);
                 $cantidadMovida = floatval($item['cantidad']);
 
                 if ($cantidadMovida <= 0) {
-                    continue; // por seguridad
+                    continue;
                 }
 
-                // obtener meta info de origen/destino
+                // obtener meta info de origen
                 $origenInfo = modeloDestino($request->origen_tipo);
                 if (!$origenInfo) {
                     throw new \Exception("Tipo de origen no válido: {$request->origen_tipo}");
                 }
 
-                // Cargar el modelo origen
                 $origenModel = ($origenInfo['model'])::find($request->origen_id);
                 if (!$origenModel) {
-                    throw new \Exception("Origen no encontrado (ID: {$request->origen_id})");
+                    throw new \Exception("Origen no encontrado");
                 }
 
-                // Buscar pivot origen (producto en origen)
+                // Buscar pivot origen
                 $pivotOrigen = $origenModel->productos()->where('producto_id', $productoId)->first();
                 if (!$pivotOrigen) {
-                    throw new \Exception("El producto (id={$productoId}) no existe en el origen.");
+                    throw new \Exception("El producto no existe en el origen");
                 }
 
-                // 4.a) RESTAR stock en origen
-                $campoOrigen = $origenInfo['campo'];
-                $nuevoStock = floatval($pivotOrigen->pivot->{$campoOrigen}) - $cantidadMovida;
+                // ***********************************
+                // 🔻 4.a) RESTAR DEL STOCK DEL ORIGEN
+                // ***********************************
+                $nuevoStock = floatval($pivotOrigen->pivot->stock) - $cantidadMovida;
 
                 if ($nuevoStock < 0) {
-                    throw new \Exception("Stock insuficiente del producto (id={$productoId}) en el origen.");
+                    throw new \Exception("Stock insuficiente en el origen");
                 }
 
-                // guardar nuevo stock en pivot o eliminar si llega a 0
                 if ($nuevoStock <= 0) {
+                    // eliminar fila completa si el stock llega a 0
                     $origenModel->productos()->detach($productoId);
                 } else {
-                    $pivotOrigen->pivot->{$campoOrigen} = $nuevoStock;
+                    $pivotOrigen->pivot->stock = $nuevoStock;
                     $pivotOrigen->pivot->save();
                 }
 
-                // 4.b) SI ES TRANSFERENCIA -> CREAR SIEMPRE UNA NUEVA FILA EN DESTINO
+                // ***********************************
+                // 🔻 4.b) SI ES TRANSFERENCIA → CREAR FILA NUEVA EN DESTINO
+                // ***********************************
                 if ($request->tipo === 'transferencia') {
 
                     $destinoInfo = modeloDestino($request->destino_tipo);
                     if (!$destinoInfo) {
-                        throw new \Exception("Tipo de destino no válido: {$request->destino_tipo}");
+                        throw new \Exception("Tipo de destino no válido");
                     }
 
                     $destinoModel = ($destinoInfo['model'])::find($request->destino_id);
                     if (!$destinoModel) {
-                        throw new \Exception("Destino no encontrado (ID: {$request->destino_id})");
+                        throw new \Exception("Destino no encontrado");
                     }
 
-                    // preservar detalle de compra del origen (si existe)
+                    // mantener mismo detalle_compra_id del origen
                     $detalleCompraId = $pivotOrigen->pivot->detalle_compra_id ?? null;
 
-                    // Crear siempre una nueva fila en el pivot del destino
-                    // attach() forza una fila nueva aunque ya exista otra para este producto
+                    // SIEMPRE crear nueva fila de pivot
                     $destinoModel->productos()->attach($productoId, [
-                        $destinoInfo['campo'] => $cantidadMovida,
+                        'cantidad_asignada' => $cantidadMovida,  // historial
+                        'stock' => $cantidadMovida,              // disponible inicial
                         'detalle_compra_id' => $detalleCompraId,
                         'created_at' => now(),
                         'updated_at' => now()
                     ]);
                 }
 
-                // 5) Guardar detalle del movimiento (si no tenés el modelo por otro nombre, usa el tuyo)
+                // ***********************************
+                // 🔻 5) Registrar detalle del movimiento
+                // ***********************************
                 MovimientoDetalle::create([
                     'movimiento_id' => $movimiento->id,
                     'producto_id'   => $productoId,
                     'cantidad'      => $cantidadMovida,
                 ]);
             }
+
 
             DB::commit();
 

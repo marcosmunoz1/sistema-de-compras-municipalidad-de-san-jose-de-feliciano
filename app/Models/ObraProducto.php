@@ -12,6 +12,7 @@ class ObraProducto extends Pivot
         'obra_id',
         'producto_id',
         'cantidad_asignada', // o "cantidad", según cómo lo llamaste
+        'stock',
         'detalle_compra_id',
     ];
 

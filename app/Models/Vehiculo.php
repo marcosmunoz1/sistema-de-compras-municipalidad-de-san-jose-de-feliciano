@@ -28,7 +28,7 @@ class Vehiculo extends Model
     public function productos()
     {
         return $this->belongsToMany(Producto::class, 'producto_vehiculo')
-                    ->withPivot('cantidad', 'detalle_compra_id')
+                    ->withPivot('cantidad_asignada', 'detalle_compra_id','stock')
                     ->using(ProductoVehiculo::class)
                     ->withTimestamps();
     }

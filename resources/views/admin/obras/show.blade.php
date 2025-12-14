@@ -184,89 +184,62 @@
                 </div>
             </div>
         </form>
-        <div data-slot="card-header"
-            class="@container/card-header grid auto-rows-min grid-rows-[auto_auto] items-start gap-1.5 
-             px-4  has-data-[slot=card-action]:grid-cols-[1fr_auto] [.border-b]:pb-6"> 
-            <div class="flex items-center justify-between">
-                <h4 data-slot="card-title" class="leading-none flex items-center gap-2"><svg
-                        xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round" class="lucide lucide-package size-5" aria-hidden="true">
-                        <path
-                            d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z">
-                        </path>
-                        <path d="M12 22V12"></path>
-                        <polyline points="3.29 7 12 12 20.71 7"></polyline>
-                        <path d="m7.5 4.27 9 5.15"></path>
-                    </svg>Productos Asignados a la Obra</h4> 
-                <div class="text-right">
-                    <p class="text-sm text-gray-500">Total Invertido</p>
-                    <p class="text-xl">$ 1.052.000,00</p>
-                </div>
-            </div>
-        </div>
-        <div class="overflow-x-auto rounded-box border border-base-content/5 bg-base-100">
-            <table class="table table-zebra w-full">
-                <thead>
+
+        <table class="table table-zebra w-full">
+            <thead>
+                <tr>
+                    <th class="text-center">Nr</th>
+                    <th class="text-center">Producto</th>
+                    <th class="text-center">Fecha Compra</th>
+                    <th class="text-center">Precio</th>
+                    <th class="text-center">Cantidad Asignada</th>
+                    <th class="text-center">Stock Actual</th>
+                    <th class="text-center">Subtotal</th>
+                    <th class="text-center">Acciones</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @php
+                    $nr = $productos->currentPage() * $productos->perPage() - $productos->perPage() + 1;
+                @endphp
+
+                @foreach ($productos as $producto)
                     <tr>
-                        <th class="text-center">Nr</th>
-                        <th class="text-center">Producto</th>
-                        <th class="text-center">Fecha Compra</th>
-                        <th class="text-center">Precio</th>
-                        <th class="text-center">Cantidad asignada</th>
-                        <th class="text-center">Cantidad/Stock</th>
-                        <th class="text-center">Subtotal</th>
-                        <th class="text-center">Acciones</th>
-                    </tr>
-                </thead>
-
-                <tbody>
-                    @php
-                        $nr = $productos->currentPage() * $productos->perPage() - $productos->perPage() + 1;
-                    @endphp
-                    @foreach ($productos as $producto)
-                        <tr>
-                            <td class="text-center">{{ $nr++ }}</td>
-                            <td class="text-center">{{ $producto->nombre }}</td>
-
-                            <td class="text-center">{{ \Carbon\Carbon::parse($producto->fecha_orden)->format('d/m/Y') }}
-                            </td>
-
-                            <td class="text-center">${{ number_format($producto->precio, 2) }}</td>
-
-                            <td class="text-center">{{ $producto->cantidad_original }}</td>
-
-                            <td class="text-center">{{ $producto->cantidad_usada }}</td>
-
-                            <td class="text-center">
-                                ${{ number_format($producto->subtotal_original, 2) }}
-                            </td>
-
-                            <td class="text-center">
-                                @if ($producto->compra_id)
-                                    <a href="{{ route('compras.show', ['id' => $producto->compra_id, 'from' => 'obra', 'obra_id' => $obra->id]) }}"
-                                        class="btn btn-sm btn-primary">
-                                        Ver compra
-                                    </a>
-                                @else
-                                    —
-                                @endif
-                            </td>
-                        </tr>
-                    @endforeach
-
-                </tbody>
-
-                <tfoot>
-                    <tr>
-                        <td colspan="6" class="text-right font-bold text-2xl">Total:</td>
-                        <td class="font-bold text-2xl">
-                            ${{ number_format($totalGeneral, 2) }}
+                        <td class="text-center">{{ $nr++ }}</td>
+                        <td class="text-center">{{ $producto->nombre }}</td>
+                        <td class="text-center">
+                            {{ $producto->fecha_orden ? \Carbon\Carbon::parse($producto->fecha_orden)->format('d/m/Y') : '—' }}
+                        </td>
+                        <td class="text-center">${{ number_format($producto->precio ?? 0, 2) }}</td>
+                        <td class="text-center">{{ $producto->cantidad_asignada ?? 0 }}</td>
+                        <td class="text-center">{{ $producto->stock_obra ?? 0 }}</td>
+                        <td class="text-center">${{ number_format($producto->subtotal_real ?? 0, 2) }}</td>
+                        <td class="text-center">
+                            @if ($producto->compra_id)
+                                <a href="{{ route('compras.show', ['id' => $producto->compra_id, 'from' => 'obra', 'obra_id' => $obra->id]) }}"
+                                    class="btn btn-sm btn-primary">
+                                    Ver compra
+                                </a>
+                            @else
+                                —
+                            @endif
                         </td>
                     </tr>
-                </tfoot>
-            </table>
-        </div>
+                @endforeach
+            </tbody>
+
+            <tfoot>
+                <tr>
+                    <td colspan="6" class="text-right font-bold text-2xl">Total:</td>
+                    <td class="font-bold text-2xl">${{ number_format($totalGeneral ?? 0, 2) }}</td>
+                    <td></td>
+                </tr>
+            </tfoot>
+        </table>
+
+
+
         @if ($productos->hasPages())
             <div class="flex flex-col md:flex-row justify-between items-center mt-6 px-3 gap-4">
 

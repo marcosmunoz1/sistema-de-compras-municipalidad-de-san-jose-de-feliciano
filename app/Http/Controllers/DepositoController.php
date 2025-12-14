@@ -39,9 +39,9 @@ class DepositoController extends Controller
     public function show(Request $request, $id)
     {
         $deposito = Deposito::findOrFail($id);
-
         $search = $request->input('search');
 
+        // Traemos productos del depósito con relación pivot
         $productos = DB::table('deposito_producto as dp')
             ->join('productos as p', 'p.id', '=', 'dp.producto_id')
             ->leftJoin('detalle_compras as dc', 'dc.id', '=', 'dp.detalle_compra_id')
@@ -49,33 +49,35 @@ class DepositoController extends Controller
             ->select(
                 'p.nombre',
                 'p.descripcion',
-                'dp.cantidad',
+                'dp.cantidad_asignada',
+                'dp.stock',
                 'dc.precio',
-                'dc.subtotal',
                 'c.fecha_orden',
-                'c.id as compra_id'
+                'c.id as compra_id',
+                // Subtotal basado en stock actual
+                DB::raw('(dp.stock * COALESCE(dc.precio, 0)) as subtotal_real')
             )
             ->where('dp.deposito_id', $deposito->id)
-            ->when($search, function ($query) use ($search) {
-
+            ->when($search, function ($query, $search) {
                 $query->where(function ($q) use ($search) {
-
                     $q->where('p.nombre', 'LIKE', "%{$search}%")
                         ->orWhere('p.descripcion', 'LIKE', "%{$search}%")
-                        ->orWhere('dp.cantidad', 'LIKE', "%{$search}%")
+                        ->orWhere('dp.cantidad_asignada', 'LIKE', "%{$search}%")
+                        ->orWhere('dp.stock', 'LIKE', "%{$search}%")
                         ->orWhere('dc.precio', 'LIKE', "%{$search}%")
-                        ->orWhere('dc.subtotal', 'LIKE', "%{$search}%")
+                        ->orWhere(DB::raw('(dp.stock * COALESCE(dc.precio, 0))'), 'LIKE', "%{$search}%")
                         ->orWhere('c.fecha_orden', 'LIKE', "%{$search}%");
                 });
             })
-            ->orderBy('c.fecha_orden', 'desc') // queda ordenado por fecha más reciente
+            ->orderBy('c.fecha_orden', 'desc')
             ->paginate(10);
 
-        // Total general
+        // Total general usando stock
         $totalGeneral = DB::table('deposito_producto as dp')
             ->leftJoin('detalle_compras as dc', 'dc.id', '=', 'dp.detalle_compra_id')
             ->where('dp.deposito_id', $deposito->id)
-            ->sum('dc.subtotal');
+            ->selectRaw('SUM(dp.stock * COALESCE(dc.precio, 0)) as total')
+            ->value('total');
 
         return view('admin.depositos.show', compact('deposito', 'productos', 'totalGeneral', 'search'));
     }

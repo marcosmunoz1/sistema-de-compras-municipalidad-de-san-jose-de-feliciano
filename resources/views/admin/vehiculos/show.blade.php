@@ -230,29 +230,32 @@
                     <th class="text-center">Producto</th>
                     <th class="text-center">Fecha Compra</th>
                     <th class="text-center">Precio</th>
-                    <th class="text-center">Cantidad asignada</th>
-                    <th class="text-center">Cantidad/stock</th>
+                    <th class="text-center">Cantidad Asignada</th>
+                    <th class="text-center">Stock</th>
                     <th class="text-center">Subtotal</th>
                     <th class="text-center">Acciones</th>
                 </tr>
             </thead>
+
             <tbody>
                 @php
                     $nr = $productos->currentPage() * $productos->perPage() - $productos->perPage() + 1;
                 @endphp
-                @foreach ($productos as $item)
+
+                @foreach ($productos as $producto)
                     <tr>
                         <td class="text-center">{{ $nr++ }}</td>
-                        <td class="text-center">{{ $item->nombre }}</td>
-                        <td class="text-center">{{ $item->fecha_orden ? \Carbon\Carbon::parse($item->fecha_orden)->format('d/m/Y') : '—' }}
-                        </td>
-                        <td class="text-center">${{ number_format($item->precio ?? 0, 2) }}</td>
-                        <td class="text-center">{{ $item->cantidad_original }}</td>
-                        <td class="text-center">{{ $item->cantidad_usada }}</td>
-                        <td class="text-center">${{ number_format($item->subtotal ?? 0, 2) }}</td>
+                        <td class="text-center">{{ $producto->nombre }}</td>
                         <td class="text-center">
-                            @if ($item->compra_id)
-                                <a href="{{ route('compras.show', ['id' => $item->compra_id, 'from' => 'vehiculo', 'vehiculo_id' => $vehiculo->id]) }}"
+                            {{ $producto->fecha_orden ? \Carbon\Carbon::parse($producto->fecha_orden)->format('d/m/Y') : '—' }}
+                        </td>
+                        <td class="text-center">${{ number_format($producto->precio ?? 0, 2) }}</td>
+                        <td class="text-center">{{ $producto->cantidad_asignada ?? 0 }}</td>
+                        <td class="text-center">{{ $producto->stock ?? 0 }}</td>
+                        <td class="text-center">${{ number_format($producto->subtotal_real ?? 0, 2) }}</td>
+                        <td class="text-center">
+                            @if ($producto->compra_id)
+                                <a href="{{ route('compras.show', ['id' => $producto->compra_id, 'from' => 'vehiculo', 'vehiculo_id' => $vehiculo->id]) }}"
                                     class="btn btn-sm btn-primary">
                                     Ver compra
                                 </a>
@@ -260,18 +263,19 @@
                                 —
                             @endif
                         </td>
-
                     </tr>
                 @endforeach
             </tbody>
 
             <tfoot>
                 <tr>
-                    <td colspan="6" class="text-right font-bold text-2xl">Total general:</td>
-                    <td class="font-bold text-2xl">${{ number_format($totalGeneral, 2) }}</td>
+                    <td colspan="6" class="text-right font-bold text-xl">Total:</td>
+                    <td class="font-bold text-xl">${{ number_format($totalGeneral ?? 0, 2) }}</td>
                 </tr>
             </tfoot>
         </table>
+
+
 
         @if ($productos->hasPages())
             <div class="flex flex-col md:flex-row justify-between items-center mt-6 px-3 gap-4">
@@ -289,7 +293,8 @@
                     @if ($productos->onFirstPage())
                         <button class="join-item btn btn-square btn-disabled">«</button>
                     @else
-                        <a href="{{ $productos->previousPageUrl() }}#tabla-productos" class="join-item btn btn-square">«</a>
+                        <a href="{{ $productos->previousPageUrl() }}#tabla-productos"
+                            class="join-item btn btn-square">«</a>
                     @endif
 
                     {{-- Números de página --}}
@@ -297,7 +302,8 @@
                         @if ($page == $productos->currentPage())
                             <button class="join-item btn btn-square btn-active">{{ $page }}</button>
                         @else
-                            <a href="{{ $url }}#tabla-productos" class="join-item btn btn-square">{{ $page }}</a>
+                            <a href="{{ $url }}#tabla-productos"
+                                class="join-item btn btn-square">{{ $page }}</a>
                         @endif
                     @endforeach
 

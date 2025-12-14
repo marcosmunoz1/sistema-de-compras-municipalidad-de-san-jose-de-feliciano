@@ -11,7 +11,8 @@ class ProductoVehiculo extends Pivot
     protected $fillable = [
         'producto_id',
         'vehiculo_id',
-        'cantidad',
+        'cantidad_asignada',
+        'stock',
         'detalle_compra_id',
     ];
 
