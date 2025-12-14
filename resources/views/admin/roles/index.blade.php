@@ -57,6 +57,9 @@
                                             data-role='@json($role)'>
                                             <x-heroicon-s-pencil class="w-4 h-4" />
                                         </button>
+                                        <a class="btn btn-success btn-sm" href="{{ url('/admin/roles/asignar/'.$role->id) }}">
+                                            <x-heroicon-s-check-badge class="w-4 h-4"/>
+                                        </a>
                                         {{-- Eliminar --}}
                                         <button class="btn btn-error btn-sm"
                                             onclick="confirmarEliminacion({{ $role->id }})">

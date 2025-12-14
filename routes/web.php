@@ -23,62 +23,63 @@ Route::get('/admin', function () {
 
 //Rutas para compras
 Route::get('/admin/compras', [App\Http\Controllers\CompraController::class, 'index'])->name('compras.index')->middleware('auth');
-Route::get('/admin/compras/create', [App\Http\Controllers\CompraController::class, 'create'])->name('compras.create')->middleware('auth');;
-Route::post('/admin/compras/store', [App\Http\Controllers\CompraController::class, 'store'])->name('compras.store')->middleware('auth');;
-Route::get('/admin/compras/{id}/edit', [App\Http\Controllers\CompraController::class, 'edit'])->name('compras.edit')->middleware('auth');;
-Route::put('/admin/compras/{id}', [App\Http\Controllers\CompraController::class, 'update'])->name('compras.update')->middleware('auth');;
-Route::get('/admin/compras/{id}', [App\Http\Controllers\CompraController::class, 'show'])->name('compras.show')->middleware('auth');;
-Route::delete('/admin/compras/{id}', [App\Http\Controllers\CompraController::class, 'destroy'])->name('compras.destroy')->middleware('auth');;
-Route::put('/admin/compras/{id}/restore', [App\Http\Controllers\CompraController::class, 'restore'])->name('compras.restore')->middleware('auth');;
-Route::get('/admin/compras/{id}/report', [App\Http\Controllers\PDFController::class, 'PdfOrdenCompra'])->name('compras.report')->middleware('auth');;
+Route::get('/admin/compras/create', [App\Http\Controllers\CompraController::class, 'create'])->name('compras.create')->middleware('auth');
+Route::post('/admin/compras/store', [App\Http\Controllers\CompraController::class, 'store'])->name('compras.store')->middleware('auth');
+Route::get('/admin/compras/{id}/edit', [App\Http\Controllers\CompraController::class, 'edit'])->name('compras.edit')->middleware('auth');
+Route::put('/admin/compras/{id}', [App\Http\Controllers\CompraController::class, 'update'])->name('compras.update')->middleware('auth');
+Route::get('/admin/compras/{id}', [App\Http\Controllers\CompraController::class, 'show'])->name('compras.show')->middleware('auth');
+Route::delete('/admin/compras/{id}', [App\Http\Controllers\CompraController::class, 'destroy'])->name('compras.destroy')->middleware('auth');
+Route::put('/admin/compras/{id}/restore', [App\Http\Controllers\CompraController::class, 'restore'])->name('compras.restore')->middleware('auth');
+Route::get('/admin/compras/{id}/report', [App\Http\Controllers\PDFController::class, 'PdfOrdenCompra'])->name('compras.report')->middleware('auth');
 
 //rutas para roles
 Route::get('/admin/roles', [App\Http\Controllers\RoleController::class, 'index'])->name('admin.roles.index')->middleware('auth');
-Route::post('/admin/roles/store', [App\Http\Controllers\RoleController::class, 'store'])->name('admin.roles.store')->middleware('auth');;
-Route::delete('/admin/roles/{id}', [App\Http\Controllers\RoleController::class, 'destroy'])->name('admin.roles.destroy')->middleware('auth');;
-
+Route::post('/admin/roles/store', [App\Http\Controllers\RoleController::class, 'store'])->name('admin.roles.store')->middleware('auth');
+Route::delete('/admin/roles/{id}', [App\Http\Controllers\RoleController::class, 'destroy'])->name('admin.roles.destroy')->middleware('auth');
+Route::get('/admin/roles/asignar/{id}', [App\Http\Controllers\RoleController::class, 'asignar'])->name('admin.roles.asignar')->middleware('auth');
+Route::put('/admin/roles/asignar/{id}', [App\Http\Controllers\RoleController::class, 'update_asignar'])->name('admin.roles.update_asignar')->middleware('auth');
 
 
 //rutas para proveedores 
 Route::get('/admin/proveedores', [App\Http\Controllers\ProveedorController::class, 'index'])->name('proveedores.index')->middleware('auth');
-Route::get('/admin/proveedores/create', [App\Http\Controllers\ProveedorController::class, 'create'])->name('proveedores.create')->middleware('auth');;
-Route::post('/admin/proveedores/store', [App\Http\Controllers\ProveedorController::class, 'store'])->name('proveedores.store')->middleware('auth');;
-Route::get('/admin/proveedores/{id}/edit', [App\Http\Controllers\ProveedorController::class, 'edit'])->name('proveedores.edit')->middleware('auth');;
-Route::put('/admin/proveedores/{id}', [App\Http\Controllers\ProveedorController::class, 'update'])->name('proveedores.update')->middleware('auth');;
-Route::get('/admin/proveedores/{id}', [App\Http\Controllers\ProveedorController::class, 'show'])->name('proveedores.show')->middleware('auth');;
-Route::delete('/admin/proveedores/{id}', [App\Http\Controllers\ProveedorController::class, 'destroy'])->name('proveedores.destroy')->middleware('auth');;
-Route::put('/admin/proveedores/{id}/restore', [App\Http\Controllers\ProveedorController::class, 'restore'])->name('proveedores.restore')->middleware('auth');;
+Route::get('/admin/proveedores/create', [App\Http\Controllers\ProveedorController::class, 'create'])->name('proveedores.create')->middleware('auth');
+Route::post('/admin/proveedores/store', [App\Http\Controllers\ProveedorController::class, 'store'])->name('proveedores.store')->middleware('auth');
+Route::get('/admin/proveedores/{id}/edit', [App\Http\Controllers\ProveedorController::class, 'edit'])->name('proveedores.edit')->middleware('auth');
+Route::put('/admin/proveedores/{id}', [App\Http\Controllers\ProveedorController::class, 'update'])->name('proveedores.update')->middleware('auth');
+Route::get('/admin/proveedores/{id}', [App\Http\Controllers\ProveedorController::class, 'show'])->name('proveedores.show')->middleware('auth');
+Route::delete('/admin/proveedores/{id}', [App\Http\Controllers\ProveedorController::class, 'destroy'])->name('proveedores.destroy')->middleware('auth');
+Route::put('/admin/proveedores/{id}/restore', [App\Http\Controllers\ProveedorController::class, 'restore'])->name('proveedores.restore')->middleware('auth');
 
 //Rutas para usuarios
 Route::get('/admin/usuarios', [App\Http\Controllers\UserController::class, 'index'])->name('usuarios.index')->middleware('auth');
-Route::get('/admin/usuarios/{id}', [App\Http\Controllers\UserController::class, 'show'])->name('usuarios.show')->middleware('auth');;
-Route::post('/admin/usuarios/store', [App\Http\Controllers\UserController::class, 'store'])->name('usuarios.store')->middleware('auth');;
-Route::get('/admin/usuarios/{id}/edit', [App\Http\Controllers\UserController::class, 'edit'])->name('usuarios.edit')->middleware('auth');;
-Route::put('/admin/usuarios/{id}', [App\Http\Controllers\UserController::class, 'update'])->name('usuarios.update')->middleware('auth');;
-Route::delete('/admin/usuarios/{id}', [App\Http\Controllers\UserController::class, 'destroy'])->name('usuarios.destroy')->middleware('auth');;
-Route::put('admin/usuarios/{id}/restore', [App\Http\Controllers\UserController::class, 'restore'])->name('usuarios.restore')->middleware('auth');;
+Route::get('/admin/usuarios/{id}', [App\Http\Controllers\UserController::class, 'show'])->name('usuarios.show')->middleware('auth');
+Route::post('/admin/usuarios/store', [App\Http\Controllers\UserController::class, 'store'])->name('usuarios.store')->middleware('auth');
+Route::get('/admin/usuarios/{id}/edit', [App\Http\Controllers\UserController::class, 'edit'])->name('usuarios.edit')->middleware('auth');
+Route::put('/admin/usuarios/{id}', [App\Http\Controllers\UserController::class, 'update'])->name('usuarios.update')->middleware('auth');
+Route::delete('/admin/usuarios/{id}', [App\Http\Controllers\UserController::class, 'destroy'])->name('usuarios.destroy')->middleware('auth');
+Route::put('admin/usuarios/{id}/restore', [App\Http\Controllers\UserController::class, 'restore'])->name('usuarios.restore')->middleware('auth');
 
 //rutas para categorias 
 Route::get('/admin/categorias', [App\Http\Controllers\CategoriaController::class, 'index'])->name('categorias.index')->middleware('auth');
-Route::post('/admin/categorias/store', [App\Http\Controllers\CategoriaController::class, 'store'])->name('categorias.store')->middleware('auth');;
-Route::delete('/admin/categorias/{id}', [App\Http\Controllers\CategoriaController::class, 'destroy'])->name('categorias.destroy')->middleware('auth');;
-Route::put('admin/categorias/{id}/restore', [App\Http\Controllers\CategoriaController::class, 'restore'])->name('categorias.restore')->middleware('auth');;
+Route::post('/admin/categorias/store', [App\Http\Controllers\CategoriaController::class, 'store'])->name('categorias.store')->middleware('auth');
+Route::delete('/admin/categorias/{id}', [App\Http\Controllers\CategoriaController::class, 'destroy'])->name('categorias.destroy')->middleware('auth');
+Route::put('admin/categorias/{id}/restore', [App\Http\Controllers\CategoriaController::class, 'restore'])->name('categorias.restore')->middleware('auth');
 
 // rutas para productos
 Route::get('/admin/productos', [ App\Http\Controllers\ProductoController::class, 'index'])->name('productos.index')->middleware('auth');
-Route::post('/admin/productos/store', [ App\Http\Controllers\ProductoController::class, 'store'])->name('productos.store')->middleware('auth');;
+Route::post('/admin/productos/store', [ App\Http\Controllers\ProductoController::class, 'store'])->name('productos.store')->middleware('auth');
 
 
 // ESTA VA PRIMERO
-Route::get('/admin/productos/{id}/data', [ App\Http\Controllers\ProductoController::class, 'data'])->name('productos.data')->middleware('auth');;
+Route::get('/admin/productos/{id}/data', [ App\Http\Controllers\ProductoController::class, 'data'])->name('productos.data')->middleware('auth');
 
-Route::put('/admin/productos/{id}/update', [ App\Http\Controllers\ProductoController::class, 'update'])->name('productos.update')->middleware('auth');;
+Route::put('/admin/productos/{id}/update', [ App\Http\Controllers\ProductoController::class, 'update'])->name('productos.update')->middleware('auth');
 
 // ESTA VA DESPUÉS
-Route::get('/admin/productos/{id}', [ App\Http\Controllers\ProductoController::class, 'show'])->name('productos.show')->middleware('auth');;
+Route::get('/admin/productos/{id}', [ App\Http\Controllers\ProductoController::class, 'show'])->name('productos.show')->middleware('auth');
 
-Route::delete('/admin/productos/{id}', [ App\Http\Controllers\ProductoController::class, 'destroy'])->name('productos.destroy')->middleware('auth');;
-Route::put('/admin/productos/{id}/restore', [ App\Http\Controllers\ProductoController::class, 'restore'])->name('productos.restore')->middleware('auth');;
+Route::delete('/admin/productos/{id}', [ App\Http\Controllers\ProductoController::class, 'destroy'])->name('productos.destroy')->middleware('auth');
+Route::put('/admin/productos/{id}/restore', [ App\Http\Controllers\ProductoController::class, 'restore'])->name('productos.restore')->middleware('auth');
 
 //rutas para combustibles
 Route::get('/admin/combustibles', [App\Http\Controllers\CombustibleController::class, 'index'])->name('combustibles.index')->middleware('auth');
