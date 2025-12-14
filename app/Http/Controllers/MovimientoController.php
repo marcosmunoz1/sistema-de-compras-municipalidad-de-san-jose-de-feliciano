@@ -97,7 +97,6 @@ class MovimientoController extends Controller
                         $m->where('nombre', 'LIKE', "%{$search}%");
                     }
                 );
-
             })
             ->orderBy('fecha', 'desc')
             ->paginate(10);

@@ -76,7 +76,7 @@
                     <input 
                         type="date" 
                         id="fecha"
-                        name="fecha"
+                        name="fecha" 
                         value="{{ old('fecha') }}"
                         class="w-full h-10 rounded-md border border-base-300 bg-base-200
                         px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
@@ -163,8 +163,7 @@
     <select id="destino_tipo" name="destino_tipo"
         class="select w-full h-10 rounded-md border-base-300 bg-base-200
         px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
-        focus:border-primary transition @error('destino_tipo') input-error @enderror" 
-                required>
+        focus:border-primary transition @error('destino_tipo') input-error @enderror" required>
         <option  value="">Seleccione el destino de la carga</option>
         <option  value="vehiculo">Vehiculo</option> 
         <option  value="equipo">Equipo</option>  
@@ -524,7 +523,7 @@ focus:border-primary transition @error('empleado_id') input-error @enderror">
             var id = selected.val();
 
             if (!id) { 
-                $('#vehiculo_info').addClass('hidden');
+                $('#vehiculo_info').addClass('hidden'); 
                 return;
             }
 

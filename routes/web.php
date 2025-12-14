@@ -171,6 +171,7 @@ Route::get('/api/destinos/{tipo}', function ($tipo) {
     // SELECT seguro, sin confundir columnas
     return $modelo::select('id', "$campo as nombre")->get();
 });
+
 Route::get('/api/destinos/combustible/{tipo}', function($tipo) { 
 
     $map = [

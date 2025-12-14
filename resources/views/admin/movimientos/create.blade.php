@@ -47,11 +47,13 @@
                     <div class="space-y-1">
                         <label class="text-sm font-medium">Origen <span class="text-red-600">*</span></label>
                         <select id="origen_tipo" name="origen_tipo"
-                            class="select select-bordered w-full @error('origen_tipo') select-error @enderror" required>
-                            <option value="">Seleccione origen...</option>
-                            <option value="App\Models\Obra">Obra</option>
-                            <option value="App\Models\Deposito">Depósito</option>
-                            <option value="App\Models\Vehiculo">Vehículo</option>
+                            class="w-full h-10 rounded-md border border-base-300 bg-base-200 
+                        px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary
+                        focus:border-primary @error('origen_tipo') input-error @enderror transition" required>
+                            <option value="">Seleccione origen...</option>  
+                            <option value="App\Models\Obra">Obra</option>  
+                            <option value="App\Models\Deposito">Depósito</option> 
+                            <option value="App\Models\Vehiculo">Vehículo</option> 
                         </select>
                         @error('origen_tipo')
                             <small class="text-red-500">{{ $message }}</small>
@@ -59,13 +61,27 @@
                     </div>
 
                     <!-- ORIGEN ID -->
-                    <div class="space-y-1">
-                        <label class="text-sm font-medium">Elemento <span class="text-red-600">*</span></label>
-                        <select id="origen_id" name="origen_id"
-                            class="select select-bordered w-full @error('origen_id') select-error @enderror" required>
-                            <option value="">Seleccione un tipo...</option>
-                        </select>
-                        @error('origen_id')
+                    <div class="space-y-2 -mt-4">
+                        <div class="flex items-center justify-between gap-4">
+                            <label class="text-sm font-medium mb-0">Elemento <span class="text-red-600">*</span></label>
+                            <button type="button" id="btn_elegir_origen" class="btn btn-sm btn-warning">
+                                Buscar / seleccionar elemento
+                            </button>
+                        </div>
+
+                        <!-- ID oculto que se envía en el request -->
+                        <input type="hidden" id="origen_id" name="origen_id" value="{{ old('origen_id') }}">
+
+                        <!-- Campo solo lectura mostrando el nombre elegido -->
+                        <input type="text" id="origen_nombre_visible"
+                            class="w-full h-10 rounded-md border border-base-300 bg-base-200
+                            px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
+                            focus:border-primary cursor-pointer transition @error('origen_id') input-error @enderror"
+                            placeholder="Seleccione un elemento desde el buscador"
+                            value=""
+                            readonly>
+
+                        @error('origen_id') 
                             <small class="text-red-500">{{ $message }}</small>
                         @enderror
                     </div>
@@ -74,7 +90,9 @@
                     <div class="space-y-1">
                         <label class="text-sm font-medium">Tipo de movimiento <span class="text-red-600">*</span></label>
                         <select id="tipo" name="tipo"
-                            class="select select-bordered w-full @error('tipo') select-error @enderror" required>
+                            class="w-full h-10 rounded-md border border-base-300 bg-base-200 
+                                px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary
+                                focus:border-primary @error('tipo') input-error @enderror transition" required>
                             <option value="">Seleccione tipo...</option>
                             <option value="consumo">Consumo</option>
                             <option value="transferencia">Transferencia</option>
@@ -92,9 +110,11 @@
                     <!-- DESTINO TIPO -->
                     <div class="space-y-1">
                         <label class="text-sm font-medium">Destino <span class="text-red-600">*</span></label>
-                        <select id="destino_tipo" name="destino_tipo"
-                            class="select select-bordered w-full @error('destino_tipo') select-error @enderror" required>
-                            <option value="">Seleccione destino...</option>
+                        <select id="destino_tipo" name="destino_tipo" 
+                            class="w-full h-10 rounded-md border border-base-300 bg-base-200 
+                                    px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
+                                    focus:border-primary @error('destino_tipo') input-error @enderror transition" required>
+                            <option value="">Seleccione destino...</option> 
                             <option value="App\Models\Deposito">Depósito</option>
                             <option value="App\Models\Obra">Obra</option>
                             <option value="App\Models\Vehiculo">Vehículo</option>
@@ -105,28 +125,25 @@
                     </div>
 
                     <!-- DESTINO ID -->
-                    <div class="space-y-1">
-                        <label class="text-sm font-medium">Elemento <span class="text-red-600">*</span></label>
-                        <select id="destino_id" name="destino_id"
-                            class="select select-bordered w-full @error('destino_id') select-error @enderror" required>
-                            <option value="">Seleccione una opción...</option>
+                    <div class="space-y-2 -mt-4">
+                        <div class="flex items-center justify-between gap-4">
+                            <label class="text-sm font-medium mb-0">Elemento <span class="text-red-600">*</span></label>
+                            <button type="button" id="btn_elegir_destino" class="btn btn-sm btn-warning">
+                                Buscar / seleccionar destino
+                            </button>
+                        </div>
 
-                            @foreach ($depositos as $depo)
-                                <option value="{{ $depo->id }}" data-tipo="App\Models\Deposito">
-                                    Depósito: {{ $depo->nombre }}
-                                </option>
-                            @endforeach
-                            @foreach ($obras as $obra)
-                                <option value="{{ $obra->id }}" data-tipo="App\Models\Obra">
-                                    Obra: {{ $obra->nombre }}
-                                </option>
-                            @endforeach
-                            @foreach ($vehiculos as $veh)
-                                <option value="{{ $veh->id }}" data-tipo="App\Models\Vehiculo">
-                                    Vehículo: {{ $veh->patente }} - {{ $veh->modelo }}
-                                </option>
-                            @endforeach
-                        </select>
+                        <!-- ID oculto que se envía en el request -->
+                        <input type="hidden" id="destino_id" name="destino_id" value="{{ old('destino_id') }}">
+
+                        <!-- Campo solo lectura mostrando el nombre elegido -->
+                        <input type="text" id="destino_nombre_visible"
+                            class="w-full h-10 rounded-md border border-base-300 bg-base-200
+                            px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
+                            focus:border-primary cursor-pointer transition @error('destino_id') input-error @enderror"
+                            placeholder="Seleccione un elemento desde el buscador"
+                            value=""
+                            readonly>
 
                         @error('destino_id')
                             <small class="text-red-500">{{ $message }}</small>
@@ -137,7 +154,9 @@
                     <div class="space-y-1">
                         <label for="fecha" class="text-sm font-medium">Fecha</label>
                         <input id="fecha" name="fecha" type="date" value="{{ old('fecha', date('Y-m-d')) }}"
-                            class="input input-bordered w-full @error('fecha') input-error @enderror">
+                            class="w-full h-10 rounded-md border border-base-300 bg-base-200 
+                                    px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
+                                    focus:border-primary @error('fecha') input-error @enderror transition" required>
                         @error('fecha')
                             <small class="text-red-500">{{ $message }}</small>
                         @enderror
@@ -147,14 +166,16 @@
 
                 <!-- FILA 3: OBSERVACIONES -->
                 <div class="space-y-2">
-                    <label for="observacion" class="text-sm font-medium">Observaciones</label>
+                    <label for="observacion" class="text-sm font-medium">Observaciones <span class="text-red-600">*</span></label>
                     <textarea id="observacion" name="observacion" rows="3"
-                        class="textarea textarea-bordered w-full @error('observacion') textarea-error @enderror"
-                        placeholder="Comentarios sobre el movimiento...">{{ old('observacion') }}</textarea>
+                        class="w-full rounded-md border border-base-300 bg-base-200
+                                px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary
+                                focus:border-primary transition resize-none" required placeholder="Comentarios sobre el movimiento...">
+                        {{ old('observacion') }}</textarea>
                     @error('observacion')
                         <small class="text-red-500">{{ $message }}</small>
                     @enderror
-                </div>
+                </div>  
 
             </div>
 
@@ -191,18 +212,528 @@
             </button>
         </div>
     </form>
+
+    <!-- Modal para seleccionar origen -->
+    <input type="checkbox" id="modal_elegir_origen" class="modal-toggle" />
+    <div class="modal">
+        <div class="modal-box max-w-4xl">
+            <h3 class="font-bold text-lg mb-4" id="titulo_modal_origen">
+                Seleccionar elemento de origen
+            </h3>
+
+            <input type="text" id="buscador_origen"
+                class="w-full h-10 rounded-md border border-base-300 bg-base-200 
+                        px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
+                        focus:border-primary transition"
+                placeholder="Buscar por nombre, patente, etc.">
+
+            <div class="overflow-x-auto mt-3">
+                <table class="table table-zebra w-full text-sm">
+                    <thead>
+                        <tr id="tabla_origen_head">
+                            {{-- cabeceras generadas por JS --}}
+                        </tr>
+                    </thead>
+                    <tbody id="tabla_origen_body">
+                        {{-- filas generadas por JS --}}
+                    </tbody>
+                </table>
+                <div class="flex justify-between items-center mt-3 text-xs">
+                    <button type="button" class="btn btn-xs" id="origen_prev_page">
+                        « Anterior
+                    </button>
+
+                    <span id="origen_pagination_info" class="mx-2">
+                        {{-- se completa por JS --}}
+                    </span>
+
+                    <button type="button" class="btn btn-xs" id="origen_next_page">
+                        Siguiente »
+                    </button>
+                </div>
+            </div>
+
+            <div class="modal-action">
+                <label for="modal_elegir_origen" class="btn btn-ghost">Cerrar</label>
+            </div>
+        </div>
+        <label class="modal-backdrop" for="modal_elegir_origen">Close</label>
+    </div>
+
+    <!-- Modal para seleccionar destino -->
+    <input type="checkbox" id="modal_elegir_destino" class="modal-toggle" />
+    <div class="modal">
+        <div class="modal-box max-w-4xl">
+            <h3 class="font-bold text-lg mb-4" id="titulo_modal_destino">
+                Seleccionar destino
+            </h3>
+
+            <input type="text" id="buscador_destino"
+                class="w-full h-10 rounded-md border border-base-300 bg-base-200 
+                        px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
+                        focus:border-primary transition"
+                placeholder="Buscar por nombre, patente, etc.">
+
+            <div class="overflow-x-auto mt-3">
+                <table class="table table-zebra w-full text-sm">
+                    <thead>
+                        <tr id="tabla_destino_head">
+                            {{-- cabeceras generadas por JS --}}
+                        </tr>
+                    </thead>
+                    <tbody id="tabla_destino_body">
+                        {{-- filas generadas por JS --}}
+                    </tbody>
+                </table>
+                <div class="flex justify-between items-center mt-3 text-xs">
+                    <button type="button" class="btn btn-xs" id="destino_prev_page">
+                        « Anterior
+                    </button>
+
+                    <span id="destino_pagination_info" class="mx-2">
+                        {{-- se completa por JS --}}
+                    </span>
+
+                    <button type="button" class="btn btn-xs" id="destino_next_page">
+                        Siguiente »
+                    </button>
+                </div>
+            </div>
+
+            <div class="modal-action">
+                <label for="modal_elegir_destino" class="btn btn-ghost">Cerrar</label>
+            </div>
+        </div>
+        <label class="modal-backdrop" for="modal_elegir_destino">Close</label>
+    </div>
+
 @endsection
 
 @section('js')
-    <script>
+    <script> 
         document.addEventListener("DOMContentLoaded", function() {
 
-            const baseUrlListar = "{{ url('origen/listar') }}";
+            const baseUrlListar = "{{ url('origen/listar') }}"; 
             const baseUrlProductos = "{{ url('origen') }}";
 
             const tipoSelect = document.getElementById("origen_tipo");
-            const origenSelect = document.getElementById("origen_id");
+            const origenInput = document.getElementById("origen_id");
+            const origenNombreVisible = document.getElementById("origen_nombre_visible");
             const tbody = document.getElementById("tbodyProductos");
+
+            const destinoTipoSelect = document.getElementById("destino_tipo");
+            const destinoInput = document.getElementById("destino_id");
+            const destinoNombreVisible = document.getElementById("destino_nombre_visible");
+
+            // ==============================
+            //  MODAL DE SELECCIÓN DE ORIGEN
+            // ==============================
+
+            let origenesCache = [];
+            let columnasOrigen = [];
+            let paginaOrigen = 1;
+            const itemsPorPaginaOrigen = 5; 
+
+            const tablaOrigenHead = document.getElementById('tabla_origen_head');
+            const tablaOrigenBody = document.getElementById('tabla_origen_body');
+            const origenPrev = document.getElementById('origen_prev_page');
+            const origenNext = document.getElementById('origen_next_page');
+            const origenInfo = document.getElementById('origen_pagination_info');
+            const buscadorOrigen = document.getElementById('buscador_origen');
+            const btnElegirOrigen = document.getElementById('btn_elegir_origen');
+            const tituloModalOrigen = document.getElementById('titulo_modal_origen');
+
+            // DESTINO (cache y elementos del modal)
+            let destinosCache = [];
+            let columnasDestino = [];
+            let paginaDestino = 1;
+            const itemsPorPaginaDestino = 5;
+
+            const tablaDestinoHead = document.getElementById('tabla_destino_head');
+            const tablaDestinoBody = document.getElementById('tabla_destino_body');
+            const destinoPrev = document.getElementById('destino_prev_page');
+            const destinoNext = document.getElementById('destino_next_page');
+            const destinoInfo = document.getElementById('destino_pagination_info');
+            const buscadorDestino = document.getElementById('buscador_destino');
+            const btnElegirDestino = document.getElementById('btn_elegir_destino');
+            const tituloModalDestino = document.getElementById('titulo_modal_destino');
+
+            function formatearCelda(valor) {
+                if (valor === null || valor === undefined || valor === '') return '-';
+                return String(valor);
+            }
+
+            function esParteVisibleValida(valor) {
+                return !(valor === null || valor === undefined || valor === '');
+            }
+
+            function tipoShortDesdeClase(clase) {
+                if (!clase) return null;
+                if (clase.includes('Obra')) return 'obra';
+                if (clase.includes('Deposito')) return 'deposito';
+                return 'vehiculo';
+            } 
+
+            function configurarColumnasOrigen(tipoShort) {
+                if (tipoShort === 'vehiculo') {
+                    columnasOrigen = [
+                        { key: 'patente', label: 'Patente' },
+                        { key: 'marca', label: 'Marca' },
+                        { key: 'modelo', label: 'Modelo' },
+                        { key: 'anio', label: 'Año' },
+                        { key: 'color', label: 'Color' },
+                        { key: 'tipo', label: 'Tipo' },
+                    ];
+                    tituloModalOrigen.textContent = 'Seleccionar vehículo';
+                } else if (tipoShort === 'obra') {
+                    columnasOrigen = [
+                        { key: 'nombre', label: 'Nombre' },
+                        { key: 'direccion', label: 'Dirección' },
+                        { key: 'barrio', label: 'Barrio' },
+                        { key: 'responsable', label: 'Responsable' },
+                        { key: 'ejecutado_por', label: 'Ejecutado por' },
+                        { key: 'estado_obra', label: 'Estado' },
+                    ];
+                    tituloModalOrigen.textContent = 'Seleccionar obra';
+                } else if (tipoShort === 'deposito') {
+                    columnasOrigen = [{ key: 'nombre', label: 'Depósito' }];
+                    tituloModalOrigen.textContent = 'Seleccionar depósito';
+                } else {
+                    columnasOrigen = [{ key: 'nombre', label: 'Nombre' }];
+                    tituloModalOrigen.textContent = 'Seleccionar elemento';
+                }
+
+                if (tablaOrigenHead) {
+                    tablaOrigenHead.innerHTML = columnasOrigen
+                        .map(col => `<th>${col.label}</th>`)
+                        .join('');
+                }
+            }
+
+            function renderTablaDestino(data) {
+                if (!tablaDestinoBody) return;
+
+                tablaDestinoBody.innerHTML = '';
+
+                const total = data.length;
+
+                if (!total) {
+                    tablaDestinoBody.innerHTML = `<tr><td class="py-4 text-center text-sm text-gray-500" colspan="${columnasDestino.length || 1}">No se encontraron elementos.</td></tr>`;
+                    if (destinoInfo) destinoInfo.textContent = '0 de 0';
+                    return;
+                }
+
+                const totalPaginas = Math.ceil(total / itemsPorPaginaDestino);
+                if (paginaDestino > totalPaginas) paginaDestino = totalPaginas;
+                if (paginaDestino < 1) paginaDestino = 1;
+
+                const inicio = (paginaDestino - 1) * itemsPorPaginaDestino;
+                const fin = inicio + itemsPorPaginaDestino;
+                const pagina = data.slice(inicio, fin);
+
+                pagina.forEach(dest => {
+                    const tr = document.createElement('tr');
+                    tr.classList.add('cursor-pointer', 'hover:bg-base-300');
+
+                    tr.innerHTML = columnasDestino
+                        .map(col => `<td>${formatearCelda(dest[col.key])}</td>`)
+                        .join('');
+
+                    tr.addEventListener('click', function () {
+                        if (!destinoInput) return;
+
+                        destinoInput.value = dest.id;
+
+                        if (destinoNombreVisible) {
+                            const texto = columnasDestino
+                                .map(col => dest[col.key])
+                                .filter(esParteVisibleValida)
+                                .map(v => String(v))
+                                .join(' - ');
+                            destinoNombreVisible.value = texto || (dest.nombre ?? 'Elemento seleccionado');
+                        }
+
+                        const modalCheckbox = document.getElementById('modal_elegir_destino');
+                        if (modalCheckbox) modalCheckbox.checked = false;
+                    });
+
+                    tablaDestinoBody.appendChild(tr);
+                });
+
+                if (destinoInfo) {
+                    const desde = inicio + 1;
+                    const hasta = Math.min(fin, total);
+                    destinoInfo.textContent = `Mostrando ${desde}-${hasta} de ${total}`;
+                }
+            }
+
+            function configurarColumnasDestino(tipoShort) {
+                if (tipoShort === 'vehiculo') {
+                    columnasDestino = [
+                        { key: 'patente', label: 'Patente' },
+                        { key: 'marca', label: 'Marca' },
+                        { key: 'modelo', label: 'Modelo' },
+                        { key: 'anio', label: 'Año' },
+                        { key: 'color', label: 'Color' },
+                        { key: 'tipo', label: 'Tipo' },
+                    ];
+                    tituloModalDestino.textContent = 'Seleccionar vehículo destino';
+                } else if (tipoShort === 'obra') {
+                    columnasDestino = [
+                        { key: 'nombre', label: 'Nombre' },
+                        { key: 'direccion', label: 'Dirección' },
+                        { key: 'barrio', label: 'Barrio' },
+                        { key: 'responsable', label: 'Responsable' },
+                        { key: 'ejecutado_por', label: 'Ejecutado por' },
+                        { key: 'estado_obra', label: 'Estado' },
+                    ];
+                    tituloModalDestino.textContent = 'Seleccionar obra destino';
+                } else if (tipoShort === 'deposito') {
+                    columnasDestino = [{ key: 'nombre', label: 'Depósito' }];
+                    tituloModalDestino.textContent = 'Seleccionar depósito destino';
+                } else {
+                    columnasDestino = [{ key: 'nombre', label: 'Nombre' }];
+                    tituloModalDestino.textContent = 'Seleccionar destino';
+                }
+
+                if (tablaDestinoHead) {
+                    tablaDestinoHead.innerHTML = columnasDestino
+                        .map(col => `<th>${col.label}</th>`)
+                        .join('');
+                }
+            }
+
+            function renderTablaOrigen(data) {
+                if (!tablaOrigenBody) return; 
+
+                tablaOrigenBody.innerHTML = '';
+
+                const total = data.length;
+
+                if (!total) {
+                    tablaOrigenBody.innerHTML = `<tr><td class="py-4 text-center text-sm text-gray-500" colspan="${columnasOrigen.length || 1}">No se encontraron elementos.</td></tr>`;
+                    if (origenInfo) origenInfo.textContent = '0 de 0';
+                    return;
+                }
+
+                const totalPaginas = Math.ceil(total / itemsPorPaginaOrigen);
+                if (paginaOrigen > totalPaginas) paginaOrigen = totalPaginas;
+                if (paginaOrigen < 1) paginaOrigen = 1;
+
+                const inicio = (paginaOrigen - 1) * itemsPorPaginaOrigen;
+                const fin = inicio + itemsPorPaginaOrigen;
+                const pagina = data.slice(inicio, fin);
+
+                pagina.forEach(origen => {
+                    const tr = document.createElement('tr');
+                    tr.classList.add('cursor-pointer', 'hover:bg-base-300');
+
+                    tr.innerHTML = columnasOrigen
+                        .map(col => `<td>${formatearCelda(origen[col.key])}</td>`)
+                        .join('');
+
+                    tr.addEventListener('click', function () {
+                        if (!origenInput) return;
+
+                        // Guardar ID en el input hidden
+                        origenInput.value = origen.id;
+
+                        // Mostrar nombre amigable en el input visible
+                        if (origenNombreVisible) {
+                            const texto = columnasOrigen
+                                .map(col => origen[col.key])
+                                .filter(esParteVisibleValida)
+                                .map(v => String(v))
+                                .join(' - ');
+                            origenNombreVisible.value = texto || (origen.nombre ?? 'Elemento seleccionado');
+                        }
+
+                        // Cargar productos para este origen
+                        cargarProductosDesdeOrigen(origen.id);
+
+                        const modalCheckbox = document.getElementById('modal_elegir_origen');
+                        if (modalCheckbox) modalCheckbox.checked = false;
+                    });
+
+                    tablaOrigenBody.appendChild(tr);
+                });
+
+                if (origenInfo) {
+                    const desde = inicio + 1;
+                    const hasta = Math.min(fin, total);
+                    origenInfo.textContent = `Mostrando ${desde}-${hasta} de ${total}`;
+                }
+            }
+
+            function cargarOrigenesEnTabla() {
+                if (!tablaOrigenBody || !tablaOrigenHead) return; 
+
+                const clase = tipoSelect ? tipoSelect.value : null;
+                const tipoShort = tipoShortDesdeClase(clase);
+
+                if (!clase || !tipoShort) {
+                    columnasOrigen = [];
+                    tablaOrigenHead.innerHTML = '';
+                    tablaOrigenBody.innerHTML = '<tr><td class="py-4 text-center text-sm text-gray-500">Primero seleccione un tipo de origen.</td></tr>';
+                    if (origenInfo) origenInfo.textContent = '';
+                    return;
+                }
+
+                configurarColumnasOrigen(tipoShort);
+
+                tablaOrigenBody.innerHTML = `<tr><td class="py-4 text-center text-sm" colspan="${columnasOrigen.length}">Cargando...</td></tr>`;
+
+                fetch(`${baseUrlListar}/${tipoShort}`)
+                    .then(res => res.json())
+                    .then(data => {
+                        origenesCache = Array.isArray(data) ? data : [];
+                        paginaOrigen = 1;
+                        renderTablaOrigen(origenesCache);
+                    })
+                    .catch(err => {
+                        console.error('Error en fetch ORIGEN:', err);
+                        tablaOrigenBody.innerHTML = `<tr><td class="py-4 text-center text-sm text-red-500" colspan="${columnasOrigen.length}">Error al cargar los elementos.</td></tr>`;
+                        if (origenInfo) origenInfo.textContent = '';
+                    }); 
+            }
+
+            function abrirModalOrigen() {
+                const modalCheckbox = document.getElementById('modal_elegir_origen');
+                if (modalCheckbox) modalCheckbox.checked = true;
+                cargarOrigenesEnTabla();
+                if (buscadorOrigen) buscadorOrigen.value = '';
+            }
+
+            if (btnElegirOrigen) {
+                btnElegirOrigen.addEventListener('click', function () {
+                    abrirModalOrigen();
+                });
+            }
+
+            if (origenNombreVisible) {
+                origenNombreVisible.addEventListener('click', function () {
+                    abrirModalOrigen();
+                });
+                origenNombreVisible.addEventListener('focus', function () {
+                    abrirModalOrigen();
+                });
+            }
+
+            if (buscadorOrigen) {
+                buscadorOrigen.addEventListener('input', function () {
+                    const term = this.value.toLowerCase();
+                    const filtrados = origenesCache.filter(origen => {
+                        const texto = Object.values(origen).join(' ').toLowerCase();
+                        return texto.includes(term);
+                    });
+                    paginaOrigen = 1;
+                    renderTablaOrigen(filtrados);
+                });
+            }
+
+            if (origenPrev) {
+                origenPrev.addEventListener('click', function () {
+                    if (paginaOrigen > 1) {
+                        paginaOrigen--;
+                        renderTablaOrigen(origenesCache);
+                    }
+                });
+            }
+
+            if (origenNext) {
+                origenNext.addEventListener('click', function () {
+                    const totalPaginas = Math.ceil(origenesCache.length / itemsPorPaginaOrigen);
+                    if (paginaOrigen < totalPaginas) {
+                        paginaOrigen++;
+                        renderTablaOrigen(origenesCache);
+                    }
+                });
+            }
+
+            function cargarDestinosEnTabla() {
+                if (!tablaDestinoBody || !tablaDestinoHead) return;
+
+                const clase = destinoTipoSelect ? destinoTipoSelect.value : null;
+                const tipoShort = tipoShortDesdeClase(clase);
+
+                if (!clase || !tipoShort) {
+                    columnasDestino = [];
+                    tablaDestinoHead.innerHTML = '';
+                    tablaDestinoBody.innerHTML = '<tr><td class="py-4 text-center text-sm text-gray-500">Primero seleccione un tipo de destino.</td></tr>';
+                    if (destinoInfo) destinoInfo.textContent = '';
+                    return;
+                }
+
+                configurarColumnasDestino(tipoShort);
+
+                tablaDestinoBody.innerHTML = `<tr><td class="py-4 text-center text-sm" colspan="${columnasDestino.length}">Cargando...</td></tr>`;
+
+                fetch(`${baseUrlListar}/${tipoShort}`)
+                    .then(res => res.json())
+                    .then(data => {
+                        destinosCache = Array.isArray(data) ? data : [];
+                        paginaDestino = 1;
+                        renderTablaDestino(destinosCache);
+                    })
+                  .catch(err => {
+                        console.error('Error en fetch DESTINO:', err);
+                        tablaDestinoBody.innerHTML = `<tr><td class="py-4 text-center text-sm text-red-500" colspan="${columnasDestino.length}">Error al cargar los elementos.</td></tr>`;
+                        if (destinoInfo) destinoInfo.textContent = '';
+                    });
+            }
+
+            function abrirModalDestino() {
+                const modalCheckbox = document.getElementById('modal_elegir_destino');
+                if (modalCheckbox) modalCheckbox.checked = true;
+                cargarDestinosEnTabla();
+                if (buscadorDestino) buscadorDestino.value = '';
+            }
+
+            if (btnElegirDestino) {
+                btnElegirDestino.addEventListener('click', function () {
+                    abrirModalDestino();
+                });
+            }
+
+            if (destinoNombreVisible) {
+                destinoNombreVisible.addEventListener('click', function () {
+                    abrirModalDestino();
+                });
+                destinoNombreVisible.addEventListener('focus', function () {
+                    abrirModalDestino();
+                });
+            }
+
+            if (buscadorDestino) {
+                buscadorDestino.addEventListener('input', function () {
+                    const term = this.value.toLowerCase();
+                    const filtrados = destinosCache.filter(dest => {
+                        const texto = Object.values(dest).join(' ').toLowerCase();
+                        return texto.includes(term);
+                    });
+                    paginaDestino = 1;
+                    renderTablaDestino(filtrados);
+                });
+            }
+
+            if (destinoPrev) {
+                destinoPrev.addEventListener('click', function () {
+                    if (paginaDestino > 1) {
+                        paginaDestino--;
+                        renderTablaDestino(destinosCache);
+                    }
+                });
+            }
+
+            if (destinoNext) {
+                destinoNext.addEventListener('click', function () {
+                    const totalPaginas = Math.ceil(destinosCache.length / itemsPorPaginaDestino);
+                    if (paginaDestino < totalPaginas) {
+                        paginaDestino++;
+                        renderTablaDestino(destinosCache);
+                    }
+                });
+            }
 
             // --- AGRUPADOR DE PRODUCTOS (se mantiene igual) ---
             function agruparProductos(lista) {
@@ -226,34 +757,24 @@
             tipoSelect?.addEventListener("change", function() {
                 const tipo = this.value;
 
-                if (!origenSelect || !tbody) return; // <-- evita el error
+                if (!origenInput || !tbody) return; // <-- evita el error
 
-                origenSelect.innerHTML = `<option>Cargando...</option>`;
+                // Reiniciar origen seleccionado y tabla de productos
+                origenInput.value = "";
+                if (origenNombreVisible) {
+                    origenNombreVisible.value = "";
+                    origenNombreVisible.placeholder = "Seleccione un elemento desde el buscador";
+                }
 
                 tbody.innerHTML =
                     `<tr><td colspan="5" class="text-center">Seleccione un elemento...</td></tr>`;
 
-                if (!tipo) return;
-
-                let tipoShort = tipo.includes('Obra') ? 'obra' :
-                    tipo.includes('Deposito') ? 'deposito' :
-                    'vehiculo';
-
-                fetch(`${baseUrlListar}/${tipoShort}`)
-                    .then(r => r.json())
-                    .then(items => {
-                        origenSelect.innerHTML = `<option value="">Seleccione...</option>`;
-                        items.forEach(it => {
-                            origenSelect.innerHTML +=
-                                `<option value="${it.id}">${it.nombre}</option>`;
-                        });
-                    })
-                    .catch(err => console.error(err));
+                // La carga de elementos se hace exclusivamente desde el modal.
             });
 
-            origenSelect?.addEventListener("change", function() {
-                const id = this.value;
-                const tipo = tipoSelect.value;
+            function cargarProductosDesdeOrigen(id) {
+                const tipo = tipoSelect ? tipoSelect.value : "";
+                if (!id || !tipo || !tbody) return;
 
                 tbody.innerHTML = `<tr><td colspan="5" class="text-center">Cargando productos...</td></tr>`;
 
@@ -317,7 +838,7 @@
                         activarSeleccion();
                     })
                     .catch(err => console.error(err));
-            });
+            }
 
             // --- HABILITAR INPUT AL SELECCIONAR ---
             function activarSeleccion() {
@@ -358,9 +879,11 @@
 
         });
         document.addEventListener("DOMContentLoaded", function () {
-            const tipoMovimiento = document.getElementById("tipo"); // CAMBIAR si se llama distinto
+            const tipoMovimiento = document.getElementById("tipo"); // CAMBIAR if se llama distinto
             const destinoTipo = document.getElementById("destino_tipo");
             const destinoId = document.getElementById("destino_id");
+            const destinoNombreVisible = document.getElementById("destino_nombre_visible");
+            const btnElegirDestino = document.getElementById("btn_elegir_destino");
 
             function actualizarCampos() {
                 const tipo = tipoMovimiento.value;
@@ -369,7 +892,8 @@
 
                     // HABILITAR CAMPOS
                     destinoTipo.disabled = false;
-                    destinoId.disabled = false;
+                    if (destinoNombreVisible) destinoNombreVisible.disabled = false;
+                    if (btnElegirDestino) btnElegirDestino.disabled = false;
 
                     // MARCAR COMO OBLIGATORIOS
                     destinoTipo.setAttribute("required", true);
@@ -379,7 +903,8 @@
 
                     // DESHABILITAR + QUITAR REQUIRED
                     destinoTipo.disabled = true;
-                    destinoId.disabled = true;
+                    if (destinoNombreVisible) destinoNombreVisible.disabled = true;
+                    if (btnElegirDestino) btnElegirDestino.disabled = true;
 
                     destinoTipo.removeAttribute("required");
                     destinoId.removeAttribute("required");
@@ -387,12 +912,14 @@
                     // LIMPIAR selección
                     destinoTipo.value = "";
                     destinoId.value = "";
+                    if (destinoNombreVisible) destinoNombreVisible.value = "";
 
                 } else {
 
                     // OTROS TIPOS: habilitados pero sin required
                     destinoTipo.disabled = false;
-                    destinoId.disabled = false;
+                    if (destinoNombreVisible) destinoNombreVisible.disabled = false;
+                    if (btnElegirDestino) btnElegirDestino.disabled = false;
 
                     destinoTipo.removeAttribute("required");
                     destinoId.removeAttribute("required");
@@ -404,5 +931,5 @@
             // Ejecutar al cargar la página
             actualizarCampos();
         });
-    </script>
+    </script> 
 @endsection

@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class OrigenController extends Controller
 {
@@ -23,10 +22,40 @@ class OrigenController extends Controller
 
         $model = $map[$tipo];
 
-        // Para vehiculo queremos mostrar patente + modelo; para otros el nombre
-        $items = $model::select('id',
-            $model === \App\Models\Vehiculo::class ? DB::raw("CONCAT(patente, ' - ', modelo) as nombre") : 'nombre'
-        )->get();
+        if ($model === \App\Models\Vehiculo::class) {
+            $items = $model::query()
+                ->select('id', 'patente', 'marca', 'modelo', 'anio', 'color', 'tipo')
+                ->get()
+                ->map(function ($v) {
+                    return [
+                        'id' => $v->id,
+                        'patente' => $v->patente,
+                        'marca' => $v->marca,
+                        'modelo' => $v->modelo,
+                        'anio' => $v->anio,
+                        'color' => $v->color,
+                        'tipo' => $v->tipo,
+                        // compatibilidad (si algún select/uso viejo esperaba "nombre")
+                        'nombre' => trim(($v->patente ?? '') . ' - ' . ($v->modelo ?? '')),
+                    ];
+                })
+                ->values();
+
+            return response()->json($items);
+        }
+
+        if ($model === \App\Models\Obra::class) {
+            $items = $model::query()
+                ->select('id', 'nombre', 'direccion', 'barrio', 'responsable', 'ejecutado_por', 'estado_obra')
+                ->get();
+
+            return response()->json($items);
+        }
+
+        // Depósito (y otros): mantener el formato simple
+        $items = $model::query()
+            ->select('id', 'nombre')
+            ->get();
 
         return response()->json($items);
     }
