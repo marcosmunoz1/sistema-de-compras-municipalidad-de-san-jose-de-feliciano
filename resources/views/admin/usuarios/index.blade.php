@@ -81,11 +81,10 @@
                             <tr>
                                 <td class="text-center">{{ $contador++ }}</td>
                                 <td class="text-center">{{ $usuario->name }}</td>
-                                <td class="text-center">{{ $usuario->email }}</td>
+                                <td class="text-center"> {{ $usuario->email }}</td>
                                 <td class="text-center">
                                     <div
-                                        class="badge badge-info h-auto items-start whitespace-normal break-words px-3 py-0">{{ $usuario->roles->pluck('name')->join(', ') }}
-                                    </div>
+                                        class="badge text-xs badge-info h-auto items-start whitespace-normal break-words px-3 py-0"><strong>{{ $usuario->roles->pluck('name')->join(', ') }}</strong></div>
                                 </td>
                                 <td class="text-center">{{ $usuario->last_login_at?->format('d/m/Y H:i') ?? 'Nunca' }}</td>
                                 <td class="text-center">{{ $usuario->last_logout_at?->format('d/m/Y H:i') ?? 'Nunca' }}

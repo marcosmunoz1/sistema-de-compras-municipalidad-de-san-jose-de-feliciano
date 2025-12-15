@@ -98,8 +98,8 @@ class MovimientoController extends Controller
                     }
                 );
             })
-            ->orderBy('fecha', 'desc')
-            ->paginate(10);
+            ->orderBy('created_at', 'desc')  
+            ->paginate(10); 
 
         return view('admin.movimientos.index', compact('movimientos'));
     }
@@ -145,6 +145,7 @@ class MovimientoController extends Controller
             // destino solo si transferencia
             'destino_tipo' => 'required_if:tipo,transferencia',
             'destino_id'   => 'required_if:tipo,transferencia',
+            'observacion' => 'required', 
         ]);
 
         DB::beginTransaction();

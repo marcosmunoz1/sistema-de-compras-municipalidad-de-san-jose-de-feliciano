@@ -79,15 +79,15 @@
                         <div class="space-y-2">
                             <label for="fecha_orden" class="text-sm font-medium">Fecha de Emisión<span
                                     class="text-red-600">*</span></label>
-                            <input type="date" id="fecha_orden" name="fecha_orden" value="{{ old('fecha_orden') }}"
+                            <input type="date" id="fecha_orden" name="fecha_orden" value="{{ old('fecha_orden',date('Y-m-d')) }}"
                                 class="w-full h-10 rounded-md border border-base-300 bg-base-200
-                        px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
-                        focus:border-primary transition @error('fecha_orden') input-error @enderror"
-                                required>
+                                px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
+                                focus:border-primary transition @error('fecha_orden') input-error @enderror"
+                                required> 
                             @error('fecha_orden')
                                 <small class="text-red-500 error-message">{{ $message }}</small>
                             @enderror
-                        </div>
+                        </div> 
 
                         <!-- entregar a -->
                         <div class="space-y-2">

@@ -27,7 +27,7 @@
         <div class="drawer-content flex flex-col">
 
             {{-- HEADER --}}
-            <div class="navbar bg-base-100 shadow-md px-4">
+            <div class="navbar bg-base-200/80 backdrop-blur shadow-sm border-b border-base-300 px-4">
                 <div class="flex-none lg:hidden">
                     <label for="sidebar" class="btn btn-square btn-ghost">
                         ☰
@@ -96,7 +96,7 @@
                     </ul>
                 </div>
             </div>
-            <div class="p-6">
+            <div class="p-6  min-h-dvh grid-rows-[auto_1fr_auto] bg-base-300/70 rounded-box border border-base-300 shadow-sm">
                 @yield('content')
             </div>
         </div>
@@ -104,12 +104,12 @@
         {{-- SIDEBAR --}}
         <div class="drawer-side">
             <label for="sidebar" class="drawer-overlay"></label> 
-            <ul class="menu p-4 w-68 min-h-full bg-base-100 text-base-content">
+            <ul class="menu p-4 w-68 min-h-full bg-base-200 text-base-content border-r border-base-300">
                 <li class="text-xl font-bold mb-3">Menú Principal</li>
                 <li> 
                     <a href="{{ route('admin.index') }}"
                      class="flex items-center gap-2 px-3 py-2 rounded-md 
-                            hover:bg-base-200 hover:text-primary transition-colors 
+                            hover:bg-base-300 hover:text-primary transition-colors 
                             {{ request()->is('admin') ? 'bg-blue-500 text-white' : '' }}">  
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
                             stroke="currentColor">
@@ -121,7 +121,7 @@
                 <li>
                     <a href="{{ route('compras.index') }}"
                     class="flex items-center gap-2 px-3 py-2 rounded-md 
-                            hover:bg-base-200 hover:text-primary transition-colors 
+                            hover:bg-base-300 hover:text-primary transition-colors 
                             {{ request()->is('admin/compras*') ? 'bg-blue-500 text-white' : '' }}">
                         <x-heroicon-o-shopping-bag class="w-6 h-6 inline" /><b>Compras</b>  
                     </a>
@@ -129,7 +129,7 @@
                 <li>
                     <a href="{{ url('/admin/combustibles') }}"
                     class="flex items-center gap-2 px-3 py-2 rounded-md 
-                    hover:bg-base-200 hover:text-primary transition-colors
+                    hover:bg-base-300 hover:text-primary transition-colors
                             {{ request()->is('admin/combustibles*') ? 'bg-blue-500 text-white' : '' }}"> 
                         <svg xmlns="http://www.w3.org/2000/svg" width="24"
                             height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -144,14 +144,14 @@
                     <li>
                         <a href="{{ url('/admin/obras') }}"
                     class="flex items-center gap-2 px-3 py-2 rounded-md 
-                            hover:bg-base-200 hover:text-primary transition-colors
+                            hover:bg-base-300 hover:text-primary transition-colors
                             {{ request()->is('admin/obras*') ? 'bg-blue-500 text-white' : '' }}">
                             <x-bi-building class="w-6 h-6 inline" /><b>Obras</b></a>
                     </li>
                     <li>
                         <a href="{{ url('/admin/movimientos') }}"
                         class="flex items-center gap-2 px-3 py-2 rounded-md 
-                                hover:bg-base-200 hover:text-primary transition-colors
+                                hover:bg-base-300 hover:text-primary transition-colors
                                 {{ request()->is('admin/movimientos*') ? 'bg-blue-500 text-white' : '' }}">
                             <x-heroicon-o-arrow-path
                                 class="w-6 h-6 inline" /><b>Movimientos</b></a>
@@ -160,7 +160,7 @@
                         <li>
                             <a href="{{ route('proveedores.index') }}"
                             class="flex items-center gap-2 px-3 py-2 rounded-md 
-                            hover:bg-base-200 hover:text-primary transition-colors
+                            hover:bg-base-300 hover:text-primary transition-colors
                             {{ request()->is('admin/proveedores*') ? 'bg-blue-500 text-white' : '' }}">
                             <x-heroicon-o-truck class="w-6 h-6 inline" /><b>Proveedores</b>
                     </a>
@@ -168,7 +168,7 @@
                 <li>
                     <a href="{{ route('categorias.index') }}"
                     class="flex items-center gap-2 px-3 py-2 rounded-md 
-                            hover:bg-base-200 hover:text-primary transition-colors
+                            hover:bg-base-300 hover:text-primary transition-colors
                             {{ request()->is('admin/categorias*') ? 'bg-blue-500 text-white' : '' }}">
                         <x-heroicon-o-tag class="w-6 h-6 inline" /><b>Categorias</b>
                     </a>
@@ -177,7 +177,7 @@
                 <li>
                     <a href="{{ route('productos.index') }}"
                     class="flex items-center gap-2 px-3 py-2 rounded-md 
-                            hover:bg-base-200 hover:text-primary transition-colors
+                            hover:bg-base-300 hover:text-primary transition-colors
                             {{ request()->is('admin/productos*') ? 'bg-blue-500 text-white' : '' }}">
                         <x-heroicon-o-cog class="w-6 h-6 inline" /><b>Productos</b>
                     </a> 
@@ -185,7 +185,7 @@
                 <li>
                     <a href="{{ route('usuarios.index') }}"
                     class="flex items-center gap-2 px-3 py-2 rounded-md 
-                            hover:bg-base-200 hover:text-primary transition-colors
+                            hover:bg-base-300 hover:text-primary transition-colors
                             {{ request()->is('admin/usuarios*') ? 'bg-blue-500 text-white' : '' }}">
                         <x-heroicon-o-user-group class="w-6 h-6 inline" /><b>Usuarios</b>
                     </a>
@@ -193,7 +193,7 @@
                 <li>
                     <a href="{{ url('/admin/roles') }}"
                     class="flex items-center gap-2 px-3 py-2 rounded-md 
-                            hover:bg-base-200 hover:text-primary transition-colors
+                            hover:bg-base-300 hover:text-primary transition-colors
                             {{ request()->is('admin/roles*') ? 'bg-blue-500 text-white' : '' }}">
                         <x-heroicon-o-cog class="w-6 h-6 inline" /><b>Roles</b>
                     </a>
@@ -201,26 +201,26 @@
                 <li>
                     <a href="{{ route('vehiculos.index') }}"
                     class="flex items-center gap-2 px-3 py-2 rounded-md 
-                            hover:bg-base-200 hover:text-primary transition-colors
+                            hover:bg-base-300 hover:text-primary transition-colors
                             {{ request()->is('admin/vehiculos*') ? 'bg-blue-500 text-white' : '' }}">
                         <x-heroicon-o-truck class="w-6 h-6 inline" /><b>Vehículos</b>
                     </a>
                 </li>
                     <a href="{{ url('/admin/empleados') }}"
                     class="flex items-center gap-2 px-3 py-2 rounded-md 
-                            hover:bg-base-200 hover:text-primary transition-colors
+                            hover:bg-base-300 hover:text-primary transition-colors
                             {{ request()->is('admin/empleados*') ? 'bg-blue-500 text-white' : '' }}">
                         <x-heroicon-o-user-group
                             class="w-6 h-6 inline" /><b>Empleados</b></a></li>
                     <a href="{{ url('/admin/depositos') }}"
                     class="flex items-center gap-2 px-3 py-2 rounded-md 
-                            hover:bg-base-200 hover:text-primary transition-colors
+                            hover:bg-base-300 hover:text-primary transition-colors
                             {{ request()->is('admin/depositos*') ? 'bg-blue-500 text-white' : '' }}">
                         <x-heroicon-o-home-modern  class="w-6 h-6 inline" /><b>Depósitos</b></a></li>
                 <li>
                     <a href="{{ url('/admin/permisos') }}"
                     class="flex items-center gap-2 px-3 py-2 rounded-md 
-                            hover:bg-base-200 hover:text-primary transition-colors
+                            hover:bg-base-300 hover:text-primary transition-colors
                             {{ request()->is('admin/permisos*') ? 'bg-blue-500 text-white' : '' }}">
                         <x-heroicon-o-shield-check
                             class="w-6 h-6 inline" /><b>Permisos</b></a></li>

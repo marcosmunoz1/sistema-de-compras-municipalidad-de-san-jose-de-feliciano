@@ -152,8 +152,8 @@
 
                     <!-- FECHA -->
                     <div class="space-y-1">
-                        <label for="fecha" class="text-sm font-medium">Fecha</label>
-                        <input id="fecha" name="fecha" type="date" value="{{ old('fecha', date('Y-m-d')) }}"
+                        <label for="fecha" class="text-sm font-medium">Fecha</label> 
+                        <input id="fecha" name="fecha" type="date" value="{{ old('fecha', date('Y-m-d')) }}" 
                             class="w-full h-10 rounded-md border border-base-300 bg-base-200 
                                     px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
                                     focus:border-primary @error('fecha') input-error @enderror transition" required>
@@ -170,7 +170,7 @@
                     <textarea id="observacion" name="observacion" rows="3"
                         class="w-full rounded-md border border-base-300 bg-base-200
                                 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary
-                                focus:border-primary transition resize-none" required placeholder="Comentarios sobre el movimiento...">
+                                focus:border-primary transition resize-none" required placeholder="Comentarios sobre el movimiento..." required>
                         {{ old('observacion') }}</textarea>
                     @error('observacion')
                         <small class="text-red-500">{{ $message }}</small>
@@ -334,6 +334,10 @@
             let paginaOrigen = 1;
             const itemsPorPaginaOrigen = 5; 
 
+            // Cache por tipo para que el modal abra instantáneo
+            const origenCachePorTipo = {};
+            const origenPrefetchEnCursoPorTipo = {};
+
             const tablaOrigenHead = document.getElementById('tabla_origen_head');
             const tablaOrigenBody = document.getElementById('tabla_origen_body');
             const origenPrev = document.getElementById('origen_prev_page');
@@ -348,6 +352,10 @@
             let columnasDestino = [];
             let paginaDestino = 1;
             const itemsPorPaginaDestino = 5;
+
+            // Cache por tipo para que el modal abra instantáneo
+            const destinoCachePorTipo = {};
+            const destinoPrefetchEnCursoPorTipo = {};
 
             const tablaDestinoHead = document.getElementById('tabla_destino_head');
             const tablaDestinoBody = document.getElementById('tabla_destino_body');
@@ -373,6 +381,40 @@
                 if (clase.includes('Deposito')) return 'deposito';
                 return 'vehiculo';
             } 
+
+            function prefetchListado(tipoShort, cachePorTipo, prefetchEnCursoPorTipo, onOk) {
+                if (!tipoShort) return null;
+
+                if (cachePorTipo[tipoShort]) {
+                    if (typeof onOk === 'function') onOk(cachePorTipo[tipoShort]);
+                    return Promise.resolve(cachePorTipo[tipoShort]);
+                }
+
+                // Si ya hay una request en curso para este tipo, la reutilizamos.
+                if (prefetchEnCursoPorTipo && prefetchEnCursoPorTipo[tipoShort]) {
+                    const p = prefetchEnCursoPorTipo[tipoShort];
+                    if (typeof onOk === 'function') p.then(onOk).catch(() => {});
+                    return p;
+                }
+
+                const p = fetch(`${baseUrlListar}/${tipoShort}`)
+                    .then(res => res.json())
+                    .then(data => {
+                        const lista = Array.isArray(data) ? data : [];
+                        cachePorTipo[tipoShort] = lista;
+                        return lista;
+                    })
+                    .catch(() => {
+                        return [];
+                    })
+                    .finally(() => {
+                        if (prefetchEnCursoPorTipo) delete prefetchEnCursoPorTipo[tipoShort];
+                    });
+
+                if (prefetchEnCursoPorTipo) prefetchEnCursoPorTipo[tipoShort] = p;
+                if (typeof onOk === 'function') p.then(onOk).catch(() => {});
+                return p;
+            }
 
             function configurarColumnasOrigen(tipoShort) {
                 if (tipoShort === 'vehiculo') {
@@ -581,12 +623,21 @@
 
                 configurarColumnasOrigen(tipoShort);
 
+                // Si ya está en cache, renderizar instantáneo
+                if (origenCachePorTipo[tipoShort]) {
+                    origenesCache = origenCachePorTipo[tipoShort];
+                    paginaOrigen = 1;
+                    renderTablaOrigen(origenesCache);
+                    return;
+                }
+
                 tablaOrigenBody.innerHTML = `<tr><td class="py-4 text-center text-sm" colspan="${columnasOrigen.length}">Cargando...</td></tr>`;
 
-                fetch(`${baseUrlListar}/${tipoShort}`)
-                    .then(res => res.json())
-                    .then(data => {
-                        origenesCache = Array.isArray(data) ? data : [];
+                // Si hay prefetch en curso (por cambio de tipo), esperar esa promesa.
+                // Si no, iniciar una y reutilizarla.
+                prefetchListado(tipoShort, origenCachePorTipo, origenPrefetchEnCursoPorTipo)
+                    .then(lista => {
+                        origenesCache = lista;
                         paginaOrigen = 1;
                         renderTablaOrigen(origenesCache);
                     })
@@ -594,7 +645,7 @@
                         console.error('Error en fetch ORIGEN:', err);
                         tablaOrigenBody.innerHTML = `<tr><td class="py-4 text-center text-sm text-red-500" colspan="${columnasOrigen.length}">Error al cargar los elementos.</td></tr>`;
                         if (origenInfo) origenInfo.textContent = '';
-                    }); 
+                    });
             }
 
             function abrirModalOrigen() {
@@ -666,16 +717,25 @@
 
                 configurarColumnasDestino(tipoShort);
 
+                // Si ya está en cache, renderizar instantáneo
+                if (destinoCachePorTipo[tipoShort]) {
+                    destinosCache = destinoCachePorTipo[tipoShort];
+                    paginaDestino = 1;
+                    renderTablaDestino(destinosCache);
+                    return;
+                }
+
                 tablaDestinoBody.innerHTML = `<tr><td class="py-4 text-center text-sm" colspan="${columnasDestino.length}">Cargando...</td></tr>`;
 
-                fetch(`${baseUrlListar}/${tipoShort}`)
-                    .then(res => res.json())
-                    .then(data => {
-                        destinosCache = Array.isArray(data) ? data : [];
+                // Si hay prefetch en curso (por cambio de tipo), esperar esa promesa.
+                // Si no, iniciar una y reutilizarla.
+                prefetchListado(tipoShort, destinoCachePorTipo, destinoPrefetchEnCursoPorTipo)
+                    .then(lista => {
+                        destinosCache = lista;
                         paginaDestino = 1;
                         renderTablaDestino(destinosCache);
                     })
-                  .catch(err => {
+                    .catch(err => {
                         console.error('Error en fetch DESTINO:', err);
                         tablaDestinoBody.innerHTML = `<tr><td class="py-4 text-center text-sm text-red-500" colspan="${columnasDestino.length}">Error al cargar los elementos.</td></tr>`;
                         if (destinoInfo) destinoInfo.textContent = '';
@@ -759,6 +819,9 @@
 
                 if (!origenInput || !tbody) return; // <-- evita el error
 
+                const tipoShort = tipoShortDesdeClase(tipo);
+                prefetchListado(tipoShort, origenCachePorTipo, origenPrefetchEnCursoPorTipo);
+
                 // Reiniciar origen seleccionado y tabla de productos
                 origenInput.value = "";
                 if (origenNombreVisible) {
@@ -771,6 +834,24 @@
 
                 // La carga de elementos se hace exclusivamente desde el modal.
             });
+
+            destinoTipoSelect?.addEventListener('change', function () {
+                const tipo = this.value;
+                const tipoShort = tipoShortDesdeClase(tipo);
+                prefetchListado(tipoShort, destinoCachePorTipo, destinoPrefetchEnCursoPorTipo);
+
+                if (destinoInput) destinoInput.value = '';
+                if (destinoNombreVisible) {
+                    destinoNombreVisible.value = '';
+                    destinoNombreVisible.placeholder = 'Seleccione un elemento desde el buscador';
+                }
+            });
+
+            const tipoOrigenInicial = tipoShortDesdeClase(tipoSelect ? tipoSelect.value : null);
+            prefetchListado(tipoOrigenInicial, origenCachePorTipo, origenPrefetchEnCursoPorTipo);
+
+            const tipoDestinoInicial = tipoShortDesdeClase(destinoTipoSelect ? destinoTipoSelect.value : null);
+            prefetchListado(tipoDestinoInicial, destinoCachePorTipo, destinoPrefetchEnCursoPorTipo);
 
             function cargarProductosDesdeOrigen(id) {
                 const tipo = tipoSelect ? tipoSelect.value : "";

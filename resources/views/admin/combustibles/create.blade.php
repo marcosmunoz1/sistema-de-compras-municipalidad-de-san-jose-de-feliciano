@@ -71,13 +71,13 @@
 
                 <!-- Código --> 
                 <!-- Fecha --> 
-                <div class="space-y-2">
+                <div class="space-y-2"> 
                     <label for="fecha" class="text-sm font-medium">Fecha de Emisión<span class="text-red-600">*</span></label>
                     <input 
                         type="date" 
                         id="fecha"
                         name="fecha" 
-                        value="{{ old('fecha') }}"
+                        value="{{ old('fecha', date('Y-m-d')) }}"
                         class="w-full h-10 rounded-md border border-base-300 bg-base-200
                         px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
                         focus:border-primary transition @error('fecha') input-error @enderror" required>

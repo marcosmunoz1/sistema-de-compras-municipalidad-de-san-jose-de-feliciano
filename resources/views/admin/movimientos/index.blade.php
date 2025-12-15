@@ -68,7 +68,6 @@
                 <thead>
                     <tr>
                         <th class="text-center">Nr</th>
-                        <th class="text-center">Producto</th>
                         <th class="text-center">Tipo</th>
                         <th class="text-center">Origen</th>
                         <th class="text-center">Destino</th>
@@ -86,25 +85,19 @@
                     @foreach ($movimientos as $mov)
                         <tr>
                             <td class="text-center">{{ $nr++ }}</td>
-                            <td class="text-center">{{ $mov->producto->nombre ?? '---' }}</td>
                             <td class="text-center">{{ ucfirst($mov->tipo) }}</td>
-
                             <td class="text-center">
                                 @if($mov->origen_tipo)
-                                    {{ $mov->origen_label }}
+                                    {{ $mov->origen_label }} <br>
                                 @else
                                     ---
                                 @endif
                             </td>
-
                             <td class="text-center">
                                 {{ $mov->destino_label }}
-
                             </td>
-
                             <td class="text-center">{{ $mov->cantidad }}</td>
                             <td class="text-center">{{ \Carbon\Carbon::parse($mov->fecha)->format('d/m/Y') }}</td>
-
                             <td class="text-center">
                                 <div class="flex items-center justify-center gap-2">
                                     <a href="{{ route('movimientos.show', $mov->id) }}"
@@ -120,11 +113,9 @@
                             </td>
                         </tr>
                     @endforeach
-
                 </tbody>
             </table>
         </div>
-
         <!-- Paginación -->
         @if ($movimientos->hasPages())
             <div class="flex flex-col md:flex-row justify-between items-center mt-6 px-3 gap-4">
