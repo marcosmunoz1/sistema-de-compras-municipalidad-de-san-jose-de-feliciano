@@ -179,7 +179,7 @@
                     class="flex items-center gap-2 px-3 py-2 rounded-md 
                             hover:bg-base-200 hover:text-primary transition-colors
                             {{ request()->is('admin/productos*') ? 'bg-blue-500 text-white' : '' }}">
-                        <x-heroicon-o-cog class="w-6 h-6 inline" /><b>Productos</b>
+                        <x-heroicon-o-squares-plus class="w-6 h-6 inline" /><b>Productos</b>
                     </a> 
                 </li>
                 <li>
@@ -195,7 +195,7 @@
                     class="flex items-center gap-2 px-3 py-2 rounded-md 
                             hover:bg-base-200 hover:text-primary transition-colors
                             {{ request()->is('admin/roles*') ? 'bg-blue-500 text-white' : '' }}">
-                        <x-heroicon-o-cog class="w-6 h-6 inline" /><b>Roles</b>
+                        <x-heroicon-o-shield-check class="w-6 h-6 inline" /><b>Roles</b>
                     </a>
                 </li>
                 <li>
@@ -222,7 +222,7 @@
                     class="flex items-center gap-2 px-3 py-2 rounded-md 
                             hover:bg-base-200 hover:text-primary transition-colors
                             {{ request()->is('admin/permisos*') ? 'bg-blue-500 text-white' : '' }}">
-                        <x-heroicon-o-shield-check
+                        <x-heroicon-o-key
                             class="w-6 h-6 inline" /><b>Permisos</b></a></li>
 
             </ul>
