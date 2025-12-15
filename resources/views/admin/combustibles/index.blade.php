@@ -5,14 +5,18 @@
  <div class="flex items-center justify-between mb-6">
     <h1 class="text-2xl font-semibold">Combustibles</h1>
      <div class="flex  gap-2">
+        @can('combustibles-update')
         <button onclick="crearCombustible.showModal()" class="btn btn-warning tooltip tooltip-warning mb-1" data-tip="Actualizar los precios de los combustibles">   
             <x-heroicon-s-cloud-arrow-up class="w-4 h-4 inline" /> 
             Actulizar Precios 
         </button> 
+        @endcan
+        @can('combustibles-create')
         <a href="{{ route('combustibles.create') }}" 
            class="btn btn-primary tooltip tooltip-primary tooltip-bottom mb-1" data-tip="Crear orden de carga">
             + Nueva Orden de Carga
         </a>
+        @endcan
     </div>
  </div>
  <div class="breadcrumbs text-sm mb-6">
@@ -209,34 +213,40 @@
                             <td class="text-center">{{ $combustible->monto }}</td>
                             <td class="text-center">{{ $combustible->estacion }}</td>
                             <td class="text-center">
-                                <div class="flex items-center justify-center gap-2">
-
+                                <div class="flex items-center justify-center gap-2"> 
+                                    @can('combustibles-show') 
                                     <a href="{{ route('combustibles.show', Crypt::encrypt($combustible->id)) }}"  
                                        class="btn btn-info btn-sm">
                                         <x-heroicon-s-eye class="w-4 h-4"/>
                                     </a>
-
+                                    @endcan 
+                                     @can('combustibles-edit')
                                     <a href="{{ route('combustibles.edit', $combustible->id) }}" 
                                        class="btn btn-warning btn-sm">
                                         <x-heroicon-s-pencil class="w-4 h-4"/>
                                     </a>
-
+                                    @endcan 
+                                    @can('combustibles-report')
                                     <a href="{{ route('combustibles.report', Crypt::encrypt($combustible->id)) }}" 
                                        class="btn bg-primary btn-sm" 
                                        target="_blank">
                                         <x-heroicon-o-printer class="w-4 h-4"/>
                                     </a>
-
+                                    @endcan
                                     @if ($combustible->trashed())
+                                        @can('combustibles-restore')
                                         <button class="btn btn-success btn-sm"
                                                 onclick="abrirModalRestaurar('{{ url('/admin/combustibles/'. $combustible->id.'/restore') }}')">
                                             <x-heroicon-s-arrow-uturn-left class="w-4 h-4"/>
                                         </button>
-                                    @else
+                                        @endcan 
+                                    @else 
+                                        @can('combustibles-destroy') 
                                         <button class="btn btn-error btn-sm"
                                                 onclick="confirmarEliminacion({{ $combustible->id }})">
                                             <x-heroicon-s-trash class="w-4 h-4"/>
                                         </button>
+                                        @endcan 
                                     @endif
 
                                 </div>

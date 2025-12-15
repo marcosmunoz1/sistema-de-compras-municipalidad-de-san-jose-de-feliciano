@@ -5,9 +5,11 @@
 <!-- Título -->
 <div class="flex items-center justify-between mb-6">
     <h1 class="text-2xl font-semibold">Movimientos</h1>
+    @can('movimientos-create')
     <a href="{{ route('movimientos.create') }}" class="btn btn-primary">
         + Nuevo Movimiento
     </a>
+    @endcan
 </div>
 
 <!-- Breadcrumbs -->
@@ -100,15 +102,19 @@
                             <td class="text-center">{{ \Carbon\Carbon::parse($mov->fecha)->format('d/m/Y') }}</td>
                             <td class="text-center">
                                 <div class="flex items-center justify-center gap-2">
+                                    @can('movimientos-show')
                                     <a href="{{ route('movimientos.show', $mov->id) }}"
                                         class="btn btn-info btn-sm">
                                         <x-heroicon-s-eye class="w-4 h-4"/>
                                     </a>
+                                    @endcan
 
+                                    @can('movimientos-edit')
                                     <a href="{{ route('movimientos.edit', $mov->id) }}"
                                         class="btn btn-warning btn-sm">
                                         <x-heroicon-s-pencil class="w-4 h-4"/>
                                     </a>
+                                    @endcan
                                 </div>
                             </td>
                         </tr>

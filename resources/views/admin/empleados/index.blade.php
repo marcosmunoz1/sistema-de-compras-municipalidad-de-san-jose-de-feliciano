@@ -5,10 +5,12 @@
 <!-- Titulo y boton --> 
  <div class="flex items-center justify-between mb-6">
     <h1 class="text-2xl font-semibold">Empleados</h1>
+    @can('empleados-create')
     <a href="{{ route('empleados.create') }}" 
        class="btn btn-primary">
         + Nuevo Empleado
     </a>
+    @endcan
  </div>
  
  <div class="breadcrumbs text-sm mb-6">
@@ -107,18 +109,21 @@
                                 <div class="flex items-center justify-center gap-2">
 
                                     {{-- Ver --}}
+                                    @can('empleados-show')
                                     <a href="{{ route('empleados.show', $empleado->id) }}"  
                                     class="btn btn-info btn-sm">
                                         <x-heroicon-s-eye class="w-4 h-4"/>
                                     </a>
-
+                                     @endcan 
                                     {{-- Editar --}}
+                                    @can('empleados-edit')
                                     <a href="{{ route('empleados.edit', $empleado->id) }}" 
                                         class="btn btn-warning btn-sm"
                                         
                                     >
                                         <x-heroicon-s-pencil class="w-4 h-4"/>
                                     </a>
+                                    @endcan 
 
 
 
@@ -127,16 +132,20 @@
                                       {{-- Si está eliminado (tiene deleted_at) --}}
                                     @if ($empleado->trashed())
                                         {{-- Restaurar --}}
+                                            @can('empleados-restore')
                                             <button class="btn btn-sm btn-success"
                                               onclick="abrirModalRestaurar('{{ url('/admin/empleados/'. $empleado->id.'/restore') }}')">
                                                 <x-heroicon-s-arrow-uturn-left class="w-4 h-4"/>
                                             </button>
+                                            @endcan
                                     {{-- Si NO está eliminado --}}
                                     @else
                                         {{-- Eliminar --}}
+                                      @can('empleados-destroy') 
                                       <button class="btn btn-error btn-sm" onclick="confirmarEliminacion({{ $empleado->id }})">
                                           <x-heroicon-s-trash class="w-4 h-4"/>
                                       </button>
+                                      @endcan
                                     @endif
 
                                 </div>

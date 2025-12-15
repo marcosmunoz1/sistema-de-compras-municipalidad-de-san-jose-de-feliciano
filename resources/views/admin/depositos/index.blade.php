@@ -52,9 +52,11 @@
                                 <td class="text-center">{{ $deposito->descripcion }}</td>
                                 <td class="text-center">
                                     {{-- Ver --}}
+                                    @can('depositos-show')
                                     <a href="{{ route('depositos.show', $deposito->id) }}" class="btn btn-info btn-sm">
                                         <x-heroicon-s-eye class="w-4 h-4" />
-                                    </a>
+                                    </a> 
+                                    @endcan 
                                 </td>
                             </tr>
                         @endforeach

@@ -4,14 +4,14 @@
     <!-- Titulo y boton -->
     <div class="flex items-center justify-between mb-6">
         <h1 class="text-2xl font-semibold">Categorias</h1>
+        @can('categorias-create')
         <button
             onclick="abrir_modal('crearCategoriaModal', 'Crear Nueva Categoría', '1', ['nombre','slug','descripcion'], {})"
             class="btn btn-primary">
             <x-heroicon-o-plus class="w-5 h-5" />
             Nueva Categoría
         </button>
-
-
+        @endcan
     </div>
 
     <div class="breadcrumbs text-sm mb-6">
@@ -95,6 +95,7 @@
                                     <div class="flex items-center justify-center gap-2">
 
                                         {{-- Ver --}}
+                                        @can('categorias-show')
                                         <button
                                             onclick="abrir_modal(
                                                 'crearCategoriaModal',
@@ -105,10 +106,12 @@
                                             )"
                                             class="btn btn-info btn-sm">
                                             <x-heroicon-s-eye class="w-4 h-4" />
-                                        </button>
+                                        </button> 
+                                        @endcan
 
 
                                         {{-- Editar --}}
+                                        @can('categorias-edit')
                                         <button
                                             onclick="abrir_modal(
                                                 'crearCategoriaModal',
@@ -120,23 +123,28 @@
                                             class="btn btn-warning btn-sm">
                                             <x-heroicon-s-pencil class="w-4 h-4" />
                                         </button>
+                                        @endcan
 
 
                                         {{-- Eliminar (después lo convertís en form POST/DELETE) --}}
                                         {{-- Si está eliminado (tiene deleted_at) --}}
                                         @if ($categoria->trashed())
                                             {{-- Restaurar --}}
+                                            @can('categorias-restore')
                                             <button class="btn btn-sm btn-success"
                                                 onclick="abrirModalRestaurar('{{ url('/admin/categorias/' . $categoria->id . '/restore') }}')">
                                                 <x-heroicon-s-arrow-uturn-left class="w-4 h-4" />
                                             </button>
+                                            @endcan
                                             {{-- Si NO está eliminado --}}
                                         @else
                                             {{-- Eliminar --}}
+                                            @can('categorias-delete')
                                             <button class="btn btn-error btn-sm"
                                                 onclick="confirmarEliminacion({{ $categoria->id }})">
                                                 <x-heroicon-s-trash class="w-4 h-4" />
                                             </button>
+                                            @endcan
                                         @endif
 
                                     </div>

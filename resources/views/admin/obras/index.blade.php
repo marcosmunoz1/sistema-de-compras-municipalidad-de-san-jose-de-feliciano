@@ -5,10 +5,11 @@
     <!-- Título y botón -->
     <div class="flex items-center justify-between mb-6">
         <h1 class="text-2xl font-semibold">Obras</h1>
-
+        @can('obras-create')
         <a href="{{ route('obras.create') }}" class="btn btn-primary">
             + Nueva Obra
         </a>
+        @endcan
     </div>
 
     <!-- Breadcrumbs -->
@@ -110,28 +111,35 @@
                                     <div class="flex items-center justify-center gap-2">
 
                                         {{-- Ver --}}
+                                        @can('obras-show')
                                         <a href="{{ route('obras.show', $obra->id) }}" class="btn btn-info btn-sm">
                                             <x-heroicon-s-eye class="w-4 h-4" />
                                         </a>
+                                        @endcan
 
                                         {{-- Editar --}}
+                                        @can('obras-edit')
                                         <a href="{{ route('obras.edit', $obra->id) }}" class="btn btn-warning btn-sm">
                                             <x-heroicon-s-pencil class="w-4 h-4" />
                                         </a>
+                                        @endcan
 
                                         {{-- Si está eliminado --}}
                                         @if ($obra->trashed())
+                                            @can('obras-restore')
                                             <button class="btn btn-success btn-sm"
                                                 onclick="abrirModalRestaurar('{{ url('/admin/obras/' . $obra->id . '/restore') }}')">
                                                 <x-heroicon-s-arrow-uturn-left class="w-4 h-4" />
                                             </button>
-
+                                            @endcan
                                             {{-- Si NO está eliminado --}}
                                         @else
+                                            @can('obras-destroy')
                                             <button class="btn btn-error btn-sm"
                                                 onclick="confirmarEliminacion({{ $obra->id }})">
                                                 <x-heroicon-s-trash class="w-4 h-4" />
                                             </button>
+                                            @endcan
                                         @endif
 
                                     </div>
@@ -143,7 +151,6 @@
                     </tbody>
                 </table>
             </div>
-
             <!-- Paginación -->
             @if ($obras->hasPages())
                 <div class="flex flex-col md:flex-row justify-between items-center mt-6 px-3 gap-4">
@@ -175,10 +182,8 @@
                     </div>
                 </div>
             @endif
-
         </div>
     </div>
-
     <!-- Modal eliminar -->
     <dialog id="modal_eliminar_obra" class="modal">
         <div class="modal-box">
