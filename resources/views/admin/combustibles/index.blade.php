@@ -10,13 +10,13 @@
             <x-heroicon-s-cloud-arrow-up class="w-4 h-4 inline" /> 
             Actulizar Precios 
         </button> 
-        @endcan
+        @endcan 
         @can('combustibles-create')
         <a href="{{ route('combustibles.create') }}" 
            class="btn btn-primary tooltip tooltip-primary tooltip-bottom mb-1" data-tip="Crear orden de carga">
             + Nueva Orden de Carga
         </a>
-        @endcan
+        @endcan 
     </div>
  </div>
  <div class="breadcrumbs text-sm mb-6">

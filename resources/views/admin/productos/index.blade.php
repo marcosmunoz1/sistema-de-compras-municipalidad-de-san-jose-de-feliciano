@@ -4,11 +4,13 @@
 <!-- Titulo y boton --> 
  <div class="flex items-center justify-between mb-6">
     <h1 class="text-2xl font-semibold">Productos</h1>
-    <button onclick="crearProductoModal.showModal()" class="btn btn-primary"> 
-      <x-heroicon-o-plus class="w-5 h-5"/>Nuevo Producto
-    </button>
- </div>
- 
+    @can('productos-create')
+      <button onclick="crearProductoModal.showModal()" class="btn btn-primary"> 
+        <x-heroicon-o-plus class="w-5 h-5"/>Nuevo Producto
+      </button>
+    @endcan  
+ </div> 
+
  <div class="breadcrumbs text-sm mb-6">
   <ul>
     <li>
@@ -100,30 +102,38 @@
                                 <div class="flex items-center justify-center gap-2">
 
                                     {{-- Ver --}}
+                                    @can('productos-show')
                                     <a href="{{ route('productos.show', $producto->id) }}"  
                                     class="btn btn-info btn-sm">
                                         <x-heroicon-s-eye class="w-4 h-4"/>
                                     </a>
+                                    @endcan
 
                                     {{-- Editar --}}
+                                    @can('productos-update')
                                     <button class="btn btn-warning btn-sm" onclick="abrirModalEditar({{ $producto->id }})">
                                         <x-heroicon-o-pencil-square class="w-4 h-4"/>
                                     </button> 
+                                    @endcan
 
                                     {{-- Eliminar (después lo convertís en form POST/DELETE) --}}
                                       {{-- Si está eliminado (tiene deleted_at) --}}
-                                    @if ($producto->trashed())
+                                    @if ($producto->trashed()) 
                                         {{-- Restaurar --}}
+                                            @can('productos-restore')
                                             <button class="btn btn-sm btn-success"
                                               onclick="abrirModalRestaurar('{{ url('/admin/productos/'. $producto->id.'/restore') }}')">
                                                 <x-heroicon-s-arrow-uturn-left class="w-4 h-4"/>
                                             </button>
+                                            @endcan
                                     {{-- Si NO está eliminado --}}
                                     @else
                                         {{-- Eliminar --}}
+                                       @can('productos-destroy')
                                       <button class="btn btn-error btn-sm" onclick="confirmarEliminacion({{ $producto->id }})">
                                           <x-heroicon-s-trash class="w-4 h-4"/>
                                       </button>
+                                      @endcan
                                     @endif
 
                                 </div>
