@@ -10,6 +10,7 @@ use App\Models\Movimiento;
 use App\Models\Producto;
 use App\Models\Proveedor;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 
 class CompraController extends Controller
@@ -149,6 +150,7 @@ class CompraController extends Controller
      */
     public function show(Request $request, $id)
     {
+        $id = Crypt::decrypt($id); 
         $from = $request->input('from');  
         $vehiculoId = $request->input('vehiculo_id'); // si vino desde vehículo
         $obraId = $request->input('obra_id');
@@ -163,6 +165,7 @@ class CompraController extends Controller
      */
     public function edit($id)
     {
+        $id = Crypt::decrypt($id); 
         $compra = Compra::with('detalle_compras','proveedor')->findOrFail($id);
         $categorias = Categoria::all();  
         $proveedores = Proveedor::all();
@@ -216,6 +219,7 @@ class CompraController extends Controller
 
         // 4. Actualizamos el total de la compra
         $compra->total = $total;
+        $compra->estado_compra = 'Finalizada';
         $compra->save();
 
         return redirect()
