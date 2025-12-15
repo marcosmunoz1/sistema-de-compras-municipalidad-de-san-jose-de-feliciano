@@ -5,9 +5,11 @@
         <h1 class="text-2xl font-semibold">Listado de Roles</h1>
 
         {{-- Botón agregar rol --}}
+        @can('roles-create')
         <button class="btn btn-primary btn-md" onclick="abrir_modal('ventana_modal','Agregar',0,[],[])">
             <x-heroicon-o-plus class="w-5 h-5" />Nuevo rol
         </button>
+        @endcan
     </div>
     <div class="card bg-base-100 shadow">
         <div class="card-body p-4">
@@ -32,6 +34,7 @@
                                 <td class="text-center">
                                     <div class="flex items-center justify-center gap-2">
                                         {{-- Ver --}}
+                                        @can('roles-show')
                                         <button class="btn btn-info btn-sm"
                                             onclick="abrir_modal(
                                                 'ventana_modal',
@@ -43,9 +46,10 @@
                                             data-role='@json($role)'>
                                             <x-heroicon-s-eye class="w-4 h-4" />
                                         </button>
-
+                                        @endcan
 
                                         {{-- Editar --}}
+                                        @can('roles-edit')
                                         <button class="btn btn-warning btn-sm"
                                             onclick="abrir_modal(
                                             'ventana_modal',
@@ -57,14 +61,21 @@
                                             data-role='@json($role)'>
                                             <x-heroicon-s-pencil class="w-4 h-4" />
                                         </button>
+                                        @endcan
+
+                                        {{-- Asignar --}}
+                                        @can('roles-asignar')
                                         <a class="btn btn-success btn-sm" href="{{ url('/admin/roles/asignar/'.$role->id) }}">
                                             <x-heroicon-s-check-badge class="w-4 h-4"/>
-                                        </a>
+                                        </a> 
+                                        @endcan  
                                         {{-- Eliminar --}}
+                                        @can('roles-destroy')
                                         <button class="btn btn-error btn-sm"
                                             onclick="confirmarEliminacion({{ $role->id }})">
                                             <x-heroicon-s-trash class="w-4 h-4" />
                                         </button>
+                                        @endcan
                                     </div>
                                 </td>
                             </tr>

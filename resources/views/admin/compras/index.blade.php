@@ -6,9 +6,11 @@
         <h1 class="text-2xl font-semibold">Compras</h1>
 
         {{-- Botón agregar compra --}}
+        @can('compras-create')
         <a href="{{ route('compras.create') }}" class="btn btn-primary">
             + Nueva Compra
         </a>
+        @endcan
 
     </div>
     <div class="breadcrumbs text-sm mb-6">
@@ -109,27 +111,32 @@
                                 <td class="text-center">{{ $compra->estado_compra }}</td>
                                 <td class="text-center">
                                     <div class="flex items-center justify-center gap-2">
-
+                                        @can('compras-show')
                                         <a href="{{ route('compras.show', Crypt::encrypt($compra->id)) }}" class="btn btn-info btn-sm">
                                             <x-heroicon-s-eye class="w-4 h-4" />
                                         </a>
+                                        @endcan
+                                        @can('compras-edit')
                                         @if ($compra->estado_compra == 'Pendiente de factura')
                                             <a href="{{ route('compras.edit', Crypt::encrypt($compra->id)) }}" class="btn btn-warning btn-sm">
                                                 <x-heroicon-s-pencil class="w-4 h-4" />
                                             </a>
                                         @endif
-                                        
+                                        @endcan
 
                                         {{--  <a href="{{ route('compras.report', $compra->id ) }}"  
                                        class="btn bg-primary btn-sm" 
                                        target="_blank">
                                         <x-heroicon-o-printer class="w-4 h-4"/>
                                     </a> --}}
+
+                                    @can('compras-report')
                                      <a href="{{ route('compras.report', $compra->id ) }}"  
                                         class="btn bg-primary btn-sm" 
                                         target="_blank">
                                             <x-heroicon-o-printer class="w-4 h-4"/> 
                                      </a>
+                                     @endcan
 
                                    {{--  @if ($compra->trashed())
                                         <button class="btn btn-success btn-sm"

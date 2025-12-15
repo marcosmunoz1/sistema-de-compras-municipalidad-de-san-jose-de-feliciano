@@ -5,14 +5,12 @@
  <div class="flex items-center justify-between mb-6">
     <h1 class="text-2xl font-semibold">Permisos</h1>
      <div class="flex  gap-2">
-       {{--  <button onclick="crearCombustible.showModal()" class="btn btn-warning tooltip tooltip-warning mb-1" data-tip="Actualizar los precios de los combustibles">   
-            <x-heroicon-s-cloud-arrow-up class="w-4 h-4 inline" /> 
-            Actulizar Precios 
-        </button> --}} 
+        @can('permisos-create')
         <button  onclick="abrir_modal('crearPermisoModal', 'Crear Nuevo Permiso', '1', ['name'], {})" 
            class="btn btn-primary tooltip tooltip-primary tooltip-bottom mb-1" data-tip="Crear un nuevo permiso">
             + Nuevo permiso
         </button> 
+        @endcan
     </div>
  </div>
  <div class="breadcrumbs text-sm mb-6">
@@ -135,7 +133,7 @@
                             <td class="text-center">{{ $permiso->created_at }}</td>   
                             <td class="text-center">
                                 <div class="flex items-center justify-center gap-2">
-
+                                   @can('permisos-show')
                                     <button
                                         onclick="abrir_modal( 
                                             'crearPermisoModal', 
@@ -147,7 +145,8 @@
                                         class="btn btn-info btn-sm">
                                         <x-heroicon-s-eye class="w-4 h-4"/>
                                     </button>
-
+                                    @endcan 
+                                    @can('permisos-edit')
                                     <button
                                             onclick="abrir_modal(
                                                 'crearPermisoModal',
@@ -159,10 +158,13 @@
                                             class="btn btn-warning btn-sm">
                                             <x-heroicon-s-pencil class="w-4 h-4"/>
                                     </button>
+                                    @endcan 
+                                    @can('permisos-destroy')
                                     <button class="btn btn-error btn-sm"
                                             onclick="confirmarEliminacion({{ $permiso->id }})">
                                         <x-heroicon-s-trash class="w-4 h-4"/>
                                     </button>
+                                    @endcan
                                 </div>
                             </td>
                         </tr>

@@ -5,10 +5,12 @@
 <!-- Titulo y boton --> 
  <div class="flex items-center justify-between mb-6">
     <h1 class="text-2xl font-semibold">Vehiculos</h1>
+    @can('vehiculos-create')
     <a href="{{ route('vehiculos.create') }}" 
        class="btn btn-primary">
         + Nuevo Vehiculo
     </a>
+    @endcan
  </div>
  
  <div class="breadcrumbs text-sm mb-6">
@@ -105,18 +107,22 @@
                                 <div class="flex items-center justify-center gap-2">
 
                                     {{-- Ver --}}
+                                    @can('vehiculos-show')
                                     <a href="{{ route('vehiculos.show', $vehiculo->id) }}"  
                                     class="btn btn-info btn-sm">
                                         <x-heroicon-s-eye class="w-4 h-4"/>
                                     </a>
+                                    @endcan
 
                                     {{-- Editar --}}
+                                    @can('vehiculos-edit')
                                     <a href="{{ route('vehiculos.edit', $vehiculo->id) }}" 
                                         class="btn btn-warning btn-sm"
                                         
                                     >
                                         <x-heroicon-s-pencil class="w-4 h-4"/>
-                                    </a>
+                                    </a> 
+                                    @endcan 
 
 
 
@@ -125,16 +131,20 @@
                                       {{-- Si está eliminado (tiene deleted_at) --}}
                                     @if ($vehiculo->trashed())
                                         {{-- Restaurar --}}
+                                            @can('vehiculos-restore')
                                             <button class="btn btn-sm btn-success"
                                               onclick="abrirModalRestaurar('{{ url('/admin/vehiculos/'. $vehiculo->id.'/restore') }}')">
                                                 <x-heroicon-s-arrow-uturn-left class="w-4 h-4"/>
                                             </button>
+                                            @endcan
                                     {{-- Si NO está eliminado --}}
                                     @else
                                         {{-- Eliminar --}}
+                                      @can('vehiculos-destroy')
                                       <button class="btn btn-error btn-sm" onclick="confirmarEliminacion({{ $vehiculo->id }})">
                                           <x-heroicon-s-trash class="w-4 h-4"/>
                                       </button>
+                                      @endcan
                                     @endif
 
                                 </div>
