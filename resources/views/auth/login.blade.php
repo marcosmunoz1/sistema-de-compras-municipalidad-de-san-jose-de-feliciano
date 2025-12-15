@@ -15,6 +15,9 @@
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,0"
         rel="stylesheet" />
 
+    <link rel="icon" href="{{ asset('favicon.ico') }}" sizes="any">
+    <link rel="icon" type="image/png" href="{{ asset('storage/login/logo-removebg-preview.png') }}">
+
     <!-- Tailwind Config -->
     <script>
         tailwind.config = {

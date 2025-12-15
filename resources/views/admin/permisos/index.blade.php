@@ -64,73 +64,7 @@
 
             </div>
         </div>
-    </div>
-
-    <!-- Card 2 -->
-    <div class="bg-base-100 shadow-xl bg-card text-card-foreground flex flex-col gap-6 rounded-xl mx-4">
-        <div class="px-6 pt-6 pb-6">
-            <div class="flex items-center justify-between">
-                <div>
-                    <p class="text-gray-500">Litros Consumidos</p>
-                    <h3 class="mt-2"> L</h3> 
-                </div>
-               <svg xmlns="http://www.w3.org/2000/svg" 
-                    width="24" height="24" 
-                    viewBox="0 0 24 24" fill="none" 
-                    stroke="currentColor" stroke-width="2"
-                    stroke-linecap="round" stroke-linejoin="round"
-                    class="lucide lucide-shield-check w-10 h-10 text-green-600 "> 
-                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-                    <path d="m9 12 2 2 4-4" />
-                </svg>
-
-            </div>
-        </div>
-    </div>
-
-    <!-- Card 3 -->
-    <div class="bg-base-100 shadow-xl bg-card text-card-foreground flex flex-col gap-6 rounded-xl mx-4">
-        <div class="px-6 pt-6 pb-6">
-            <div class="flex items-center justify-between">
-                <div>
-                    <p class="text-gray-500">Precio Promedio</p>
-                    <h3 class="mt-2">$3.88</h3>
-                </div>
-                <svg xmlns="http://www.w3.org/2000/svg" 
-                    width="24" height="24" 
-                    viewBox="0 0 24 24" fill="none" 
-                    stroke="currentColor" stroke-width="2"
-                    stroke-linecap="round" stroke-linejoin="round"
-                    class="lucide lucide-shield-check w-10 h-10 text-yellow-600"> 
-                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-                    <path d="m9 12 2 2 4-4" />
-                </svg>
-
-            </div>
-        </div>
-    </div>
-
-    <!-- Card 4 -->
-    <div class="bg-base-100 shadow-xl bg-card text-card-foreground flex flex-col gap-6 rounded-xl mx-4">
-        <div class="px-6 pt-6 pb-6">
-            <div class="flex items-center justify-between">
-                <div>
-                    <p class="text-gray-500">Total Cargas</p>
-                    <h3 class="mt-2"></h3>  
-                </div>
-                 <svg xmlns="http://www.w3.org/2000/svg" 
-                    width="24" height="24" 
-                    viewBox="0 0 24 24" fill="none" 
-                    stroke="currentColor" stroke-width="2"
-                    stroke-linecap="round" stroke-linejoin="round"
-                    class="lucide lucide-shield-check w-10 h-10 text-red-600"> 
-                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-                    <path d="m9 12 2 2 4-4" />
-                </svg>
-            </div>
-        </div>
-    </div>
-
+    </div> 
 </div>
 <!-- Buscador -->
 <form action="{{ route('permisos.index') }}" method="GET">  

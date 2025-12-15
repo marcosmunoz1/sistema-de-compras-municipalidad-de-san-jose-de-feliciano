@@ -5,9 +5,11 @@
     <!-- Titulo y boton -->
     <div class="flex items-center justify-between mb-6">
         <h1 class="text-2xl font-semibold">Usuarios</h1>
+        @can('usuarios-create')
         <button onclick="crearUsuarioModal.showModal()" class="btn btn-primary">
             <x-heroicon-o-plus class="w-5 h-5" />Nuevo Usuario
         </button>
+        @endcan
 
     </div>
 
@@ -97,28 +99,36 @@
                                 <td class="text-center">
                                     <div class="flex items-center justify-center gap-2">
                                         {{-- Ver --}}
+                                        @can('usuarios-show')
                                         <a href="{{ url('/admin/usuarios/' . $usuario->id) }}" class="btn btn-info btn-sm">
                                             <x-heroicon-s-eye class="w-4 h-4" />
                                         </a>
+                                        @endcan
                                         {{-- Editar --}}
+                                        @can('usuarios-edit')
                                         <a class="btn btn-warning btn-sm"
                                             href="{{ url('/admin/usuarios/' . $usuario->id . '/edit') }}">
                                             <x-heroicon-s-pencil class="w-4 h-4" />
                                         </a>
+                                        @endcan
                                         {{-- Si está eliminado (tiene deleted_at) --}}
                                         @if ($usuario->trashed())
                                             {{-- Restaurar --}}
+                                            @can('usuarios-restore')
                                             <button class="btn btn-sm btn-success"
                                                 onclick="abrirModalRestaurar('{{ url('/admin/usuarios/' . $usuario->id . '/restore') }}')">
                                                 <x-heroicon-s-arrow-uturn-left class="w-4 h-4" />
                                             </button>
+                                            @endcan
                                             {{-- Si NO está eliminado --}}
                                         @else
                                             {{-- Eliminar --}}
+                                            @can('usuarios-destroy')
                                             <button class="btn btn-error btn-sm"
                                                 onclick="confirmarEliminacion({{ $usuario->id }})">
                                                 <x-heroicon-s-trash class="w-4 h-4" />
                                             </button>
+                                            @endcan
                                         @endif
                                     </div>
                                 </td>

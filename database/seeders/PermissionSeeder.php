@@ -22,78 +22,146 @@ class PermissionSeeder extends Seeder
             // ===============================
             // ROLES
             // ===============================
-            ['name' => 'roles-ver'],      // index
-            ['name' => 'roles-crear'],    // store
-            ['name' => 'roles-eliminar'], // destroy
+            ['name' => 'roles-index'],
+            ['name' => 'roles-store'],
+            ['name' => 'roles-destroy'],
+            ['name' => 'roles-asignar'],
+            ['name' => 'roles-update_asignar'],
 
             // ===============================
             // PERMISOS
             // ===============================
-            ['name' => 'permisos-ver'],   // index
+            ['name' => 'permisos-index'],
+            ['name' => 'permisos-store'],
+            ['name' => 'permisos-destroy'],
 
             // ===============================
             // USUARIOS
             // ===============================
-            ['name' => 'usuarios-ver'],       // index, show
-            ['name' => 'usuarios-crear'],     // store
-            ['name' => 'usuarios-editar'],    // edit, update
-            ['name' => 'usuarios-eliminar'],  // destroy
-            ['name' => 'usuarios-restaurar'], // restore
+            ['name' => 'usuarios-index'],
+            ['name' => 'usuarios-show'],
+            ['name' => 'usuarios-store'],
+            ['name' => 'usuarios-edit'],
+            ['name' => 'usuarios-update'],
+            ['name' => 'usuarios-destroy'],
+            ['name' => 'usuarios-restore'],
 
             // ===============================
             // PROVEEDORES
             // ===============================
-            ['name' => 'proveedores-ver'],       // index, show
-            ['name' => 'proveedores-crear'],     // create, store
-            ['name' => 'proveedores-editar'],    // edit, update
-            ['name' => 'proveedores-eliminar'],  // destroy
-            ['name' => 'proveedores-restaurar'], // restore
+            ['name' => 'proveedores-index'],
+            ['name' => 'proveedores-create'],
+            ['name' => 'proveedores-store'],
+            ['name' => 'proveedores-edit'],
+            ['name' => 'proveedores-update'],
+            ['name' => 'proveedores-show'],
+            ['name' => 'proveedores-destroy'],
+            ['name' => 'proveedores-restore'],
 
             // ===============================
             // CATEGORÍAS
             // ===============================
-            ['name' => 'categorias-ver'],       // index
-            ['name' => 'categorias-crear'],     // store
-            ['name' => 'categorias-eliminar'],  // destroy
-            ['name' => 'categorias-restaurar'], // restore
+            ['name' => 'categorias-index'],
+            ['name' => 'categorias-store'],
+            ['name' => 'categorias-destroy'],
+            ['name' => 'categorias-restore'],
 
             // ===============================
             // PRODUCTOS
             // ===============================
-            ['name' => 'productos-ver'],       // index, show, data
-            ['name' => 'productos-crear'],     // store
-            ['name' => 'productos-editar'],    // update
-            ['name' => 'productos-eliminar'],  // destroy
-            ['name' => 'productos-restaurar'], // restore
+            ['name' => 'productos-index'],
+            ['name' => 'productos-store'],
+            ['name' => 'productos-data'],
+            ['name' => 'productos-update'],
+            ['name' => 'productos-show'],
+            ['name' => 'productos-destroy'],
+            ['name' => 'productos-restore'],
 
             // ===============================
             // COMBUSTIBLES
             // ===============================
-            ['name' => 'combustibles-ver'],        // index, show
-            ['name' => 'combustibles-crear'],      // create, store
-            ['name' => 'combustibles-editar'],     // edit, update
-            ['name' => 'combustibles-eliminar'],   // destroy
-            ['name' => 'combustibles-restaurar'],  // restore
-            ['name' => 'combustibles-actualizar-precios'], // update-prices
-            ['name' => 'combustibles-imprimir'],   // report
+            ['name' => 'combustibles-index'],
+            ['name' => 'combustibles-create'],
+            ['name' => 'combustibles-store'],
+            ['name' => 'combustibles-edit'],
+            ['name' => 'combustibles-update'],
+            ['name' => 'combustibles-show'],
+            ['name' => 'combustibles-destroy'],
+            ['name' => 'combustibles-restore'],
+            ['name' => 'combustibles-update-prices'],
+            ['name' => 'combustibles-report'],
 
             // ===============================
             // VEHÍCULOS
             // ===============================
-            ['name' => 'vehiculos-ver'],        // index, show
-            ['name' => 'vehiculos-crear'],      // create, store
-            ['name' => 'vehiculos-editar'],     // edit, update
-            ['name' => 'vehiculos-eliminar'],   // destroy
-            ['name' => 'vehiculos-restaurar'],  // restore
+            ['name' => 'vehiculos-index'],
+            ['name' => 'vehiculos-create'],
+            ['name' => 'vehiculos-store'],
+            ['name' => 'vehiculos-edit'],
+            ['name' => 'vehiculos-update'],
+            ['name' => 'vehiculos-show'],
+            ['name' => 'vehiculos-destroy'],
+            ['name' => 'vehiculos-restore'],
 
             // ===============================
             // EMPLEADOS
             // ===============================
-            ['name' => 'empleados-ver'],        // index, show
-            ['name' => 'empleados-crear'],      // create, store
-            ['name' => 'empleados-editar'],     // edit, update
-            ['name' => 'empleados-eliminar'],   // destroy
-            ['name' => 'empleados-restaurar'],  // restore
+            ['name' => 'empleados-index'],
+            ['name' => 'empleados-create'],
+            ['name' => 'empleados-store'],
+            ['name' => 'empleados-edit'],
+            ['name' => 'empleados-update'],
+            ['name' => 'empleados-show'],
+            ['name' => 'empleados-destroy'],
+            ['name' => 'empleados-restore'],
+
+            // ===============================
+            // COMPRAS
+            // ===============================
+            ['name' => 'compras-index'],
+            ['name' => 'compras-create'],
+            ['name' => 'compras-store'],
+            ['name' => 'compras-edit'],
+            ['name' => 'compras-update'],
+            ['name' => 'compras-show'],
+            ['name' => 'compras-destroy'],
+            ['name' => 'compras-restore'],
+            ['name' => 'compras-report'],
+
+            // ===============================
+            // OBRAS
+            // ===============================
+            ['name' => 'obras-index'],
+            ['name' => 'obras-create'],
+            ['name' => 'obras-store'],
+            ['name' => 'obras-edit'],
+            ['name' => 'obras-update'],
+            ['name' => 'obras-show'],
+            ['name' => 'obras-destroy'],
+            ['name' => 'obras-restore'],
+
+            // ===============================
+            // MOVIMIENTOS
+            // ===============================
+            ['name' => 'movimientos-index'],
+            ['name' => 'movimientos-create'],
+            ['name' => 'movimientos-store'],
+            ['name' => 'movimientos-edit'],
+            ['name' => 'movimientos-update'],
+            ['name' => 'movimientos-show'],
+            ['name' => 'movimientos-destroy'],
+            ['name' => 'movimientos-restore'],
+
+            // ===============================
+            // DEPÓSITOS
+            // ===============================
+            ['name' => 'depositos-index'],
+            ['name' => 'depositos-show'],
+
+            // ===============================
+            // DESTINOS
+            // ===============================
+            ['name' => 'destinos-store'],
         ];
 
         // Crear permisos si no existen

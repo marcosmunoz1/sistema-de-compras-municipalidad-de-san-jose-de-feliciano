@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\PermisoHelper;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
 class RoleController extends Controller
@@ -69,6 +72,88 @@ class RoleController extends Controller
         return redirect()->route('admin.roles.index');
     }
 
+    public function asignar($id)
+    {
+        $rol = Role::find($id);
+        $traducciones = PermisoHelper::todas();
+
+        $permisos = Permission::all()->groupBy(function ($permiso) {
+            if (stripos($permiso->name, 'usu') !== false) {
+                return 'Usuarios';
+            } elseif (stripos($permiso->name, 'rol') !== false) {
+                return 'Roles';
+            } elseif (stripos($permiso->name, 'perm') !== false || stripos($permiso->name, 'per') !== false) {
+                return 'Permisos';
+            } elseif (stripos($permiso->name, 'empl') !== false) {
+                return 'Empleados';
+            } elseif (stripos($permiso->name, 'prov') !== false) {
+                return 'Proveedores';
+            } elseif (stripos($permiso->name, 'comp') !== false) {
+                return 'Compras';
+            } elseif (stripos($permiso->name, 'mov') !== false) {
+                return 'Movimientos';
+            } elseif (stripos($permiso->name, 'prod') !== false) {
+                return 'Productos';
+            } elseif (stripos($permiso->name, 'comp') !== false) {
+                return 'Compras';
+            } elseif (stripos($permiso->name, 'obr') !== false) {
+                return 'Obras';
+            } elseif (stripos($permiso->name, 'cat') !== false) {
+                return 'Categorías';
+            } elseif (stripos($permiso->name, 'comb') !== false) {
+                return 'Combustibles';
+            }elseif (stripos($permiso->name, 'dep') !== false) {
+                return 'Depositos';
+            }elseif (stripos($permiso->name, 'veh') !== false) {
+                return 'Vehiculos';
+            }
+
+        })->map(function ($grupo) {
+            return $grupo->sortBy('name');
+        });
+
+        // Dividir los permisos dentro de cada grupo en partes de 10
+        $permisosDivididos = $permisos->map(function ($grupo) {
+            return $grupo->chunk(10); // Divide cada grupo en subgrupos de 10 permisos
+        });
+
+        return view('admin.roles.asignar', compact('rol', 'permisosDivididos', 'permisos', 'traducciones'));
+    }
+    
+     public function update_asignar(Request $request, $id)
+    {
+        $request->validate([
+            'permisos' => 'required|array',
+        ]);
+
+        // Encontrar el rol
+        $rol = Role::findOrFail($id);
+
+        /** @var \App\Models\User $userLogueado */
+        $userLogueado = Auth::user();
+
+        //Bloquear cambios si el rol es Super-Admin y quien edita no lo es
+        if (strtolower($rol->name) === 'super-admin' && !optional($userLogueado)->hasRole('Super-Admin')) {
+            return redirect()->back()
+                ->with('mensaje', 'No podés modificar los permisos del rol Super-Admin 🚫')
+                ->with('icono', 'error');
+        }
+
+        // Sincronizar permisos
+        $rol->permissions()->sync($request->input('permisos'));
+
+        // Limpiar cache de permisos de Spatie
+        app(\Spatie\Permission\PermissionRegistrar::class)->forgetCachedPermissions();
+
+        // Refrescar a todos los usuarios que tengan ese rol
+        foreach ($rol->users as $user) {
+            $user->refresh(); // recarga relaciones y permisos en memoria
+        }
+
+        return redirect()->route('admin.roles.index')
+            ->with('mensaje', 'Permisos asignados para el Rol')
+            ->with('icono', 'success');
+    }
 
 
     /**
