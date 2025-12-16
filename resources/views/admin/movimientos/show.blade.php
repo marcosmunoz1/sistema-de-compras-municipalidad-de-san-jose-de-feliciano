@@ -89,37 +89,84 @@
 
 
     </div>
-    <div class="card bg-base-100 shadow-xl p-4">
-        <h1 class="text-2xl font-semibold">Productos</h1>
-        <br>
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th class="text-center">Nr</th>
-                    <th class="text-center">Producto</th>
-                    <th class="text-center">Cantidad Original</th>
-                    <th class="text-center">Cantidad Movida/Consumida</th>
-                </tr>
-            </thead>
-            <tbody>
-                @php $nr = 1; @endphp
-                @foreach ($movimiento->detalles as $detalle)
+    @if ($movimiento->tipo != 'entrada')
+        <div class="card bg-base-100 shadow-xl p-4">
+            <h1 class="text-2xl font-semibold">Productos</h1>
+            <br>
+
+            <table class="table table-bordered">
+                <thead>
                     <tr>
-                        <td class="text-center">{{ $nr++ }}</td>
-                        <td class="text-center">{{ $detalle->producto->nombre ?? 'Sin nombre' }}</td>
-                        {{-- Cantidad original: se puede tomar del detalle de compra si lo tenés --}}
-                        <td class="text-center">
-                            {{ $detalle->producto->detalle_compras()->sum('cantidad') ?? 'N/A' }}
-                        </td>
-                        {{-- Cantidad movida o consumida --}}
-                        <td class="text-center">{{ $detalle->cantidad }}</td>
+                        <th class="text-center">Nr</th>
+                        <th class="text-center">Producto</th>
+                        <th class="text-center">Cantidad Original</th>
+                        <th class="text-center">Cantidad Movida / Consumida</th>
                     </tr>
-                @endforeach
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    @php $nr = 1; @endphp
 
+                    @foreach ($movimiento->detalles as $detalle)
+                        <tr>
+                            <td class="text-center">{{ $nr++ }}</td>
+                            <td class="text-center">
+                                {{ $detalle->producto->nombre ?? 'Sin nombre' }}
+                            </td>
 
-    </div>
+                            {{-- Cantidad original (desde la compra asociada al movimiento) --}}
+                            <td class="text-center">
+                                {{ $detalle->producto->detalle_compras()->sum('cantidad') ?? 'N/A' }}
+                            </td>
+
+                            {{-- Cantidad movida --}}
+                            <td class="text-center">{{ $detalle->cantidad }}</td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+    @else
+        <div class="card bg-base-100 shadow-xl p-4">
+            <h1 class="text-2xl font-semibold">Productos</h1>
+            <br>
+
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th class="text-center">Nr</th>
+                        <th class="text-center">Producto</th>
+                        <th class="text-center">Cantidad Comprada</th>
+                        <th class="text-center">Precio</th>
+                        <th class="text-center">Subtotal</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @php $nr = 1; @endphp
+
+                    @if ($movimiento->compra)
+                        @foreach ($movimiento->compra->detalle_compras as $detalle)
+                            <tr>
+                                <td class="text-center">{{ $nr++ }}</td>
+                                <td class="text-center">
+                                    {{ $detalle->producto->nombre ?? 'Sin nombre' }}
+                                </td>
+                                <td class="text-center">{{ $detalle->cantidad }}</td>
+                                <td class="text-center">${{ number_format($detalle->precio, 2) }}</td>
+                                <td class="text-center">${{ number_format($detalle->subtotal, 2) }}</td>
+                            </tr>
+                        @endforeach
+                    @else
+                        <tr>
+                            <td colspan="4" class="text-center text-gray-500">
+                                Movimiento sin compra asociada
+                            </td>
+                        </tr>
+                    @endif
+                </tbody>
+            </table>
+        </div>
+    @endif
+
 
     <!-- Botones -->
     <div class="flex justify-end mt-4">

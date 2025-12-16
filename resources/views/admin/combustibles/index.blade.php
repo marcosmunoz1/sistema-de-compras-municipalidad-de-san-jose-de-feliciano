@@ -8,7 +8,7 @@
         @can('combustibles-update')
         <button onclick="crearCombustible.showModal()" class="btn btn-warning tooltip tooltip-warning mb-1" data-tip="Actualizar los precios de los combustibles">   
             <x-heroicon-s-cloud-arrow-up class="w-4 h-4 inline" /> 
-            Actulizar Precios 
+            Actualizar Precios 
         </button> 
         @endcan 
         @can('combustibles-create')

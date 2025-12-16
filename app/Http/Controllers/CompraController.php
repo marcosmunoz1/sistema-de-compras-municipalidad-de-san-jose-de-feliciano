@@ -21,11 +21,13 @@ class CompraController extends Controller
     public function index(Request $request)
     {
            $search = $request->get('search');  
-
             $query = Compra::withTrashed()->orderBy('id', 'desc');  
             if ($search) {
                 $query->where('nr_orden', 'like', "%{$search}%")
-                      ->orWhere('fecha_orden', 'like', "%{$search}%");
+                      ->orWhere('fecha_orden', 'like', "%{$search}%")
+                      ->orWhereHas('proveedor', function ($q) use ($search) {
+                        $q->where('nombre', 'LIKE', "%{$search}%");
+                    });
             }
             $compras = $query->paginate(10); 
         return view('admin.compras.index', compact('compras'));  

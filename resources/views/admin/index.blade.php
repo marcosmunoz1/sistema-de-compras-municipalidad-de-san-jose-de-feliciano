@@ -131,7 +131,7 @@
                             Registrados: {{ $cantidadProductos ?? '0' }}
                         </p>
                     </div>
-                    <x-heroicon-o-squares-plus class="w-12 h-12 opacity-60" />
+                    <x-heroicon-o-cube class="w-12 h-12 opacity-60" />
 
                 </div>
             </div>

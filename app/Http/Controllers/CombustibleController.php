@@ -28,7 +28,10 @@ class CombustibleController extends Controller
             $query = Combustible::withTrashed()->orderBy('id', 'desc');  
             if ($search) {
                 $query->where('codigo', 'like', "%{$search}%")
-                      ->orWhere('estacion', 'like', "%{$search}%");
+                      ->orWhere('estacion', 'like', "%{$search}%")
+                      ->orWhereHas('vehiculo', function ($q) use ($search) {
+                        $q->where('marca', 'LIKE', "%{$search}%");
+                    });
             }
             $combustibles = $query->paginate(2); 
         return view('admin.combustibles.index', compact('combustibles', 'tipos_combustibles', 'totalMonto', 'totalLitros','totalCargas')); 

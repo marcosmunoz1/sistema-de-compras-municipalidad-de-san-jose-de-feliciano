@@ -31,7 +31,7 @@
     </li>
     <li>
       <a href="{{ route('productos.index') }}"> 
-        <x-heroicon-o-truck class="w-4 h-4 inline" />
+        <x-heroicon-o-cube class="w-4 h-4 inline" />
         Productos
       </a>
     </li>
@@ -46,7 +46,7 @@
             <label class="w-full"> 
                 <input name="search" value="{{ request('search') ?? '' }}"
                     type="text" 
-                    placeholder="Buscar por nombre, Cuit, contacto..."
+                    placeholder="Buscar por nombre, categoria, descripción..."
                     class="w-full h-10 rounded-md border border-base-300 bg-base-200 
                         px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
                         focus:border-primary transition"
