@@ -69,45 +69,26 @@
             </div>
         </div>
 
-        <!-- Card 2 -->
-        <div class="bg-base-100 shadow-xl bg-card text-card-foreground flex flex-col gap-6 rounded-xl mx-4">
-            <div class="px-6 pt-6 pb-6">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <p class="text-gray-500">Litros Consumidos</p>
-                        <h3 class="mt-2">{{ $totalLitros }} L</h3>
-                    </div>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                        class="lucide lucide-fuel w-10 h-10 text-green-600">
-                        <path d="M14 13h2a2 2 0 0 1 2 2v2a2 2 0 0 0 4 0v-6.998a2 2 0 0 0-.59-1.42L18 5"></path>
-                        <path d="M14 21V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v16"></path>
-                        <path d="M2 21h13"></path>
-                        <path d="M3 9h11"></path>
-                    </svg>
+   {{--  <!-- Card 3 -->
+    <div class="bg-base-100 shadow-xl bg-card text-card-foreground flex flex-col gap-6 rounded-xl mx-4">
+        <div class="px-6 pt-6 pb-6">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-gray-500">Precio Promedio</p>
+                    <h3 class="mt-2">$3.88</h3>
                 </div>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round"
+                    class="lucide lucide-fuel w-10 h-10 text-yellow-600">
+                    <path d="M14 13h2a2 2 0 0 1 2 2v2a2 2 0 0 0 4 0v-6.998a2 2 0 0 0-.59-1.42L18 5"></path>
+                    <path d="M14 21V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v16"></path>
+                    <path d="M2 21h13"></path>
+                    <path d="M3 9h11"></path>
+                </svg>
             </div>
         </div>
-
-        <!-- Card 3 -->
-        <div class="bg-base-100 shadow-xl bg-card text-card-foreground flex flex-col gap-6 rounded-xl mx-4">
-            <div class="px-6 pt-6 pb-6">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <p class="text-gray-500">Precio Promedio</p>
-                        <h3 class="mt-2">$3.88</h3>
-                    </div>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                        class="lucide lucide-fuel w-10 h-10 text-yellow-600">
-                        <path d="M14 13h2a2 2 0 0 1 2 2v2a2 2 0 0 0 4 0v-6.998a2 2 0 0 0-.59-1.42L18 5"></path>
-                        <path d="M14 21V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v16"></path>
-                        <path d="M2 21h13"></path>
-                        <path d="M3 9h11"></path>
-                    </svg>
-                </div>
-            </div>
-        </div>
+    </div> --}} 
 
         <!-- Card 4 -->
         <div class="bg-base-100 shadow-xl bg-card text-card-foreground flex flex-col gap-6 rounded-xl mx-4">
@@ -191,6 +172,79 @@
                             <th class="text-center">Importe</th>
                             <th class="text-center">Estación</th>
                             <th class="text-center">Acciones</th>
+        </div>
+        <!-- TABLA -->
+        <div class="overflow-x-auto mt-4">
+            <table class="table table-zebra w-full">
+                <thead>
+                    <tr>
+                        <th class="text-center">Nr</th>
+                        <th class="text-center">Nr orden</th> 
+                        <th class="text-center">Fecha</th>
+                        <th class="text-center">Vehículo</th> 
+                        <th class="text-center">Conductor</th>
+                        <th class="text-center">Tipo</th>
+                        <th class="text-center">Litros</th>
+                        <th class="text-center">Importe</th>
+                        <th class="text-center">Estación</th> 
+                        <th class="text-center">Acciones</th> 
+                    </tr>
+                </thead>
+                <tbody>
+                    @php
+                        $nr = $combustibles->firstItem();
+                    @endphp
+
+                    @foreach ($combustibles as $combustible)
+                        <tr> 
+                            <td class="text-center">{{ $nr++ }}</td>
+                            <td class="text-center">{{ $combustible->codigo }}</td> 
+                            <td class="text-center">{{ $combustible->fecha ? \Carbon\Carbon::parse($combustible->fecha)->format('d/m/Y') : '—' }}</td> 
+                            <td class="text-center">{{ $combustible->destino->marca ?? 'N/A' }}</td> 
+                            <td class="text-center">{{ $combustible->empleado->nombre ?? 'N/A' }}</td> 
+                            <td class="text-center">{{ $combustible->tipo }}</td> 
+                            <td class="text-center">{{ $combustible->litros }}</td>
+                            <td class="text-center">${{ number_format($combustible->monto,2,'.',',') }}</td>
+                            <td class="text-center">{{ $combustible->estacion }}</td>
+                            <td class="text-center">
+                                <div class="flex items-center justify-center gap-2"> 
+                                    @can('combustibles-show') 
+                                    <a href="{{ route('combustibles.show', Crypt::encrypt($combustible->id)) }}"  
+                                       class="btn btn-info btn-sm">
+                                        <x-heroicon-s-eye class="w-4 h-4"/>
+                                    </a>
+                                    @endcan 
+                                     @can('combustibles-edit')
+                                    <a href="{{ route('combustibles.edit', $combustible->id) }}" 
+                                       class="btn btn-warning btn-sm">
+                                        <x-heroicon-s-pencil class="w-4 h-4"/>
+                                    </a>
+                                    @endcan 
+                                    @can('combustibles-report')
+                                    <a href="{{ route('combustibles.report', Crypt::encrypt($combustible->id)) }}" 
+                                       class="btn bg-primary btn-sm" 
+                                       target="_blank">
+                                        <x-heroicon-o-printer class="w-4 h-4"/>
+                                    </a>
+                                    @endcan
+                                    @if ($combustible->trashed())
+                                        @can('combustibles-restore')
+                                        <button class="btn btn-success btn-sm"
+                                                onclick="abrirModalRestaurar('{{ url('/admin/combustibles/'. $combustible->id.'/restore') }}')">
+                                            <x-heroicon-s-arrow-uturn-left class="w-4 h-4"/>
+                                        </button>
+                                        @endcan 
+                                    @else 
+                                        @can('combustibles-destroy') 
+                                        <button class="btn btn-error btn-sm"
+                                                onclick="confirmarEliminacion({{ $combustible->id }})">
+                                            <x-heroicon-s-trash class="w-4 h-4"/>
+                                        </button>
+                                        @endcan 
+                                    @endif
+
+                                </div>
+                            </td>
                         </tr>
                     </thead>
                     <tbody>
