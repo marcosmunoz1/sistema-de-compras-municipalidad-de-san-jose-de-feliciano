@@ -3,7 +3,7 @@
 @section('content')
  <!-- Titulo y boton --> 
  <div class="flex items-center justify-between mb-6">
-    <h1 class="text-2xl font-semibold">Combustibles</h1>
+    <h1 class="text-2xl font-semibold">Combustibles</h1> 
      <div class="flex  gap-2">
         @can('combustibles-update')
         <button onclick="crearCombustible.showModal()" class="btn btn-warning tooltip tooltip-warning mb-1" data-tip="Actualizar los precios de los combustibles">   
@@ -45,7 +45,7 @@
     </li>
   </ul>
 </div>
-<div class="grid grid-cols-1 md:grid-cols-4 pd-6 mb-6">
+<div class="grid grid-cols-1 md:grid-cols-3 pd-6 mb-6">
 
     <!-- Card 1 -->
     <div class="bg-base-100 shadow-xl bg-card text-card-foreground flex flex-col gap-6 rounded-xl mx-4">
@@ -53,7 +53,7 @@
             <div class="flex items-center justify-between">
                 <div>
                     <p class="text-gray-500">Total del Mes</p>
-                    <h3 class="mt-2">{{$totalMonto}}</h3>  
+                    <h3 class="mt-2">${{ number_format($totalMonto, 2, '.', ',') }}</h3>   
                 </div>
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                     viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -89,7 +89,7 @@
         </div>
     </div>
 
-    <!-- Card 3 -->
+   {{--  <!-- Card 3 -->
     <div class="bg-base-100 shadow-xl bg-card text-card-foreground flex flex-col gap-6 rounded-xl mx-4">
         <div class="px-6 pt-6 pb-6">
             <div class="flex items-center justify-between">
@@ -108,7 +108,7 @@
                 </svg>
             </div>
         </div>
-    </div>
+    </div> --}} 
 
     <!-- Card 4 -->
     <div class="bg-base-100 shadow-xl bg-card text-card-foreground flex flex-col gap-6 rounded-xl mx-4">
@@ -205,12 +205,12 @@
                         <tr> 
                             <td class="text-center">{{ $nr++ }}</td>
                             <td class="text-center">{{ $combustible->codigo }}</td> 
-                            <td class="text-center">{{ $combustible->fecha }}</td> 
-                            <td class="text-center">{{ $combustible->vehiculo->marca ?? 'N/A' }}</td>
+                            <td class="text-center">{{ $combustible->fecha ? \Carbon\Carbon::parse($combustible->fecha)->format('d/m/Y') : '—' }}</td> 
+                            <td class="text-center">{{ $combustible->destino->marca ?? 'N/A' }}</td> 
                             <td class="text-center">{{ $combustible->empleado->nombre ?? 'N/A' }}</td> 
                             <td class="text-center">{{ $combustible->tipo }}</td> 
                             <td class="text-center">{{ $combustible->litros }}</td>
-                            <td class="text-center">{{ $combustible->monto }}</td>
+                            <td class="text-center">${{ number_format($combustible->monto,2,'.',',') }}</td>
                             <td class="text-center">{{ $combustible->estacion }}</td>
                             <td class="text-center">
                                 <div class="flex items-center justify-center gap-2"> 

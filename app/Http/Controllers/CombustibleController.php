@@ -25,7 +25,7 @@ class CombustibleController extends Controller
             $tipos_combustibles = Tipo_combustibles::all(); 
             $search = $request->get('search'); 
 
-            $query = Combustible::withTrashed()->orderBy('id', 'desc');  
+            $query = Combustible::with('destino')->withTrashed()->orderBy('id', 'desc');  
             if ($search) {
                 $query->where('codigo', 'like', "%{$search}%")
                       ->orWhere('estacion', 'like', "%{$search}%")
