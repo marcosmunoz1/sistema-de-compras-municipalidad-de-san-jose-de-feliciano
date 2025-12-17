@@ -25,6 +25,7 @@ class CompraController extends Controller
             if ($search) {
                 $query->where('nr_orden', 'like', "%{$search}%")
                       ->orWhere('fecha_orden', 'like', "%{$search}%")
+                      ->orWhere('estado_compra', 'like', "%{$search}%")
                       ->orWhereHas('proveedor', function ($q) use ($search) {
                         $q->where('nombre', 'LIKE', "%{$search}%");
                     });

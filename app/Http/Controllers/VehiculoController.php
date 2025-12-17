@@ -178,7 +178,8 @@ class VehiculoController extends Controller
             });
         })
         ->orderBy('c.fecha_orden', 'desc')
-        ->paginate(10);
+        ->paginate(10)
+        ->withQueryString();
 
     // Total general usando stock
     $totalGeneral = DB::table('producto_vehiculo as pv')

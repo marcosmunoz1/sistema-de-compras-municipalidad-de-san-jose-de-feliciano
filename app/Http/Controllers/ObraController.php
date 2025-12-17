@@ -161,7 +161,8 @@ class ObraController extends Controller
         })
 
         ->orderBy('c.fecha_orden', 'desc')
-        ->paginate(10);
+        ->paginate(10)
+        ->withQueryString(); 
 
 
     // TOTAL GENERAL

@@ -96,7 +96,6 @@
                                     <div class="flex items-center justify-center gap-2">
 
                                         {{-- Ver --}}
-                                        @can('categorias-show')
                                         <button
                                             onclick="abrir_modal(
                                                 'crearCategoriaModal',
@@ -108,7 +107,6 @@
                                             class="btn btn-info btn-sm">
                                             <x-heroicon-s-eye class="w-4 h-4" />
                                         </button> 
-                                        @endcan
 
 
                                         {{-- Editar --}}
@@ -140,7 +138,7 @@
                                             {{-- Si NO está eliminado --}}
                                         @else
                                             {{-- Eliminar --}}
-                                            @can('categorias-delete')
+                                            @can('categorias-destroy')
                                             <button class="btn btn-error btn-sm"
                                                 onclick="confirmarEliminacion({{ $categoria->id }})">
                                                 <x-heroicon-s-trash class="w-4 h-4" />
