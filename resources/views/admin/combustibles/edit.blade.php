@@ -1,4 +1,5 @@
 @extends('layouts.admin') 
+@section('title', 'Editar orden de combustible') 
 
 @section('content') 
 <!-- Titulo y boton --> 

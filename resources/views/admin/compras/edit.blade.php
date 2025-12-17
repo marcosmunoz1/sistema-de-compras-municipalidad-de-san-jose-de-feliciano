@@ -1,4 +1,5 @@
 @extends('layouts.admin')
+@section('title', 'Editar compra') 
 
 @section('content')
     <!-- Titulo y boton -->

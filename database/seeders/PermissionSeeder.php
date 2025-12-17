@@ -62,6 +62,7 @@ class PermissionSeeder extends Seeder
             // CATEGORÍAS
             // ===============================
             ['name' => 'categorias-index'],
+            ['name' => 'categorias-edit'],
             ['name' => 'categorias-store'],
             ['name' => 'categorias-destroy'],
             ['name' => 'categorias-restore'],

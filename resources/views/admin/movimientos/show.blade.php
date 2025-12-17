@@ -1,4 +1,5 @@
 @extends('layouts.admin')
+@section('title', 'Ver Movimiento') 
 
 @section('content')
     <!-- Título -->

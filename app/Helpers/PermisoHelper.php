@@ -39,6 +39,7 @@ class PermisoHelper
         'categorias-store' => 'Crear categoría',
         'categorias-destroy' => 'Eliminar categoría',
         'categorias-restore' => 'Restaurar categoría',
+        'categorias-edit' => 'Editar categoría',
         // Productos
         'productos-index' => 'Ver productos',
         'productos-store' => 'Crear producto',

@@ -25,6 +25,7 @@ class CompraController extends Controller
             if ($search) {
                 $query->where('nr_orden', 'like', "%{$search}%")
                       ->orWhere('fecha_orden', 'like', "%{$search}%")
+                      ->orWhere('estado_compra', 'like', "%{$search}%")
                       ->orWhereHas('proveedor', function ($q) use ($search) {
                         $q->where('nombre', 'LIKE', "%{$search}%");
                     });
@@ -152,7 +153,7 @@ class CompraController extends Controller
      */
     public function show(Request $request, $id)
     {
-        $id = Crypt::decrypt($id); 
+        $id = Crypt::decryptString($id);
         $from = $request->input('from');  
         $vehiculoId = $request->input('vehiculo_id'); // si vino desde vehículo
         $obraId = $request->input('obra_id');
