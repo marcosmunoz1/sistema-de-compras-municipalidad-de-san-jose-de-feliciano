@@ -205,7 +205,7 @@
                     <div class="flex justify-between items-center p-3 rounded-lg ">
                         <span class="text-sm">Tipo:</span>
                         <span class="text-sm font-medium ">
-                            {{ $destino->tipo ?? '—' }}
+                            {{ ucfirst($destino->tipo) }}
                         </span>
                     </div>
 
@@ -360,7 +360,7 @@
                             ],
                             [
                                 'label' => 'Método de Pago',
-                                'value' => $combustible->tipo_de_pago,
+                                'value' => Str::headline($combustible->tipo_de_pago),
                                 'icon' => 'credit-card',
                             ],
                             [
