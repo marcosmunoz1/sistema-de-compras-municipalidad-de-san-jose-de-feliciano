@@ -168,7 +168,7 @@ class CompraController extends Controller
      */
     public function edit($id)
     {
-        $id = Crypt::decrypt($id); 
+        $id = Crypt::decryptString($id); 
         $compra = Compra::with('detalle_compras','proveedor')->findOrFail($id);
         $categorias = Categoria::all();  
         $proveedores = Proveedor::all();

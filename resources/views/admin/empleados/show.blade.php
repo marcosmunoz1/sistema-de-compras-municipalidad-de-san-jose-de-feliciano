@@ -42,7 +42,7 @@
             </li>
             <li>
                 <a href="{{ route('empleados.index') }}">
-                    <x-heroicon-o-user-group class="w-4 h-4 inline" />
+                    <x-heroicon-o-identification class="w-4 h-4 inline" />
                     Empleados
                 </a>
             </li>
