@@ -1,5 +1,5 @@
 @extends('layouts.admin')
-
+@section('title', 'Depósitos') 
 @section('content')
 
     <!-- Título y botón -->

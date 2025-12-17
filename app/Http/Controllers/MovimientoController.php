@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Compra;
 use App\Models\Deposito;
 use App\Models\Movimiento;
 use App\Models\MovimientoDetalle;
@@ -271,8 +272,7 @@ class MovimientoController extends Controller
      */
     public function show($id)
     {
-        $movimiento = Movimiento::with(['detalles.producto', 'origen', 'destino'])->find($id);
-
+        $movimiento = Movimiento::with(['detalles.producto', 'origen', 'destino', 'compra.detalle_compras.producto'])->find($id);
         return view('admin.movimientos.show', compact('movimiento'));
     }
 

@@ -1,4 +1,5 @@
 @extends('layouts.admin')
+@section('title', 'Categorías')  
 
 @section('content')
     <!-- Titulo y boton -->

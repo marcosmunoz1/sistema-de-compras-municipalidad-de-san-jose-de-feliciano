@@ -15,14 +15,24 @@ class ProductoController extends Controller
     public function index(Request $request)
     {   
         $categorias = Categoria::all();
-        $search = $request->input('search'); 
-        $productos = Producto::where('nombre', 'LIKE', "%{$search}%")
-            ->orWhere('descripcion', 'LIKE', "%{$search}%")
-            ->orWhere('unidad', 'LIKE', "%{$search}%")
-            ->orWhere('estado', 'LIKE', "%{$search}%")
-            ->paginate(10);
-        return view('admin.productos.index', compact('productos', 'categorias')); 
+        $search = $request->input('search');
+
+        $productos = Producto::where(function ($query) use ($search) {
+                $query->where('nombre', 'LIKE', "%{$search}%")
+                    ->orWhere('descripcion', 'LIKE', "%{$search}%")
+                    ->orWhere('unidad', 'LIKE', "%{$search}%")
+                    ->orWhere('estado', 'LIKE', "%{$search}%")
+                    ->orWhereHas('categoria', function ($q) use ($search) {
+                        $q->where('nombre', 'LIKE', "%{$search}%");
+                    });
+            })
+            ->orderBy('id', 'desc')
+            ->paginate(10)
+            ->withQueryString(); 
+
+        return view('admin.productos.index', compact('productos', 'categorias', 'search'));
     }
+
 
 
     /**

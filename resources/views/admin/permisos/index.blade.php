@@ -1,5 +1,5 @@
 @extends('layouts.admin')
-
+@section('title', 'Permisos') 
 @section('content')
  <!-- Titulo y boton --> 
  <div class="flex items-center justify-between mb-6">

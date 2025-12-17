@@ -45,7 +45,7 @@ class Compra extends Model
 
     public function detalle_compras()
     {
-        return $this->hasMany(Detalle_Compra::class); 
+        return $this->hasMany(Detalle_Compra::class, 'compra_id'); 
     }
     public function getDestinoNombreAttribute()
     {

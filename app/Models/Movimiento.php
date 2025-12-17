@@ -46,6 +46,10 @@ class Movimiento extends Model
 
         return 'Sin nombre';
     }
+    public function compra()
+    {
+        return $this->belongsTo(Compra::class, 'compra_id');
+    }
     
     public function detalles()
     {

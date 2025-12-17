@@ -1,5 +1,5 @@
 @extends('layouts.admin')
-
+@section('title', 'Compras') 
 @section('content')
 
     <div class="flex items-center justify-between mb-6">
@@ -111,17 +111,18 @@
                                 <td class="text-center">{{ $compra->estado_compra }}</td>
                                 <td class="text-center">
                                     <div class="flex items-center justify-center gap-2">
-                                         @can('compras-show')
-                                        <a href="{{ route('compras.show', $compra->id) }}" class="btn btn-info btn-sm">
+                                        @can('compras-show')
+                                        <a href="{{ route('compras.show', Crypt::encrypt($compra->id)) }}" class="btn btn-info btn-sm">
                                             <x-heroicon-s-eye class="w-4 h-4" />
                                         </a>
-                                         @endcan
- 
-                                         @can('compras-edit')
-                                        <a href="{{ route('compras.edit', $compra->id) }}" class="btn btn-warning btn-sm">
-                                            <x-heroicon-s-pencil class="w-4 h-4" />
-                                        </a>
-                                         @endcan
+                                        @endcan
+                                        @can('compras-edit')
+                                        @if ($compra->estado_compra == 'Pendiente de factura')
+                                            <a href="{{ route('compras.edit', Crypt::encrypt($compra->id)) }}" class="btn btn-warning btn-sm">
+                                                <x-heroicon-s-pencil class="w-4 h-4" />
+                                            </a>
+                                        @endif
+                                        @endcan
 
                                         {{--  <a href="{{ route('compras.report', $compra->id ) }}"  
                                        class="btn bg-primary btn-sm" 
