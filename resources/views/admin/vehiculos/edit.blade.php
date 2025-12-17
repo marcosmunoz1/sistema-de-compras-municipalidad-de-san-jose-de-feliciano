@@ -1,4 +1,5 @@
 @extends('layouts.admin')
+@section('title', 'Editar Vehículo') 
 
 @section('content')
     <!-- Título -->

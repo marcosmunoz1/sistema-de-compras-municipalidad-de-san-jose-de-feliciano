@@ -112,13 +112,13 @@
                                 <td class="text-center">
                                     <div class="flex items-center justify-center gap-2">
                                         @can('compras-show')
-                                        <a href="{{ route('compras.show', Crypt::encrypt($compra->id)) }}" class="btn btn-info btn-sm">
+                                        <a href="{{ route('compras.show', Crypt::encryptString($compra->id)) }}" class="btn btn-info btn-sm">
                                             <x-heroicon-s-eye class="w-4 h-4" />
                                         </a>
                                         @endcan
                                         @can('compras-edit')
                                         @if ($compra->estado_compra == 'Pendiente de factura')
-                                            <a href="{{ route('compras.edit', Crypt::encrypt($compra->id)) }}" class="btn btn-warning btn-sm">
+                                            <a href="{{ route('compras.edit', Crypt::encryptString($compra->id)) }}" class="btn btn-warning btn-sm">
                                                 <x-heroicon-s-pencil class="w-4 h-4" />
                                             </a>
                                         @endif

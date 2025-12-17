@@ -1,4 +1,5 @@
 @extends('layouts.admin')
+@section('title', 'Ver Vehículo') 
 
 @section('content')
     <!-- Título -->
@@ -255,12 +256,14 @@
                         <td class="text-center">${{ number_format($producto->subtotal_real ?? 0, 2) }}</td>
                         <td class="text-center">
                             @if ($producto->compra_id)
-                                <a href="{{ route('compras.show', ['id' => $producto->compra_id, 'from' => 'vehiculo', 'vehiculo_id' => $vehiculo->id]) }}"
-                                    class="btn btn-sm btn-primary">
+                                <a href="{{ route('compras.show', [
+                                    'id' => Crypt::encryptString($producto->compra_id),
+                                    'from' => 'vehiculo',
+                                    'vehiculo_id' => $vehiculo->id
+                                ]) }}"
+                                class="btn btn-sm btn-primary">
                                     Ver compra
                                 </a>
-                            @else
-                                —
                             @endif
                         </td>
                     </tr>

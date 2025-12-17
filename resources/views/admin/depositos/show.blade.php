@@ -1,4 +1,5 @@
 @extends('layouts.admin')
+@section('title', 'Ver depósito') 
 
 @section('content')
     <!-- Título y botón volver -->

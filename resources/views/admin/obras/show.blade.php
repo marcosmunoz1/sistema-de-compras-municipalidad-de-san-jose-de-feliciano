@@ -1,5 +1,5 @@
 @extends('layouts.admin')
-
+@section('title', 'Ver obra') 
 @section('content')
     <!-- Título y botón volver -->
     <div class="flex items-start justify-between mb-6">

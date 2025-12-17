@@ -1,5 +1,5 @@
 @extends('layouts.admin')
-
+@section('title', 'Crear Vehículo') 
 @section('content')
     <!-- Título -->
     <div class="flex items-center justify-between mb-6">

@@ -1,4 +1,5 @@
 @extends('layouts.admin')
+@section('title', 'Ver orden de combustible')
 
 @section('content')
     <!-- Titulo y boton -->
@@ -31,7 +32,14 @@
             </li>
             <li>
                 <a href="{{ route('combustibles.index') }}">
-                    <x-heroicon-o-truck class="w-4 h-4 inline" />
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="lucide lucide-fuel w-5 h-5" aria-hidden="true">
+                        <path d="M14 13h2a2 2 0 0 1 2 2v2a2 2 0 0 0 4 0v-6.998a2 2 0 0 0-.59-1.42L18 5"></path>
+                        <path d="M14 21V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v16"></path>
+                        <path d="M2 21h13"></path>
+                        <path d="M3 9h11"></path>
+                    </svg>
                     Combustibles
                 </a>
             </li>
@@ -44,7 +52,7 @@
         </ul>
 
     </div>
-    <div class="card bg-base-100 shadow-md rounded-xl p-6"> 
+    <div class="card bg-base-100 shadow-md rounded-xl p-6">
         <div class="flex items-start justify-between">
             <div class="flex gap-4">
                 <div class="bg-orange-500 p-4 rounded-lg">
@@ -305,121 +313,130 @@
             </div>
         </div>
     </div>
-    
-   <div class="grid bg-base-100 mt-6">
 
-    <div data-slot="card" class="bg-card text-card-foreground rounded-xl shadow-md">
+    <div class="grid bg-base-100 mt-6">
 
-        <!-- Header -->
-        <div data-slot="card-header"
-             class="px-6 py-4 border-b border-neutral-200 dark:border-neutral-700 flex items-center gap-2">
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-primary" fill="none"
-                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M14 13h2a2 2 0 0 1 2 2v2a2 2 0 0 0 4 0v-6.998a2 2 0 0 0-.59-1.42L18 5"></path>
-                <path d="M14 21V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v16"></path>
-                <path d="M2 21h13"></path>
-                <path d="M3 9h11"></path>
-            </svg>
-            <h4 class="text-lg font-semibold">Detalles de la Carga</h4>
-        </div>
+        <div data-slot="card" class="bg-card text-card-foreground rounded-xl shadow-md">
 
-        <!-- Contenido -->
-        <div data-slot="card-content" class="px-6 py-5">
+            <!-- Header -->
+            <div data-slot="card-header"
+                class="px-6 py-4 border-b border-neutral-200 dark:border-neutral-700 flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-primary" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M14 13h2a2 2 0 0 1 2 2v2a2 2 0 0 0 4 0v-6.998a2 2 0 0 0-.59-1.42L18 5"></path>
+                    <path d="M14 21V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v16"></path>
+                    <path d="M2 21h13"></path>
+                    <path d="M3 9h11"></path>
+                </svg>
+                <h4 class="text-lg font-semibold">Detalles de la Carga</h4>
+            </div>
 
-            <!-- GRID 2 COLUMNAS -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <!-- Contenido -->
+            <div data-slot="card-content" class="px-6 py-5">
 
-                <!-- ITEM GENERATOR -->
-                @php
-                    $items = [
-                        [
-                            'label' => 'Fecha de Carga',
-                            'value' => $combustible->fecha ? \Carbon\Carbon::parse($combustible->fecha)->format('d/m/Y') : '—',
-                            'icon' => 'calendar'
-                        ],
-                        [
-                            'label' => 'Estación de Servicio',
-                            'value' => $combustible->estacion,
-                            'icon' => 'map-pin'
-                        ],
-                        [
-                            'label' => 'Tipo de Combustible',
-                            'value' => $combustible->tipo,
-                            'icon' => 'droplet',
-                            'badge' => true,
-                        ],
-                        [
-                            'label' => 'Método de Pago',
-                            'value' => $combustible->tipo_de_pago,
-                            'icon' => 'credit-card'
-                        ],
-                        [
-                            'label' => 'Cuenta',
-                            'value' => $combustible->sub_cuenta,
-                            'icon' => 'credit-card'
-                        ],
-                        [
-                            'label' => 'Usuario que Autoriza',
-                            'value' => $combustible->user->name,
-                            'icon' => 'user'
-                        ],
-                        [
-                            'label' => 'N° Factura',
-                            'value' => 'FACT-' . $combustible->codigo,
-                            'icon' => 'file-text'
-                        ],
-                        [
-                            'label' => 'Litros Cargados',
-                            'value' => $combustible->litros . ' L',
-                            'icon' => 'gauge'
-                        ],
-                    ];
+                <!-- GRID 2 COLUMNAS -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
 
-                    // Íconos SVG para usar inline
-                    $icons = [
-                        'calendar' => '<svg class="size-5 text-gray-500 mt-0.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v4"></path><path d="M16 2v4"></path><rect width="18" height="18" x="3" y="4" rx="2"></rect><path d="M3 10h18"></path></svg>',
-                        'map-pin' => '<svg class="size-5 text-gray-500 mt-0.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"></path><circle cx="12" cy="10" r="3"></circle></svg>',
-                        'droplet' => '<svg class="size-5 text-gray-500 mt-0.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22a7 7 0 0 0 7-7c0-2-1-3.9-3-5.5s-3.5-4-4-6.5c-.5 2.5-2 4.9-4 6.5C6 11.1 5 13 5 15a7 7 0 0 0 7 7z"></path></svg>',
-                        'credit-card' => '<svg class="size-5 text-gray-500 mt-0.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="5" rx="2"></rect><line x1="2" x2="22" y1="10" y2="10"></line></svg>',
-                        'user' => '<svg class="size-5 text-gray-500 mt-0.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 20a6 6 0 0 0-12 0"></path><circle cx="12" cy="10" r="4"></circle></svg>',
-                        'file-text' => '<svg class="size-5 text-gray-500 mt-0.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"></path><path d="M14 2v5a1 1 0 0 0 1 1h5"></path><path d="M10 9H8"></path><path d="M16 13H8"></path><path d="M16 17H8"></path></svg>',
-                        'gauge' => '<svg class="size-5 text-gray-500 mt-0.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 14a2 2 0 1 0-2-2"></path><path d="M6.7 6.7A8 8 0 1 1 17.3 6.7"></path></svg>',
-                    ];
-                @endphp
+                    <!-- ITEM GENERATOR -->
+                    @php
+                        $items = [
+                            [
+                                'label' => 'Fecha de Carga',
+                                'value' => $combustible->fecha
+                                    ? \Carbon\Carbon::parse($combustible->fecha)->format('d/m/Y')
+                                    : '—',
+                                'icon' => 'calendar',
+                            ],
+                            [
+                                'label' => 'Estación de Servicio',
+                                'value' => $combustible->estacion,
+                                'icon' => 'map-pin',
+                            ],
+                            [
+                                'label' => 'Tipo de Combustible',
+                                'value' => $combustible->tipo,
+                                'icon' => 'droplet',
+                                'badge' => true,
+                            ],
+                            [
+                                'label' => 'Método de Pago',
+                                'value' => $combustible->tipo_de_pago,
+                                'icon' => 'credit-card',
+                            ],
+                            [
+                                'label' => 'Cuenta',
+                                'value' => $combustible->sub_cuenta,
+                                'icon' => 'credit-card',
+                            ],
+                            [
+                                'label' => 'Usuario que Autoriza',
+                                'value' => $combustible->user->name,
+                                'icon' => 'user',
+                            ],
+                            [
+                                'label' => 'N° Factura',
+                                'value' => 'FACT-' . $combustible->codigo,
+                                'icon' => 'file-text',
+                            ],
+                            [
+                                'label' => 'Litros Cargados',
+                                'value' => $combustible->litros . ' L',
+                                'icon' => 'gauge',
+                            ],
+                        ];
 
-                @foreach ($items as $item)
-                    <div class="flex items-start gap-3 p-3 rounded-lg">
+                        // Íconos SVG para usar inline
+                        $icons = [
+                            'calendar' =>
+                                '<svg class="size-5 text-gray-500 mt-0.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v4"></path><path d="M16 2v4"></path><rect width="18" height="18" x="3" y="4" rx="2"></rect><path d="M3 10h18"></path></svg>',
+                            'map-pin' =>
+                                '<svg class="size-5 text-gray-500 mt-0.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"></path><circle cx="12" cy="10" r="3"></circle></svg>',
+                            'droplet' =>
+                                '<svg class="size-5 text-gray-500 mt-0.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22a7 7 0 0 0 7-7c0-2-1-3.9-3-5.5s-3.5-4-4-6.5c-.5 2.5-2 4.9-4 6.5C6 11.1 5 13 5 15a7 7 0 0 0 7 7z"></path></svg>',
+                            'credit-card' =>
+                                '<svg class="size-5 text-gray-500 mt-0.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="5" rx="2"></rect><line x1="2" x2="22" y1="10" y2="10"></line></svg>',
+                            'user' =>
+                                '<svg class="size-5 text-gray-500 mt-0.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 20a6 6 0 0 0-12 0"></path><circle cx="12" cy="10" r="4"></circle></svg>',
+                            'file-text' =>
+                                '<svg class="size-5 text-gray-500 mt-0.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"></path><path d="M14 2v5a1 1 0 0 0 1 1h5"></path><path d="M10 9H8"></path><path d="M16 13H8"></path><path d="M16 17H8"></path></svg>',
+                            'gauge' =>
+                                '<svg class="size-5 text-gray-500 mt-0.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 14a2 2 0 1 0-2-2"></path><path d="M6.7 6.7A8 8 0 1 1 17.3 6.7"></path></svg>',
+                        ];
+                    @endphp
 
-                        {!! $icons[$item['icon']] !!}
+                    @foreach ($items as $item)
+                        <div class="flex items-start gap-3 p-3 rounded-lg">
 
-                        <div class="flex-1">
-                            <p class="text-sm text-gray-500">{{ $item['label'] }}</p>
+                            {!! $icons[$item['icon']] !!}
 
-                            @if(isset($item['badge']))
-                                <span class="inline-flex items-center rounded-md px-2 py-0.5 text-xs font-medium">
-                                    {{ $item['value'] }}
-                                </span>
-                            @else
-                                <p class="font-medium ">{{ $item['value'] }}</p>
-                            @endif
+                            <div class="flex-1">
+                                <p class="text-sm text-gray-500">{{ $item['label'] }}</p>
+
+                                @if (isset($item['badge']))
+                                    <span class="inline-flex items-center rounded-md px-2 py-0.5 text-xs font-medium">
+                                        {{ $item['value'] }}
+                                    </span>
+                                @else
+                                    <p class="font-medium ">{{ $item['value'] }}</p>
+                                @endif
+                            </div>
+
                         </div>
+                    @endforeach
 
-                    </div>
-                @endforeach
+                </div>
+
+                <!-- Observaciones -->
+                <div class="mt-6 pt-4 border-t border-neutral-200 dark:border-neutral-700">
+                    <p class="text-sm text-gray-500 mb-2">Observaciones</p>
+                    <p class="text-sm leading-relaxed p-3 rounded-md bg-base-200 dark:bg-base-300">
+                        {{ $combustible->observaciones }}
+                    </p>
+                </div>
 
             </div>
-
-            <!-- Observaciones -->
-            <div class="mt-6 pt-4 border-t border-neutral-200 dark:border-neutral-700">
-                <p class="text-sm text-gray-500 mb-2">Observaciones</p>
-                <p class="text-sm leading-relaxed p-3 rounded-md bg-base-200 dark:bg-base-300">
-                    {{ $combustible->observaciones }}
-                </p>
-            </div>
-
         </div>
     </div>
-</div>
 
 
 @endsection
