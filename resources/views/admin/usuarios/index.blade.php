@@ -5,7 +5,7 @@
     <!-- Titulo y boton -->
     <div class="flex items-center justify-between mb-6">
         <h1 class="text-2xl font-semibold">Usuarios</h1>
-        @can('usuarios-create')
+        @can('usuarios-store') 
         <button onclick="crearUsuarioModal.showModal()" class="btn btn-primary">
             <x-heroicon-o-plus class="w-5 h-5" />Nuevo Usuario
         </button>
