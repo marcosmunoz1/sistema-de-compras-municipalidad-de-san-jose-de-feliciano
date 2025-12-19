@@ -19,98 +19,118 @@ class MovimientoController extends Controller
      * Display a listing of the resource.
      */
     public function index(Request $request)
-{
-    $search = trim($request->input('search'));
+    {
+        $search = trim($request->input('search'));
 
-    // Reconocer tipo de movimiento por texto
-    $tipoBuscado = null;
+        // Reconocer tipo de movimiento por texto
+        $tipoBuscado = null;
 
-    if ($search !== '') {
-        $s = strtolower($search);
+        if ($search !== '') {
+            $s = strtolower($search);
 
-        if (in_array($s, ['entrada', 'salida', 'transferencia'])) {
-            $tipoBuscado = $s;
+            if (in_array($s, ['entrada', 'salida', 'transferencia'])) {
+                $tipoBuscado = $s;
+            }
         }
+
+        // 🧠 Detectar si el search es una fecha DD/MM/YYYY
+        $fechaFormateada = null;
+
+        if ($search !== '' && preg_match('/^\d{2}\/\d{2}\/\d{4}$/', $search)) {
+            try {
+                $fechaFormateada = \Carbon\Carbon::createFromFormat('d/m/Y', $search)
+                    ->format('Y-m-d');
+            } catch (\Exception $e) {
+                $fechaFormateada = null;
+            }
+        }
+
+        $movimientos = Movimiento::with(['origen', 'destino']);
+
+        // --- Filtro por tipo (AND real) ---
+        if ($tipoBuscado !== null) {
+            $movimientos->where('tipo', $tipoBuscado);
+        }
+
+        // --- Búsqueda textual agrupada ---
+        if ($search !== '') {
+            $movimientos->where(function ($query) use ($search, $fechaFormateada) {
+
+                // Campos propios del movimiento
+                if ($fechaFormateada) {
+                    $query->whereDate('fecha', $fechaFormateada);
+                } else {
+                    $query->where('fecha', 'LIKE', "%{$search}%");
+                }
+
+                $query->orWhere('observacion', 'LIKE', "%{$search}%")
+                    ->orWhere('tipo', 'LIKE', "%{$search}%")
+                    ->orWhere('origen_tipo', 'LIKE', "%{$search}%")
+                    ->orWhere('destino_tipo', 'LIKE', "%{$search}%");
+
+                // ORIGEN: proveedor
+                $query->orWhereHasMorph(
+                    'origen',
+                    Proveedor::class,
+                    function ($m) use ($search) {
+                        $m->where('nombre', 'LIKE', "%{$search}%")
+                        ->orWhere('telefono', 'LIKE', "%{$search}%")
+                        ->orWhere('cuit', 'LIKE', "%{$search}%");
+                    }
+                );
+
+                // ORIGEN: vehículo
+                $query->orWhereHasMorph(
+                    'origen',
+                    Vehiculo::class,
+                    function ($m) use ($search) {
+                        $m->where('patente', 'LIKE', "%{$search}%")
+                        ->orWhere('modelo', 'LIKE', "%{$search}%")
+                        ->orWhere('marca', 'LIKE', "%{$search}%")
+                        ->orWhere('motor', 'LIKE', "%{$search}%");
+                    }
+                );
+
+                // DESTINO: vehículo
+                $query->orWhereHasMorph(
+                    'destino',
+                    Vehiculo::class,
+                    function ($m) use ($search) {
+                        $m->where('patente', 'LIKE', "%{$search}%")
+                        ->orWhere('modelo', 'LIKE', "%{$search}%")
+                        ->orWhere('marca', 'LIKE', "%{$search}%")
+                        ->orWhere('motor', 'LIKE', "%{$search}%");
+                    }
+                );
+
+                // ORIGEN: depósito u obra
+                $query->orWhereHasMorph(
+                    'origen',
+                    [Deposito::class, Obra::class],
+                    function ($m) use ($search) {
+                        $m->where('nombre', 'LIKE', "%{$search}%");
+                    }
+                );
+
+                // DESTINO: depósito u obra
+                $query->orWhereHasMorph(
+                    'destino',
+                    [Deposito::class, Obra::class],
+                    function ($m) use ($search) {
+                        $m->where('nombre', 'LIKE', "%{$search}%");
+                    }
+                );
+            });
+        }
+
+        $movimientos = $movimientos
+            ->orderBy('fecha', 'desc')
+            ->paginate(10)
+            ->withQueryString();
+
+        return view('admin.movimientos.index', compact('movimientos'));
     }
 
-    $movimientos = Movimiento::with(['origen', 'destino']);
-
-    // --- Filtro por tipo (AND real) ---
-    if ($tipoBuscado !== null) {
-        $movimientos->where('tipo', $tipoBuscado);
-    }
-
-    // --- Búsqueda textual agrupada ---
-    if ($search !== '') {
-        $movimientos->where(function ($query) use ($search) {
-
-            // Campos propios del movimiento
-            $query->where('fecha', 'LIKE', "%{$search}%")
-                  ->orWhere('observacion', 'LIKE', "%{$search}%")
-                  ->orWhere('origen_tipo', 'LIKE', "%{$search}%")
-                  ->orWhere('destino_tipo', 'LIKE', "%{$search}%");
-
-            // ORIGEN: proveedor
-            $query->orWhereHasMorph(
-                'origen',
-                Proveedor::class,
-                function ($m) use ($search) {
-                    $m->where('nombre', 'LIKE', "%{$search}%")
-                      ->orWhere('telefono', 'LIKE', "%{$search}%")
-                      ->orWhere('cuit', 'LIKE', "%{$search}%");
-                }
-            );
-
-            // ORIGEN: vehículo
-            $query->orWhereHasMorph(
-                'origen',
-                Vehiculo::class,
-                function ($m) use ($search) {
-                    $m->where('patente', 'LIKE', "%{$search}%")
-                      ->orWhere('modelo', 'LIKE', "%{$search}%")
-                      ->orWhere('marca', 'LIKE', "%{$search}%")
-                      ->orWhere('motor', 'LIKE', "%{$search}%");
-                }
-            );
-
-            // DESTINO: vehículo
-            $query->orWhereHasMorph(
-                'destino',
-                Vehiculo::class,
-                function ($m) use ($search) {
-                    $m->where('patente', 'LIKE', "%{$search}%")
-                      ->orWhere('modelo', 'LIKE', "%{$search}%")
-                      ->orWhere('marca', 'LIKE', "%{$search}%")
-                      ->orWhere('motor', 'LIKE', "%{$search}%");
-                }
-            );
-
-            // ORIGEN: depósito u obra
-            $query->orWhereHasMorph(
-                'origen',
-                [Deposito::class, Obra::class],
-                function ($m) use ($search) {
-                    $m->where('nombre', 'LIKE', "%{$search}%");
-                }
-            );
-
-            // DESTINO: depósito u obra
-            $query->orWhereHasMorph(
-                'destino',
-                [Deposito::class, Obra::class],
-                function ($m) use ($search) {
-                    $m->where('nombre', 'LIKE', "%{$search}%");
-                }
-            );
-        });
-    }
-
-    $movimientos = $movimientos
-        ->orderBy('fecha', 'desc')
-        ->paginate(10);
-
-    return view('admin.movimientos.index', compact('movimientos'));
-}
 
 
 

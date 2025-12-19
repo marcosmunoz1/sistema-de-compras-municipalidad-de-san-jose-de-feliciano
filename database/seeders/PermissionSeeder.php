@@ -147,12 +147,8 @@ class PermissionSeeder extends Seeder
             ['name' => 'movimientos-index'],
             ['name' => 'movimientos-create'],
             ['name' => 'movimientos-store'],
-            ['name' => 'movimientos-edit'],
-            ['name' => 'movimientos-update'],
             ['name' => 'movimientos-show'],
-            ['name' => 'movimientos-destroy'],
-            ['name' => 'movimientos-restore'],
-
+            
             // ===============================
             // DEPÓSITOS
             // ===============================

@@ -23,7 +23,8 @@ class Compra extends Model
         'asunto_obra_automotor',
         'total',
         'observacion',
-        'total' 
+        'total',
+        'foto_factura',
     ];
     protected $attributes = [
     'estado' => true,

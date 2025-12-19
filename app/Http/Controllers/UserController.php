@@ -50,7 +50,7 @@ class UserController extends Controller
                     $query->orWhere('estado', $estadoBuscado);
                 }
             })
-            ->paginate(10);
+            ->paginate(10)->withQueryString();
 
         $roles = Role::all();
 

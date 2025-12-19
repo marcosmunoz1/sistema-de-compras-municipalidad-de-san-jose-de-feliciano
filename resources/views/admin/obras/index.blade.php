@@ -91,16 +91,11 @@
                                 <td class="text-center">{{ $obra->responsable ?? '-' }}</td>
 
                                 <td class="text-center">
-                                    <span
-                                        class="badge
-                                    @if ($obra->estado_obra === 'en_ejecucion') badge-info
-                                    @elseif($obra->estado_obra === 'finalizada') badge-success
-                                    @elseif($obra->estado_obra === 'cancelada') badge-error
-                                    @else badge-warning @endif
-                                ">
-                                        {{ ucfirst(str_replace('_', ' ', $obra->estado_obra)) }}
+                                    <span class="badge {{ $obra->estado_obra_badge }}">
+                                        {{ $obra->estado_obra_formateado }}
                                     </span>
                                 </td>
+
                                 <td class="text-center">
                                     <span class="badge {{ $obra->estado ? 'badge-success' : 'badge-error' }}">
                                         {{ $obra->estado ? 'Activo' : 'Inactivo' }}

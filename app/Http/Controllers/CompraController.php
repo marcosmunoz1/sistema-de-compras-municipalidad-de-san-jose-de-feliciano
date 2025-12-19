@@ -20,19 +20,43 @@ class CompraController extends Controller
      */
     public function index(Request $request)
     {
-           $search = $request->get('search');  
-            $query = Compra::withTrashed()->orderBy('id', 'desc');  
-            if ($search) {
-                $query->where('nr_orden', 'like', "%{$search}%")
-                      ->orWhere('fecha_orden', 'like', "%{$search}%")
-                      ->orWhere('estado_compra', 'like', "%{$search}%")
-                      ->orWhereHas('proveedor', function ($q) use ($search) {
-                        $q->where('nombre', 'LIKE', "%{$search}%");
-                    });
+        $search = $request->get('search');
+
+        $query = Compra::withTrashed()->orderBy('id', 'desc');
+
+        if ($search) {
+
+            // 🧠 Detectar si viene una fecha DD/MM/YYYY
+            $fechaFormateada = null;
+
+            if (preg_match('/^\d{2}\/\d{2}\/\d{4}$/', $search)) {
+                try {
+                    $fechaFormateada = \Carbon\Carbon::createFromFormat('d/m/Y', $search)
+                        ->format('Y-m-d');
+                } catch (\Exception $e) {
+                    $fechaFormateada = null;
+                }
             }
-            $compras = $query->paginate(10); 
-        return view('admin.compras.index', compact('compras'));  
+
+            $query->where(function ($q) use ($search, $fechaFormateada) {
+                $q->where('nr_orden', 'like', "%{$search}%")
+                ->orWhere('estado_compra', 'like', "%{$search}%")
+                ->orWhereHas('proveedor', function ($q) use ($search) {
+                    $q->where('nombre', 'LIKE', "%{$search}%");
+                });
+
+                // 🔍 Buscar por fecha SOLO si se pudo convertir
+                if ($fechaFormateada) {
+                    $q->orWhereDate('fecha_orden', $fechaFormateada);
+                }
+            });
+        }
+
+        $compras = $query->paginate(10)->withQueryString();
+
+        return view('admin.compras.index', compact('compras'));
     }
+
 
     /**
      * Show the form for creating a new resource.
@@ -187,6 +211,12 @@ class CompraController extends Controller
         $request->validate([
             'precios' => 'required|array',
             'precios.*' => 'nullable',
+            'foto_factura' => 'nullable|file|mimes:jpg,jpeg,png,webp,pdf|max:5120', // 5MB
+        ],
+        [
+            'foto_factura.file'  => 'El archivo de la factura no es válido.',
+            'foto_factura.mimes' => 'La factura debe ser una imagen (JPG, PNG, WEBP) o un archivo PDF.',
+            'foto_factura.max'   => 'La factura no puede superar los 5 MB.',
         ]);
 
         // 2. Buscar la compra
@@ -218,6 +248,13 @@ class CompraController extends Controller
 
             // Sumamos al total
             $total += $detalle->subtotal;
+        }
+        // Manejo de la foto o PDF de la factura
+        if ($request->hasFile('foto_factura')) {
+            $path = $request->file('foto_factura')
+                ->store('facturas', 'public');
+
+            $compra->foto_factura = $path;
         }
 
         // 4. Actualizamos el total de la compra

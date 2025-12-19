@@ -103,22 +103,10 @@
                         @enderror 
                 </div>
 
-                <!-- Presupuesto -->
-                <div class="form-control">
-                    <label class="label font-semibold">Presupuesto (Opcional)</label>
-                    <input type="number" name="presupuesto" value="{{ $obra->presupuesto }}"
-                        class="w-full h-10 rounded-md border border-base-300 bg-base-200 px-3 
-                                    text-sm focus:outline-none focus:ring-2 focus:ring-primary 
-                                    focus:border-primary transition"
-                        placeholder="Ej: 10000000">
-                        @error('presupuesto')
-                            <span class="text-red-600 mt-2 text-sm">{{ $message }}</span>
-                        @enderror 
-                </div>
 
                 <!-- Resolución -->
                 <div class="form-control">
-                    <label class="label font-semibold">Resolución o decreto</label>
+                    <label class="label font-semibold">Resolución o decreto (Opcional)</label>
                     <input type="text" name="resolucion_decreto"
                         value="{{ $obra->resolucion_decreto }}"
                         class="w-full h-10 rounded-md border border-base-300 bg-base-200 px-3 

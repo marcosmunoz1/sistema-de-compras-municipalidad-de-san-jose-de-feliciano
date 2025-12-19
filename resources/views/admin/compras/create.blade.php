@@ -162,7 +162,7 @@
                             @enderror
                         </div>
 
-                        <!-- entregar a -->
+                        <!-- Destino de la compra -->
                         <div class="space-y-2">
                             <label for="destino_tipo" class="text-sm font-medium">Destino de la compra</label>
                             <select id="destino_tipo" name="destino_tipo"
@@ -510,51 +510,51 @@
 @endsection
 @section('js')
    {{--  <script>
-    const oldDestinoId = "{{ old('destino_id') }}"; // <-- Blade se ejecuta acá
+        const oldDestinoId = "{{ old('destino_id') }}"; // <-- Blade se ejecuta acá
 
-    document.getElementById('destino_tipo').addEventListener('change', function() {
-        const tipo = this.value;
-        const destinoSelect = document.getElementById('destino_id');
+        document.getElementById('destino_tipo').addEventListener('change', function() {
+            const tipo = this.value;
+            const destinoSelect = document.getElementById('destino_id');
 
-        destinoSelect.innerHTML = '<option value="">Cargando...</option>';
+            destinoSelect.innerHTML = '<option value="">Cargando...</option>';
 
-        fetch('{{ url('api/destinos') }}/' + tipo)
-            .then(res => res.json())
-            .then(data => {
-                destinoSelect.innerHTML = '<option value="">Seleccione...</option>';
+            fetch('{{ url('api/destinos') }}/' + tipo)
+                .then(res => res.json())
+                .then(data => {
+                    destinoSelect.innerHTML = '<option value="">Seleccione...</option>';
 
-                data.forEach(dest => {
-                    destinoSelect.innerHTML += `
-                        <option value="${dest.id}" ${oldDestinoId == dest.id ? 'selected' : ''}>
-                            ${dest.nombre}
-                        </option>`;
+                    data.forEach(dest => {
+                        destinoSelect.innerHTML += `
+                            <option value="${dest.id}" ${oldDestinoId == dest.id ? 'selected' : ''}>
+                                ${dest.nombre}
+                            </option>`;
+                    });
                 });
-            });
-    });
-</script> --}}
- <script>
-    const oldDestinoId = "{{ old('destino_id') }}"; // <-- Blade se ejecuta acá
+        });
+    </script> --}}
+    <script>
+        const oldDestinoId = "{{ old('destino_id') }}"; // <-- Blade se ejecuta acá
 
-    document.getElementById('destino_tipo').addEventListener('change', function() {
-        const tipo = this.value;
-        const destinoSelect = document.getElementById('destino_id');
+        document.getElementById('destino_tipo').addEventListener('change', function() {
+            const tipo = this.value;
+            const destinoSelect = document.getElementById('destino_id');
 
-        destinoSelect.innerHTML = '<option value="">Cargando...</option>';
+            destinoSelect.innerHTML = '<option value="">Cargando...</option>';
 
-        fetch('{{ url('api/destinos') }}/' + tipo)
-            .then(res => res.json())
-            .then(data => {
-                destinoSelect.innerHTML = '<option value="">Seleccione...</option>';
+            fetch('{{ url('api/destinos') }}/' + tipo)
+                .then(res => res.json())
+                .then(data => {
+                    destinoSelect.innerHTML = '<option value="">Seleccione...</option>';
 
-                data.forEach(dest => {
-                    destinoSelect.innerHTML += `
-                        <option value="${dest.id}" ${oldDestinoId == dest.id ? 'selected' : ''}>
-                            ${dest.nombre}
-                        </option>`;
+                    data.forEach(dest => {
+                        destinoSelect.innerHTML += `
+                            <option value="${dest.id}" ${oldDestinoId == dest.id ? 'selected' : ''}>
+                                ${dest.nombre}
+                            </option>`;
+                    });
                 });
-            });
-    });
-</script> 
+        });
+    </script> 
     <script>
         $('#mitabla').DataTable({
             "pageLength": 5,
@@ -636,127 +636,127 @@
         }
 
     </style>
-<script>
-// Agregar producto a la tabla
-// Colocá esto arriba de agregarProducto(), en el mismo scope global
-function escapeHtml(text) {
-  if (text === null || text === undefined) return '';
-  return String(text)
-    .replaceAll('&','&amp;')
-    .replaceAll('<','&lt;')
-    .replaceAll('>','&gt;')
-    .replaceAll('"','&quot;')
-    .replaceAll("'",'&#39;');
-} 
-function agregarProducto(id, nombre) {
-    const tabla = document.getElementById('tablaProductos'); 
-    // ✅ Buscar si ya existe el producto
-    const filaExistente = [...tabla.querySelectorAll('tr')].find(fila => {
-        const inputHidden = fila.querySelector('input[type="hidden"][name="productos[]"]');
-        return inputHidden && inputHidden.value == id;
-    });
-
-    // ✅ Si ya existe: aumentar cantidad
-    if (filaExistente) {
-        const inputCant = filaExistente.querySelector('input[type="number"][name="cantidades[]"]');
-        inputCant.value = parseInt(inputCant.value) + 1;
-
-        // pequeño efecto visual
-        filaExistente.classList.add("bg-green-100");
-        setTimeout(() => filaExistente.classList.remove("bg-green-100"), 300);
-
-        actualizarTotales();
-        return; // ✅ NO crear nueva fila
-    }
-
-    // ✅ Si NO existe crear la fila con TUS ESTILOS
-    const fila = document.createElement('tr');
-    fila.setAttribute('data-slot','table-row'); 
-    fila.className = 'hover:bg-muted/50 transition-colors';
-
-    fila.innerHTML = `
-        <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap">
-        <div class="flex flex-col">
-            <span class="font-medium text-sm truncate">${escapeHtml(nombre)}</span>
-            <small class="text-xs text-gray-500">ID: ${id}</small>
-            <input type="hidden" name="productos[]" value="${id}">
-        </div>
-        </td>
-
-        <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap"> 
-        <input type="number" name="cantidades[]" min="1" value="1" required
-            class="w-full h-10 rounded-md border border-base-300 bg-base-200
-                        px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
-                        focus:border-primary transition"
-            oninput="actualizarTotales()">
-        </td>
-
-        <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap">
-        <button type="button" class="inline-flex items-center justify-center text-sm font-medium h-8 rounded-md gap-1.5 px-3 text-red-600"
-            onclick="eliminarFila(this)">
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
-            stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trash-2">
-            <path d="M10 11v6"></path>
-            <path d="M14 11v6"></path>
-            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"></path>
-            <path d="M3 6h18"></path>
-            <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-            </svg>
-        </button>
-        </td>
-    `;
-
-    tabla.appendChild(fila);
-
-    // ✅ Mostrar tabla y resumen
-    document.getElementById('tablaItems').classList.remove('hidden');
-    document.getElementById('mensajeVacio').classList.add('hidden');
-    document.getElementById('resumenItems').classList.remove('hidden');
-
-    actualizarTotales();
-}
-
-
-        // Eliminar fila (botón)
-        function eliminarFila(btn) {
-            const tr = btn.closest('tr');
-            if (!tr) return;
-            tr.remove();
-            actualizarTotales();
-
-            // si ya no hay filas, ocultar tabla y mostrar mensaje
-            const tabla = document.getElementById('tablaProductos');
-            if (!tabla.querySelector('tr')) {
-                document.getElementById('tablaItems').classList.add('hidden');
-                document.getElementById('mensajeVacio').classList.remove('hidden');
-                document.getElementById('resumenItems').classList.add('hidden');
-            }
-        }
-
-        // Recalcula totales: total items (filas) y suma de cantidades
-        function actualizarTotales() {
-            const tabla = document.getElementById('tablaProductos');
-            const filas = tabla.querySelectorAll('tr');
-            const totalItems = filas.length;
-            let cantidadTotal = 0;
-
-            filas.forEach(fila => {
-                const inputCant = fila.querySelector('input[type="number"][name="cantidades[]"]');
-                if (inputCant) {
-                    const val = parseInt(inputCant.value) || 0;
-                    cantidadTotal += val;
-                }
+    <script>
+        // Agregar producto a la tabla
+        // Colocá esto arriba de agregarProducto(), en el mismo scope global
+        function escapeHtml(text) {
+        if (text === null || text === undefined) return '';
+        return String(text)
+            .replaceAll('&','&amp;')
+            .replaceAll('<','&lt;')
+            .replaceAll('>','&gt;')
+            .replaceAll('"','&quot;')
+            .replaceAll("'",'&#39;');
+        } 
+        function agregarProducto(id, nombre) {
+            const tabla = document.getElementById('tablaProductos'); 
+            // ✅ Buscar si ya existe el producto
+            const filaExistente = [...tabla.querySelectorAll('tr')].find(fila => {
+                const inputHidden = fila.querySelector('input[type="hidden"][name="productos[]"]');
+                return inputHidden && inputHidden.value == id;
             });
 
-            document.getElementById('totalItems').textContent = totalItems;
-            document.getElementById('cantidadTotal').textContent = cantidadTotal;
+            // ✅ Si ya existe: aumentar cantidad
+            if (filaExistente) {
+                const inputCant = filaExistente.querySelector('input[type="number"][name="cantidades[]"]');
+                inputCant.value = parseInt(inputCant.value) + 1;
+
+                // pequeño efecto visual
+                filaExistente.classList.add("bg-green-100");
+                setTimeout(() => filaExistente.classList.remove("bg-green-100"), 300);
+
+                actualizarTotales();
+                return; // ✅ NO crear nueva fila
+            }
+
+            // ✅ Si NO existe crear la fila con TUS ESTILOS
+            const fila = document.createElement('tr');
+            fila.setAttribute('data-slot','table-row'); 
+            fila.className = 'hover:bg-muted/50 transition-colors';
+
+            fila.innerHTML = `
+                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap">
+                <div class="flex flex-col">
+                    <span class="font-medium text-sm truncate">${escapeHtml(nombre)}</span>
+                    <small class="text-xs text-gray-500">ID: ${id}</small>
+                    <input type="hidden" name="productos[]" value="${id}">
+                </div>
+                </td>
+
+                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap"> 
+                <input type="number" name="cantidades[]" min="1" value="1" required
+                    class="w-full h-10 rounded-md border border-base-300 bg-base-200
+                                px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
+                                focus:border-primary transition"
+                    oninput="actualizarTotales()">
+                </td>
+
+                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap">
+                <button type="button" class="inline-flex items-center justify-center text-sm font-medium h-8 rounded-md gap-1.5 px-3 text-red-600"
+                    onclick="eliminarFila(this)">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trash-2">
+                    <path d="M10 11v6"></path>
+                    <path d="M14 11v6"></path>
+                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"></path>
+                    <path d="M3 6h18"></path>
+                    <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                    </svg>
+                </button>
+                </td>
+            `;
+
+            tabla.appendChild(fila);
+
+            // ✅ Mostrar tabla y resumen
+            document.getElementById('tablaItems').classList.remove('hidden');
+            document.getElementById('mensajeVacio').classList.add('hidden');
+            document.getElementById('resumenItems').classList.remove('hidden');
+
+            actualizarTotales();
         }
 
-// Pequeña función para escapar texto (evita inyección al insertar nombre)
-function escapeHtml(text) {
-  if (!text) return '';
-  return text.replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;').replaceAll("'",'&#39;');
-}
-</script>
+
+                // Eliminar fila (botón)
+                function eliminarFila(btn) {
+                    const tr = btn.closest('tr');
+                    if (!tr) return;
+                    tr.remove();
+                    actualizarTotales();
+
+                    // si ya no hay filas, ocultar tabla y mostrar mensaje
+                    const tabla = document.getElementById('tablaProductos');
+                    if (!tabla.querySelector('tr')) {
+                        document.getElementById('tablaItems').classList.add('hidden');
+                        document.getElementById('mensajeVacio').classList.remove('hidden');
+                        document.getElementById('resumenItems').classList.add('hidden');
+                    }
+                }
+
+                // Recalcula totales: total items (filas) y suma de cantidades
+                function actualizarTotales() {
+                    const tabla = document.getElementById('tablaProductos');
+                    const filas = tabla.querySelectorAll('tr');
+                    const totalItems = filas.length;
+                    let cantidadTotal = 0;
+
+                    filas.forEach(fila => {
+                        const inputCant = fila.querySelector('input[type="number"][name="cantidades[]"]');
+                        if (inputCant) {
+                            const val = parseInt(inputCant.value) || 0;
+                            cantidadTotal += val;
+                        }
+                    });
+
+                    document.getElementById('totalItems').textContent = totalItems;
+                    document.getElementById('cantidadTotal').textContent = cantidadTotal;
+                }
+
+        // Pequeña función para escapar texto (evita inyección al insertar nombre)
+        function escapeHtml(text) {
+        if (!text) return '';
+        return text.replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;').replaceAll("'",'&#39;');
+        }
+    </script>
  
 @endsection 

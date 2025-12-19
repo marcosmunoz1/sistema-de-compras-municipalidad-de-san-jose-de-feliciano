@@ -170,21 +170,13 @@ Route::get('/api/destinos/{tipo}', function ($tipo) {
     return $modelo::select('id', "$campo as nombre")->get();
 });
 
-Route::get('/api/destinos/combustible/{tipo}', function($tipo) { 
+Route::get('/api/destinos/{tipo}', function ($tipo) {
 
     $map = [
-        'vehiculo' => [
-            'model'  => \App\Models\Vehiculo::class,
-            'fields' => ['id', 'patente', 'marca', 'modelo', 'anio', 'color', 'tipo'],
-        ],
-        'equipo'   => [
-            'model'  => \App\Models\Equipo::class,
-            'fields' => ['id','nombre', 'tipo_equipo', 'marca', 'modelo', 'numero_serie'],
-        ],
-        'destino'  => [
-            'model'  => \App\Models\Destino::class,
-            'fields' => ['id', 'nombre', 'tipo', 'descripcion'],
-        ],
+        'deposito' => ['model' => \App\Models\Deposito::class, 'campo' => 'nombre'],
+        'obra'     => ['model' => \App\Models\Obra::class,     'campo' => 'nombre'],
+        'vehiculo' => ['model' => \App\Models\Vehiculo::class, 'campo' => 'patente'],
+        'equipo'   => ['model' => \App\Models\Equipo::class,   'campo' => 'nombre'],
     ];
 
     if (!isset($map[$tipo])) {
@@ -192,10 +184,18 @@ Route::get('/api/destinos/combustible/{tipo}', function($tipo) {
     }
 
     $modelo = $map[$tipo]['model'];
-    $fields = $map[$tipo]['fields']; 
+    $campo  = $map[$tipo]['campo'];
 
-    return $modelo::select($fields)->get();
+    $query = $modelo::select('id', "$campo as nombre");
+
+    // 🔎 Filtro SOLO para obras
+    if ($tipo === 'obra') {
+        $query->where('estado_obra', 'en_ejecucion');
+    }
+
+    return $query->get();
 });
+
 
 //Rutas para los selects de movimientos
 Route::get('origen/listar/{tipo}', [App\Http\Controllers\OrigenController::class, 'listar'])->name('origen.listar');

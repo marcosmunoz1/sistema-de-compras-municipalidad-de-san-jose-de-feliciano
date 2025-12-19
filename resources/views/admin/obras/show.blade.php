@@ -72,7 +72,7 @@
                         gap-1 [&amp;&gt;svg]:pointer-events-none focus-visible:border-ring focus-visible:ring-ring/50 
                         focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 
                         aria-invalid:border-destructive transition-[color,box-shadow] overflow-hidden border-transparent [a&amp;]:hover:bg-primary/90 
-                        bg-green-100 text-green-700 border-0">{{ $obra->estado_obra }}</span>
+                        bg-green-100 text-green-700 border-0">{{ $obra->estado_obra_formateado }}</span>
                         <span data-slot="badge"
                             class="inline-flex items-center justify-center 
                        rounded-md border px-2 py-0.5 text-xs font-medium w-fit whitespace-nowrap 

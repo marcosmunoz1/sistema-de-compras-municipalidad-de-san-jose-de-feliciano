@@ -19,7 +19,7 @@ class ProveedorController extends Controller
                   ->orWhere('razon_social', 'like', "%{$search}%")
                   ->orWhere('cuit', 'like', "%{$search}%"); 
         }
-        $proveedores = $query->paginate(2);  
+        $proveedores = $query->paginate(5)->withQueryString();
         return view('admin.proveedores.index', compact('proveedores')); 
     }
 

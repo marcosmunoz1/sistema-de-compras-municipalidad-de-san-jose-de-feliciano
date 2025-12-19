@@ -159,13 +159,15 @@
                             disabled>{{ $compra->observacion }}</textarea>
                     </div>
                 </div>
+                
+
             </div>
         </div>
     </div>
 
     <!-- Otra seccion -->
     
-    <form action="{{ route('compras.update', $compra->id) }}" method="POST">
+    <form action="{{ route('compras.update', $compra->id) }}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('PUT')
         <div data-slot="card" class="card bg-base-100 shadow-xl p-4 mt-4">
@@ -174,7 +176,7 @@
                 <h4 class="text-1xl font-semibold">Datos de la compra</h4>
                 <p class="text-muted-foreground"></p>
             </div>
-
+            
             <div data-slot="card-content" class="px-6 [&:last-child]:pb-6">
                 <div class="grid gap-4">
                     <table class="table table-zebra w-full">
@@ -239,9 +241,31 @@
                                 </td>
                             </tr>
                         </tfoot>
-
                     </table>
                 </div>
+                <div class="form-control w-full">
+                    <label class="label">
+                        <span class="label-text font-medium">
+                            Factura (imagen o PDF)
+                        </span>
+                    </label>
+
+                    <input
+                        type="file"
+                        name="foto_factura"
+                        accept="image/*,application/pdf"
+                        class="file-input file-input-bordered file-input-primary w-full"
+                    />
+
+                    <label class="label">
+                        <span class="label-text-alt text-xs opacity-70">
+                            Formatos permitidos: JPG, PNG, WEBP o PDF
+                        </span>
+                    </label>
+                </div>
+                @error('foto_factura')
+                    <small class="text-red-500 error-message">{{ $message }}</small>
+                @enderror
             </div>
         </div>
 

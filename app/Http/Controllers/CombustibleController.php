@@ -33,7 +33,7 @@ class CombustibleController extends Controller
                         $q->where('marca', 'LIKE', "%{$search}%");
                     });
             }
-            $combustibles = $query->paginate(2); 
+            $combustibles = $query->paginate(10); 
         return view('admin.combustibles.index', compact('combustibles', 'tipos_combustibles', 'totalMonto', 'totalLitros','totalCargas')); 
     }
 

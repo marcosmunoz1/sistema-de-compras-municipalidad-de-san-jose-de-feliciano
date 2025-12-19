@@ -41,9 +41,6 @@ return new class extends Migration
                 'cancelada'
             ])->default('planificada');
 
-            // Presupuesto
-            $table->decimal('presupuesto', 15, 2)->nullable();
-
             // Notas o aclaraciones
             $table->text('observaciones')->nullable();
 
