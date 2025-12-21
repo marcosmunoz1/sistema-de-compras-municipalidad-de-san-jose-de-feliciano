@@ -12,6 +12,7 @@ use App\Models\Proveedor;
 use App\Models\Vehiculo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class MovimientoController extends Controller
 {
@@ -152,7 +153,6 @@ class MovimientoController extends Controller
      */
     public function store(Request $request)
     {
-        //return response()->json($request->all());
         // 1) Filtrar productos seleccionados (sólo los que tienen cantidad > 0)
         $productosFiltrados = collect($request->input('productos', []))
             ->filter(fn($p) => isset($p['cantidad']) && $p['cantidad'] !== '' && floatval($p['cantidad']) > 0)
@@ -162,14 +162,15 @@ class MovimientoController extends Controller
         // Reemplazo el arreglo en el request para validar y procesar luego
         $request->merge(['productos' => $productosFiltrados]);
 
-        // 2) Validación
+        // 2) Validación ✅ CORREGIDA
         $request->validate([
             'tipo' => 'required|in:consumo,transferencia',
             'origen_tipo' => 'required|string',
             'origen_id' => 'required|integer',
             'fecha' => 'required|date',
             'productos' => 'required|array|min:1',
-            'productos.*.id' => 'required|integer|exists:productos,id',
+            'productos.*.pivot_id' => 'nullable|integer', // ✅ Agregado
+            'productos.*.producto_id' => 'required|integer|exists:productos,id', // ✅ Cambiado de 'id' a 'producto_id'
             'productos.*.cantidad' => 'required|numeric|min:0.0001',
             // destino solo si transferencia
             'destino_tipo' => 'required_if:tipo,transferencia',
@@ -191,17 +192,22 @@ class MovimientoController extends Controller
                 'observacion'   => $request->observacion,
             ]);
 
-            // 4) Procesar cada producto (ya todos tienen 'cantidad')
+            // 4) Procesar cada producto
             foreach ($request->productos as $item) {
-
-                $productoId = intval($item['id']);
+                $pivotId = $item['pivot_id'] ?? null;
+                $productoId = intval($item['producto_id']); // ✅ Cambiado de 'id' a 'producto_id'
                 $cantidadMovida = floatval($item['cantidad']);
 
                 if ($cantidadMovida <= 0) {
                     continue;
                 }
 
-                // obtener meta info de origen
+                // ✅ Validar que el pivot_id esté presente
+                if (!$pivotId) {
+                    throw new \Exception("Falta el identificador del registro pivot");
+                }
+
+                // Obtener origen
                 $origenInfo = modeloDestino($request->origen_tipo);
                 if (!$origenInfo) {
                     throw new \Exception("Tipo de origen no válido: {$request->origen_tipo}");
@@ -212,34 +218,51 @@ class MovimientoController extends Controller
                     throw new \Exception("Origen no encontrado");
                 }
 
-                // Buscar pivot origen
-                $pivotOrigen = $origenModel->productos()->where('producto_id', $productoId)->first();
+                // ✅ Buscar el pivot específico por su ID
+                $pivotOrigen = $origenModel->productos()
+                    ->wherePivot('id', $pivotId)
+                    ->where('producto_id', $productoId)
+                    ->first();
+                
                 if (!$pivotOrigen) {
-                    throw new \Exception("El producto no existe en el origen");
+                    throw new \Exception("El registro específico del producto no existe en el origen");
                 }
 
-                // ***********************************
-                // 🔻 4.a) RESTAR DEL STOCK DEL ORIGEN
-                // ***********************************
-                $nuevoStock = floatval($pivotOrigen->pivot->stock) - $cantidadMovida;
+                $cantidadAsignadaActual = floatval($pivotOrigen->pivot->cantidad_asignada);
+                $stockActual = floatval($pivotOrigen->pivot->stock);
+                $detalleCompraId = $pivotOrigen->pivot->detalle_compra_id;
 
-                if ($nuevoStock < 0) {
-                    throw new \Exception("Stock insuficiente en el origen");
+                // Validar que no se mueva más de lo asignado
+                if ($cantidadMovida > $cantidadAsignadaActual) {
+                    throw new \Exception("No puedes transferir más de lo asignado originalmente para el producto: {$pivotOrigen->nombre}");
                 }
 
-                if ($nuevoStock <= 0) {
-                    // eliminar fila completa si el stock llega a 0
-                    $origenModel->productos()->detach($productoId);
+                $nuevaCantidadAsignada = $cantidadAsignadaActual - $cantidadMovida;
+                
+                // Calcular cuánto stock mover (proporcionalmente)
+                $proporcionStock = $cantidadAsignadaActual > 0 
+                    ? ($stockActual / $cantidadAsignadaActual) 
+                    : 1;
+                $stockAMover = $cantidadMovida * $proporcionStock;
+                $nuevoStock = $stockActual - $stockAMover;
+
+                // Actualizar origen
+                if ($nuevaCantidadAsignada <= 0.001) { // ✅ Tolerancia para decimales
+                    // Transferencia total → Eliminar del origen
+                    $origenModel->productos()->wherePivot('id', $pivotId)->detach(); // ✅ Detach por pivot_id específico
                 } else {
-                    $pivotOrigen->pivot->stock = $nuevoStock;
-                    $pivotOrigen->pivot->save();
+                    // Transferencia parcial → Actualizar ambos campos
+                    DB::table($origenInfo['table'])
+                        ->where('id', $pivotId)
+                        ->update([
+                            'cantidad_asignada' => $nuevaCantidadAsignada,
+                            'stock' => max(0, $nuevoStock),
+                            'updated_at' => now()
+                        ]);
                 }
 
-                // ***********************************
-                // 🔻 4.b) SI ES TRANSFERENCIA → CREAR FILA NUEVA EN DESTINO
-                // ***********************************
+                // Transferencia al destino
                 if ($request->tipo === 'transferencia') {
-
                     $destinoInfo = modeloDestino($request->destino_tipo);
                     if (!$destinoInfo) {
                         throw new \Exception("Tipo de destino no válido");
@@ -250,39 +273,67 @@ class MovimientoController extends Controller
                         throw new \Exception("Destino no encontrado");
                     }
 
-                    // mantener mismo detalle_compra_id del origen
-                    $detalleCompraId = $pivotOrigen->pivot->detalle_compra_id ?? null;
+                    // Buscar si ya existe el mismo producto de la misma compra
+                    $pivotDestino = $destinoModel->productos()
+                        ->where('producto_id', $productoId)
+                        ->wherePivot('detalle_compra_id', $detalleCompraId) // ✅ Especificar wherePivot
+                        ->first();
 
-                    // SIEMPRE crear nueva fila de pivot
-                    $destinoModel->productos()->attach($productoId, [
-                        'cantidad_asignada' => $cantidadMovida,  // historial
-                        'stock' => $cantidadMovida,              // disponible inicial
-                        'detalle_compra_id' => $detalleCompraId,
-                        'created_at' => now(),
-                        'updated_at' => now()
-                    ]);
+                    if ($pivotDestino) {
+                        // Ya existe → Sumar cantidad_asignada y stock
+                        $pivotDestinoId = $pivotDestino->pivot->id;
+                        
+                        DB::table($destinoInfo['table'])
+                            ->where('id', $pivotDestinoId)
+                            ->increment('cantidad_asignada', $cantidadMovida);
+                        
+                        DB::table($destinoInfo['table'])
+                            ->where('id', $pivotDestinoId)
+                            ->increment('stock', $stockAMover);
+                            
+                        DB::table($destinoInfo['table'])
+                            ->where('id', $pivotDestinoId)
+                            ->update(['updated_at' => now()]);
+                    } else {
+                        // No existe → Crear nueva fila
+                        $destinoModel->productos()->attach($productoId, [
+                            'cantidad_asignada' => $cantidadMovida,
+                            'stock' => $stockAMover,
+                            'detalle_compra_id' => $detalleCompraId,
+                            'created_at' => now(),
+                            'updated_at' => now()
+                        ]);
+                    }
                 }
 
-                // ***********************************
-                // 🔻 5) Registrar detalle del movimiento
-                // ***********************************
+                // Registrar detalle del movimiento
                 MovimientoDetalle::create([
                     'movimiento_id' => $movimiento->id,
                     'producto_id'   => $productoId,
                     'cantidad'      => $cantidadMovida,
+                    'detalle_compra_id' => $detalleCompraId,
                 ]);
             }
-
 
             DB::commit();
 
             return redirect()->route('movimientos.index')
                 ->with('mensaje', 'Movimiento registrado exitosamente.')
                 ->with('icono', 'success');
+                
         } catch (\Throwable $e) {
             DB::rollBack();
-            // para debug en desarrollo: throw $e;
-            return back()->with('error', $e->getMessage());
+            
+            // ✅ Log para debugging
+            Log::error('Error en movimiento: ' . $e->getMessage(), [
+                'request' => $request->all(),
+                'trace' => $e->getTraceAsString()
+            ]);
+            
+            return back()
+                ->withInput()
+                ->with('error', 'Error al procesar el movimiento: ' . $e->getMessage())
+                ->with('icono', 'error');
         }
     }
 

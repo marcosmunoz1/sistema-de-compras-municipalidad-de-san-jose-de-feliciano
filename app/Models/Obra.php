@@ -41,7 +41,7 @@ class Obra extends Model
     {
         return $this->belongsToMany(Producto::class)
             ->using(ObraProducto::class)
-            ->withPivot(['cantidad_asignada',
+            ->withPivot(['id','cantidad_asignada',
                         'detalle_compra_id',
                         'stock'])
             ->withTimestamps();

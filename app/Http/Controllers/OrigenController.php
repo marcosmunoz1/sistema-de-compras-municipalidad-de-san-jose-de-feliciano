@@ -60,12 +60,9 @@ class OrigenController extends Controller
         return response()->json($items);
     }
 
-    // Devuelve productos asignados al elemento (usando relaciones y pivote)
-   public function productos($tipo, $id)
+   // Devuelve productos asignados al elemento (usando relaciones y pivote)
+    public function productos($tipo, $id)
     {
-        // SIEMPRE usamos stock para mostrar lo que se puede mover
-        $campoPivot = 'stock';
-
         $modelClass = match ($tipo) {
             'obra' => \App\Models\Obra::class,
             'deposito' => \App\Models\Deposito::class,
@@ -77,19 +74,25 @@ class OrigenController extends Controller
             return response()->json([], 400);
         }
 
-        $elemento = $modelClass::with(['productos'])->find($id);
+        // ✅ Cargar productos CON los campos del pivot necesarios
+        $elemento = $modelClass::with(['productos' => function ($query) {
+            $query->withPivot('id', 'cantidad_asignada', 'stock', 'detalle_compra_id', 'created_at');
+        }])->find($id);
 
         if (!$elemento) {
             return response()->json([], 404);
         }
 
-        $productos = $elemento->productos->map(function ($p) use ($campoPivot) {
+        // ✅ Mapear CADA registro del pivot como un item separado (no agrupar)
+        $productos = $elemento->productos->map(function ($p) {
             return [
-                'id' => $p->id,
+                'pivot_id' => $p->pivot->id ?? null,  // ← ID único del pivot
+                'producto_id' => $p->id,
                 'nombre' => $p->nombre,
-                'stock' => $p->pivot->{$campoPivot} ?? 0,
                 'cantidad_asignada' => $p->pivot->cantidad_asignada ?? 0,
+                'stock' => $p->pivot->stock ?? 0,
                 'detalle_compra_id' => $p->pivot->detalle_compra_id ?? null,
+                'fecha_asignacion' => $p->pivot->created_at ?? null, // ← Para mostrar al usuario
             ];
         })->values();
 

@@ -796,22 +796,17 @@
                 });
             }
 
-            // --- AGRUPADOR DE PRODUCTOS (se mantiene igual) ---
-            function agruparProductos(lista) {
-                const mapa = {};
-
-                lista.forEach(item => {
-                    if (!mapa[item.id]) {
-                        mapa[item.id] = {
-                            id: item.id,
-                            nombre: item.nombre,
-                            stock: 0
-                        };
-                    }
-                    mapa[item.id].stock += parseFloat(item.stock);
-                });
-
-                return Object.values(mapa);
+            function prepararProductos(lista) {
+                // NO agrupar, devolver tal cual vienen del backend
+                return lista.map(item => ({
+                    pivot_id: item.pivot_id,
+                    producto_id: item.producto_id,
+                    nombre: item.nombre,
+                    cantidad_asignada: parseFloat(item.cantidad_asignada || 0),
+                    stock: parseFloat(item.stock || 0),
+                    detalle_compra_id: item.detalle_compra_id,
+                    fecha_asignacion: item.fecha_asignacion
+                }));
             }
             // ---------------------------------------------------
 
@@ -854,7 +849,7 @@
             const tipoDestinoInicial = tipoShortDesdeClase(destinoTipoSelect ? destinoTipoSelect.value : null);
             prefetchListado(tipoDestinoInicial, destinoCachePorTipo, destinoPrefetchEnCursoPorTipo);
 
-            function cargarProductosDesdeOrigen(id) {
+           function cargarProductosDesdeOrigen(id) {
                 const tipo = tipoSelect ? tipoSelect.value : "";
                 if (!id || !tipo || !tbody) return;
 
@@ -867,54 +862,72 @@
                 fetch(`${baseUrlProductos}/${tipoShort}/${id}/productos`)
                     .then(r => r.json())
                     .then(productos => {
-
-                        const productosAgrupados = agruparProductos(productos);
+                        const productosPreparados = prepararProductos(productos);
 
                         tbody.innerHTML = "";
                         let nr = 1;
 
-                        productosAgrupados.forEach(p => {
-
+                        productosPreparados.forEach((p, index) => {
                             const stock = parseFloat(p.stock);
+                            const cantidadAsignada = parseFloat(p.cantidad_asignada);
+                            
+                            // Mostrar info adicional si hay múltiples del mismo producto
+                            const infoExtra = p.fecha_asignacion 
+                                ? `<small class="text-muted d-block">Asignado: ${p.fecha_asignacion}</small>` 
+                                : '';
 
                             tbody.innerHTML += `
-                        <tr>
-                            <td class="text-center">${nr++}</td>
-                            <td class="text-center">${p.nombre}</td>
+                                <tr>
+                                    <td class="text-center">${nr++}</td>
+                                    <td class="text-center">
+                                        ${p.nombre}
+                                        ${infoExtra}
+                                    </td>
 
-                            <!-- STOCK -->
-                            <td class="text-center">
-                                <span class="badge badge-info">${stock}</span>
-                            </td>
+                                    <!-- CANTIDAD ASIGNADA -->
+                                    <td class="text-center">
+                                        <span class="badge badge-secondary">${cantidadAsignada}</span>
+                                    </td>
 
-                            <!-- CANTIDAD A MOVER -->
-                            <td class="text-center">
-                                <!-- Hidden para mandar array con los productos seleccionados -->
-                                <input type="hidden" name="productos[${p.id}][id]" value="${p.id}">
-                                <input 
-                                    type="number"
-                                    class="form-control cantidad-mover"
-                                    name="productos[${p.id}][cantidad]"
-                                    data-id="${p.id}"
-                                    disabled
-                                    min="1"
-                                    max="${stock}"
-                                    placeholder="0"
-                                >
-                            </td>
+                                    <!-- STOCK DISPONIBLE -->
+                                    <td class="text-center">
+                                        <span class="badge badge-info">${stock}</span>
+                                    </td>
 
-                            <!-- BOTÓN -->
-                            <td class="text-center">
-                                <button
-                                    type="button" 
-                                    class="btn btn-primary seleccionar-producto"
-                                    data-id="${p.id}"
-                                    data-stock="${p.stock}">
-                                    Seleccionar
-                                </button>
-                            </td>
-                        </tr>
-                    `;
+                                    <!-- CANTIDAD A MOVER -->
+                                    <td class="text-center">
+                                        <!-- ✅ Usar index único, no producto_id -->
+                                        <input type="hidden" name="productos[${index}][pivot_id]" value="${p.pivot_id}">
+                                        <input type="hidden" name="productos[${index}][producto_id]" value="${p.producto_id}">
+                                        
+                                        <input 
+                                            type="number"
+                                            class="form-control cantidad-mover"
+                                            name="productos[${index}][cantidad]"
+                                            data-index="${index}"
+                                            data-pivot-id="${p.pivot_id}"
+                                            disabled
+                                            min="0.01"
+                                            max="${cantidadAsignada}"
+                                            step="0.01"
+                                            placeholder="0"
+                                        >
+                                    </td>
+
+                                    <!-- BOTÓN -->
+                                    <td class="text-center">
+                                        <button
+                                            type="button" 
+                                            class="btn btn-primary seleccionar-producto"
+                                            data-index="${index}"
+                                            data-pivot-id="${p.pivot_id}"
+                                            data-cantidad-asignada="${cantidadAsignada}"
+                                            data-stock="${stock}">
+                                            Seleccionar
+                                        </button>
+                                    </td>
+                                </tr>
+                            `;
                         });
 
                         activarSeleccion();
@@ -926,37 +939,80 @@
             function activarSeleccion() {
                 document.querySelectorAll(".seleccionar-producto").forEach(btn => {
                     btn.addEventListener("click", function() {
-                        const id = this.dataset.id;
+                        // ✅ Usar data-index en lugar de data-id
+                        const index = this.dataset.index;
+                        const cantidadAsignada = parseFloat(this.dataset.cantidadAsignada);
 
+                        // ✅ Buscar por data-index
                         const input = document.querySelector(
-                            `.cantidad-mover[data-id="${id}"]`
+                            `.cantidad-mover[data-index="${index}"]`
                         );
 
-                        input.disabled = false;
-                        input.focus();
-
-                        this.closest("tr").classList.add("table-success");
+                        if (input) {
+                            input.disabled = false;
+                            input.focus();
+                            
+                            // ✅ Actualizar el max con cantidad_asignada (no stock)
+                            input.setAttribute('max', cantidadAsignada);
+                            
+                            this.closest("tr").classList.add("table-success");
+                            
+                            // Opcional: Cambiar texto del botón
+                            this.textContent = "Seleccionado ✓";
+                            this.classList.remove("btn-primary");
+                            this.classList.add("btn-success");
+                            this.disabled = true;
+                        }
                     });
                 });
             }
-            // --- VALIDAR QUE NO SUPERE EL STOCK ---
+
+            // --- VALIDAR QUE NO SUPERE LA CANTIDAD ASIGNADA ---
             document.addEventListener("input", function(e) {
                 if (e.target.classList.contains("cantidad-mover")) {
-
                     let input = e.target;
-                    let stockMax = parseFloat(input.getAttribute("max"));
+                    let cantidadMax = parseFloat(input.getAttribute("max"));
                     let valor = parseFloat(input.value);
 
-                    if (isNaN(valor) || valor < 1) {
+                    // Permitir valores decimales
+                    if (isNaN(valor) || valor <= 0) {
                         input.value = "";
                         return;
                     }
 
-                    if (valor > stockMax) {
-                        input.value = stockMax;
+                    // No permitir más de la cantidad asignada
+                    if (valor > cantidadMax) {
+                        input.value = cantidadMax;
+                        
+                        // ✅ Mostrar alerta visual
+                        input.classList.add("is-invalid");
+                        setTimeout(() => {
+                            input.classList.remove("is-invalid");
+                        }, 2000);
                     }
                 }
             });
+
+            // --- OPCIONAL: Permitir deseleccionar productos ---
+            function permitirDeseleccionar() {
+                document.querySelectorAll(".seleccionar-producto").forEach(btn => {
+                    btn.addEventListener("dblclick", function() {
+                        const index = this.dataset.index;
+                        const input = document.querySelector(`.cantidad-mover[data-index="${index}"]`);
+                        
+                        if (input) {
+                            input.disabled = true;
+                            input.value = "";
+                            this.closest("tr").classList.remove("table-success");
+                            
+                            this.textContent = "Seleccionar";
+                            this.classList.remove("btn-success");
+                            this.classList.add("btn-primary");
+                            this.disabled = false;
+                        }
+                    });
+                });
+            }
 
 
         });
