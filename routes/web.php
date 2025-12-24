@@ -201,6 +201,15 @@ Route::get('/api/destinos/{tipo}', function ($tipo) {
 Route::get('origen/listar/{tipo}', [App\Http\Controllers\OrigenController::class, 'listar'])->name('origen.listar');
 Route::get('origen/{tipo}/{id}/productos', [App\Http\Controllers\OrigenController::class, 'productos'])->name('origen.productos');
 
+//Rutas para equipos
+Route::get('/admin/equipos', [App\Http\Controllers\EquipoController::class, 'index'])->name('equipos.index')->middleware('auth');
+Route::get('/admin/equipos/create', [App\Http\Controllers\EquipoController::class, 'create'])->name('equipos.create')->middleware('auth');
+Route::post('/admin/equipos/store', [App\Http\Controllers\EquipoController::class, 'store'])->name('equipos.store')->middleware('auth');
+Route::get('/admin/equipos/{id}/edit', [App\Http\Controllers\EquipoController::class, 'edit'])->name('equipos.edit')->middleware('auth');
+Route::put('/admin/equipos/{id}', [App\Http\Controllers\EquipoController::class, 'update'])->name('equipos.update')->middleware('auth');
+Route::get('/admin/equipos/{id}', [App\Http\Controllers\EquipoController::class, 'show'])->name('equipos.show')->middleware('auth');
+Route::delete('/admin/equipos/{id}', [App\Http\Controllers\EquipoController::class, 'destroy'])->name('equipos.destroy')->middleware('auth');
+Route::put('admin/equipos/{id}/restore', [App\Http\Controllers\EquipoController::class, 'restore'])->name('equipos.restore')->middleware('auth');
 
 
 

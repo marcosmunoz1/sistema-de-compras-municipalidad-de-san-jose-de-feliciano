@@ -2,13 +2,14 @@
 
 namespace App\Models;
 
+use App\Traits\Catalogable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Vehiculo extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory, SoftDeletes, Catalogable;
     protected $table = 'vehiculos';
 
     protected $fillable = [
@@ -22,7 +23,9 @@ class Vehiculo extends Model
         'chasis',
         'motor',
         'tipo_combustible_id',
-        'estado', 
+        'estado',
+        'area_id',
+        'catalogacion',
     ];
 
     public function productos()
@@ -32,10 +35,6 @@ class Vehiculo extends Model
                     ->using(ProductoVehiculo::class)
                     ->withTimestamps();
     }
-
-
-
-
     public function combustible()
     {
       return $this->hasMany(Combustible::class);
@@ -54,5 +53,9 @@ class Vehiculo extends Model
     public function tipo_combustible()
     {
         return $this->belongsTo(Tipo_combustibles::class);  
-    } 
+    }
+    public function area()
+    {
+        return $this->belongsTo(Area::class);
+    }
 }

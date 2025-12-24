@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Area;
 use App\Models\Vehiculo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -40,12 +41,17 @@ class VehiculoController extends Controller
                     ->orWhere('color', 'LIKE', "%{$search}%")
                     ->orWhere('anio', 'LIKE', "%{$search}%")
                     ->orWhere('chasis', 'LIKE', "%{$search}%")
-                    ->orWhere('motor', 'LIKE', "%{$search}%");
+                    ->orWhere('motor', 'LIKE', "%{$search}%")
+                    ->orWhere('catalogacion', 'LIKE', "%{$search}%");
 
                 // Búsqueda por estado
                 if (!is_null($estadoBuscado)) {
-                    $query->orWhere('estado_moto', $estadoBuscado);
+                    $query->orWhere('estado', $estadoBuscado);
                 }
+                // Búsqueda por área
+                $query->orWhereHas('area', function ($qa) use ($search) {
+                    $qa->where('nombre', 'LIKE', "%{$search}%");
+                });
             })
             ->paginate(5);
 
@@ -58,7 +64,8 @@ class VehiculoController extends Controller
      */
     public function create()
     {
-        return view('admin.vehiculos.create');
+        $areas = Area::all();
+        return view('admin.vehiculos.create', compact('areas'));
     }
 
     /**
@@ -69,16 +76,20 @@ class VehiculoController extends Controller
         //return response()->json($request->all());
 
         $request->validate([
+            'area_id' => 'required|exists:areas,id',
             'marca' => 'required|string|max:255',
             'tipo' => 'required|string|max:255',
             'patente' => 'required|string|max:255|unique:vehiculos,patente',
             'modelo' => 'required|string|max:255',
-            'color' => 'required|string|max:255',
+            'color' => 'nullable|string|max:255',
             'anio' => 'required|integer',
-            'chasis' => 'required|string|max:255|unique:vehiculos,chasis',
-            'motor' => 'required|string|max:255|unique:vehiculos,motor',
+            'chasis' => 'nullable|string|max:255|unique:vehiculos,chasis',
+            'motor' => 'nullable|string|max:255|unique:vehiculos,motor',
             'imagen' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:16384',
         ], [
+            'area_id.required' => 'El área es obligatoria.',
+            'area_id.exists'   => 'El área seleccionada no es válida.',
+
             'marca.required'   => 'La marca es obligatoria.',
             'marca.string'     => 'La marca debe ser texto.',
             'marca.max'        => 'La marca no puede superar los 255 caracteres.',
@@ -102,12 +113,10 @@ class VehiculoController extends Controller
             'anio.required'    => 'El año es obligatorio.',
             'anio.integer'     => 'El año debe ser un número entero.',
 
-            'chasis.required'  => 'El número de chasis es obligatorio.',
             'chasis.string'    => 'El chasis debe ser texto.',
             'chasis.max'       => 'El chasis no puede superar los 255 caracteres.',
             'chasis.unique'    => 'Ya existe un vehículo con este número de chasis.',
 
-            'motor.required'   => 'El número de motor es obligatorio.',
             'motor.string'     => 'El motor debe ser texto.',
             'motor.max'        => 'El motor no puede superar los 255 caracteres.',
             'motor.unique'     => 'Ya existe un vehículo con este número de motor.',
@@ -118,6 +127,7 @@ class VehiculoController extends Controller
         ]);
 
         $vehiculo = new Vehiculo();
+        $vehiculo->area_id = $request->area_id;
         $vehiculo->marca = $request->marca;
         $vehiculo->tipo = $request->tipo;
         $vehiculo->patente = $request->patente;
@@ -144,60 +154,52 @@ class VehiculoController extends Controller
     /**
      * Display the specified resource.
      */
- public function show(Request $request, $id)
-{
-    $vehiculo = Vehiculo::findOrFail($id);
-    $search = $request->input('search');
+    public function show(Request $request, $id)
+    {
+        $vehiculo = Vehiculo::findOrFail($id);
+        $search = $request->input('search');
+        $areas = Area::all();
+        // Traemos productos del vehículo con relación pivot
+        $productos = DB::table('producto_vehiculo as pv')
+            ->join('productos as p', 'p.id', '=', 'pv.producto_id')
+            ->leftJoin('detalle_compras as dc', 'dc.id', '=', 'pv.detalle_compra_id')
+            ->leftJoin('compras as c', 'c.id', '=', 'dc.compra_id')
+            ->select(
+                'p.nombre',
+                'p.descripcion',
+                'pv.cantidad_asignada',
+                'pv.stock',
+                'dc.precio',
+                'c.fecha_orden',
+                'c.id as compra_id',
+                // Subtotal basado en stock actual
+                DB::raw('(pv.stock * COALESCE(dc.precio, 0)) as subtotal_real')
+            )
+            ->where('pv.vehiculo_id', $vehiculo->id)
+            ->when($search, function ($query, $search) {
+                $query->where(function ($q) use ($search) {
+                    $q->where('p.nombre', 'LIKE', "%{$search}%")
+                        ->orWhere('p.descripcion', 'LIKE', "%{$search}%")
+                        ->orWhere('pv.cantidad_asignada', 'LIKE', "%{$search}%")
+                        ->orWhere('pv.stock', 'LIKE', "%{$search}%")
+                        ->orWhere('dc.precio', 'LIKE', "%{$search}%")
+                        ->orWhere(DB::raw('(pv.stock * COALESCE(dc.precio, 0))'), 'LIKE', "%{$search}%")
+                        ->orWhere('c.fecha_orden', 'LIKE', "%{$search}%");
+                });
+            })
+            ->orderBy('c.fecha_orden', 'desc')
+            ->paginate(10)
+            ->withQueryString();
 
-    // Traemos productos del vehículo con relación pivot
-    $productos = DB::table('producto_vehiculo as pv')
-        ->join('productos as p', 'p.id', '=', 'pv.producto_id')
-        ->leftJoin('detalle_compras as dc', 'dc.id', '=', 'pv.detalle_compra_id')
-        ->leftJoin('compras as c', 'c.id', '=', 'dc.compra_id')
-        ->select(
-            'p.nombre',
-            'p.descripcion',
-            'pv.cantidad_asignada',
-            'pv.stock',
-            'dc.precio',
-            'c.fecha_orden',
-            'c.id as compra_id',
-            // Subtotal basado en stock actual
-            DB::raw('(pv.stock * COALESCE(dc.precio, 0)) as subtotal_real')
-        )
-        ->where('pv.vehiculo_id', $vehiculo->id)
-        ->when($search, function ($query, $search) {
-            $query->where(function ($q) use ($search) {
-                $q->where('p.nombre', 'LIKE', "%{$search}%")
-                    ->orWhere('p.descripcion', 'LIKE', "%{$search}%")
-                    ->orWhere('pv.cantidad_asignada', 'LIKE', "%{$search}%")
-                    ->orWhere('pv.stock', 'LIKE', "%{$search}%")
-                    ->orWhere('dc.precio', 'LIKE', "%{$search}%")
-                    ->orWhere(DB::raw('(pv.stock * COALESCE(dc.precio, 0))'), 'LIKE', "%{$search}%")
-                    ->orWhere('c.fecha_orden', 'LIKE', "%{$search}%");
-            });
-        })
-        ->orderBy('c.fecha_orden', 'desc')
-        ->paginate(10)
-        ->withQueryString();
+        // Total general usando stock
+        $totalGeneral = DB::table('producto_vehiculo as pv')
+            ->leftJoin('detalle_compras as dc', 'dc.id', '=', 'pv.detalle_compra_id')
+            ->where('pv.vehiculo_id', $vehiculo->id)
+            ->selectRaw('SUM(pv.stock * COALESCE(dc.precio, 0)) as total')
+            ->value('total');
 
-    // Total general usando stock
-    $totalGeneral = DB::table('producto_vehiculo as pv')
-        ->leftJoin('detalle_compras as dc', 'dc.id', '=', 'pv.detalle_compra_id')
-        ->where('pv.vehiculo_id', $vehiculo->id)
-        ->selectRaw('SUM(pv.stock * COALESCE(dc.precio, 0)) as total')
-        ->value('total');
-
-    return view('admin.vehiculos.show', compact('vehiculo', 'productos', 'totalGeneral', 'search'));
-}
-
-
-
-
-
-
-
-
+        return view('admin.vehiculos.show', compact('vehiculo', 'productos', 'totalGeneral', 'search', 'areas'));
+    }
 
     /**
      * Show the form for editing the specified resource.
@@ -216,6 +218,7 @@ class VehiculoController extends Controller
         //return response()->json($request->all());
 
         $request->validate([
+            'area_id' => 'required|exists:areas,id',
             'marca'   => 'required|string|max:255',
             'tipo'    => 'required|string|max:255',
             'patente' => 'required|string|max:255|unique:vehiculos,patente,' . $id,

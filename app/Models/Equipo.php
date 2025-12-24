@@ -3,17 +3,22 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Traits\Catalogable;
+
 
 class Equipo extends Model
 {
+  use SoftDeletes, Catalogable;
    protected $table = 'equipos';
     protected $fillable = [
-    'nombre',
-    'tipo_equipo',
+    'equipamiento',
     'marca',
-    'modelo',
-    'numero_serie',
-    'estado'
+    'descripcion',
+    'area_id',
+    'estado',
+    'catalogacion',
     ];
      protected $attributes = [
       'estado' => true,
@@ -29,5 +34,10 @@ class Equipo extends Model
     public function movimientosDestino()
     {
     return $this->morphMany(Movimiento::class, 'destino');
+    }
+    // Relación con Area
+    public function area(): BelongsTo
+    {
+        return $this->belongsTo(Area::class);
     }
 }

@@ -58,7 +58,7 @@
                     <!-- ======================= -->
                     <div class="col-span-2 space-y-4">
 
-                        <div class="grid grid-cols-2 gap-4">
+                        <div class="grid grid-cols-3 gap-4">
 
                             <!-- Tipo -->
                             <div class="space-y-2">
@@ -91,6 +91,20 @@
                                 @error('tipo')
                                     <small class="text-red-500 error-message">{{ $message }}</small>
                                 @enderror
+                            </div>
+
+                            <!-- Área (deshabilitada) -->
+                            <div class="form-control w-full">
+                                <label class="label">
+                                    <span class="label-text font-medium">Área</span>
+                                </label>
+                                <input type="text" 
+                                    value="{{ $vehiculo->area->nombre }}"
+                                    class="input input-bordered w-full input-disabled"
+                                    disabled
+                                    readonly>
+                                <!-- Hidden input para mantener el area_id -->
+                                <input type="hidden" name="area_id" value="{{ $vehiculo->area_id }}">
                             </div>
 
                             <!-- Patente -->
