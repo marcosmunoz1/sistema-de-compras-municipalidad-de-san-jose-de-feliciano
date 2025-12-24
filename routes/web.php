@@ -155,7 +155,7 @@ Route::get('/api/destinos/{tipo}', function ($tipo) {
         'deposito' => ['model' => \App\Models\Deposito::class, 'campo' => 'nombre'],
         'obra'     => ['model' => \App\Models\Obra::class,     'campo' => 'nombre'],
         'vehiculo' => ['model' => \App\Models\Vehiculo::class, 'campo' => 'patente'],
-        'equipo'   => ['model' => \App\Models\Equipo::class,   'campo' => 'nombre'],
+        'equipo'   => ['model' => \App\Models\Equipo::class,   'campo' => 'equipamiento'],
     ];
 
     // Si no existe el tipo → devolver lista vacía (evita error 500)
@@ -176,7 +176,7 @@ Route::get('/api/destinos/{tipo}', function ($tipo) {
         'deposito' => ['model' => \App\Models\Deposito::class, 'campo' => 'nombre'],
         'obra'     => ['model' => \App\Models\Obra::class,     'campo' => 'nombre'],
         'vehiculo' => ['model' => \App\Models\Vehiculo::class, 'campo' => 'patente'],
-        'equipo'   => ['model' => \App\Models\Equipo::class,   'campo' => 'nombre'],
+        'equipo'   => ['model' => \App\Models\Equipo::class,   'campo' => 'equipamiento'],
     ];
 
     if (!isset($map[$tipo])) {

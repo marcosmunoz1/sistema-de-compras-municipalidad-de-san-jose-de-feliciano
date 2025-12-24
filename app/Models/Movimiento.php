@@ -44,6 +44,10 @@ class Movimiento extends Model
             return (string) $model->getAttribute('patente');
         }
 
+        if (!is_null($model->getAttribute('equipamiento')) && $model->getAttribute('equipamiento') !== '') {
+            return (string) $model->getAttribute('equipamiento');
+        }
+        
         return 'Sin nombre';
     }
     public function compra()

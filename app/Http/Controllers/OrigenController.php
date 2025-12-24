@@ -14,6 +14,7 @@ class OrigenController extends Controller
             'obra' => \App\Models\Obra::class,
             'deposito' => \App\Models\Deposito::class,
             'vehiculo' => \App\Models\Vehiculo::class,
+            'equipo' => \App\Models\Equipo::class,
         ];
 
         if (!isset($map[$tipo])) {
@@ -52,6 +53,26 @@ class OrigenController extends Controller
             return response()->json($items);
         }
 
+        if ($model === \App\Models\Equipo::class) {
+            $items = $model::query()
+                ->select('id', 'equipamiento', 'marca', 'descripcion', 'catalogacion')
+                ->get()
+                ->map(function ($e) {
+                    return [
+                        'id' => $e->id,
+                        'equipamiento' => $e->equipamiento,
+                        'marca' => $e->marca,
+                        'descripcion' => $e->descripcion,
+                        'catalogacion' => $e->catalogacion,
+                        // compatibilidad (si algún select/uso viejo esperaba "nombre")
+                        'nombre' => trim(($e->equipamiento ?? '') . ' - ' . ($e->descripcion ?? '') . ' - ' . ($e->marca ?? '') . ' - ' . ($e->catalogacion ?? '')),
+                    ];
+                })
+                ->values();
+
+            return response()->json($items);
+        }
+
         // Depósito (y otros): mantener el formato simple
         $items = $model::query()
             ->select('id', 'nombre')
@@ -67,6 +88,7 @@ class OrigenController extends Controller
             'obra' => \App\Models\Obra::class,
             'deposito' => \App\Models\Deposito::class,
             'vehiculo' => \App\Models\Vehiculo::class,
+            'equipo' => \App\Models\Equipo::class,
             default => null,
         };
 

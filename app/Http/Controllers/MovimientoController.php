@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Compra;
 use App\Models\Deposito;
+use App\Models\Equipo;
 use App\Models\Movimiento;
 use App\Models\MovimientoDetalle;
 use App\Models\Obra;
@@ -92,6 +93,25 @@ class MovimientoController extends Controller
                     }
                 );
 
+                
+                // ORIGEN: depósito u obra
+                $query->orWhereHasMorph(
+                    'origen',
+                    [Deposito::class, Obra::class],
+                    function ($m) use ($search) {
+                        $m->where('nombre', 'LIKE', "%{$search}%");
+                    }
+                );
+                
+                //Origen: equipo
+                $query->orWhereHasMorph(
+                    'origen',
+                    [Equipo::class],
+                    function ($m) use ($search) {
+                        $m->where('equipamiento', 'LIKE', "%{$search}%");
+                    }
+                );
+                
                 // DESTINO: vehículo
                 $query->orWhereHasMorph(
                     'destino',
@@ -104,21 +124,24 @@ class MovimientoController extends Controller
                     }
                 );
 
-                // ORIGEN: depósito u obra
-                $query->orWhereHasMorph(
-                    'origen',
-                    [Deposito::class, Obra::class],
-                    function ($m) use ($search) {
-                        $m->where('nombre', 'LIKE', "%{$search}%");
-                    }
-                );
-
                 // DESTINO: depósito u obra
                 $query->orWhereHasMorph(
                     'destino',
                     [Deposito::class, Obra::class],
                     function ($m) use ($search) {
                         $m->where('nombre', 'LIKE', "%{$search}%");
+                    }
+                );
+
+                //Destino: equipo
+                $query->orWhereHasMorph(
+                    'destino',
+                    [Equipo::class],
+                    function ($m) use ($search) {
+                        $m->where('equipamiento', 'LIKE', "%{$search}%")
+                            ->orWhere('marca', 'LIKE', "%{$search}%")
+                            ->orWhere('descripcion', 'LIKE', "%{$search}%")
+                            ->orWhere('catalogacion', 'LIKE', "%{$search}%");
                     }
                 );
             });
@@ -223,7 +246,7 @@ class MovimientoController extends Controller
                     ->wherePivot('id', $pivotId)
                     ->where('producto_id', $productoId)
                     ->first();
-                
+
                 if (!$pivotOrigen) {
                     throw new \Exception("El registro específico del producto no existe en el origen");
                 }
@@ -237,32 +260,50 @@ class MovimientoController extends Controller
                     throw new \Exception("No puedes transferir más de lo asignado originalmente para el producto: {$pivotOrigen->nombre}");
                 }
 
-                $nuevaCantidadAsignada = $cantidadAsignadaActual - $cantidadMovida;
-                
-                // Calcular cuánto stock mover (proporcionalmente)
-                $proporcionStock = $cantidadAsignadaActual > 0 
-                    ? ($stockActual / $cantidadAsignadaActual) 
-                    : 1;
-                $stockAMover = $cantidadMovida * $proporcionStock;
-                $nuevoStock = $stockActual - $stockAMover;
-
-                // Actualizar origen
-                if ($nuevaCantidadAsignada <= 0.001) { // ✅ Tolerancia para decimales
-                    // Transferencia total → Eliminar del origen
-                    $origenModel->productos()->wherePivot('id', $pivotId)->detach(); // ✅ Detach por pivot_id específico
-                } else {
-                    // Transferencia parcial → Actualizar ambos campos
+                // 🔥 LÓGICA DIFERENTE SEGÚN EL TIPO
+                if ($request->tipo === 'consumo') {
+                    // ✅ CONSUMO: Solo restar del stock, mantener cantidad_asignada
+                    if ($cantidadMovida > $stockActual) {
+                        throw new \Exception("No hay suficiente stock disponible para consumir del producto: {$pivotOrigen->nombre}");
+                    }
+                    
+                    $nuevoStock = $stockActual - $cantidadMovida;
+                    
+                    // Actualizar solo el stock
                     DB::table($origenInfo['table'])
                         ->where('id', $pivotId)
                         ->update([
-                            'cantidad_asignada' => $nuevaCantidadAsignada,
                             'stock' => max(0, $nuevoStock),
                             'updated_at' => now()
                         ]);
-                }
+                        
+                } else {
+                    // ✅ TRANSFERENCIA: Restar de cantidad_asignada Y stock
+                    $nuevaCantidadAsignada = $cantidadAsignadaActual - $cantidadMovida;
+                    
+                    // Calcular cuánto stock mover (proporcionalmente)
+                    $proporcionStock = $cantidadAsignadaActual > 0 
+                        ? ($stockActual / $cantidadAsignadaActual) 
+                        : 1;
+                    $stockAMover = $cantidadMovida * $proporcionStock;
+                    $nuevoStock = $stockActual - $stockAMover;
 
-                // Transferencia al destino
-                if ($request->tipo === 'transferencia') {
+                    // Actualizar origen
+                    if ($nuevaCantidadAsignada <= 0.001) {
+                        // Transferencia total → Eliminar del origen
+                        $origenModel->productos()->wherePivot('id', $pivotId)->detach();
+                    } else {
+                        // Transferencia parcial → Actualizar ambos campos
+                        DB::table($origenInfo['table'])
+                            ->where('id', $pivotId)
+                            ->update([
+                                'cantidad_asignada' => $nuevaCantidadAsignada,
+                                'stock' => max(0, $nuevoStock),
+                                'updated_at' => now()
+                            ]);
+                    }
+
+                    // Transferir al destino
                     $destinoInfo = modeloDestino($request->destino_tipo);
                     if (!$destinoInfo) {
                         throw new \Exception("Tipo de destino no válido");
@@ -276,7 +317,7 @@ class MovimientoController extends Controller
                     // Buscar si ya existe el mismo producto de la misma compra
                     $pivotDestino = $destinoModel->productos()
                         ->where('producto_id', $productoId)
-                        ->wherePivot('detalle_compra_id', $detalleCompraId) // ✅ Especificar wherePivot
+                        ->wherePivot('detalle_compra_id', $detalleCompraId)
                         ->first();
 
                     if ($pivotDestino) {

@@ -24,17 +24,27 @@ class Equipo extends Model
       'estado' => true,
     ]; 
 
+    public function productos()
+    {
+        return $this->belongsToMany(Producto::class)
+            ->using(EquipoProducto::class)
+            ->withPivot(['id','cantidad_asignada',
+                        'detalle_compra_id',
+                        'stock'])
+            ->withTimestamps();
+    }
+
     // Un equipo puede recibir movimientos como destino u origen
     public function movimientosOrigen()
     {
     return $this->morphMany(Movimiento::class, 'origen'); 
     }
 
-
     public function movimientosDestino()
     {
     return $this->morphMany(Movimiento::class, 'destino');
     }
+    
     // Relación con Area
     public function area(): BelongsTo
     {

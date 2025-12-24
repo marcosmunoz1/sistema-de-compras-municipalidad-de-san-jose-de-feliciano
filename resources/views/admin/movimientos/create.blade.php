@@ -55,6 +55,7 @@
                             <option value="App\Models\Obra">Obra</option>  
                             <option value="App\Models\Deposito">Depósito</option> 
                             <option value="App\Models\Vehiculo">Vehículo</option> 
+                            <option value="App\Models\Equipo">Equipo</option>
                         </select>
                         @error('origen_tipo')
                             <small class="text-red-500">{{ $message }}</small>
@@ -119,6 +120,7 @@
                             <option value="App\Models\Deposito">Depósito</option>
                             <option value="App\Models\Obra">Obra</option>
                             <option value="App\Models\Vehiculo">Vehículo</option>
+                            <option value="App\Models\Equipo">Equipo</option>
                         </select>
                         @error('destino_tipo')
                             <small class="text-red-500">{{ $message }}</small>
@@ -171,8 +173,7 @@
                     <textarea id="observacion" name="observacion" rows="3"
                         class="w-full rounded-md border border-base-300 bg-base-200
                                 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary
-                                focus:border-primary transition resize-none" required placeholder="Comentarios sobre el movimiento..." required>
-                        {{ old('observacion') }}</textarea>
+                                focus:border-primary transition resize-none" required placeholder="Comentarios sobre el movimiento..." required>{{ old('observacion') }}</textarea>
                     @error('observacion')
                         <small class="text-red-500">{{ $message }}</small>
                     @enderror
@@ -190,8 +191,9 @@
                     <tr>
                         <th class="text-center">Nr</th>
                         <th class="text-center">Producto</th>
+                        <th class="text-center">Cantidad asignada</th>
                         <th class="text-center">Stock</th>
-                        <th class="text-center">Cantidad a mover</th>
+                        <th class="text-center">Cantidad a mover/consumir</th>
                         <th class="text-center">Acción</th>
                     </tr>
                 </thead>
@@ -380,6 +382,7 @@
                 if (!clase) return null;
                 if (clase.includes('Obra')) return 'obra';
                 if (clase.includes('Deposito')) return 'deposito';
+                if (clase.includes('Equipo')) return 'equipo';
                 return 'vehiculo';
             } 
 
@@ -441,6 +444,15 @@
                 } else if (tipoShort === 'deposito') {
                     columnasOrigen = [{ key: 'nombre', label: 'Depósito' }];
                     tituloModalOrigen.textContent = 'Seleccionar depósito';
+                }else if (tipoShort === 'equipo') {
+                    columnasOrigen = [
+                        { key: 'equipamiento', label: 'Equipamiento' },
+                        { key: 'marca', label: 'Marca' },
+                        { key: 'descripcion', label: 'Descripcion' },
+                        { key: 'catalogacion', label: 'Catalogación' },
+                        { key: 'estado', label: 'Estado' },
+                    ];
+                    tituloModalOrigen.textContent = 'Seleccionar equipo';
                 } else {
                     columnasOrigen = [{ key: 'nombre', label: 'Nombre' }];
                     tituloModalOrigen.textContent = 'Seleccionar elemento';
@@ -534,6 +546,15 @@
                 } else if (tipoShort === 'deposito') {
                     columnasDestino = [{ key: 'nombre', label: 'Depósito' }];
                     tituloModalDestino.textContent = 'Seleccionar depósito destino';
+                } else if (tipoShort === 'equipo') {
+                    columnasDestino = [
+                        { key: 'equipamiento', label: 'Equipamiento' },
+                        { key: 'marca', label: 'Marca' },
+                        { key: 'descripcion', label: 'Descripcion' },
+                        { key: 'catalogacion', label: 'Catalogación' },
+                        { key: 'estado', label: 'Estado' },
+                    ];
+                    tituloModalDestino.textContent = 'Seleccionar equipo destino';
                 } else {
                     columnasDestino = [{ key: 'nombre', label: 'Nombre' }];
                     tituloModalDestino.textContent = 'Seleccionar destino';
@@ -857,6 +878,7 @@
 
                 let tipoShort = tipo.includes('Obra') ? 'obra' :
                     tipo.includes('Deposito') ? 'deposito' :
+                    tipo.includes('Equipo') ? 'equipo' :
                     'vehiculo';
 
                 fetch(`${baseUrlProductos}/${tipoShort}/${id}/productos`)
@@ -871,10 +893,19 @@
                             const stock = parseFloat(p.stock);
                             const cantidadAsignada = parseFloat(p.cantidad_asignada);
                             
-                            // Mostrar info adicional si hay múltiples del mismo producto
-                            const infoExtra = p.fecha_asignacion 
-                                ? `<small class="text-muted d-block">Asignado: ${p.fecha_asignacion}</small>` 
-                                : '';
+                            // 🔧 FORMATEAR LA FECHA
+                            let infoExtra = '';
+                            if (p.fecha_asignacion) {
+                                const fecha = new Date(p.fecha_asignacion);
+                                const fechaFormateada = fecha.toLocaleDateString('es-AR', {
+                                    year: 'numeric',
+                                    month: '2-digit',
+                                    day: '2-digit',
+                                    hour: '2-digit',
+                                    minute: '2-digit'
+                                });
+                                infoExtra = `<small class="text-muted d-block">Asignado: ${fechaFormateada}</small>`;
+                            }
 
                             tbody.innerHTML += `
                                 <tr>

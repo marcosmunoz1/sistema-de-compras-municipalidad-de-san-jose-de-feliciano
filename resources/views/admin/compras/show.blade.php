@@ -17,6 +17,10 @@
             <a href="{{ route('depositos.show', $depositoId) }}" class="btn btn-secondary mb-3">
                 ← Volver a depósito
             </a>
+        @elseif($from === 'equipo' && $equipoId)
+            <a href="{{ route('equipos.show', $equipoId) }}" class="btn btn-secondary mb-3">
+                ← Volver al equipo
+            </a>
         @endif
 
     </div>

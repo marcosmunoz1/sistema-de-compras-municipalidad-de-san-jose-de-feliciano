@@ -182,9 +182,10 @@ class CompraController extends Controller
         $vehiculoId = $request->input('vehiculo_id'); // si vino desde vehículo
         $obraId = $request->input('obra_id');
         $depositoId = $request->input('deposito_id');
+        $equipoId = $request->input('equipo_id');
 
         $compra = Compra::with('detalle_compras','empleado','proveedor','destino')->findOrFail($id);
-        return view('admin.compras.show', compact('compra','from','vehiculoId','obraId','depositoId'));
+        return view('admin.compras.show', compact('compra','from','vehiculoId','obraId','depositoId','equipoId'));
     }
 
     /**

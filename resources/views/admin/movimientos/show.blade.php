@@ -80,7 +80,7 @@
                 <label for="observacion" class="text-sm font-medium">Observaciones</label>
                 <textarea id="observacion" name="observacion" rows="3"
                     class="textarea textarea-bordered w-full @error('observacion') textarea-error @enderror"
-                    placeholder="Comentarios sobre el movimiento...">{{ $movimiento->observacion }}</textarea>
+                    placeholder="Comentarios sobre el movimiento..." readonly>{{ $movimiento->observacion }}</textarea>
                 @error('observacion')
                     <small class="text-red-500">{{ $message }}</small>
                 @enderror

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Area;
 use App\Models\Equipo;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class EquipoController extends Controller
 {
@@ -92,12 +93,53 @@ class EquipoController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show($id)
+    public function show(Request $request, $id)
     {
-        $equipo = Equipo::with('area')->findOrFail($id);
+        $equipo = Equipo::findOrFail($id);
+        $search = $request->input('search');
         $areas = Area::all();
-        return view('admin.equipos.show', compact('equipo','areas'));
+        // Traemos productos del vehículo con relación pivot
+        $productos = DB::table('equipo_producto as ep')
+            ->join('productos as p', 'p.id', '=', 'ep.producto_id')
+            ->leftJoin('detalle_compras as dc', 'dc.id', '=', 'ep.detalle_compra_id')
+            ->leftJoin('compras as c', 'c.id', '=', 'dc.compra_id')
+            ->select(
+                'p.nombre',
+                'p.descripcion',
+                'ep.cantidad_asignada',
+                'ep.stock',
+                'dc.precio',
+                'c.fecha_orden',
+                'c.id as compra_id',
+                // Subtotal basado en stock actual
+                DB::raw('(ep.stock * COALESCE(dc.precio, 0)) as subtotal_real')
+            )
+            ->where('ep.equipo_id', $equipo->id)
+            ->when($search, function ($query, $search) {
+                $query->where(function ($q) use ($search) {
+                    $q->where('p.nombre', 'LIKE', "%{$search}%")
+                        ->orWhere('p.descripcion', 'LIKE', "%{$search}%")
+                        ->orWhere('ep.cantidad_asignada', 'LIKE', "%{$search}%")
+                        ->orWhere('ep.stock', 'LIKE', "%{$search}%")
+                        ->orWhere('dc.precio', 'LIKE', "%{$search}%")
+                        ->orWhere(DB::raw('(ep.stock * COALESCE(dc.precio, 0))'), 'LIKE', "%{$search}%")
+                        ->orWhere('c.fecha_orden', 'LIKE', "%{$search}%");
+                });
+            })
+            ->orderBy('c.fecha_orden', 'desc')
+            ->paginate(10)
+            ->withQueryString();
+
+        // Total general usando stock
+        $totalGeneral = DB::table('equipo_producto as ep')
+            ->leftJoin('detalle_compras as dc', 'dc.id', '=', 'ep.detalle_compra_id')
+            ->where('ep.equipo_id', $equipo->id)
+            ->selectRaw('SUM(ep.stock * COALESCE(dc.precio, 0)) as total')
+            ->value('total');
+
+        return view('admin.equipos.show', compact('equipo', 'productos', 'totalGeneral', 'search', 'areas'));
     }
+
 
     /**
      * Show the form for editing the specified resource.
