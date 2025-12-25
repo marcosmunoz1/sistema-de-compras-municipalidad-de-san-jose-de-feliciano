@@ -457,6 +457,7 @@
 
             <form action="{{ url('/admin/productos/store') }}" method="POST" class="space-y-5">
                 @csrf
+                <input type="hidden" name="redirect_to" value="compras.create">
 
                 <!-- Categoría -->
                 <div class="form-control">
@@ -652,11 +653,163 @@
             </div>
 
             <div class="modal-action">
-                <label for="modal_elegir_empleado" class="btn btn-ghost">Cerrar</label>
+                <button type="button" onclick="crearEmpleadoModal.showModal()" 
+                    class="btn btn-sm btn-success">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" 
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="9" cy="7" r="4"></circle>
+                        <line x1="19" x2="19" y1="8" y2="14"></line>
+                        <line x1="22" x2="16" y1="11" y2="11"></line>
+                    </svg>
+                    Crear Empleado
+                </button>
+                <label for="modal_elegir_empleado" class="btn btn-sm btn-neutral">Cerrar</label>
             </div>
         </div>
         <label class="modal-backdrop" for="modal_elegir_empleado">Close</label>
     </div>
+
+    <!-- Modal para crear empleado -->
+    <dialog id="crearEmpleadoModal" class="modal">
+        <div class="modal-box max-w-2xl">
+            <form method="dialog">
+                <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+            </form>
+
+            <h3 class="font-bold text-xl flex items-center gap-3 mb-4">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" 
+                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="9" cy="7" r="4"></circle>
+                    <line x1="19" x2="19" y1="8" y2="14"></line>
+                    <line x1="22" x2="16" y1="11" y2="11"></line>
+                </svg>
+                Crear Nuevo Empleado
+            </h3>
+
+            <form action="{{ route('empleados.store') }}" method="POST" class="space-y-4">
+                @csrf
+                <input type="hidden" name="redirect_to" value="compras.create">
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- Nombre -->
+                    <div class="form-control">
+                        <label class="label">
+                            <span class="label-text font-medium">Nombre <span class="text-red-600">*</span></span>
+                        </label>
+                        <input type="text" name="nombre" required
+                            class="w-full h-10 rounded-md border border-base-300 bg-base-200 px-3 
+                            text-sm focus:outline-none focus:ring-2 focus:ring-primary 
+                            focus:border-primary transition"
+                            placeholder="Nombre completo">
+                    </div>
+
+                    <!-- DNI -->
+                    <div class="form-control">
+                        <label class="label">
+                            <span class="label-text font-medium">DNI <span class="text-red-600">*</span></span>
+                        </label>
+                        <input type="text" name="dni" required
+                            class="w-full h-10 rounded-md border border-base-300 bg-base-200 px-3 
+                            text-sm focus:outline-none focus:ring-2 focus:ring-primary 
+                            focus:border-primary transition"
+                            placeholder="DNI sin puntos">
+                    </div>
+
+                    <!-- Celular -->
+                    <div class="form-control">
+                        <label class="label">
+                            <span class="label-text font-medium">Celular</span>
+                        </label>
+                        <input type="text" name="celular"
+                            class="w-full h-10 rounded-md border border-base-300 bg-base-200 px-3 
+                            text-sm focus:outline-none focus:ring-2 focus:ring-primary 
+                            focus:border-primary transition"
+                            placeholder="Número de celular">
+                    </div>
+
+                    <!-- Email -->
+                    <div class="form-control">
+                        <label class="label">
+                            <span class="label-text font-medium">Email</span>
+                        </label>
+                        <input type="email" name="email"
+                            class="w-full h-10 rounded-md border border-base-300 bg-base-200 px-3 
+                            text-sm focus:outline-none focus:ring-2 focus:ring-primary 
+                            focus:border-primary transition"
+                            placeholder="correo@ejemplo.com">
+                    </div>
+
+                    <!-- Puesto -->
+                    <div class="form-control">
+                        <label class="label">
+                            <span class="label-text font-medium">Puesto</span>
+                        </label>
+                        <input type="text" name="puesto"
+                            class="w-full h-10 rounded-md border border-base-300 bg-base-200 px-3 
+                            text-sm focus:outline-none focus:ring-2 focus:ring-primary 
+                            focus:border-primary transition"
+                            placeholder="Ej: Mecánico, Chofer">
+                    </div>
+
+                    <!-- Área -->
+                    <div class="form-control">
+                        <label class="label">
+                            <span class="label-text font-medium">Área</span>
+                        </label>
+                        <input type="text" name="area"
+                            class="w-full h-10 rounded-md border border-base-300 bg-base-200 px-3 
+                            text-sm focus:outline-none focus:ring-2 focus:ring-primary 
+                            focus:border-primary transition"
+                            placeholder="Ej: Taller, Logística">
+                    </div>
+                </div>
+
+                <!-- Dirección -->
+                <div class="form-control">
+                    <label class="label">
+                        <span class="label-text font-medium">Dirección</span>
+                    </label>
+                    <input type="text" name="direccion"
+                        class="w-full h-10 rounded-md border border-base-300 bg-base-200 px-3 
+                        text-sm focus:outline-none focus:ring-2 focus:ring-primary 
+                        focus:border-primary transition"
+                        placeholder="Dirección completa">
+                </div>
+
+                <!-- Observaciones -->
+                <div class="form-control">
+                    <label class="label">
+                        <span class="label-text font-medium">Observaciones</span>
+                    </label>
+                    <textarea name="observaciones" rows="3"
+                        class="textarea w-full rounded-md border border-base-300 bg-base-200 
+                        focus:outline-none focus:ring-2 focus:ring-primary 
+                        focus:border-primary transition"
+                        placeholder="Observaciones adicionales..."></textarea>
+                </div>
+
+                <!-- Botones -->
+                <div class="modal-action">
+                    <button type="submit" class="btn btn-primary">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                            stroke="currentColor" class="w-5 h-5 mr-1">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                        </svg>
+                        Guardar Empleado
+                    </button>
+                    <button type="button" onclick="crearEmpleadoModal.close()" class="btn btn-neutral">
+                        Cancelar
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <form method="dialog" class="modal-backdrop">
+            <button></button>
+        </form>
+    </dialog>
 
     <!-- Modal para seleccionar destino -->
     <input type="checkbox" id="modal_elegir_destino" class="modal-toggle" />
@@ -1055,7 +1208,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 <td>${formatearCelda(empleado.area)}</td>
             `;
 
-            tr.addEventListener('click', function () {
+            tr.addEventListener('click', function (e) {
                 if (!empleadoInput) return;
 
                 empleadoInput.value = empleado.id;

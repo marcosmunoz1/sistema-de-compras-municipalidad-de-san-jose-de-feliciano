@@ -94,6 +94,13 @@ class EmpleadoController extends Controller
         $empleado->observaciones = $request->observaciones;
 
         $empleado->save();
+
+        if ($request->has('redirect_to') && $request->redirect_to === 'compras.create') {
+            return redirect()->route('compras.create')
+                ->with('mensaje', 'Empleado creado exitosamente.')
+                ->with('icono', 'success');
+        }
+
         return redirect()->route('empleados.index')->with('mensaje', 'Empleado creado exitosamente.')
                                                     ->with('icono', 'success');
     }

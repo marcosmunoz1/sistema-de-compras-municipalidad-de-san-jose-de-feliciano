@@ -63,18 +63,18 @@ class CompraController extends Controller
      */
     public function create(Request $request)  
     {    
-        $categorias = Categoria::all();  
-        $proveedores = Proveedor::all();
-        $empleados = Empleado::all();
+        $categorias = Categoria::withTrashed()->orderBy('id', 'desc')->get(); 
+        $proveedores = Proveedor::withTrashed()->orderBy('id', 'desc')->get();
+        $empleados = Empleado::withTrashed()->orderBy('id', 'desc')->get();
         $search = $request->input('search'); 
-        $productos = Producto::with('categoria')->get();
+        $productos = Producto::with('categoria')->orderBy('id', 'desc')->get(); 
         return view('admin.compras.create', compact('proveedores', 'empleados', 'categorias', 'productos'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request) 
     {   
 
         // return response()->json($request->all());
