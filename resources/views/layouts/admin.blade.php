@@ -16,7 +16,7 @@
     <link rel="icon" type="image/png" href="{{ asset('storage/login/logo-removebg-preview.png') }}"> 
 
     <!-- Vite -->
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @vite(['resources/css/app.css', 'resources/js/app.js']) 
 
     <title>
          @yield('title') 
@@ -294,8 +294,8 @@
             </aside>
         </div>
     </div>
-    @yield('js')
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    @yield('js') 
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> 
     @if ($errors->any())
         {{-- Esto NO muestra los errores, pero asegura que se cargaron --}}
     @endif

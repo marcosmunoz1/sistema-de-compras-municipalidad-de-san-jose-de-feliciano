@@ -91,20 +91,22 @@
                         </div> 
 
                         <!-- entregar a -->
-                        <div class="space-y-2">
+                        <div class="space-y-2"> 
                             <label for="empleado_id" class="text-sm font-medium">Entregar a<span
                                     class="text-red-600">*</span></label>
-                            <select id="empleado_id" name="empleado_id"
-                                class="select w-full h-10 rounded-md border-base-300 bg-base-200
-                        px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
-                        focus:border-primary transition @error('empleado_id') input-error @enderror"
-                                required>
-                                <option value="">Seleccione un empleado</option>
-                                @foreach ($empleados as $empleado)
-                                    <option value="{{ $empleado->id }}">{{ $empleado->nombre }} - {{ $empleado->dni }}
-                                    </option>
-                                @endforeach
-                            </select>
+
+                            <!-- ID oculto que se envía en el request -->
+                            <input type="hidden" id="empleado_id" name="empleado_id" value="{{ old('empleado_id') }}">
+
+                            <!-- Campo solo lectura mostrando el nombre elegido -->
+                            <input type="text" id="empleado_nombre_visible"
+                                class="w-full h-10 rounded-md border border-base-300 bg-base-200
+                                px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
+                                focus:border-primary cursor-pointer transition @error('empleado_id') input-error @enderror"
+                                placeholder="Seleccione un empleado"
+                                value=""
+                                readonly>
+
                             @error('empleado_id')
                                 <small class="text-red-500 error-message">{{ $message }}</small>
                             @enderror
@@ -113,15 +115,64 @@
                     <!-- Provincia -->
                     <div class="space-y-2">
                         <label for="sub_cuenta" class="text-sm font-medium">Sub cuenta<span class="text-red-600">*</span></label>
-                        <select id="sub_cuenta" name="sub_cuenta" class="select w-full h-10 rounded-md border-base-300 bg-base-200
-                        px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
-                        focus:border-primary transition @error('sub_cuenta') input-error @enderror" required>
-                            <option value="">Seleccione la sub cuenta</option> 
-                            <option value="Secretaria de obras publicas">Secretaria de Obras Publicas</option>
-                            <option value="Secretaria de desarrollos humanos">Secretaria de Desarrollo Humano</option>
-                            <option value="Secretaria de gobierno">Secretaria de Gobierno</option>
-                            <option value="Departamento ejecutivo municipal">Departamento Ejecutivo Municipal</option> 
-                        </select>
+                        <div
+                            x-data="selectSearch({
+                                options: @js([
+                                    ['value' => 'Secretaria de obras publicas', 'label' => 'Secretaria de Obras Publicas'],
+                                    ['value' => 'Secretaria de desarrollos humanos', 'label' => 'Secretaria de Desarrollo Humano'],
+                                    ['value' => 'Secretaria de gobierno', 'label' => 'Secretaria de Gobierno'],
+                                    ['value' => 'Departamento ejecutivo municipal', 'label' => 'Departamento Ejecutivo Municipal'],
+                                ]),
+                                placeholder: 'Seleccione la sub cuenta',
+                                value: @js(old('sub_cuenta'))
+                            })"
+                            x-init="init()"
+                            class="relative w-full"
+                        >
+                            <button
+                                type="button"
+                                @click="open = !open"
+                                class="select w-full h-10 rounded-md border-base-300 bg-base-200 px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition flex items-center justify-between @error('sub_cuenta') input-error @enderror"
+                            >
+                                <span x-text="selected?.label ?? placeholder" class="truncate"></span>
+                            </button>
+
+                            <div
+                                x-show="open"
+                                x-transition
+                                @click.outside="open = false"
+                                class="absolute z-50 mt-1 w-full bg-base-100 border border-base-300 rounded-md shadow"
+                            >
+                                <input
+                                    type="text"
+                                    x-model="search"
+                                    class="input w-full border-0 border-b border-base-300 bg-base-200 px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
+                                    placeholder="Buscar..."
+                                >
+
+                                <ul class="max-h-60 overflow-y-auto">
+                                    <template x-for="option in filtered" :key="option.value">
+                                        <li
+                                            @click="select(option)"
+                                            class="px-3 py-2 cursor-pointer hover:bg-primary hover:text-primary-content"
+                                            x-text="option.label"
+                                        ></li>
+                                    </template>
+
+                                    <li x-show="filtered.length === 0" class="px-3 py-2 opacity-50">
+                                        Sin resultados
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <select id="sub_cuenta" name="sub_cuenta" class="hidden" x-model="selectedValue" required>
+                                <option value="">Seleccione la sub cuenta</option>
+                                <option value="Secretaria de obras publicas" @selected(old('sub_cuenta') == 'Secretaria de obras publicas')>Secretaria de Obras Publicas</option>
+                                <option value="Secretaria de desarrollos humanos" @selected(old('sub_cuenta') == 'Secretaria de desarrollos humanos')>Secretaria de Desarrollo Humano</option>
+                                <option value="Secretaria de gobierno" @selected(old('sub_cuenta') == 'Secretaria de gobierno')>Secretaria de Gobierno</option>
+                                <option value="Departamento ejecutivo municipal" @selected(old('sub_cuenta') == 'Departamento ejecutivo municipal')>Departamento Ejecutivo Municipal</option>
+                            </select>
+                        </div>
                         @error('sub_cuenta')
                             <small class="text-red-500 error-message">{{ $message }}</small>
                         @enderror
@@ -144,54 +195,69 @@
 
                     <div class="grid grid-cols-3 gap-4">
                         <div class="space-y-2">
-                            <label for="proveedor_id" class="text-sm font-medium">Proveedor<span
-                                    class="text-red-600">*</span></label>
-                            <select id="proveedor_id" name="proveedor_id"
-                                class="select w-full h-10 rounded-md border-base-300 bg-base-200
-                        px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
-                        focus:border-primary transition @error('proveedor_id') input-error @enderror"
-                                required>
-                                <option value="">Seleccione un proveedor</option>
-                                @foreach ($proveedores as $proveedor)
-                                    <option value="{{ $proveedor->id }}">{{ $proveedor->nombre }} -
-                                        {{ $proveedor->razon_social }}</option>
-                                @endforeach
-                            </select>
+                            <div class="flex items-center justify-between gap-4">
+                                <label class="text-sm font-medium mb-0">Proveedor <span class="text-red-600">*</span></label>
+                            </div>
+
+                            <!-- ID oculto que se envía en el request -->
+                            <input type="hidden" id="proveedor_id" name="proveedor_id" value="{{ old('proveedor_id') }}">
+
+                            <!-- Campo solo lectura mostrando el nombre elegido -->
+                            <input type="text" id="proveedor_nombre_visible"
+                                class="w-full h-10 rounded-md border border-base-300 bg-base-200
+                                px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
+                                focus:border-primary cursor-pointer transition @error('proveedor_id') input-error @enderror"
+                                placeholder="Seleccione un proveedor desde el buscador"
+                                value=""
+                                readonly>
+
                             @error('proveedor_id')
                                 <small class="text-red-500 error-message">{{ $message }}</small>
                             @enderror
                         </div>
 
-                        <!-- entregar a -->
-                        <div class="space-y-2">
-                            <label for="destino_tipo" class="text-sm font-medium">Destino de la compra</label>
-                            <select id="destino_tipo" name="destino_tipo"
-                                class="select w-full h-10 rounded-md border-base-300 bg-base-200
-                        px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
-                        focus:border-primary transition @error('destino_tipo') input-error @enderror"
-                                required>
-                                <option value="">Seleccione el destino de la compra</option>
-                                <option value="deposito">Deposito</option>
-                                <option value="equipo">Equipo</option>
-                                <option value="vehiculo">Vehiculo</option>
-                                <option value="obra">Obra</option>
+                        <!-- DESTINO TIPO -->
+                        <div class="space-y-1">
+                            <label class="text-sm font-medium">Destino <span class="text-red-600">*</span></label>
+                            <select id="destino_tipo" name="destino_tipo" 
+                                class="w-full h-10 rounded-md border border-base-300 bg-base-200 
+                                        px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
+                                        focus:border-primary @error('destino_tipo') input-error @enderror transition" required>
+                                <option value="">Seleccione destino...</option> 
+                                <option value="App\Models\Deposito">Depósito</option>
+                                <option value="App\Models\Obra">Obra</option>
+                                <option value="App\Models\Vehiculo">Vehículo</option>
                             </select>
                             @error('destino_tipo')
-                                <small class="text-red-500 error-message">{{ $message }}</small>
+                                <small class="text-red-500">{{ $message }}</small>
                             @enderror
                         </div>
-                        <div class="space-y-2">
-                            <label for="destino_id" class="text-sm font-medium">Enviar a:</label>
-                            <select id="destino_id" name="destino_id"
-                                class="select w-full h-10 rounded-md border-base-300 bg-base-200
-                        px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
-                        focus:border-primary transition @error('destino_id') input-error @enderror" required>
-                            <option value="">Seleccione un destino...</option>      
-                        </select> 
-                        @error('destino_id') 
-                            <small class="text-red-500 error-message">{{ $message }}</small>
-                        @enderror
-                    </div>
+
+                        <!-- DESTINO ID -->
+                        <div class="space-y-2 -mt-4">
+                            <div class="flex items-center justify-between gap-4">
+                                <label class="text-sm font-medium mb-0">Elemento <span class="text-red-600">*</span></label>
+                                <button type="button" id="btn_elegir_destino" class="btn btn-sm btn-warning">
+                                    Buscar / seleccionar destino
+                                </button>
+                            </div>
+
+                            <!-- ID oculto que se envía en el request -->
+                            <input type="hidden" id="destino_id" name="destino_id" value="{{ old('destino_id') }}">
+
+                            <!-- Campo solo lectura mostrando el nombre elegido -->
+                            <input type="text" id="destino_nombre_visible"
+                                class="w-full h-10 rounded-md border border-base-300 bg-base-200
+                                px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
+                                focus:border-primary cursor-pointer transition @error('destino_id') input-error @enderror"
+                                placeholder="Seleccione un elemento desde el buscador"
+                                value=""
+                                readonly>
+
+                            @error('destino_id')
+                                <small class="text-red-500">{{ $message }}</small>
+                            @enderror
+                        </div>
                 </div>
                 <div class="grid grid-cols-1 gap-4">
                     <div class="space-y-2">
@@ -507,8 +573,157 @@
         </form>
 
     </dialog>
+
+    <!-- Modal para seleccionar proveedor -->
+    <input type="checkbox" id="modal_elegir_proveedor" class="modal-toggle" />
+    <div class="modal">
+        <div class="modal-box max-w-4xl">
+            <h3 class="font-bold text-lg mb-4" id="titulo_modal_proveedor">
+                Seleccionar proveedor
+            </h3>
+
+            <input type="text" id="buscador_proveedor"
+                class="w-full h-10 rounded-md border border-base-300 bg-base-200 
+                        px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
+                        focus:border-primary transition"
+                placeholder="Buscar por nombre, razón social, CUIT...">
+
+            <div class="overflow-x-auto mt-3">
+                <table class="table table-zebra w-full text-sm">
+                    <thead>
+                        <tr id="tabla_proveedor_head">
+                            <th>Nombre</th>
+                            <th>Razón Social</th>
+                            <th>CUIT</th>
+                            <th>Teléfono</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabla_proveedor_body">
+                        {{-- filas generadas por JS --}}
+                    </tbody>
+                </table>
+                <div class="flex justify-between items-center mt-3 text-xs">
+                    <button type="button" class="btn btn-xs" id="proveedor_prev_page">
+                        « Anterior
+                    </button>
+
+                    <span id="proveedor_pagination_info" class="mx-2">
+                        {{-- se completa por JS --}}
+                    </span>
+
+                    <button type="button" class="btn btn-xs" id="proveedor_next_page">
+                        Siguiente »
+                    </button>
+                </div>
+            </div>
+
+            <div class="modal-action">
+                <label for="modal_elegir_proveedor" class="btn btn-ghost">Cerrar</label>
+            </div>
+        </div>
+        <label class="modal-backdrop" for="modal_elegir_proveedor">Close</label>
+    </div>
+
+    <!-- Modal para seleccionar empleado -->
+    <input type="checkbox" id="modal_elegir_empleado" class="modal-toggle" />
+    <div class="modal">
+        <div class="modal-box max-w-4xl">
+            <h3 class="font-bold text-lg mb-4" id="titulo_modal_empleado">
+                Seleccionar empleado
+            </h3>
+
+            <input type="text" id="buscador_empleado"
+                class="w-full h-10 rounded-md border border-base-300 bg-base-200 
+                        px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
+                        focus:border-primary transition"
+                placeholder="Buscar por nombre, DNI, email, área...">
+
+            <div class="overflow-x-auto mt-3">
+                <table class="table table-zebra w-full text-sm">
+                    <thead>
+                        <tr id="tabla_empleado_head">
+                            <th>Nombre</th>
+                            <th>DNI</th>
+                            <th>Celular</th>
+                            <th>Email</th>
+                            <th>Área</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabla_empleado_body">
+                        {{-- filas generadas por JS --}}
+                    </tbody>
+                </table>
+                <div class="flex justify-between items-center mt-3 text-xs">
+                    <button type="button" class="btn btn-xs" id="empleado_prev_page">
+                        « Anterior
+                    </button>
+
+                    <span id="empleado_pagination_info" class="mx-2">
+                        {{-- se completa por JS --}}
+                    </span>
+
+                    <button type="button" class="btn btn-xs" id="empleado_next_page">
+                        Siguiente »
+                    </button>
+                </div>
+            </div>
+
+            <div class="modal-action">
+                <label for="modal_elegir_empleado" class="btn btn-ghost">Cerrar</label>
+            </div>
+        </div>
+        <label class="modal-backdrop" for="modal_elegir_empleado">Close</label>
+    </div>
+
+    <!-- Modal para seleccionar destino -->
+    <input type="checkbox" id="modal_elegir_destino" class="modal-toggle" />
+    <div class="modal">
+        <div class="modal-box max-w-4xl">
+            <h3 class="font-bold text-lg mb-4" id="titulo_modal_destino">
+                Seleccionar destino
+            </h3>
+
+            <input type="text" id="buscador_destino"
+                class="w-full h-10 rounded-md border border-base-300 bg-base-200 
+                        px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
+                        focus:border-primary transition"
+                placeholder="Buscar por nombre, patente, etc.">
+
+            <div class="overflow-x-auto mt-3">
+                <table class="table table-zebra w-full text-sm">
+                    <thead>
+                        <tr id="tabla_destino_head">
+                            {{-- cabeceras generadas por JS --}}
+                        </tr>
+                    </thead>
+                    <tbody id="tabla_destino_body">
+                        {{-- filas generadas por JS --}}
+                    </tbody>
+                </table>
+                <div class="flex justify-between items-center mt-3 text-xs">
+                    <button type="button" class="btn btn-xs" id="destino_prev_page">
+                        « Anterior
+                    </button>
+
+                    <span id="destino_pagination_info" class="mx-2">
+                        {{-- se completa por JS --}}
+                    </span>
+
+                    <button type="button" class="btn btn-xs" id="destino_next_page">
+                        Siguiente »
+                    </button>
+                </div>
+            </div>
+
+            <div class="modal-action">
+                <label for="modal_elegir_destino" class="btn btn-ghost">Cerrar</label>
+            </div>
+        </div>
+        <label class="modal-backdrop" for="modal_elegir_destino">Close</label>
+    </div>
+
 @endsection
-@section('js')
+@section('js') 
    {{--  <script>
     const oldDestinoId = "{{ old('destino_id') }}"; // <-- Blade se ejecuta acá
 
@@ -757,6 +972,574 @@ function escapeHtml(text) {
   if (!text) return '';
   return text.replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;').replaceAll("'",'&#39;');
 }
+</script>
+
+<script>
+// ==============================
+//  MODAL DE SELECCIÓN DE PROVEEDOR
+// ==============================
+document.addEventListener("DOMContentLoaded", function() {
+    const proveedoresData = @json($proveedores);
+    let proveedoresCache = proveedoresData;
+    let paginaProveedor = 1;
+    const itemsPorPaginaProveedor = 5;
+
+    const tablaProveedorBody = document.getElementById('tabla_proveedor_body');
+    const proveedorPrev = document.getElementById('proveedor_prev_page');
+    const proveedorNext = document.getElementById('proveedor_next_page');
+    const proveedorInfo = document.getElementById('proveedor_pagination_info');
+    const buscadorProveedor = document.getElementById('buscador_proveedor');
+    const btnElegirProveedor = document.getElementById('btn_elegir_proveedor');
+    const proveedorInput = document.getElementById('proveedor_id');
+    const proveedorNombreVisible = document.getElementById('proveedor_nombre_visible');
+
+    function formatearCelda(valor) {
+        if (valor === null || valor === undefined || valor === '') return '-';
+        return String(valor);
+    }
+
+    function renderTablaProveedor(data) {
+        if (!tablaProveedorBody) return;
+
+        tablaProveedorBody.innerHTML = '';
+
+        const total = data.length;
+
+        if (!total) {
+            tablaProveedorBody.innerHTML = `<tr><td class="py-4 text-center text-sm text-gray-500" colspan="4">No se encontraron proveedores.</td></tr>`;
+            if (proveedorInfo) proveedorInfo.textContent = '0 de 0';
+            return;
+        }
+
+        const totalPaginas = Math.ceil(total / itemsPorPaginaProveedor);
+        if (paginaProveedor > totalPaginas) paginaProveedor = totalPaginas;
+        if (paginaProveedor < 1) paginaProveedor = 1;
+
+        const inicio = (paginaProveedor - 1) * itemsPorPaginaProveedor;
+        const fin = inicio + itemsPorPaginaProveedor;
+        const pagina = data.slice(inicio, fin);
+
+        pagina.forEach(proveedor => {
+            const tr = document.createElement('tr');
+            tr.classList.add('cursor-pointer', 'hover:bg-base-300');
+
+            tr.innerHTML = `
+                <td>${formatearCelda(proveedor.nombre)}</td>
+                <td>${formatearCelda(proveedor.razon_social)}</td>
+                <td>${formatearCelda(proveedor.cuit)}</td>
+                <td>${formatearCelda(proveedor.telefono)}</td>
+            `;
+
+            tr.addEventListener('click', function () {
+                if (!proveedorInput) return;
+
+                proveedorInput.value = proveedor.id;
+
+                if (proveedorNombreVisible) {
+                    const texto = `${proveedor.nombre || ''} - ${proveedor.razon_social || ''}`;
+                    proveedorNombreVisible.value = texto.trim();
+                }
+
+                const modalCheckbox = document.getElementById('modal_elegir_proveedor');
+                if (modalCheckbox) modalCheckbox.checked = false;
+            });
+
+            tablaProveedorBody.appendChild(tr);
+        });
+
+        if (proveedorInfo) {
+            const desde = inicio + 1;
+            const hasta = Math.min(fin, total);
+            proveedorInfo.textContent = `Mostrando ${desde}-${hasta} de ${total}`;
+        }
+    }
+
+    function abrirModalProveedor() {
+        const modalCheckbox = document.getElementById('modal_elegir_proveedor');
+        if (modalCheckbox) modalCheckbox.checked = true;
+        paginaProveedor = 1;
+        renderTablaProveedor(proveedoresCache);
+        if (buscadorProveedor) buscadorProveedor.value = '';
+    }
+
+    if (btnElegirProveedor) {
+        btnElegirProveedor.addEventListener('click', function () {
+            abrirModalProveedor();
+        });
+    }
+
+    if (proveedorNombreVisible) {
+        proveedorNombreVisible.addEventListener('click', function () {
+            abrirModalProveedor();
+        });
+        proveedorNombreVisible.addEventListener('focus', function () {
+            abrirModalProveedor();
+        });
+    }
+
+    if (buscadorProveedor) {
+        buscadorProveedor.addEventListener('input', function () {
+            const term = this.value.toLowerCase();
+            const filtrados = proveedoresData.filter(proveedor => {
+                const texto = `${proveedor.nombre || ''} ${proveedor.razon_social || ''} ${proveedor.cuit || ''} ${proveedor.telefono || ''}`.toLowerCase();
+                return texto.includes(term);
+            });
+            paginaProveedor = 1;
+            renderTablaProveedor(filtrados);
+        });
+    }
+
+    if (proveedorPrev) {
+        proveedorPrev.addEventListener('click', function () {
+            if (paginaProveedor > 1) {
+                paginaProveedor--;
+                const term = buscadorProveedor ? buscadorProveedor.value.toLowerCase() : '';
+                const filtrados = term ? proveedoresData.filter(p => {
+                    const texto = `${p.nombre || ''} ${p.razon_social || ''} ${p.cuit || ''} ${p.telefono || ''}`.toLowerCase();
+                    return texto.includes(term);
+                }) : proveedoresCache;
+                renderTablaProveedor(filtrados);
+            }
+        });
+    }
+
+    if (proveedorNext) {
+        proveedorNext.addEventListener('click', function () {
+            const term = buscadorProveedor ? buscadorProveedor.value.toLowerCase() : '';
+            const filtrados = term ? proveedoresData.filter(p => {
+                const texto = `${p.nombre || ''} ${p.razon_social || ''} ${p.cuit || ''} ${p.telefono || ''}`.toLowerCase();
+                return texto.includes(term);
+            }) : proveedoresCache;
+            const totalPaginas = Math.ceil(filtrados.length / itemsPorPaginaProveedor);
+            if (paginaProveedor < totalPaginas) {
+                paginaProveedor++;
+                renderTablaProveedor(filtrados);
+            }
+        });
+    }
+});
+</script>
+
+<script>
+// ==============================
+//  MODAL DE SELECCIÓN DE EMPLEADO
+// ==============================
+document.addEventListener("DOMContentLoaded", function() {
+    const empleadosData = @json($empleados);
+    let empleadosCache = empleadosData;
+    let paginaEmpleado = 1;
+    const itemsPorPaginaEmpleado = 5;
+
+    const tablaEmpleadoBody = document.getElementById('tabla_empleado_body');
+    const empleadoPrev = document.getElementById('empleado_prev_page');
+    const empleadoNext = document.getElementById('empleado_next_page');
+    const empleadoInfo = document.getElementById('empleado_pagination_info');
+    const buscadorEmpleado = document.getElementById('buscador_empleado');
+    const empleadoInput = document.getElementById('empleado_id');
+    const empleadoNombreVisible = document.getElementById('empleado_nombre_visible');
+
+    function formatearCelda(valor) {
+        if (valor === null || valor === undefined || valor === '') return '-';
+        return String(valor);
+    }
+
+    function renderTablaEmpleado(data) {
+        if (!tablaEmpleadoBody) return;
+
+        tablaEmpleadoBody.innerHTML = '';
+
+        const total = data.length;
+
+        if (!total) {
+            tablaEmpleadoBody.innerHTML = `<tr><td class="py-4 text-center text-sm text-gray-500" colspan="5">No se encontraron empleados.</td></tr>`;
+            if (empleadoInfo) empleadoInfo.textContent = '0 de 0';
+            return;
+        }
+
+        const totalPaginas = Math.ceil(total / itemsPorPaginaEmpleado);
+        if (paginaEmpleado > totalPaginas) paginaEmpleado = totalPaginas;
+        if (paginaEmpleado < 1) paginaEmpleado = 1;
+
+        const inicio = (paginaEmpleado - 1) * itemsPorPaginaEmpleado;
+        const fin = inicio + itemsPorPaginaEmpleado;
+        const pagina = data.slice(inicio, fin);
+
+        pagina.forEach(empleado => {
+            const tr = document.createElement('tr');
+            tr.classList.add('cursor-pointer', 'hover:bg-base-300');
+
+            tr.innerHTML = `
+                <td>${formatearCelda(empleado.nombre)}</td>
+                <td>${formatearCelda(empleado.dni)}</td>
+                <td>${formatearCelda(empleado.celular)}</td>
+                <td>${formatearCelda(empleado.email)}</td>
+                <td>${formatearCelda(empleado.area)}</td>
+            `;
+
+            tr.addEventListener('click', function () {
+                if (!empleadoInput) return;
+
+                empleadoInput.value = empleado.id;
+
+                if (empleadoNombreVisible) {
+                    const texto = `${empleado.nombre || ''} - ${empleado.dni || ''}`;
+                    empleadoNombreVisible.value = texto.trim();
+                }
+
+                const modalCheckbox = document.getElementById('modal_elegir_empleado');
+                if (modalCheckbox) modalCheckbox.checked = false;
+            });
+
+            tablaEmpleadoBody.appendChild(tr);
+        });
+
+        if (empleadoInfo) {
+            const desde = inicio + 1;
+            const hasta = Math.min(fin, total);
+            empleadoInfo.textContent = `Mostrando ${desde}-${hasta} de ${total}`;
+        }
+    }
+
+    function abrirModalEmpleado() {
+        const modalCheckbox = document.getElementById('modal_elegir_empleado');
+        if (modalCheckbox) modalCheckbox.checked = true;
+        paginaEmpleado = 1;
+        renderTablaEmpleado(empleadosCache);
+        if (buscadorEmpleado) buscadorEmpleado.value = '';
+    }
+
+    if (empleadoNombreVisible) {
+        empleadoNombreVisible.addEventListener('click', function () {
+            abrirModalEmpleado();
+        });
+        empleadoNombreVisible.addEventListener('focus', function () {
+            abrirModalEmpleado();
+        });
+    }
+
+    if (buscadorEmpleado) {
+        buscadorEmpleado.addEventListener('input', function () {
+            const term = this.value.toLowerCase();
+            const filtrados = empleadosData.filter(empleado => {
+                const texto = `${empleado.nombre || ''} ${empleado.dni || ''} ${empleado.celular || ''} ${empleado.email || ''} ${empleado.area || ''}`.toLowerCase();
+                return texto.includes(term);
+            });
+            paginaEmpleado = 1;
+            renderTablaEmpleado(filtrados);
+        });
+    }
+
+    if (empleadoPrev) {
+        empleadoPrev.addEventListener('click', function () {
+            if (paginaEmpleado > 1) {
+                paginaEmpleado--;
+                const term = buscadorEmpleado ? buscadorEmpleado.value.toLowerCase() : '';
+                const filtrados = term ? empleadosData.filter(e => {
+                    const texto = `${e.nombre || ''} ${e.dni || ''} ${e.celular || ''} ${e.email || ''} ${e.area || ''}`.toLowerCase();
+                    return texto.includes(term);
+                }) : empleadosCache;
+                renderTablaEmpleado(filtrados);
+            }
+        });
+    }
+
+    if (empleadoNext) {
+        empleadoNext.addEventListener('click', function () {
+            const term = buscadorEmpleado ? buscadorEmpleado.value.toLowerCase() : '';
+            const filtrados = term ? empleadosData.filter(e => {
+                const texto = `${e.nombre || ''} ${e.dni || ''} ${e.celular || ''} ${e.email || ''} ${e.area || ''}`.toLowerCase();
+                return texto.includes(term);
+            }) : empleadosCache;
+            const totalPaginas = Math.ceil(filtrados.length / itemsPorPaginaEmpleado);
+            if (paginaEmpleado < totalPaginas) {
+                paginaEmpleado++;
+                renderTablaEmpleado(filtrados);
+            }
+        });
+    }
+});
+</script>
+
+<script>
+// ==============================
+//  MODAL DE SELECCIÓN DE DESTINO
+// ==============================
+document.addEventListener("DOMContentLoaded", function() {
+
+    const baseUrlListar = "{{ url('origen/listar') }}";
+
+    const destinoTipoSelect = document.getElementById("destino_tipo");
+    const destinoInput = document.getElementById("destino_id");
+    const destinoNombreVisible = document.getElementById("destino_nombre_visible");
+
+    // DESTINO (cache y elementos del modal)
+    let destinosCache = [];
+    let columnasDestino = [];
+    let paginaDestino = 1;
+    const itemsPorPaginaDestino = 5;
+
+    // Cache por tipo para que el modal abra instantáneo
+    const destinoCachePorTipo = {};
+    const destinoPrefetchEnCursoPorTipo = {};
+
+    const tablaDestinoHead = document.getElementById('tabla_destino_head');
+    const tablaDestinoBody = document.getElementById('tabla_destino_body');
+    const destinoPrev = document.getElementById('destino_prev_page');
+    const destinoNext = document.getElementById('destino_next_page');
+    const destinoInfo = document.getElementById('destino_pagination_info');
+    const buscadorDestino = document.getElementById('buscador_destino');
+    const btnElegirDestino = document.getElementById('btn_elegir_destino');
+    const tituloModalDestino = document.getElementById('titulo_modal_destino');
+
+    function formatearCelda(valor) {
+        if (valor === null || valor === undefined || valor === '') return '-';
+        return String(valor);
+    }
+
+    function esParteVisibleValida(valor) {
+        return !(valor === null || valor === undefined || valor === '');
+    }
+
+    function tipoShortDesdeClase(clase) {
+        if (!clase) return null;
+        if (clase.includes('Obra')) return 'obra';
+        if (clase.includes('Deposito')) return 'deposito';
+        return 'vehiculo';
+    }
+
+    function prefetchListado(tipoShort, cachePorTipo, prefetchEnCursoPorTipo, onOk) {
+        if (!tipoShort) return null;
+
+        if (cachePorTipo[tipoShort]) {
+            if (typeof onOk === 'function') onOk(cachePorTipo[tipoShort]);
+            return Promise.resolve(cachePorTipo[tipoShort]);
+        }
+
+        if (prefetchEnCursoPorTipo && prefetchEnCursoPorTipo[tipoShort]) {
+            const p = prefetchEnCursoPorTipo[tipoShort];
+            if (typeof onOk === 'function') p.then(onOk).catch(() => {});
+            return p;
+        }
+
+        const p = fetch(`${baseUrlListar}/${tipoShort}`)
+            .then(res => res.json())
+            .then(data => {
+                const lista = Array.isArray(data) ? data : [];
+                cachePorTipo[tipoShort] = lista;
+                return lista;
+            })
+            .catch(() => {
+                return [];
+            })
+            .finally(() => {
+                if (prefetchEnCursoPorTipo) delete prefetchEnCursoPorTipo[tipoShort];
+            });
+
+        if (prefetchEnCursoPorTipo) prefetchEnCursoPorTipo[tipoShort] = p;
+        if (typeof onOk === 'function') p.then(onOk).catch(() => {});
+        return p;
+    }
+
+    function configurarColumnasDestino(tipoShort) {
+        if (tipoShort === 'vehiculo') {
+            columnasDestino = [
+                { key: 'patente', label: 'Patente' },
+                { key: 'marca', label: 'Marca' },
+                { key: 'modelo', label: 'Modelo' },
+                { key: 'anio', label: 'Año' },
+                { key: 'color', label: 'Color' },
+                { key: 'tipo', label: 'Tipo' },
+            ];
+            tituloModalDestino.textContent = 'Seleccionar vehículo destino';
+        } else if (tipoShort === 'obra') {
+            columnasDestino = [
+                { key: 'nombre', label: 'Nombre' },
+                { key: 'direccion', label: 'Dirección' },
+                { key: 'barrio', label: 'Barrio' },
+                { key: 'responsable', label: 'Responsable' },
+                { key: 'ejecutado_por', label: 'Ejecutado por' },
+                { key: 'estado_obra', label: 'Estado' },
+            ];
+            tituloModalDestino.textContent = 'Seleccionar obra destino';
+        } else if (tipoShort === 'deposito') {
+            columnasDestino = [{ key: 'nombre', label: 'Depósito' }];
+            tituloModalDestino.textContent = 'Seleccionar depósito destino';
+        } else {
+            columnasDestino = [{ key: 'nombre', label: 'Nombre' }];
+            tituloModalDestino.textContent = 'Seleccionar destino';
+        }
+
+        if (tablaDestinoHead) {
+            tablaDestinoHead.innerHTML = columnasDestino
+                .map(col => `<th>${col.label}</th>`)
+                .join('');
+        }
+    }
+
+    function renderTablaDestino(data) {
+        if (!tablaDestinoBody) return;
+
+        tablaDestinoBody.innerHTML = '';
+
+        const total = data.length;
+
+        if (!total) {
+            tablaDestinoBody.innerHTML = `<tr><td class="py-4 text-center text-sm text-gray-500" colspan="${columnasDestino.length || 1}">No se encontraron elementos.</td></tr>`;
+            if (destinoInfo) destinoInfo.textContent = '0 de 0';
+            return;
+        }
+
+        const totalPaginas = Math.ceil(total / itemsPorPaginaDestino);
+        if (paginaDestino > totalPaginas) paginaDestino = totalPaginas;
+        if (paginaDestino < 1) paginaDestino = 1;
+
+        const inicio = (paginaDestino - 1) * itemsPorPaginaDestino;
+        const fin = inicio + itemsPorPaginaDestino;
+        const pagina = data.slice(inicio, fin);
+
+        pagina.forEach(dest => {
+            const tr = document.createElement('tr');
+            tr.classList.add('cursor-pointer', 'hover:bg-base-300');
+
+            tr.innerHTML = columnasDestino
+                .map(col => `<td>${formatearCelda(dest[col.key])}</td>`)
+                .join('');
+
+            tr.addEventListener('click', function () {
+                if (!destinoInput) return;
+
+                destinoInput.value = dest.id;
+
+                if (destinoNombreVisible) {
+                    const texto = columnasDestino
+                        .map(col => dest[col.key])
+                        .filter(esParteVisibleValida)
+                        .map(v => String(v))
+                        .join(' - ');
+                    destinoNombreVisible.value = texto || (dest.nombre ?? 'Elemento seleccionado');
+                }
+
+                const modalCheckbox = document.getElementById('modal_elegir_destino');
+                if (modalCheckbox) modalCheckbox.checked = false;
+            });
+
+            tablaDestinoBody.appendChild(tr);
+        });
+
+        if (destinoInfo) {
+            const desde = inicio + 1;
+            const hasta = Math.min(fin, total);
+            destinoInfo.textContent = `Mostrando ${desde}-${hasta} de ${total}`;
+        }
+    }
+
+    function cargarDestinosEnTabla() {
+        if (!tablaDestinoBody || !tablaDestinoHead) return;
+
+        const clase = destinoTipoSelect ? destinoTipoSelect.value : null;
+        const tipoShort = tipoShortDesdeClase(clase);
+
+        if (!clase || !tipoShort) {
+            columnasDestino = [];
+            tablaDestinoHead.innerHTML = '';
+            tablaDestinoBody.innerHTML = '<tr><td class="py-4 text-center text-sm text-gray-500">Primero seleccione un tipo de destino.</td></tr>';
+            if (destinoInfo) destinoInfo.textContent = '';
+            return;
+        }
+
+        configurarColumnasDestino(tipoShort);
+
+        // Si ya está en cache, renderizar instantáneo
+        if (destinoCachePorTipo[tipoShort]) {
+            destinosCache = destinoCachePorTipo[tipoShort];
+            paginaDestino = 1;
+            renderTablaDestino(destinosCache);
+            return;
+        }
+
+        tablaDestinoBody.innerHTML = `<tr><td class="py-4 text-center text-sm" colspan="${columnasDestino.length}">Cargando...</td></tr>`;
+
+        prefetchListado(tipoShort, destinoCachePorTipo, destinoPrefetchEnCursoPorTipo)
+            .then(lista => {
+                destinosCache = lista;
+                paginaDestino = 1;
+                renderTablaDestino(destinosCache);
+            })
+            .catch(err => {
+                console.error('Error en fetch DESTINO:', err);
+                tablaDestinoBody.innerHTML = `<tr><td class="py-4 text-center text-sm text-red-500" colspan="${columnasDestino.length}">Error al cargar los elementos.</td></tr>`;
+                if (destinoInfo) destinoInfo.textContent = '';
+            });
+    }
+
+    function abrirModalDestino() {
+        const modalCheckbox = document.getElementById('modal_elegir_destino');
+        if (modalCheckbox) modalCheckbox.checked = true;
+        cargarDestinosEnTabla();
+        if (buscadorDestino) buscadorDestino.value = '';
+    }
+
+    if (btnElegirDestino) {
+        btnElegirDestino.addEventListener('click', function () {
+            abrirModalDestino();
+        });
+    }
+
+    if (destinoNombreVisible) {
+        destinoNombreVisible.addEventListener('click', function () {
+            abrirModalDestino();
+        });
+        destinoNombreVisible.addEventListener('focus', function () {
+            abrirModalDestino();
+        });
+    }
+
+    if (buscadorDestino) {
+        buscadorDestino.addEventListener('input', function () {
+            const term = this.value.toLowerCase();
+            const filtrados = destinosCache.filter(dest => {
+                const texto = Object.values(dest).join(' ').toLowerCase();
+                return texto.includes(term);
+            });
+            paginaDestino = 1;
+            renderTablaDestino(filtrados);
+        });
+    }
+
+    if (destinoPrev) {
+        destinoPrev.addEventListener('click', function () {
+            if (paginaDestino > 1) {
+                paginaDestino--;
+                renderTablaDestino(destinosCache);
+            }
+        });
+    }
+
+    if (destinoNext) {
+        destinoNext.addEventListener('click', function () {
+            const totalPaginas = Math.ceil(destinosCache.length / itemsPorPaginaDestino);
+            if (paginaDestino < totalPaginas) {
+                paginaDestino++;
+                renderTablaDestino(destinosCache);
+            }
+        });
+    }
+
+    destinoTipoSelect?.addEventListener('change', function () {
+        const tipo = this.value;
+        const tipoShort = tipoShortDesdeClase(tipo);
+        prefetchListado(tipoShort, destinoCachePorTipo, destinoPrefetchEnCursoPorTipo);
+
+        if (destinoInput) destinoInput.value = '';
+        if (destinoNombreVisible) {
+            destinoNombreVisible.value = '';
+            destinoNombreVisible.placeholder = 'Seleccione un elemento desde el buscador';
+        }
+    });
+
+    const tipoDestinoInicial = tipoShortDesdeClase(destinoTipoSelect ? destinoTipoSelect.value : null);
+    prefetchListado(tipoDestinoInicial, destinoCachePorTipo, destinoPrefetchEnCursoPorTipo);
+});
 </script>
  
 @endsection 
