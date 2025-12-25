@@ -16,25 +16,25 @@ class AreaSeeder extends Seeder
         $areas = [
             [
                 'nombre'=> 'Secretaria de Gobierno',
-                'prefijo'=> 'SG-',
+                'prefijo_catalogacion'=> 'SG-',
                 'created_at'=> now(),
                 'updated_at'=> now(),
             ],
             [
                 'nombre'=> 'Secretaria de Obras Publicas',
-                'prefijo'=> 'OP-',
+                'prefijo_catalogacion'=> 'OP-',
                 'created_at'=> now(),
                 'updated_at'=> now(),
             ],
             [
                 'nombre'=> 'Secretaria de Desarrollo Humano',
-                'prefijo'=> 'DH-',
+                'prefijo_catalogacion'=> 'DH-',
                 'created_at'=> now(),
                 'updated_at'=> now(),
             ],
             [
                 'nombre'=> 'Servicios Publicos',
-                'prefijo'=> 'SP-',
+                'prefijo_catalogacion'=> 'SP-',
                 'created_at'=> now(),
                 'updated_at'=> now(),
             ]

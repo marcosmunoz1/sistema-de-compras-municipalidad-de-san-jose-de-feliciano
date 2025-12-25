@@ -30,7 +30,7 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        // Insertar las 4 áreas predefinidas
+        /* Insertar las 4 áreas predefinidas
         DB::table('areas')->insert([
             [
                 'nombre' => 'Secretaría de Gobierno',
@@ -56,9 +56,9 @@ return new class extends Migration
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
-        ]);
-    }
+        ]);*/
 
+    }
     public function down(): void
     {
         Schema::dropIfExists('equipos');
