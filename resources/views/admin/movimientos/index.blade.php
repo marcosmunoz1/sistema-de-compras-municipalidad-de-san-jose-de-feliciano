@@ -73,7 +73,6 @@
                         <th class="text-center">Tipo</th>
                         <th class="text-center">Origen</th>
                         <th class="text-center">Destino</th>
-                        <th class="text-center">Cantidad</th>
                         <th class="text-center">Fecha</th>
                         <th class="text-center">Acciones</th>
                     </tr>
@@ -98,7 +97,6 @@
                             <td class="text-center">
                                 {{ $mov->destino_label }}
                             </td>
-                            <td class="text-center">{{ $mov->cantidad }}</td>
                             <td class="text-center">{{ \Carbon\Carbon::parse($mov->fecha)->format('d/m/Y') }}</td>
                             <td class="text-center">
                                 <div class="flex items-center justify-center gap-2">
@@ -106,13 +104,6 @@
                                     <a href="{{ route('movimientos.show', $mov->id) }}"
                                         class="btn btn-info btn-sm">
                                         <x-heroicon-s-eye class="w-4 h-4"/>
-                                    </a>
-                                    @endcan
-
-                                    @can('movimientos-edit')
-                                    <a href="{{ route('movimientos.edit', $mov->id) }}"
-                                        class="btn btn-warning btn-sm">
-                                        <x-heroicon-s-pencil class="w-4 h-4"/>
                                     </a>
                                     @endcan
                                 </div>

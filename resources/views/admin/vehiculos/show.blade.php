@@ -84,7 +84,7 @@
                 <!-- ======================= -->
                 <div class="col-span-2 space-y-4">
 
-                    <div class="grid grid-cols-2 gap-4">
+                    <div class="grid grid-cols-3 gap-4">
                         <!-- Tipo -->
                         <div class="space-y-2">
                             <label for="tipo" class="text-sm font-medium">Tipo</label>
@@ -108,6 +108,25 @@
                                 @foreach ($tipos as $tipo)
                                     <option value="{{ $tipo }}" {{ $vehiculo->tipo === $tipo ? 'selected' : '' }}>
                                         {{ $tipo }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <!-- Área -->
+                        <div class="form-control w-full">
+                            <label class="label">
+                                <span class="label-text font-medium">Área
+                            </label>
+                            <select name="area_id"
+                                class="select select-bordered w-full @error('area_id') select-error @enderror"
+                                disabled
+                            >
+                                <option disabled value="">Seleccionar área</option>
+
+                                @foreach ($areas as $area)
+                                    <option value="{{ $area->id }}"
+                                        {{ old('area_id', $vehiculo->area_id) == $area->id ? 'selected' : '' }}>
+                                        {{ $area->nombre }} ({{ $area->prefijo_catalogacion }})
                                     </option>
                                 @endforeach
                             </select>
@@ -154,7 +173,7 @@
                         </div>
                     </div>
 
-                    <div class="grid grid-cols-2 gap-4">
+                    <div class="grid grid-cols-3 gap-4">
                         <!-- Color -->
                         <div class="space-y-2">
                             <label for="color" class="text-sm font-medium">Color</label>
@@ -171,6 +190,17 @@
                                 class="w-full h-10 rounded-md border border-base-300 bg-base-200 px-3 text-sm 
                                 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition"
                                 disabled />
+                        </div>
+
+                        <!-- Catalogacion -->
+                        <div class="form-control">
+                            <label class="label">
+                                <span class="label-text font-medium">Catalogación</span>
+                            </label>
+                            <input type="text" name="catalogacion" value="{{ $vehiculo->catalogacion }}"
+                                placeholder="Ej: HP, Dell, Lenovo, Samsung"
+                                class="w-full h-10 rounded-md border border-base-300 bg-base-200 px-3 text-sm 
+                                focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition" readonly>
                         </div>
                     </div>
 

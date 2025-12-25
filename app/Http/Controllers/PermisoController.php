@@ -18,7 +18,7 @@ class PermisoController extends Controller
         if ($search) {
             $query->where('name', 'like', "%{$search}%");
         }
-        $permisos = $query->paginate(10); 
+        $permisos = $query->paginate(10)->withQueryString(); 
         return view('admin.permisos.index', compact('permisos','totalPermisos'));  
     } 
 

@@ -28,10 +28,42 @@ class ObraController extends Controller
             }
         }
 
-        $obras = Obra::withTrashed()
-            ->where(function ($query) use ($search, $estadoBuscado) {
+        $estadoObraBuscado = null;
 
-                // Búsqueda por texto en varios campos
+        if ($search !== null && $search !== '') {
+
+            $s = strtolower(trim($search));
+            $s = str_replace(
+                ['á','é','í','ó','ú'],
+                ['a','e','i','o','u'],
+                $s
+            );
+
+            $mapEstados = [
+                'planificada'  => 'planificada',
+                'en ejecucion' => 'en_ejecucion',
+                'ejecucion'    => 'en_ejecucion',
+                'demorada'     => 'demorada',
+                'finalizada'   => 'finalizada',
+                'cancelada'    => 'cancelada',
+            ];
+
+            foreach ($mapEstados as $texto => $estadoBd) {
+            if (str_contains($texto, $s)) {
+                $estadoObraBuscado = $estadoBd;
+                break;
+            }
+}
+
+        }
+
+
+        $obras = Obra::withTrashed()
+
+        // 🔍 BÚSQUEDA TEXTUAL (solo si NO es estado)
+        ->when($search && !$estadoObraBuscado, function ($q) use ($search, $estadoBuscado) {
+            $q->where(function ($query) use ($search, $estadoBuscado) {
+
                 $query->where('nombre', 'LIKE', "%{$search}%")
                     ->orWhere('descripcion', 'LIKE', "%{$search}%")
                     ->orWhere('direccion', 'LIKE', "%{$search}%")
@@ -42,17 +74,22 @@ class ObraController extends Controller
                     ->orWhere('fecha_inicio', 'LIKE', "%{$search}%")
                     ->orWhere('fecha_estimada_fin', 'LIKE', "%{$search}%")
                     ->orWhere('fecha_fin', 'LIKE', "%{$search}%")
-                    ->orWhere('estado_obra', 'LIKE', "%{$search}%")
-                    ->orWhere('presupuesto', 'LIKE', "%{$search}%")
                     ->orWhere('ejecutado_por', 'LIKE', "%{$search}%")
                     ->orWhere('observaciones', 'LIKE', "%{$search}%");
 
-                // Si escriben "activo" o "inactivo"
                 if (!is_null($estadoBuscado)) {
                     $query->orWhere('estado', $estadoBuscado);
                 }
-            })
-            ->paginate(10);
+            });
+        })
+
+        // ✅ FILTRO POR ESTADO DE OBRA (prioritario)
+        ->when($estadoObraBuscado, function ($q) use ($estadoObraBuscado) {
+            $q->where('estado_obra', $estadoObraBuscado);
+        })
+
+        ->paginate(10)
+        ->withQueryString();
 
         return view('admin.obras.index', compact('obras'));
     }
@@ -117,64 +154,64 @@ class ObraController extends Controller
      * Display the specified resource.
      */
   public function show(Request $request, $id)
-{
-    $obra = Obra::findOrFail($id);
-    $search = $request->input('search');
+    {
+        $obra = Obra::findOrFail($id);
+        $search = $request->input('search');
 
-    $productos = DB::table('obra_producto as op')
-        ->join('productos as p', 'p.id', '=', 'op.producto_id')
-        ->leftJoin('detalle_compras as dc', 'dc.id', '=', 'op.detalle_compra_id')
-        ->leftJoin('compras as c', 'c.id', '=', 'dc.compra_id')
-        ->select(
-            'p.nombre',
-            'p.descripcion',
+        $productos = DB::table('obra_producto as op')
+            ->join('productos as p', 'p.id', '=', 'op.producto_id')
+            ->leftJoin('detalle_compras as dc', 'dc.id', '=', 'op.detalle_compra_id')
+            ->leftJoin('compras as c', 'c.id', '=', 'dc.compra_id')
+            ->select(
+                'p.nombre',
+                'p.descripcion',
 
-            // ⭐ Cantidad asignada originalmente a la obra
-            'op.cantidad_asignada',
+                // ⭐ Cantidad asignada originalmente a la obra
+                'op.cantidad_asignada',
 
-            // ⭐ Stock REAL que tiene actualmente la obra
-            'op.stock as stock_obra',
+                // ⭐ Stock REAL que tiene actualmente la obra
+                'op.stock as stock_obra',
 
-            // precio
-            'dc.precio',
+                // precio
+                'dc.precio',
 
-            // fecha compra
-            'c.fecha_orden',
+                // fecha compra
+                'c.fecha_orden',
 
-            // id compra
-            'c.id as compra_id',
+                // id compra
+                'c.id as compra_id',
 
-            // ⭐ Subtotal real según lo asignado
-            DB::raw('(op.cantidad_asignada * COALESCE(dc.precio, 0)) as subtotal_real')
-        )
-        ->where('op.obra_id', $obra->id)
+                // ⭐ Subtotal real según lo asignado
+                DB::raw('(op.cantidad_asignada * COALESCE(dc.precio, 0)) as subtotal_real')
+            )
+            ->where('op.obra_id', $obra->id)
 
-        // BUSCADOR
-        ->when($search, function ($query, $search) {
-            $query->where(function ($q) use ($search) {
-                $q->where('p.nombre', 'LIKE', "%{$search}%")
-                  ->orWhere('op.cantidad_asignada', 'LIKE', "%{$search}%")
-                  ->orWhere('op.stock', 'LIKE', "%{$search}%")
-                  ->orWhere('dc.precio', 'LIKE', "%{$search}%")
-                  ->orWhere('c.fecha_orden', 'LIKE', "%{$search}%");
-            });
-        })
+            // BUSCADOR
+            ->when($search, function ($query, $search) {
+                $query->where(function ($q) use ($search) {
+                    $q->where('p.nombre', 'LIKE', "%{$search}%")
+                    ->orWhere('op.cantidad_asignada', 'LIKE', "%{$search}%")
+                    ->orWhere('op.stock', 'LIKE', "%{$search}%")
+                    ->orWhere('dc.precio', 'LIKE', "%{$search}%")
+                    ->orWhere('c.fecha_orden', 'LIKE', "%{$search}%");
+                });
+            })
 
-        ->orderBy('c.fecha_orden', 'desc')
-        ->paginate(10)
-        ->withQueryString(); 
-
-
-    // TOTAL GENERAL
-    $totalGeneral = DB::table('obra_producto as op')
-        ->leftJoin('detalle_compras as dc', 'dc.id', '=', 'op.detalle_compra_id')
-        ->where('op.obra_id', $obra->id)
-        ->selectRaw('SUM(op.cantidad_asignada * COALESCE(dc.precio, 0)) as total')
-        ->value('total');
+            ->orderBy('c.fecha_orden', 'desc')
+            ->paginate(10)
+            ->withQueryString(); 
 
 
-    return view('admin.obras.show', compact('obra', 'productos', 'totalGeneral', 'search'));
-}
+        // TOTAL GENERAL
+        $totalGeneral = DB::table('obra_producto as op')
+            ->leftJoin('detalle_compras as dc', 'dc.id', '=', 'op.detalle_compra_id')
+            ->where('op.obra_id', $obra->id)
+            ->selectRaw('SUM(op.cantidad_asignada * COALESCE(dc.precio, 0)) as total')
+            ->value('total');
+
+
+        return view('admin.obras.show', compact('obra', 'productos', 'totalGeneral', 'search'));
+    }
 
 
 
@@ -204,13 +241,12 @@ class ObraController extends Controller
             'barrio' => 'nullable|string|max:100',
             'ciudad' => 'nullable|string|max:150',
             'responsable' => 'nullable|string|max:255',
-            'telefono_responsable' => 'nullable|string|max:30',
             'fecha_inicio' => 'nullable|date',
             'fecha_estimada_fin' => 'nullable|date|after_or_equal:fecha_inicio',
             'fecha_fin' => 'nullable|date|after_or_equal:fecha_inicio',
             'estado_obra' => 'required|in:planificada,en_ejecucion,demorada,finalizada,cancelada',
             'presupuesto' => 'nullable|numeric|min:0',
-            'monto_ejecutado' => 'nullable|numeric|min:0',
+            'ejecutado_por' => 'required|string|max:255',
             'observaciones' => 'nullable|string',
         ],
         [
@@ -226,13 +262,12 @@ class ObraController extends Controller
         $obra->barrio = $request->barrio;
         $obra->ciudad = $request->ciudad;
         $obra->responsable = $request->responsable;
-        $obra->telefono_responsable = $request->telefono_responsable;
         $obra->fecha_inicio = $request->fecha_inicio;
         $obra->fecha_estimada_fin = $request->fecha_estimada_fin;
         $obra->fecha_fin = $request->fecha_fin;
         $obra->estado_obra = $request->estado_obra;
         $obra->presupuesto = $request->presupuesto;
-        $obra->monto_ejecutado = $request->monto_ejecutado;
+        $obra->ejecutado_por = $request->ejecutado_por;
         $obra->observaciones = $request->observaciones;
 
         $obra->save();

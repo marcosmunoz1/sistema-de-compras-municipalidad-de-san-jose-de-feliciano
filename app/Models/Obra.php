@@ -41,11 +41,37 @@ class Obra extends Model
     {
         return $this->belongsToMany(Producto::class)
             ->using(ObraProducto::class)
-            ->withPivot(['cantidad_asignada',
+            ->withPivot(['id','cantidad_asignada',
                         'detalle_compra_id',
                         'stock'])
             ->withTimestamps();
     }
+
+    public function getEstadoObraFormateadoAttribute()
+    {
+        return match ($this->estado_obra) {
+            'planificada'   => 'Planificada',
+            'en_ejecucion'  => 'En ejecución',
+            'demorada'      => 'Demorada',
+            'finalizada'    => 'Finalizada',
+            'cancelada'     => 'Cancelada',
+            default         => ucfirst(str_replace('_', ' ', $this->estado_obra)),
+        };
+    }
+
+    public function getEstadoObraBadgeAttribute()
+    {
+        return match ($this->estado_obra) {
+            'en_ejecucion' => 'badge-info',
+            'finalizada'   => 'badge-success',
+            'cancelada'    => 'badge-error',
+            'demorada'     => 'badge-warning',
+            'planificada'  => 'badge-neutral',
+            default        => 'badge-ghost',
+        };
+    }
+
+
 
 
     public function movimientosComoOrigen()

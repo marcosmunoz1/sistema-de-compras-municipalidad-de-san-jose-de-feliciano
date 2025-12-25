@@ -229,6 +229,13 @@
                         </a>
                     </li> 
                     @endcan
+                    <li class="w-full mr-15">
+                        <a href="{{ url('/admin/equipos') }}"
+                           class="hover:bg-base-300 hover:text-primary transition-colors {{ request()->is('admin/equipos*') ? 'active bg-primary text-primary-content' : '' }}">
+                            <x-heroicon-o-wrench-screwdriver class="w-5 h-5" />
+                            Equipos
+                        </a>
+                    </li> 
                     {{-- SECCIÓN: PERSONAL --}}
                     <li class="menu-title mt-4">
                         <span class="text-xs uppercase tracking-wider text-base-content/50">Personal</span>

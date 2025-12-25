@@ -11,37 +11,120 @@ class CategoriaController extends Controller
      * Display a listing of the resource.
      */
     public function index(Request $request)
-    {   
-        $search = $request->input('search');
+{   
+    $search = trim($request->input('search'));
 
-        // Convertimos el texto buscado a estado booleano
-        $estadoBuscado = null;
+    // Convertimos el texto buscado a estado booleano
+    $estadoBuscado = null;
 
-        if ($search !== null) {
-            $s = strtolower($search);
+    if ($search !== '') {
+        $s = strtolower($search);
 
-            if ($s === 'activo') {
-                $estadoBuscado = 1;
-            } elseif ($s === 'inactivo') {
-                $estadoBuscado = 0;
-            }
+        if ($s === 'activo') {
+            $estadoBuscado = 1;
+        } elseif ($s === 'inactivo') {
+            $estadoBuscado = 0;
         }
-
-        $categorias = Categoria::withTrashed()
-            ->where(function ($query) use ($search, $estadoBuscado) {
-                // Búsqueda de texto
-                $query->where('nombre', 'LIKE', "%{$search}%")
-                    ->orWhere('descripcion', 'LIKE', "%{$search}%");
-
-                // Búsqueda por estado si corresponde
-                if (!is_null($estadoBuscado)) {
-                    $query->orWhere('estado', $estadoBuscado);
-                }
-            })
-            ->paginate(5);
-
-        return view('admin.categorias.index', compact('categorias'));
     }
+
+    // 🧠 Detectar DD/MM
+    $dia = null;
+    $mes = null;
+
+    if ($search !== '' && preg_match('/^\d{2}\/\d{2}$/', $search)) {
+        [$dia, $mes] = explode('/', $search);
+    }
+
+    // 🧠 Detectar DD/MM/YYYY (día completo)
+    $fechaDiaInicio = null;
+    $fechaDiaFin = null;
+
+    if (
+        $search !== '' &&
+        preg_match('/^\d{2}\/\d{2}\/\d{4}$/', $search)
+    ) {
+        try {
+            $carbon = \Carbon\Carbon::createFromFormat('d/m/Y', $search);
+            $fechaDiaInicio = $carbon->copy()->startOfDay();
+            $fechaDiaFin    = $carbon->copy()->endOfDay();
+        } catch (\Exception $e) {
+            $fechaDiaInicio = null;
+            $fechaDiaFin = null;
+        }
+    }
+
+    // 🧠 Detectar DD/MM/YYYY HH:MM
+    $fechaInicio = null;
+    $fechaFin = null;
+
+    if (
+        $search !== '' &&
+        preg_match('/^\d{2}\/\d{2}\/\d{4}\s\d{2}:\d{2}$/', $search)
+    ) {
+        try {
+            $carbon = \Carbon\Carbon::createFromFormat('d/m/Y H:i', $search);
+            $fechaInicio = $carbon->copy()->startOfMinute();
+            $fechaFin    = $carbon->copy()->endOfMinute();
+        } catch (\Exception $e) {
+            $fechaInicio = null;
+            $fechaFin = null;
+        }
+    }
+
+    $categorias = Categoria::withTrashed()
+        ->where(function ($query) use (
+            $search,
+            $estadoBuscado,
+            $fechaInicio,
+            $fechaFin,
+            $fechaDiaInicio,
+            $fechaDiaFin,
+            $dia,
+            $mes
+        ) {
+
+            // Búsqueda de texto
+            $query->where('nombre', 'LIKE', "%{$search}%")
+                  ->orWhere('descripcion', 'LIKE', "%{$search}%");
+
+            // 🔍 created_at (prioridad correcta)
+            if ($fechaInicio && $fechaFin) {
+
+                // DD/MM/YYYY HH:MM
+                $query->orWhereBetween('created_at', [$fechaInicio, $fechaFin]);
+
+            } elseif ($fechaDiaInicio && $fechaDiaFin) {
+
+                // ✅ DD/MM/YYYY (día completo)
+                $query->orWhereBetween('created_at', [$fechaDiaInicio, $fechaDiaFin]);
+
+            } elseif ($dia && $mes) {
+
+                // DD/MM
+                $query->orWhere(function ($q) use ($dia, $mes) {
+                    $q->whereDay('created_at', $dia)
+                      ->whereMonth('created_at', $mes);
+                });
+
+            } else {
+
+                $query->orWhere('created_at', 'LIKE', "%{$search}%");
+            }
+
+            // Búsqueda por estado
+            if (!is_null($estadoBuscado)) {
+                $query->orWhere('estado', $estadoBuscado);
+            }
+        })
+        ->paginate(5)
+        ->withQueryString();
+
+    return view('admin.categorias.index', compact('categorias'));
+}
+
+
+
+
 
 
     /**

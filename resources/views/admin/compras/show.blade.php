@@ -1,5 +1,5 @@
 @extends('layouts.admin')
-@section('title', 'Ver compra') 
+@section('title', 'Ver compra')
 
 @section('content')
     <!-- Titulo y boton -->
@@ -17,6 +17,10 @@
             <a href="{{ route('depositos.show', $depositoId) }}" class="btn btn-secondary mb-3">
                 ← Volver a depósito
             </a>
+        @elseif($from === 'equipo' && $equipoId)
+            <a href="{{ route('equipos.show', $equipoId) }}" class="btn btn-secondary mb-3">
+                ← Volver al equipo
+            </a>
         @endif
 
     </div>
@@ -25,7 +29,8 @@
         <ul>
             <li>
                 <a href="{{ route('admin.index') }}">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="h-4 w-4 stroke-current">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                        class="h-4 w-4 stroke-current">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"></path>
                     </svg>
@@ -165,7 +170,8 @@
                 <div class="grid grid-cols-1 gap-4">
                     <div class="space-y-2">
                         <label for="observacion" class="text-sm font-medium">Observaciones</label>
-                        <textarea type="text" id="observacion" name="observacion" placeholder="Ingrese una justificacion breve de la compra"
+                        <textarea type="text" id="observacion" name="observacion"
+                            placeholder="Ingrese una justificacion breve de la compra"
                             class="textarea w-full rounded-md border border-base-300 bg-base-200 focus:outline-none focus:ring-2 focus:ring-primary 
                         focus:border-primary transition @error('observacion') input-error @enderror"
                             disabled>{{ $compra->observacion }}</textarea>
@@ -233,6 +239,52 @@
 
                 </table>
             </div>
+            @if ($compra->foto_factura)
+                @php
+                    $archivo = $compra->foto_factura;
+                    $extension = strtolower(pathinfo($archivo, PATHINFO_EXTENSION));
+                @endphp
+
+                <div class="card bg-base-100 shadow-md border border-base-300 max-w-md">
+                    <div class="card-body gap-3">
+                        <h2 class="card-title text-base">
+                            Factura de la compra
+                        </h2>
+
+                        @if ($extension === 'pdf')
+                            <div class="flex items-center gap-3">
+                                <span class="badge badge-error badge-outline">PDF</span>
+
+                                <a href="{{ asset('storage/' . $archivo) }}" target="_blank"
+                                    class="btn btn-sm btn-primary">
+                                    Ver factura
+                                </a>
+
+                                <a href="{{ asset('storage/' . $archivo) }}" download class="btn btn-sm btn-outline">
+                                    Descargar
+                                </a>
+                            </div>
+                        @else
+                            <div class="rounded-lg overflow-hidden border border-base-300">
+                                <img src="{{ asset('storage/' . $archivo) }}" alt="Factura"
+                                    class="w-full object-cover">
+                            </div>
+
+                            <div class="flex justify-end">
+                                <a href="{{ asset('storage/' . $archivo) }}" target="_blank"
+                                    class="btn btn-sm btn-outline">
+                                    Ver en tamaño completo
+                                </a>
+                            </div>
+                        @endif
+                    </div>
+                </div>
+            @else
+                <div class="alert alert-info max-w-md">
+                    <span>No hay factura cargada para esta compra.</span>
+                </div>
+            @endif
+
         </div>
     </div>
     <!-- ========================= -->

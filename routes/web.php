@@ -155,7 +155,7 @@ Route::get('/api/destinos/{tipo}', function ($tipo) {
         'deposito' => ['model' => \App\Models\Deposito::class, 'campo' => 'nombre'],
         'obra'     => ['model' => \App\Models\Obra::class,     'campo' => 'nombre'],
         'vehiculo' => ['model' => \App\Models\Vehiculo::class, 'campo' => 'patente'],
-        'equipo'   => ['model' => \App\Models\Equipo::class,   'campo' => 'nombre'],
+        'equipo'   => ['model' => \App\Models\Equipo::class,   'campo' => 'equipamiento'],
     ];
 
     // Si no existe el tipo → devolver lista vacía (evita error 500)
@@ -170,21 +170,13 @@ Route::get('/api/destinos/{tipo}', function ($tipo) {
     return $modelo::select('id', "$campo as nombre")->get();
 });
 
-Route::get('/api/destinos/combustible/{tipo}', function($tipo) { 
+Route::get('/api/destinos/{tipo}', function ($tipo) {
 
     $map = [
-        'vehiculo' => [
-            'model'  => \App\Models\Vehiculo::class,
-            'fields' => ['id', 'patente', 'marca', 'modelo', 'anio', 'color', 'tipo'],
-        ],
-        'equipo'   => [
-            'model'  => \App\Models\Equipo::class,
-            'fields' => ['id','nombre', 'tipo_equipo', 'marca', 'modelo', 'numero_serie'],
-        ],
-        'destino'  => [
-            'model'  => \App\Models\Destino::class,
-            'fields' => ['id', 'nombre', 'tipo', 'descripcion'],
-        ],
+        'deposito' => ['model' => \App\Models\Deposito::class, 'campo' => 'nombre'],
+        'obra'     => ['model' => \App\Models\Obra::class,     'campo' => 'nombre'],
+        'vehiculo' => ['model' => \App\Models\Vehiculo::class, 'campo' => 'patente'],
+        'equipo'   => ['model' => \App\Models\Equipo::class,   'campo' => 'equipamiento'],
     ];
 
     if (!isset($map[$tipo])) {
@@ -192,15 +184,32 @@ Route::get('/api/destinos/combustible/{tipo}', function($tipo) {
     }
 
     $modelo = $map[$tipo]['model'];
-    $fields = $map[$tipo]['fields']; 
+    $campo  = $map[$tipo]['campo'];
 
-    return $modelo::select($fields)->get();
+    $query = $modelo::select('id', "$campo as nombre");
+
+    // 🔎 Filtro SOLO para obras
+    if ($tipo === 'obra') {
+        $query->where('estado_obra', 'en_ejecucion');
+    }
+
+    return $query->get();
 });
+
 
 //Rutas para los selects de movimientos
 Route::get('origen/listar/{tipo}', [App\Http\Controllers\OrigenController::class, 'listar'])->name('origen.listar');
 Route::get('origen/{tipo}/{id}/productos', [App\Http\Controllers\OrigenController::class, 'productos'])->name('origen.productos');
 
+//Rutas para equipos
+Route::get('/admin/equipos', [App\Http\Controllers\EquipoController::class, 'index'])->name('equipos.index')->middleware('auth');
+Route::get('/admin/equipos/create', [App\Http\Controllers\EquipoController::class, 'create'])->name('equipos.create')->middleware('auth');
+Route::post('/admin/equipos/store', [App\Http\Controllers\EquipoController::class, 'store'])->name('equipos.store')->middleware('auth');
+Route::get('/admin/equipos/{id}/edit', [App\Http\Controllers\EquipoController::class, 'edit'])->name('equipos.edit')->middleware('auth');
+Route::put('/admin/equipos/{id}', [App\Http\Controllers\EquipoController::class, 'update'])->name('equipos.update')->middleware('auth');
+Route::get('/admin/equipos/{id}', [App\Http\Controllers\EquipoController::class, 'show'])->name('equipos.show')->middleware('auth');
+Route::delete('/admin/equipos/{id}', [App\Http\Controllers\EquipoController::class, 'destroy'])->name('equipos.destroy')->middleware('auth');
+Route::put('admin/equipos/{id}/restore', [App\Http\Controllers\EquipoController::class, 'restore'])->name('equipos.restore')->middleware('auth');
 
 
 

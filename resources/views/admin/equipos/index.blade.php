@@ -1,60 +1,57 @@
 @extends('layouts.admin')
-@section('title', 'Obras') 
+@section('title', 'Equipos')
 @section('content')
 
-    <!-- Título y botón -->
+    <!-- Titulo y boton -->
     <div class="flex items-center justify-between mb-6">
-        <h1 class="text-2xl font-semibold">Obras</h1>
-        @can('obras-create')
-        <a href="{{ route('obras.create') }}" class="btn btn-primary">
-            + Nueva Obra
+        <h1 class="text-2xl font-semibold">Equipos</h1>
+        <a href="{{ route('equipos.create') }}" class="btn btn-primary">
+            + Nuevo Equipo
         </a>
-        @endcan
     </div>
 
-    <!-- Breadcrumbs -->
     <div class="breadcrumbs text-sm mb-6">
         <ul>
             <li>
                 <a href="{{ route('admin.index') }}">
-                    <x-heroicon-o-home class="w-4 h-4 inline" />
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="h-4 w-4 stroke-current">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"></path>
+                    </svg>
                     Home
                 </a>
             </li>
             <li>
-                <a href="{{ route('obras.index') }}">
-                    <x-bi-building class="w-4 h-4 inline" />
-                    Obras
+                <a href="{{ route('equipos.index') }}">
+                    <x-heroicon-o-wrench-screwdriver class="w-4 h-4 inline" />
+                    Equipos
                 </a>
             </li>
         </ul>
     </div>
 
     <!-- Buscador -->
-    <form action="{{ route('obras.index') }}" method="GET">
+    <form action="{{ route('equipos.index') }}" method="GET">
         <div class="card bg-base-100 shadow p-6 mb-6">
             <div class="flex items-center gap-3">
 
                 <!-- INPUT -->
                 <label class="w-full">
                     <input name="search" value="{{ request('search') ?? '' }}" type="text"
-                        placeholder="Buscar por nombre, barrio, responsable..."
-                        class="w-full h-10 rounded-md border border-base-300 bg-base-200
-                        px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary
+                        placeholder="Buscar por catalogación, equipamiento, marca..."
+                        class="w-full h-10 rounded-md border border-base-300 bg-base-200 
+                        px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
                         focus:border-primary transition" />
                 </label>
 
-                <!-- BOTÓN BUSCAR -->
+                <!-- BOTÓN -->
                 <button class="btn btn-primary">
                     <x-heroicon-o-magnifying-glass class="w-4 h-4" />
                     Buscar
                 </button>
-
                 @if (request('search'))
-                    <a href="{{ route('obras.index') }}" class="btn btn-error">
-                        <x-heroicon-o-trash class="w-4 h-4" />
-                        Limpiar
-                    </a>
+                    <a href="{{ route('equipos.index') }}" class="btn btn-error"><x-heroicon-o-trash class="w-4 h-4" />
+                        Limpiar</a>
                 @endif
             </div>
         </div>
@@ -69,118 +66,119 @@
                     <thead>
                         <tr>
                             <th class="text-center">Nr</th>
-                            <th class="text-center">Nombre</th>
-                            <th class="text-center">Barrio</th>
-                            <th class="text-center">Responsable</th>
-                            <th class="text-center">Estado de la obra</th>
+                            <th class="text-center">Catalogación</th>
+                            <th class="text-center">Equipamiento</th>
+                            <th class="text-center">Marca</th>
+                            <th class="text-center">Área</th>
                             <th class="text-center">Estado</th>
                             <th class="text-center">Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
-
                         @php
-                            $nr = $obras->currentPage() * $obras->perPage() - $obras->perPage() + 1;
+                            $nr = $equipos->currentPage() * $equipos->perPage() - $equipos->perPage() + 1;
                         @endphp
-
-                        @foreach ($obras as $obra)
+                        @foreach ($equipos as $equipo)
                             <tr>
                                 <td class="text-center">{{ $nr++ }}</td>
-                                <td class="text-center">{{ $obra->nombre }}</td>
-                                <td class="text-center">{{ $obra->barrio ?? '-' }}</td>
-                                <td class="text-center">{{ $obra->responsable ?? '-' }}</td>
-
                                 <td class="text-center">
-                                    <span class="badge {{ $obra->estado_obra_badge }}">
-                                        {{ $obra->estado_obra_formateado }}
+                                    <span class="badge badge-outline badge-primary font-mono">
+                                        {{ $equipo->catalogacion }}
                                     </span>
                                 </td>
-
+                                <td class="text-center">{{ $equipo->equipamiento }}</td>
+                                <td class="text-center">{{ $equipo->marca }}</td>
                                 <td class="text-center">
-                                    <span class="badge {{ $obra->estado ? 'badge-success' : 'badge-error' }}">
-                                        {{ $obra->estado ? 'Activo' : 'Inactivo' }}
+                                    <span class="badge badge-ghost">
+                                        {{ $equipo->area->nombre }}
                                     </span>
                                 </td>
-
+                                <td class="text-center">
+                                    <span class="badge {{ $equipo->estado ? 'badge-success' : 'badge-error' }}">
+                                        {{ $equipo->estado ? 'Activo' : 'Inactivo' }}
+                                    </span>
+                                </td>
                                 <td class="text-center">
                                     <div class="flex items-center justify-center gap-2">
 
                                         {{-- Ver --}}
-                                        @can('obras-show')
-                                        <a href="{{ route('obras.show', $obra->id) }}" class="btn btn-info btn-sm">
+                                        <a href="{{ route('equipos.show', $equipo->id) }}" class="btn btn-info btn-sm">
                                             <x-heroicon-s-eye class="w-4 h-4" />
                                         </a>
-                                        @endcan
 
                                         {{-- Editar --}}
-                                        @can('obras-edit')
-                                        <a href="{{ route('obras.edit', $obra->id) }}" class="btn btn-warning btn-sm">
+                                        <a href="{{ route('equipos.edit', $equipo->id) }}" class="btn btn-warning btn-sm">
                                             <x-heroicon-s-pencil class="w-4 h-4" />
                                         </a>
-                                        @endcan
 
-                                        {{-- Si está eliminado --}}
-                                        @if ($obra->trashed())
-                                            @can('obras-restore')
-                                            <button class="btn btn-success btn-sm"
-                                                onclick="abrirModalRestaurar('{{ url('/admin/obras/' . $obra->id . '/restore') }}')">
+                                        {{-- Si está eliminado (tiene deleted_at) --}}
+                                        @if ($equipo->trashed())
+                                            {{-- Restaurar --}}
+                                            <button class="btn btn-sm btn-success"
+                                                onclick="abrirModalRestaurar('{{ url('/admin/equipos/' . $equipo->id . '/restore') }}')">
                                                 <x-heroicon-s-arrow-uturn-left class="w-4 h-4" />
                                             </button>
-                                            @endcan
                                             {{-- Si NO está eliminado --}}
                                         @else
-                                            @can('obras-destroy')
+                                            {{-- Eliminar --}}
                                             <button class="btn btn-error btn-sm"
-                                                onclick="confirmarEliminacion({{ $obra->id }})">
+                                                onclick="confirmarEliminacion({{ $equipo->id }})">
                                                 <x-heroicon-s-trash class="w-4 h-4" />
                                             </button>
-                                            @endcan
                                         @endif
 
                                     </div>
                                 </td>
-
                             </tr>
                         @endforeach
-
                     </tbody>
                 </table>
+
             </div>
-            <!-- Paginación -->
-            @if ($obras->hasPages())
+            @if ($equipos->hasPages())
                 <div class="flex flex-col md:flex-row justify-between items-center mt-6 px-3 gap-4">
 
+                    <!-- Texto "Mostrando X - Y" -->
                     <div class="text-sm text-gray-500">
-                        Mostrando {{ $obras->firstItem() }} - {{ $obras->lastItem() }} de {{ $obras->total() }} registros
+                        Mostrando {{ $equipos->firstItem() }} - {{ $equipos->lastItem() }} de {{ $equipos->total() }}
+                        registros
                     </div>
 
+                    <!-- Controles de paginación estilo DaisyUI -->
                     <div class="join">
-                        @if ($obras->onFirstPage())
+
+                        {{-- Botón Anterior --}}
+                        @if ($equipos->onFirstPage())
                             <button class="join-item btn btn-square btn-disabled">«</button>
                         @else
-                            <a href="{{ $obras->previousPageUrl() }}" class="join-item btn btn-square">«</a>
+                            <a href="{{ $equipos->previousPageUrl() }}" class="join-item btn btn-square">«</a>
                         @endif
 
-                        @foreach ($obras->links()->elements[0] ?? [] as $page => $url)
-                            @if ($page == $obras->currentPage())
+                        {{-- Números de página --}}
+                        @foreach ($equipos->links()->elements[0] ?? [] as $page => $url)
+                            @if ($page == $equipos->currentPage())
                                 <button class="join-item btn btn-square btn-active">{{ $page }}</button>
                             @else
                                 <a href="{{ $url }}" class="join-item btn btn-square">{{ $page }}</a>
                             @endif
                         @endforeach
 
-                        @if ($obras->hasMorePages())
-                            <a href="{{ $obras->nextPageUrl() }}" class="join-item btn btn-square">»</a>
+                        {{-- Botón Siguiente --}}
+                        @if ($equipos->hasMorePages())
+                            <a href="{{ $equipos->nextPageUrl() }}" class="join-item btn btn-square">»</a>
                         @else
                             <button class="join-item btn btn-square btn-disabled">»</button>
                         @endif
+
                     </div>
                 </div>
             @endif
+
         </div>
     </div>
-    <!-- Modal eliminar -->
-    <dialog id="modal_eliminar_obra" class="modal">
+
+    <!-- Modal para eliminar -->
+    <dialog id="modal_eliminar_equipo" class="modal">
         <div class="modal-box">
 
             <h3 class="font-bold text-lg flex items-center gap-2 text-red-600">
@@ -188,14 +186,17 @@
                 Confirmar eliminación
             </h3>
 
-            <p class="py-4">¿Seguro que querés eliminar esta obra?</p>
+            <p class="py-4">
+                ¿Seguro que querés eliminar este equipo?
+            </p>
 
             <div class="modal-action">
                 <form method="dialog">
                     <button class="btn">Cancelar</button>
                 </form>
 
-                <form id="formEliminarObra" method="POST">
+                <!-- Formulario eliminar -->
+                <form id="formEliminarEquipo" method="POST">
                     @csrf
                     @method('DELETE')
 
@@ -209,8 +210,8 @@
         </div>
     </dialog>
 
-    <!-- Modal restaurar -->
-    <dialog id="modal_restaurar_obra" class="modal">
+    <!-- Modal para restaurar -->
+    <dialog id="modal_restaurar_equipo" class="modal">
         <div class="modal-box">
 
             <h3 class="font-bold text-lg flex items-center gap-2 text-green-600">
@@ -218,14 +219,19 @@
                 Confirmar restauración
             </h3>
 
-            <p class="py-4">¿Seguro que querés restaurar esta obra?</p>
+            <p class="py-4">
+                ¿Seguro que querés restaurar este equipo?
+            </p>
 
             <div class="modal-action">
+
+                <!-- Botón cancelar -->
                 <form method="dialog">
                     <button class="btn">Cancelar</button>
                 </form>
 
-                <form id="formRestaurarObra" method="POST">
+                <!-- Formulario restaurar -->
+                <form id="formRestaurarEquipo" method="POST">
                     @csrf
                     @method('PUT')
 
@@ -234,25 +240,28 @@
                         Restaurar
                     </button>
                 </form>
+
             </div>
 
         </div>
     </dialog>
 
-@endsection
-
-@section('js')
     <script>
-        function confirmarEliminacion(id) {
-            const form = document.getElementById('formEliminarObra');
-            form.action = "{{ url('/admin/obras') }}/" + id;
-            modal_eliminar_obra.showModal();
+        function confirmarEliminacion(equipoId) {
+            const form = document.getElementById('formEliminarEquipo');
+            form.action = routeEliminarEquipo(equipoId);
+            document.getElementById('modal_eliminar_equipo').showModal();
+        }
+        function routeEliminarEquipo(equipoId){
+            return "{{ url('/admin/equipos') }}/"+ equipoId;
         }
 
         function abrirModalRestaurar(url) {
-            const form = document.getElementById('formRestaurarObra');
+            const form = document.getElementById('formRestaurarEquipo');
             form.action = url;
-            modal_restaurar_obra.showModal();
+            document.getElementById('modal_restaurar_equipo').showModal();
         }
+        
     </script>
+
 @endsection

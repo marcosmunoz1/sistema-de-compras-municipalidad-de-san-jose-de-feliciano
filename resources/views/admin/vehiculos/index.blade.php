@@ -77,6 +77,7 @@
                 <thead>
                     <tr>
                         <th class="text-center">Nr</th>
+                        <th class="text-center">Catalogación</th>
                         <th class="text-center">Tipo</th>
                         <th class="text-center">Marca</th>
                         <th class="text-center">Modelo</th>
@@ -93,6 +94,11 @@
                     @foreach ($vehiculos as $vehiculo) 
                         <tr>
                             <td class="text-center">{{ $nr++ }}</td>
+                            <td class="text-center">
+                                <span class="badge badge-outline badge-primary font-mono">
+                                    {{ $vehiculo->catalogacion }}
+                                </span>
+                            </td>
                             <td class="text-center">{{ $vehiculo->tipo }}</td>
                             <td class="text-center">{{ $vehiculo->marca }}</td> 
                             <td class="text-center">{{ $vehiculo->modelo}}</td>

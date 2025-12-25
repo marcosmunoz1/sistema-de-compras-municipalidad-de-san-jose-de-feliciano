@@ -4,7 +4,7 @@
 @section('content')
     <!-- Titulo y boton -->
     <div class="flex items-center justify-between mb-6">
-        <h1 class="text-2xl font-semibold">Creación de la Orden de compra</h1>
+        <h1 class="text-2xl font-semibold">Edición de la Orden de compra</h1>
     </div>
 
     <div class="breadcrumbs text-sm mb-6">
@@ -26,13 +26,8 @@
             </li>
             <li>
                 <span class="inline-flex items-center gap-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                        class="h-4 w-4 stroke-current">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M9 13h6m-3-3v6m5 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
-                        </path>
-                    </svg>
-                    Crear Orden de compra
+                    <x-heroicon-o-pencil class="w-4 h-4 inline" />
+                    Editar Orden de compra
                 </span>
             </li>
         </ul>
@@ -164,13 +159,15 @@
                             disabled>{{ $compra->observacion }}</textarea>
                     </div>
                 </div>
+                
+
             </div>
         </div>
     </div>
 
     <!-- Otra seccion -->
     
-    <form action="{{ route('compras.update', $compra->id) }}" method="POST">
+    <form action="{{ route('compras.update', $compra->id) }}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('PUT')
         <div data-slot="card" class="card bg-base-100 shadow-xl p-4 mt-4">
@@ -179,7 +176,7 @@
                 <h4 class="text-1xl font-semibold">Datos de la compra</h4>
                 <p class="text-muted-foreground"></p>
             </div>
-
+            
             <div data-slot="card-content" class="px-6 [&:last-child]:pb-6">
                 <div class="grid gap-4">
                     <table class="table table-zebra w-full">
@@ -244,9 +241,31 @@
                                 </td>
                             </tr>
                         </tfoot>
-
                     </table>
                 </div>
+                <div class="form-control w-full">
+                    <label class="label">
+                        <span class="label-text font-medium">
+                            Factura (imagen o PDF)
+                        </span>
+                    </label>
+
+                    <input
+                        type="file"
+                        name="foto_factura"
+                        accept="image/*,application/pdf"
+                        class="file-input file-input-bordered file-input-primary w-full"
+                    />
+
+                    <label class="label">
+                        <span class="label-text-alt text-xs opacity-70">
+                            Formatos permitidos: JPG, PNG, WEBP o PDF
+                        </span>
+                    </label>
+                </div>
+                @error('foto_factura')
+                    <small class="text-red-500 error-message">{{ $message }}</small>
+                @enderror
             </div>
         </div>
 

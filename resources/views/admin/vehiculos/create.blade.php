@@ -42,7 +42,13 @@
     <!-- Formulario -->
     <form action="{{ route('vehiculos.store') }}" method="POST" enctype="multipart/form-data" class="space-y-6">
         @csrf
-
+        <!-- Alert informativo -->
+        <div role="alert" class="alert alert-info">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="stroke-current shrink-0 w-6 h-6">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+            <span>La catalogación se generará automáticamente según el área seleccionada (ej: SG-001, OP-002)</span>
+        </div>
         <!-- =========================== -->
         <!-- CARD — DATOS DEL VEHÍCULO -->
         <!-- =========================== -->
@@ -64,7 +70,7 @@
                     <!-- ======================= -->
                     <div class="col-span-2 space-y-4">
 
-                        <div class="grid grid-cols-2 gap-4">
+                        <div class="grid grid-cols-3 gap-4">
                             <!-- Tipo -->
                             <div class="space-y-2">
                                 <label for="tipo" class="text-sm font-medium">Tipo <span
@@ -87,6 +93,28 @@
                                     <small class="text-red-500 error-message">{{ $message }}</small>
                                 @enderror
                             </div>
+                            <!-- Área -->
+                            <div class="form-control w-full">
+                                <label class="label">
+                                    <span class="label-text font-medium">Área <span class="text-error">*</span></span>
+                                </label>
+                                <select name="area_id" 
+                                        class="select select-bordered w-full @error('area_id') select-error @enderror"
+                                        required>
+                                    <option disabled selected value="">Seleccionar área</option>
+                                    @foreach($areas as $area)
+                                        <option value="{{ $area->id }}" {{ old('area_id') == $area->id ? 'selected' : '' }}>
+                                            {{ $area->nombre }} ({{ $area->prefijo_catalogacion }})
+                                        </option>
+                                    @endforeach
+                                </select>
+                                @error('area_id')
+                                    <label class="label">
+                                        <span class="label-text-alt text-error">{{ $message }}</span>
+                                    </label>
+                                @enderror
+                            </div>
+
 
 
                             <!-- Patente -->
@@ -149,7 +177,7 @@
                         <div class="grid grid-cols-2 gap-4">
                             <!-- Color -->
                             <div class="space-y-2">
-                                <label for="color" class="text-sm font-medium">Color</label>
+                                <label for="color" class="text-sm font-medium">Color (Opcional)</label>
                                 <input id="color" name="color" value="{{ old('color') }}"
                                     class="w-full h-10 rounded-md border border-base-300 bg-base-200 px-3 text-sm 
                                       focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition @error('color') input-error @enderror"
@@ -161,8 +189,7 @@
 
                             <!-- Motor -->
                             <div class="space-y-2">
-                                <label for="motor" class="text-sm font-medium">N° de Motor <span
-                                        class="text-red-600">*</span></label>
+                                <label for="motor" class="text-sm font-medium">N° de Motor (Opcional)</label>
                                 <input id="motor" name="motor" value="{{ old('motor') }}"
                                     class="w-full h-10 rounded-md border border-base-300 bg-base-200 px-3 text-sm 
                                       focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition @error('motor') input-error @enderror"
@@ -176,8 +203,7 @@
                         <div class="grid grid-cols-1">
                             <!-- Chasis -->
                             <div class="space-y-2">
-                                <label for="chasis" class="text-sm font-medium">N° de Chasis <span
-                                        class="text-red-600">*</span></label>
+                                <label for="chasis" class="text-sm font-medium">N° de Chasis (Opcional)</label>
                                 <input id="chasis" name="chasis" value="{{ old('chasis') }}"
                                     class="w-full h-10 rounded-md border border-base-300 bg-base-200 px-3 text-sm 
                                       focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition @error('chasis') input-error @enderror"
@@ -194,7 +220,7 @@
                     <!-- COLUMNA DERECHA — IMAGEN -->
                     <!-- ======================= -->
                     <div class="col-span-1">
-                        <label for="imagen" class="text-sm font-medium">Imagen del Vehículo</label>
+                        <label for="imagen" class="text-sm font-medium">Imagen del Vehículo (Opcional)</label>
 
                         <!-- INPUT FILE -->
                         <input id="imagen" name="imagen" type="file"
@@ -234,6 +260,40 @@
         </div>
 
     </form>
+    <!-- Info Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mt-6">
+        <div class="stats shadow">
+            <div class="stat">
+                <div class="stat-title">Secretaría de Gobierno</div>
+                <div class="stat-value text-primary text-2xl">SG-</div>
+                <div class="stat-desc">Prefijo de catalogación</div>
+            </div>
+        </div>
+        
+        <div class="stats shadow">
+            <div class="stat">
+                <div class="stat-title">Obras Públicas</div>
+                <div class="stat-value text-secondary text-2xl">OP-</div>
+                <div class="stat-desc">Prefijo de catalogación</div>
+            </div>
+        </div>
+        
+        <div class="stats shadow">
+            <div class="stat">
+                <div class="stat-title">Desarrollo Humano</div>
+                <div class="stat-value text-accent text-2xl">DH-</div>
+                <div class="stat-desc">Prefijo de catalogación</div>
+            </div>
+        </div>
+        
+        <div class="stats shadow">
+            <div class="stat">
+                <div class="stat-title">Servicios Públicos</div>
+                <div class="stat-value text-info text-2xl">SP-</div>
+                <div class="stat-desc">Prefijo de catalogación</div>
+            </div>
+        </div>
+    </div>
 @endsection
 @section('js')
     <script>

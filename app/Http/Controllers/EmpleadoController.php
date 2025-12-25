@@ -45,7 +45,8 @@ class EmpleadoController extends Controller
                     $query->orWhere('estado', $estadoBuscado);
                 }
             })
-            ->paginate(10);
+            ->paginate(10)
+            ->withQueryString();
 
         return view('admin.empleados.index', compact('empleados'));
     }

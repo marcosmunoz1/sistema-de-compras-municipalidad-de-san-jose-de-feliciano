@@ -372,83 +372,66 @@
             </button>
         </div>
     </form>
-    <!-- Modal -->
-    <!-- Modal para crear -->
+    <!-- Modal para agregar producto -->
     <dialog id="modalAgregarItem" class="modal">
-
-        <div class="modal-box w-9/12 max-w-3xl">
+        <div class="modal-box w-11/12 max-w-5xl">
             <form method="dialog">
                 <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
             </form>
 
-            <!-- Título -->
-            <h3 class="font-bold text-xl flex items-center gap-3 mb-4">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24"
+            <h3 class="font-bold text-lg mb-4">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 inline" fill="none" viewBox="0 0 24 24"
                     stroke="currentColor" stroke-width="2">
                     <path d="M5 12h14"></path>
                     <path d="M12 5v14"></path>
                 </svg>
-                Añadir insumo
+                Seleccionar producto
             </h3>
 
+            <!-- Buscador -->
+            <input type="text" id="buscador_producto"
+                class="w-full h-10 rounded-md border border-base-300 bg-base-200 
+                        px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
+                        focus:border-primary transition mb-3"
+                placeholder="Buscar por nombre, categoría, descripción...">
+
             <!-- Tabla -->
-            <div class="card bg-base-100 shadow">
-                <div class="card-body p-4">
+            <div class="overflow-x-auto">
+                <table class="table table-zebra w-full text-sm">
+                    <thead>
+                        <tr>
+                            <th class="text-center">Categoría</th>
+                            <th class="text-center">Nombre</th>
+                            <th class="text-center">Descripción</th>
+                            <th class="text-center">Unidad</th>
+                            <th class="text-center">Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabla_productos_body">
+                        {{-- filas generadas por JS --}}
+                    </tbody>
+                </table>
 
-                    <div class="overflow-x-auto">
-                        <table class="table table-zebra w-full" id="mitabla">
-                            <thead>
-                                <tr>
-                                    <th class="text-center">Nr</th>
-                                    <th class="text-center">Accion</th>
-                                    <th class="text-center">Categoria</th>
-                                    <th class="text-center">Nombre</th>
-                                    <th class="text-center">Descripcion</th>
-                                    <th class="text-center">Unidad</th>
-                                    <th class="text-center">Detalle</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @php
-                                    $nr = 1;
-                                @endphp
-                                @foreach ($productos as $producto)
-                                    <tr>
-                                        <td class="text-center">{{ $nr++ }}</td>
-                                        <td class="text-center">
-                                            <button
-                                                onclick="agregarProducto({{ $producto->id }}, '{{ $producto->nombre }}')"
-                                                class="btn btn-primary btn-sm">
-                                                <x-heroicon-o-plus class="w-4 h-4" />
-                                                Agregar
-                                            </button>
-                                        </td>
-                                        <td class="text-center">{{ $producto->categoria->nombre }}</td>
-                                        <td class="text-center">{{ $producto->nombre }}</td>
-                                        <td class="text-center">{{ $producto->descripcion }}</td>
-                                        <td class="text-center">{{ $producto->unidad }}</td>
-                                        <td class="text-center">
-                                            <div class="flex items-center justify-center gap-2">
-                                                {{-- Ver --}}
-                                                <a href="{{ route('productos.show', $producto->id) }}"
-                                                    class="btn btn-info btn-sm">
-                                                    <x-heroicon-s-eye class="w-4 h-4" />
-                                                </a>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
+                <!-- Paginación -->
+                <div class="flex justify-between items-center mt-3 text-xs">
+                    <button type="button" class="btn btn-xs" id="producto_prev_page">
+                        « Anterior
+                    </button>
 
-                    </div>
+                    <span id="producto_pagination_info" class="mx-2">
+                        {{-- se completa por JS --}}
+                    </span>
+
+                    <button type="button" class="btn btn-xs" id="producto_next_page">
+                        Siguiente »
+                    </button>
                 </div>
             </div>
 
-            <!-- fondo oscuro -->
             <form method="dialog" class="modal-backdrop">
                 <button></button>
             </form>
+        </div>
     </dialog>
     <!-- Modal para crear producto -->
     <dialog id="crearProductoModal" class="modal">
@@ -724,248 +707,144 @@
 
 @endsection
 @section('js') 
-   {{--  <script>
-    const oldDestinoId = "{{ old('destino_id') }}"; // <-- Blade se ejecuta acá
-
-    document.getElementById('destino_tipo').addEventListener('change', function() {
-        const tipo = this.value;
-        const destinoSelect = document.getElementById('destino_id');
-
-        destinoSelect.innerHTML = '<option value="">Cargando...</option>';
-
-        fetch('{{ url('api/destinos') }}/' + tipo)
-            .then(res => res.json())
-            .then(data => {
-                destinoSelect.innerHTML = '<option value="">Seleccione...</option>';
-
-                data.forEach(dest => {
-                    destinoSelect.innerHTML += `
-                        <option value="${dest.id}" ${oldDestinoId == dest.id ? 'selected' : ''}>
-                            ${dest.nombre}
-                        </option>`;
-                });
-            });
-    });
-</script> --}}
- <script>
-    const oldDestinoId = "{{ old('destino_id') }}"; // <-- Blade se ejecuta acá
-
-    document.getElementById('destino_tipo').addEventListener('change', function() {
-        const tipo = this.value;
-        const destinoSelect = document.getElementById('destino_id');
-
-        destinoSelect.innerHTML = '<option value="">Cargando...</option>';
-
-        fetch('{{ url('api/destinos') }}/' + tipo)
-            .then(res => res.json())
-            .then(data => {
-                destinoSelect.innerHTML = '<option value="">Seleccione...</option>';
-
-                data.forEach(dest => {
-                    destinoSelect.innerHTML += `
-                        <option value="${dest.id}" ${oldDestinoId == dest.id ? 'selected' : ''}>
-                            ${dest.nombre}
-                        </option>`;
-                });
-            });
-    });
-</script> 
     <script>
-        $('#mitabla').DataTable({
-            "pageLength": 5,
-            "language": {
-                "emptyTable": "No hay información",
-                "info": "Mostrando _START_ a _END_ de _TOTAL_ Productos",
-                "infoEmpty": "Mostrando 0 a 0 de 0 Productos",
-                "infoFiltered": "(Filtrado de _MAX_ total Productos)",
-                "infoPostFix": "",
-                "thousands": ",",
-                "lengthMenu": "Mostrar _MENU_ Productos",
-                "loadingRecords": "Cargando...",
-                "processing": "Procesando...",
-                "search": "Buscador:",
-                "zeroRecords": "Sin resultados encontrados",
-                "paginate": {
-                    "first": "Primero",
-                    "last": "Ultimo",
-                    "next": "Siguiente",
-                    "previous": "Anterior"
-                }
-            }
+        const oldDestinoId = "{{ old('destino_id') }}"; // <-- Blade se ejecuta acá
+
+        document.getElementById('destino_tipo').addEventListener('change', function() {
+            const tipo = this.value;
+            const destinoSelect = document.getElementById('destino_id');
+
+            destinoSelect.innerHTML = '<option value="">Cargando...</option>';
+
+            fetch('{{ url('api/destinos') }}/' + tipo)
+                .then(res => res.json())
+                .then(data => {
+                    destinoSelect.innerHTML = '<option value="">Seleccione...</option>';
+
+                    data.forEach(dest => {
+                        destinoSelect.innerHTML += `
+                            <option value="${dest.id}" ${oldDestinoId == dest.id ? 'selected' : ''}>
+                                ${dest.nombre}
+                            </option>`;
+                    });
+                });
         });
     </script>
-    <style>
-       /* SOLO SE APLICA SI EL BODY TIENE LA CLASE "dark" */
-        .dark #mitabla_wrapper,
-        .dark #mitabla_wrapper * {
-            color: var(--fallback-bc, #e5e7eb) !important;
-        }
-
-        .dark .dataTables_filter input {
-            background-color: #1f2937 !important;
-            color: #f3f4f6 !important;
-            border: 1px solid #4b5563 !important;
-            padding: 4px 8px;
-            border-radius: 6px;
-        }
-
-        .dark .dataTables_length select {
-            background-color: #1f2937 !important;
-            color: #f3f4f6 !important;
-            border: 1px solid #4b5563 !important;
-            border-radius: 6px;
-        }
-
-        .dark .dataTables_paginate a {
-            color: #f3f4f6 !important;
-        }
-
-        .dark .dataTables_paginate .current {
-            background-color: #374151 !important;
-            color: #ffffff !important;
-            border: none !important;
-        }
-
-        .dark .dataTables_wrapper {
-            color: #fff !important;
-        }
-
-        .dark .dataTables_length label,
-        .dark .dataTables_filter label {
-            color: #fff !important;
-        }
-
-        .dark .dataTables_filter input {
-            color: #fff !important;
-            background-color: #1f1f1f !important;
-            border: 1px solid #444 !important;
-        }
-
-        .dark .dataTables_paginate a {
-            color: #fff !important;
-        }
-
-        .dark .dataTables_paginate .current {
-            background-color: #444 !important;
-            border: 1px solid #666 !important;
-        }
-
-    </style>
-<script>
-// Agregar producto a la tabla
-// Colocá esto arriba de agregarProducto(), en el mismo scope global
-function escapeHtml(text) {
-  if (text === null || text === undefined) return '';
-  return String(text)
-    .replaceAll('&','&amp;')
-    .replaceAll('<','&lt;')
-    .replaceAll('>','&gt;')
-    .replaceAll('"','&quot;')
-    .replaceAll("'",'&#39;');
-} 
-function agregarProducto(id, nombre) {
-    const tabla = document.getElementById('tablaProductos'); 
-    // ✅ Buscar si ya existe el producto
-    const filaExistente = [...tabla.querySelectorAll('tr')].find(fila => {
-        const inputHidden = fila.querySelector('input[type="hidden"][name="productos[]"]');
-        return inputHidden && inputHidden.value == id;
-    });
-
-    // ✅ Si ya existe: aumentar cantidad
-    if (filaExistente) {
-        const inputCant = filaExistente.querySelector('input[type="number"][name="cantidades[]"]');
-        inputCant.value = parseInt(inputCant.value) + 1;
-
-        // pequeño efecto visual
-        filaExistente.classList.add("bg-green-100");
-        setTimeout(() => filaExistente.classList.remove("bg-green-100"), 300);
-
-        actualizarTotales();
-        return; // ✅ NO crear nueva fila
-    }
-
-    // ✅ Si NO existe crear la fila con TUS ESTILOS
-    const fila = document.createElement('tr');
-    fila.setAttribute('data-slot','table-row'); 
-    fila.className = 'hover:bg-muted/50 transition-colors';
-
-    fila.innerHTML = `
-        <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap">
-        <div class="flex flex-col">
-            <span class="font-medium text-sm truncate">${escapeHtml(nombre)}</span>
-            <small class="text-xs text-gray-500">ID: ${id}</small>
-            <input type="hidden" name="productos[]" value="${id}">
-        </div>
-        </td>
-
-        <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap"> 
-        <input type="number" name="cantidades[]" min="1" value="1" required
-            class="w-full h-10 rounded-md border border-base-300 bg-base-200
-                        px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
-                        focus:border-primary transition"
-            oninput="actualizarTotales()">
-        </td>
-
-        <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap">
-        <button type="button" class="inline-flex items-center justify-center text-sm font-medium h-8 rounded-md gap-1.5 px-3 text-red-600"
-            onclick="eliminarFila(this)">
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
-            stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trash-2">
-            <path d="M10 11v6"></path>
-            <path d="M14 11v6"></path>
-            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"></path>
-            <path d="M3 6h18"></path>
-            <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-            </svg>
-        </button>
-        </td>
-    `;
-
-    tabla.appendChild(fila);
-
-    // ✅ Mostrar tabla y resumen
-    document.getElementById('tablaItems').classList.remove('hidden');
-    document.getElementById('mensajeVacio').classList.add('hidden');
-    document.getElementById('resumenItems').classList.remove('hidden');
-
-    actualizarTotales();
-}
-
-
-        // Eliminar fila (botón)
-        function eliminarFila(btn) {
-            const tr = btn.closest('tr');
-            if (!tr) return;
-            tr.remove();
-            actualizarTotales();
-
-            // si ya no hay filas, ocultar tabla y mostrar mensaje
-            const tabla = document.getElementById('tablaProductos');
-            if (!tabla.querySelector('tr')) {
-                document.getElementById('tablaItems').classList.add('hidden');
-                document.getElementById('mensajeVacio').classList.remove('hidden');
-                document.getElementById('resumenItems').classList.add('hidden');
-            }
-        }
-
-        // Recalcula totales: total items (filas) y suma de cantidades
-        function actualizarTotales() {
-            const tabla = document.getElementById('tablaProductos');
-            const filas = tabla.querySelectorAll('tr');
-            const totalItems = filas.length;
-            let cantidadTotal = 0;
-
-            filas.forEach(fila => {
-                const inputCant = fila.querySelector('input[type="number"][name="cantidades[]"]');
-                if (inputCant) {
-                    const val = parseInt(inputCant.value) || 0;
-                    cantidadTotal += val;
-                }
+    <script>
+        // Agregar producto a la tabla
+        // Colocá esto arriba de agregarProducto(), en el mismo scope global
+        function escapeHtml(text) {
+        if (text === null || text === undefined) return '';
+        return String(text)
+            .replaceAll('&','&amp;')
+            .replaceAll('<','&lt;')
+            .replaceAll('>','&gt;')
+            .replaceAll('"','&quot;')
+            .replaceAll("'",'&#39;');
+        } 
+        function agregarProducto(id, nombre) {
+            const tabla = document.getElementById('tablaProductos'); 
+            // ✅ Buscar si ya existe el producto
+            const filaExistente = [...tabla.querySelectorAll('tr')].find(fila => {
+                const inputHidden = fila.querySelector('input[type="hidden"][name="productos[]"]');
+                return inputHidden && inputHidden.value == id;
             });
 
-            document.getElementById('totalItems').textContent = totalItems;
-            document.getElementById('cantidadTotal').textContent = cantidadTotal;
+            // ✅ Si ya existe: aumentar cantidad
+            if (filaExistente) {
+                const inputCant = filaExistente.querySelector('input[type="number"][name="cantidades[]"]');
+                inputCant.value = parseInt(inputCant.value) + 1;
+
+                // pequeño efecto visual
+                filaExistente.classList.add("bg-green-100");
+                setTimeout(() => filaExistente.classList.remove("bg-green-100"), 300);
+
+                actualizarTotales();
+                return; // ✅ NO crear nueva fila
+            }
+
+            // ✅ Si NO existe crear la fila con TUS ESTILOS
+            const fila = document.createElement('tr');
+            fila.setAttribute('data-slot','table-row'); 
+            fila.className = 'hover:bg-muted/50 transition-colors';
+
+            fila.innerHTML = `
+                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap">
+                <div class="flex flex-col">
+                    <span class="font-medium text-sm truncate">${escapeHtml(nombre)}</span>
+                    <small class="text-xs text-gray-500">ID: ${id}</small>
+                    <input type="hidden" name="productos[]" value="${id}">
+                </div>
+                </td>
+
+                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap"> 
+                <input type="number" name="cantidades[]" min="1" value="1" required
+                    class="w-full h-10 rounded-md border border-base-300 bg-base-200
+                                px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
+                                focus:border-primary transition"
+                    oninput="actualizarTotales()">
+                </td>
+
+                <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap">
+                <button type="button" class="btn inline-flex items-center justify-center text-sm font-medium h-8 rounded-md gap-1.5 px-3 text-red-600"
+                    onclick="eliminarFila(this)">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trash-2">
+                    <path d="M10 11v6"></path>
+                    <path d="M14 11v6"></path>
+                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"></path>
+                    <path d="M3 6h18"></path>
+                    <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                    </svg>
+                </button>
+                </td>
+            `;
+
+            tabla.appendChild(fila);
+
+            // ✅ Mostrar tabla y resumen
+            document.getElementById('tablaItems').classList.remove('hidden');
+            document.getElementById('mensajeVacio').classList.add('hidden');
+            document.getElementById('resumenItems').classList.remove('hidden');
+
+            actualizarTotales();
         }
+
+
+                // Eliminar fila (botón)
+                function eliminarFila(btn) {
+                    const tr = btn.closest('tr');
+                    if (!tr) return;
+                    tr.remove();
+                    actualizarTotales();
+
+                    // si ya no hay filas, ocultar tabla y mostrar mensaje
+                    const tabla = document.getElementById('tablaProductos');
+                    if (!tabla.querySelector('tr')) {
+                        document.getElementById('tablaItems').classList.add('hidden');
+                        document.getElementById('mensajeVacio').classList.remove('hidden');
+                        document.getElementById('resumenItems').classList.add('hidden');
+                    }
+                }
+
+                // Recalcula totales: total items (filas) y suma de cantidades
+                function actualizarTotales() {
+                    const tabla = document.getElementById('tablaProductos');
+                    const filas = tabla.querySelectorAll('tr');
+                    const totalItems = filas.length;
+                    let cantidadTotal = 0;
+
+                    filas.forEach(fila => {
+                        const inputCant = fila.querySelector('input[type="number"][name="cantidades[]"]');
+                        if (inputCant) {
+                            const val = parseInt(inputCant.value) || 0;
+                            cantidadTotal += val;
+                        }
+                    });
+
+                    document.getElementById('totalItems').textContent = totalItems;
+                    document.getElementById('cantidadTotal').textContent = cantidadTotal;
+                }
 
 // Pequeña función para escapar texto (evita inyección al insertar nombre)
 function escapeHtml(text) {
@@ -1539,6 +1418,155 @@ document.addEventListener("DOMContentLoaded", function() {
 
     const tipoDestinoInicial = tipoShortDesdeClase(destinoTipoSelect ? destinoTipoSelect.value : null);
     prefetchListado(tipoDestinoInicial, destinoCachePorTipo, destinoPrefetchEnCursoPorTipo);
+});
+</script>
+
+<script>
+// ==============================
+//  MODAL DE SELECCIÓN DE PRODUCTOS
+// ==============================
+document.addEventListener("DOMContentLoaded", function() {
+    const productosData = @json($productos);
+    let productosCache = productosData;
+    let paginaProducto = 1;
+    const itemsPorPaginaProducto = 5; 
+
+    const tablaProductosBody = document.getElementById('tabla_productos_body');
+    const productoPrev = document.getElementById('producto_prev_page');
+    const productoNext = document.getElementById('producto_next_page');
+    const productoInfo = document.getElementById('producto_pagination_info');
+    const buscadorProducto = document.getElementById('buscador_producto');
+
+    function formatearCelda(valor) {
+        if (valor === null || valor === undefined || valor === '') return '-';
+        return String(valor);
+    }
+
+    function renderTablaProductos(data) {
+        if (!tablaProductosBody) return;
+
+        tablaProductosBody.innerHTML = '';
+
+        const total = data.length;
+
+        if (!total) {
+            tablaProductosBody.innerHTML = `<tr><td class="py-4 text-center text-sm text-gray-500" colspan="5">No se encontraron productos.</td></tr>`;
+            if (productoInfo) productoInfo.textContent = '0 de 0';
+            return;
+        }
+
+        const totalPaginas = Math.ceil(total / itemsPorPaginaProducto);
+        if (paginaProducto > totalPaginas) paginaProducto = totalPaginas;
+        if (paginaProducto < 1) paginaProducto = 1;
+
+        const inicio = (paginaProducto - 1) * itemsPorPaginaProducto;
+        const fin = inicio + itemsPorPaginaProducto;
+        const pagina = data.slice(inicio, fin);
+
+        pagina.forEach(producto => {
+            const tr = document.createElement('tr');
+            tr.classList.add('hover:bg-base-300');
+
+            const categoriaNombre = producto.categoria ? producto.categoria.nombre : '-';
+
+            tr.innerHTML = `
+                <td class="text-center">${formatearCelda(categoriaNombre)}</td>
+                <td class="text-center">${formatearCelda(producto.nombre)}</td>
+                <td class="text-center">${formatearCelda(producto.descripcion)}</td>
+                <td class="text-center">${formatearCelda(producto.unidad)}</td>
+                <td class="text-center">
+                    <button type="button" class="btn btn-primary btn-sm" onclick="agregarProducto(${producto.id}, '${producto.nombre.replace(/'/g, "\\'")}')"
+                        data-producto-id="${producto.id}">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+                        </svg>
+                        Agregar
+                    </button>
+                </td>
+            `;
+
+            tablaProductosBody.appendChild(tr);
+        });
+
+        if (productoInfo) {
+            const desde = inicio + 1;
+            const hasta = Math.min(fin, total);
+            productoInfo.textContent = `Mostrando ${desde}-${hasta} de ${total}`;
+        }
+    }
+
+    if (buscadorProducto) {
+        buscadorProducto.addEventListener('input', function () {
+            const term = this.value.toLowerCase();
+            const filtrados = productosData.filter(producto => {
+                const categoriaNombre = producto.categoria ? producto.categoria.nombre : '';
+                const texto = `${producto.nombre || ''} ${categoriaNombre} ${producto.descripcion || ''} ${producto.unidad || ''}`.toLowerCase();
+                return texto.includes(term);
+            });
+            paginaProducto = 1;
+            renderTablaProductos(filtrados);
+        });
+    }
+
+    if (productoPrev) {
+        productoPrev.addEventListener('click', function () {
+            if (paginaProducto > 1) {
+                paginaProducto--;
+                const term = buscadorProducto ? buscadorProducto.value.toLowerCase() : '';
+                const filtrados = term ? productosData.filter(p => {
+                    const categoriaNombre = p.categoria ? p.categoria.nombre : '';
+                    const texto = `${p.nombre || ''} ${categoriaNombre} ${p.descripcion || ''} ${p.unidad || ''}`.toLowerCase();
+                    return texto.includes(term);
+                }) : productosCache;
+                renderTablaProductos(filtrados);
+            }
+        });
+    }
+
+    if (productoNext) {
+        productoNext.addEventListener('click', function () {
+            const term = buscadorProducto ? buscadorProducto.value.toLowerCase() : '';
+            const filtrados = term ? productosData.filter(p => {
+                const categoriaNombre = p.categoria ? p.categoria.nombre : '';
+                const texto = `${p.nombre || ''} ${categoriaNombre} ${p.descripcion || ''} ${p.unidad || ''}`.toLowerCase();
+                return texto.includes(term);
+            }) : productosCache;
+            const totalPaginas = Math.ceil(filtrados.length / itemsPorPaginaProducto);
+            if (paginaProducto < totalPaginas) {
+                paginaProducto++;
+                renderTablaProductos(filtrados);
+            }
+        });
+    }
+
+    // Renderizar al abrir el modal
+    const modalAgregarItem = document.getElementById('modalAgregarItem');
+    if (modalAgregarItem) {
+        modalAgregarItem.addEventListener('click', function(e) {
+            if (e.target === modalAgregarItem || e.target.closest('button[class*="btn-sm btn-circle"]')) {
+                // Modal se está abriendo o cerrando
+                setTimeout(() => {
+                    if (modalAgregarItem.open) {
+                        paginaProducto = 1;
+                        if (buscadorProducto) buscadorProducto.value = '';
+                        renderTablaProductos(productosCache);
+                    }
+                }, 100);
+            }
+        });
+    }
+
+    // Renderizar inicial cuando se abre el modal por primera vez
+    const btnAbrirModal = document.querySelector('button[onclick*="modalAgregarItem.showModal"]');
+    if (btnAbrirModal) {
+        btnAbrirModal.addEventListener('click', function() {
+            setTimeout(() => {
+                paginaProducto = 1;
+                if (buscadorProducto) buscadorProducto.value = '';
+                renderTablaProductos(productosCache);
+            }, 100);
+        });
+    }
 });
 </script>
  

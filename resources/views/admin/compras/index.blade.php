@@ -42,7 +42,7 @@
                 <!-- INPUT -->
                 <label class="w-full">
                     <input name="search" value="{{ request('search') ?? '' }}" type="text"
-                        placeholder="Buscar por vehiculo, combustible, fecha..."
+                        placeholder="Buscar por proveedor, fecha, estado..."
                         class="w-full h-10 rounded-md border border-base-300 bg-base-200 
                         px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
                         focus:border-primary transition" />
