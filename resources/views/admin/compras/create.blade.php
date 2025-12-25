@@ -91,20 +91,22 @@
                         </div> 
 
                         <!-- entregar a -->
-                        <div class="space-y-2">
+                        <div class="space-y-2"> 
                             <label for="empleado_id" class="text-sm font-medium">Entregar a<span
                                     class="text-red-600">*</span></label>
-                            <select id="empleado_id" name="empleado_id"
-                                class="select w-full h-10 rounded-md border-base-300 bg-base-200
-                        px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
-                        focus:border-primary transition @error('empleado_id') input-error @enderror"
-                                required>
-                                <option value="">Seleccione un empleado</option>
-                                @foreach ($empleados as $empleado)
-                                    <option value="{{ $empleado->id }}">{{ $empleado->nombre }} - {{ $empleado->dni }}
-                                    </option>
-                                @endforeach
-                            </select>
+
+                            <!-- ID oculto que se envía en el request -->
+                            <input type="hidden" id="empleado_id" name="empleado_id" value="{{ old('empleado_id') }}">
+
+                            <!-- Campo solo lectura mostrando el nombre elegido -->
+                            <input type="text" id="empleado_nombre_visible"
+                                class="w-full h-10 rounded-md border border-base-300 bg-base-200
+                                px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
+                                focus:border-primary cursor-pointer transition @error('empleado_id') input-error @enderror"
+                                placeholder="Seleccione un empleado"
+                                value=""
+                                readonly>
+
                             @error('empleado_id')
                                 <small class="text-red-500 error-message">{{ $message }}</small>
                             @enderror
@@ -113,15 +115,64 @@
                     <!-- Provincia -->
                     <div class="space-y-2">
                         <label for="sub_cuenta" class="text-sm font-medium">Sub cuenta<span class="text-red-600">*</span></label>
-                        <select id="sub_cuenta" name="sub_cuenta" class="select w-full h-10 rounded-md border-base-300 bg-base-200
-                        px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
-                        focus:border-primary transition @error('sub_cuenta') input-error @enderror" required>
-                            <option value="">Seleccione la sub cuenta</option> 
-                            <option value="Secretaria de obras publicas">Secretaria de Obras Publicas</option>
-                            <option value="Secretaria de desarrollos humanos">Secretaria de Desarrollo Humano</option>
-                            <option value="Secretaria de gobierno">Secretaria de Gobierno</option>
-                            <option value="Departamento ejecutivo municipal">Departamento Ejecutivo Municipal</option> 
-                        </select>
+                        <div
+                            x-data="selectSearch({
+                                options: @js([
+                                    ['value' => 'Secretaria de obras publicas', 'label' => 'Secretaria de Obras Publicas'],
+                                    ['value' => 'Secretaria de desarrollos humanos', 'label' => 'Secretaria de Desarrollo Humano'],
+                                    ['value' => 'Secretaria de gobierno', 'label' => 'Secretaria de Gobierno'],
+                                    ['value' => 'Departamento ejecutivo municipal', 'label' => 'Departamento Ejecutivo Municipal'],
+                                ]),
+                                placeholder: 'Seleccione la sub cuenta',
+                                value: @js(old('sub_cuenta'))
+                            })"
+                            x-init="init()"
+                            class="relative w-full"
+                        >
+                            <button
+                                type="button"
+                                @click="open = !open"
+                                class="select w-full h-10 rounded-md border-base-300 bg-base-200 px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition flex items-center justify-between @error('sub_cuenta') input-error @enderror"
+                            >
+                                <span x-text="selected?.label ?? placeholder" class="truncate"></span>
+                            </button>
+
+                            <div
+                                x-show="open"
+                                x-transition
+                                @click.outside="open = false"
+                                class="absolute z-50 mt-1 w-full bg-base-100 border border-base-300 rounded-md shadow"
+                            >
+                                <input
+                                    type="text"
+                                    x-model="search"
+                                    class="input w-full border-0 border-b border-base-300 bg-base-200 px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
+                                    placeholder="Buscar..."
+                                >
+
+                                <ul class="max-h-60 overflow-y-auto">
+                                    <template x-for="option in filtered" :key="option.value">
+                                        <li
+                                            @click="select(option)"
+                                            class="px-3 py-2 cursor-pointer hover:bg-primary hover:text-primary-content"
+                                            x-text="option.label"
+                                        ></li>
+                                    </template>
+
+                                    <li x-show="filtered.length === 0" class="px-3 py-2 opacity-50">
+                                        Sin resultados
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <select id="sub_cuenta" name="sub_cuenta" class="hidden" x-model="selectedValue" required>
+                                <option value="">Seleccione la sub cuenta</option>
+                                <option value="Secretaria de obras publicas" @selected(old('sub_cuenta') == 'Secretaria de obras publicas')>Secretaria de Obras Publicas</option>
+                                <option value="Secretaria de desarrollos humanos" @selected(old('sub_cuenta') == 'Secretaria de desarrollos humanos')>Secretaria de Desarrollo Humano</option>
+                                <option value="Secretaria de gobierno" @selected(old('sub_cuenta') == 'Secretaria de gobierno')>Secretaria de Gobierno</option>
+                                <option value="Departamento ejecutivo municipal" @selected(old('sub_cuenta') == 'Departamento ejecutivo municipal')>Departamento Ejecutivo Municipal</option>
+                            </select>
+                        </div>
                         @error('sub_cuenta')
                             <small class="text-red-500 error-message">{{ $message }}</small>
                         @enderror
@@ -144,54 +195,69 @@
 
                     <div class="grid grid-cols-3 gap-4">
                         <div class="space-y-2">
-                            <label for="proveedor_id" class="text-sm font-medium">Proveedor<span
-                                    class="text-red-600">*</span></label>
-                            <select id="proveedor_id" name="proveedor_id"
-                                class="select w-full h-10 rounded-md border-base-300 bg-base-200
-                        px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
-                        focus:border-primary transition @error('proveedor_id') input-error @enderror"
-                                required>
-                                <option value="">Seleccione un proveedor</option>
-                                @foreach ($proveedores as $proveedor)
-                                    <option value="{{ $proveedor->id }}">{{ $proveedor->nombre }} -
-                                        {{ $proveedor->razon_social }}</option>
-                                @endforeach
-                            </select>
+                            <div class="flex items-center justify-between gap-4">
+                                <label class="text-sm font-medium mb-0">Proveedor <span class="text-red-600">*</span></label>
+                            </div>
+
+                            <!-- ID oculto que se envía en el request -->
+                            <input type="hidden" id="proveedor_id" name="proveedor_id" value="{{ old('proveedor_id') }}">
+
+                            <!-- Campo solo lectura mostrando el nombre elegido -->
+                            <input type="text" id="proveedor_nombre_visible"
+                                class="w-full h-10 rounded-md border border-base-300 bg-base-200
+                                px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
+                                focus:border-primary cursor-pointer transition @error('proveedor_id') input-error @enderror"
+                                placeholder="Seleccione un proveedor desde el buscador"
+                                value=""
+                                readonly>
+
                             @error('proveedor_id')
                                 <small class="text-red-500 error-message">{{ $message }}</small>
                             @enderror
                         </div>
 
-                        <!-- Destino de la compra -->
-                        <div class="space-y-2">
-                            <label for="destino_tipo" class="text-sm font-medium">Destino de la compra</label>
-                            <select id="destino_tipo" name="destino_tipo"
-                                class="select w-full h-10 rounded-md border-base-300 bg-base-200
-                        px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
-                        focus:border-primary transition @error('destino_tipo') input-error @enderror"
-                                required>
-                                <option value="">Seleccione el destino de la compra</option>
-                                <option value="deposito">Deposito</option>
-                                <option value="equipo">Equipo</option>
-                                <option value="vehiculo">Vehiculo</option>
-                                <option value="obra">Obra</option>
+                        <!-- DESTINO TIPO -->
+                        <div class="space-y-1">
+                            <label class="text-sm font-medium">Destino <span class="text-red-600">*</span></label>
+                            <select id="destino_tipo" name="destino_tipo" 
+                                class="w-full h-10 rounded-md border border-base-300 bg-base-200 
+                                        px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
+                                        focus:border-primary @error('destino_tipo') input-error @enderror transition" required>
+                                <option value="">Seleccione destino...</option> 
+                                <option value="App\Models\Deposito">Depósito</option>
+                                <option value="App\Models\Obra">Obra</option>
+                                <option value="App\Models\Vehiculo">Vehículo</option>
                             </select>
                             @error('destino_tipo')
-                                <small class="text-red-500 error-message">{{ $message }}</small>
+                                <small class="text-red-500">{{ $message }}</small>
                             @enderror
                         </div>
-                        <div class="space-y-2">
-                            <label for="destino_id" class="text-sm font-medium">Enviar a:</label>
-                            <select id="destino_id" name="destino_id"
-                                class="select w-full h-10 rounded-md border-base-300 bg-base-200
-                        px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
-                        focus:border-primary transition @error('destino_id') input-error @enderror" required>
-                            <option value="">Seleccione un destino...</option>      
-                        </select> 
-                        @error('destino_id') 
-                            <small class="text-red-500 error-message">{{ $message }}</small>
-                        @enderror
-                    </div>
+
+                        <!-- DESTINO ID -->
+                        <div class="space-y-2 -mt-4">
+                            <div class="flex items-center justify-between gap-4">
+                                <label class="text-sm font-medium mb-0">Elemento <span class="text-red-600">*</span></label>
+                                <button type="button" id="btn_elegir_destino" class="btn btn-sm btn-warning">
+                                    Buscar / seleccionar destino
+                                </button>
+                            </div>
+
+                            <!-- ID oculto que se envía en el request -->
+                            <input type="hidden" id="destino_id" name="destino_id" value="{{ old('destino_id') }}">
+
+                            <!-- Campo solo lectura mostrando el nombre elegido -->
+                            <input type="text" id="destino_nombre_visible"
+                                class="w-full h-10 rounded-md border border-base-300 bg-base-200
+                                px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
+                                focus:border-primary cursor-pointer transition @error('destino_id') input-error @enderror"
+                                placeholder="Seleccione un elemento desde el buscador"
+                                value=""
+                                readonly>
+
+                            @error('destino_id')
+                                <small class="text-red-500">{{ $message }}</small>
+                            @enderror
+                        </div>
                 </div>
                 <div class="grid grid-cols-1 gap-4">
                     <div class="space-y-2">
@@ -306,83 +372,66 @@
             </button>
         </div>
     </form>
-    <!-- Modal -->
-    <!-- Modal para crear -->
+    <!-- Modal para agregar producto -->
     <dialog id="modalAgregarItem" class="modal">
-
-        <div class="modal-box w-9/12 max-w-3xl">
+        <div class="modal-box w-11/12 max-w-5xl">
             <form method="dialog">
                 <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
             </form>
 
-            <!-- Título -->
-            <h3 class="font-bold text-xl flex items-center gap-3 mb-4">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24"
+            <h3 class="font-bold text-lg mb-4">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 inline" fill="none" viewBox="0 0 24 24"
                     stroke="currentColor" stroke-width="2">
                     <path d="M5 12h14"></path>
                     <path d="M12 5v14"></path>
                 </svg>
-                Añadir insumo
+                Seleccionar producto
             </h3>
 
+            <!-- Buscador -->
+            <input type="text" id="buscador_producto"
+                class="w-full h-10 rounded-md border border-base-300 bg-base-200 
+                        px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
+                        focus:border-primary transition mb-3"
+                placeholder="Buscar por nombre, categoría, descripción...">
+
             <!-- Tabla -->
-            <div class="card bg-base-100 shadow">
-                <div class="card-body p-4">
+            <div class="overflow-x-auto">
+                <table class="table table-zebra w-full text-sm">
+                    <thead>
+                        <tr>
+                            <th class="text-center">Categoría</th>
+                            <th class="text-center">Nombre</th>
+                            <th class="text-center">Descripción</th>
+                            <th class="text-center">Unidad</th>
+                            <th class="text-center">Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabla_productos_body">
+                        {{-- filas generadas por JS --}}
+                    </tbody>
+                </table>
 
-                    <div class="overflow-x-auto">
-                        <table class="table table-zebra w-full" id="mitabla">
-                            <thead>
-                                <tr>
-                                    <th class="text-center">Nr</th>
-                                    <th class="text-center">Accion</th>
-                                    <th class="text-center">Categoria</th>
-                                    <th class="text-center">Nombre</th>
-                                    <th class="text-center">Descripcion</th>
-                                    <th class="text-center">Unidad</th>
-                                    <th class="text-center">Detalle</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @php
-                                    $nr = 1;
-                                @endphp
-                                @foreach ($productos as $producto)
-                                    <tr>
-                                        <td class="text-center">{{ $nr++ }}</td>
-                                        <td class="text-center">
-                                            <button
-                                                onclick="agregarProducto({{ $producto->id }}, '{{ $producto->nombre }}')"
-                                                class="btn btn-primary btn-sm">
-                                                <x-heroicon-o-plus class="w-4 h-4" />
-                                                Agregar
-                                            </button>
-                                        </td>
-                                        <td class="text-center">{{ $producto->categoria->nombre }}</td>
-                                        <td class="text-center">{{ $producto->nombre }}</td>
-                                        <td class="text-center">{{ $producto->descripcion }}</td>
-                                        <td class="text-center">{{ $producto->unidad }}</td>
-                                        <td class="text-center">
-                                            <div class="flex items-center justify-center gap-2">
-                                                {{-- Ver --}}
-                                                <a href="{{ route('productos.show', $producto->id) }}"
-                                                    class="btn btn-info btn-sm">
-                                                    <x-heroicon-s-eye class="w-4 h-4" />
-                                                </a>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
+                <!-- Paginación -->
+                <div class="flex justify-between items-center mt-3 text-xs">
+                    <button type="button" class="btn btn-xs" id="producto_prev_page">
+                        « Anterior
+                    </button>
 
-                    </div>
+                    <span id="producto_pagination_info" class="mx-2">
+                        {{-- se completa por JS --}}
+                    </span>
+
+                    <button type="button" class="btn btn-xs" id="producto_next_page">
+                        Siguiente »
+                    </button>
                 </div>
             </div>
 
-            <!-- fondo oscuro -->
             <form method="dialog" class="modal-backdrop">
                 <button></button>
             </form>
+        </div>
     </dialog>
     <!-- Modal para crear producto -->
     <dialog id="crearProductoModal" class="modal">
@@ -408,6 +457,7 @@
 
             <form action="{{ url('/admin/productos/store') }}" method="POST" class="space-y-5">
                 @csrf
+                <input type="hidden" name="redirect_to" value="compras.create">
 
                 <!-- Categoría -->
                 <div class="form-control">
@@ -507,31 +557,309 @@
         </form>
 
     </dialog>
+
+    <!-- Modal para seleccionar proveedor -->
+    <input type="checkbox" id="modal_elegir_proveedor" class="modal-toggle" />
+    <div class="modal">
+        <div class="modal-box max-w-4xl">
+            <h3 class="font-bold text-lg mb-4" id="titulo_modal_proveedor">
+                Seleccionar proveedor
+            </h3>
+
+            <input type="text" id="buscador_proveedor"
+                class="w-full h-10 rounded-md border border-base-300 bg-base-200 
+                        px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
+                        focus:border-primary transition"
+                placeholder="Buscar por nombre, razón social, CUIT...">
+
+            <div class="overflow-x-auto mt-3">
+                <table class="table table-zebra w-full text-sm">
+                    <thead>
+                        <tr id="tabla_proveedor_head">
+                            <th>Nombre</th>
+                            <th>Razón Social</th>
+                            <th>CUIT</th>
+                            <th>Teléfono</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabla_proveedor_body">
+                        {{-- filas generadas por JS --}}
+                    </tbody>
+                </table>
+                <div class="flex justify-between items-center mt-3 text-xs">
+                    <button type="button" class="btn btn-xs" id="proveedor_prev_page">
+                        « Anterior
+                    </button>
+
+                    <span id="proveedor_pagination_info" class="mx-2">
+                        {{-- se completa por JS --}}
+                    </span>
+
+                    <button type="button" class="btn btn-xs" id="proveedor_next_page">
+                        Siguiente »
+                    </button>
+                </div>
+            </div>
+
+            <div class="modal-action">
+                <label for="modal_elegir_proveedor" class="btn btn-ghost">Cerrar</label>
+            </div>
+        </div>
+        <label class="modal-backdrop" for="modal_elegir_proveedor">Close</label>
+    </div>
+
+    <!-- Modal para seleccionar empleado -->
+    <input type="checkbox" id="modal_elegir_empleado" class="modal-toggle" />
+    <div class="modal">
+        <div class="modal-box max-w-4xl">
+            <h3 class="font-bold text-lg mb-4" id="titulo_modal_empleado">
+                Seleccionar empleado
+            </h3>
+
+            <input type="text" id="buscador_empleado"
+                class="w-full h-10 rounded-md border border-base-300 bg-base-200 
+                        px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
+                        focus:border-primary transition"
+                placeholder="Buscar por nombre, DNI, email, área...">
+
+            <div class="overflow-x-auto mt-3">
+                <table class="table table-zebra w-full text-sm">
+                    <thead>
+                        <tr id="tabla_empleado_head">
+                            <th>Nombre</th>
+                            <th>DNI</th>
+                            <th>Celular</th>
+                            <th>Email</th>
+                            <th>Área</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabla_empleado_body">
+                        {{-- filas generadas por JS --}}
+                    </tbody>
+                </table>
+                <div class="flex justify-between items-center mt-3 text-xs">
+                    <button type="button" class="btn btn-xs" id="empleado_prev_page">
+                        « Anterior
+                    </button>
+
+                    <span id="empleado_pagination_info" class="mx-2">
+                        {{-- se completa por JS --}}
+                    </span>
+
+                    <button type="button" class="btn btn-xs" id="empleado_next_page">
+                        Siguiente »
+                    </button>
+                </div>
+            </div>
+
+            <div class="modal-action">
+                <button type="button" onclick="crearEmpleadoModal.showModal()" 
+                    class="btn btn-sm btn-success">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" 
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="9" cy="7" r="4"></circle>
+                        <line x1="19" x2="19" y1="8" y2="14"></line>
+                        <line x1="22" x2="16" y1="11" y2="11"></line>
+                    </svg>
+                    Crear Empleado
+                </button>
+                <label for="modal_elegir_empleado" class="btn btn-sm btn-neutral">Cerrar</label>
+            </div>
+        </div>
+        <label class="modal-backdrop" for="modal_elegir_empleado">Close</label>
+    </div>
+
+    <!-- Modal para crear empleado -->
+    <dialog id="crearEmpleadoModal" class="modal">
+        <div class="modal-box max-w-2xl">
+            <form method="dialog">
+                <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+            </form>
+
+            <h3 class="font-bold text-xl flex items-center gap-3 mb-4">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" 
+                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="9" cy="7" r="4"></circle>
+                    <line x1="19" x2="19" y1="8" y2="14"></line>
+                    <line x1="22" x2="16" y1="11" y2="11"></line>
+                </svg>
+                Crear Nuevo Empleado
+            </h3>
+
+            <form action="{{ route('empleados.store') }}" method="POST" class="space-y-4">
+                @csrf
+                <input type="hidden" name="redirect_to" value="compras.create">
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- Nombre -->
+                    <div class="form-control">
+                        <label class="label">
+                            <span class="label-text font-medium">Nombre <span class="text-red-600">*</span></span>
+                        </label>
+                        <input type="text" name="nombre" required
+                            class="w-full h-10 rounded-md border border-base-300 bg-base-200 px-3 
+                            text-sm focus:outline-none focus:ring-2 focus:ring-primary 
+                            focus:border-primary transition"
+                            placeholder="Nombre completo">
+                    </div>
+
+                    <!-- DNI -->
+                    <div class="form-control">
+                        <label class="label">
+                            <span class="label-text font-medium">DNI <span class="text-red-600">*</span></span>
+                        </label>
+                        <input type="text" name="dni" required
+                            class="w-full h-10 rounded-md border border-base-300 bg-base-200 px-3 
+                            text-sm focus:outline-none focus:ring-2 focus:ring-primary 
+                            focus:border-primary transition"
+                            placeholder="DNI sin puntos">
+                    </div>
+
+                    <!-- Celular -->
+                    <div class="form-control">
+                        <label class="label">
+                            <span class="label-text font-medium">Celular</span>
+                        </label>
+                        <input type="text" name="celular"
+                            class="w-full h-10 rounded-md border border-base-300 bg-base-200 px-3 
+                            text-sm focus:outline-none focus:ring-2 focus:ring-primary 
+                            focus:border-primary transition"
+                            placeholder="Número de celular">
+                    </div>
+
+                    <!-- Email -->
+                    <div class="form-control">
+                        <label class="label">
+                            <span class="label-text font-medium">Email</span>
+                        </label>
+                        <input type="email" name="email"
+                            class="w-full h-10 rounded-md border border-base-300 bg-base-200 px-3 
+                            text-sm focus:outline-none focus:ring-2 focus:ring-primary 
+                            focus:border-primary transition"
+                            placeholder="correo@ejemplo.com">
+                    </div>
+
+                    <!-- Puesto -->
+                    <div class="form-control">
+                        <label class="label">
+                            <span class="label-text font-medium">Puesto</span>
+                        </label>
+                        <input type="text" name="puesto"
+                            class="w-full h-10 rounded-md border border-base-300 bg-base-200 px-3 
+                            text-sm focus:outline-none focus:ring-2 focus:ring-primary 
+                            focus:border-primary transition"
+                            placeholder="Ej: Mecánico, Chofer">
+                    </div>
+
+                    <!-- Área -->
+                    <div class="form-control">
+                        <label class="label">
+                            <span class="label-text font-medium">Área</span>
+                        </label>
+                        <input type="text" name="area"
+                            class="w-full h-10 rounded-md border border-base-300 bg-base-200 px-3 
+                            text-sm focus:outline-none focus:ring-2 focus:ring-primary 
+                            focus:border-primary transition"
+                            placeholder="Ej: Taller, Logística">
+                    </div>
+                </div>
+
+                <!-- Dirección -->
+                <div class="form-control">
+                    <label class="label">
+                        <span class="label-text font-medium">Dirección</span>
+                    </label>
+                    <input type="text" name="direccion"
+                        class="w-full h-10 rounded-md border border-base-300 bg-base-200 px-3 
+                        text-sm focus:outline-none focus:ring-2 focus:ring-primary 
+                        focus:border-primary transition"
+                        placeholder="Dirección completa">
+                </div>
+
+                <!-- Observaciones -->
+                <div class="form-control">
+                    <label class="label">
+                        <span class="label-text font-medium">Observaciones</span>
+                    </label>
+                    <textarea name="observaciones" rows="3"
+                        class="textarea w-full rounded-md border border-base-300 bg-base-200 
+                        focus:outline-none focus:ring-2 focus:ring-primary 
+                        focus:border-primary transition"
+                        placeholder="Observaciones adicionales..."></textarea>
+                </div>
+
+                <!-- Botones -->
+                <div class="modal-action">
+                    <button type="submit" class="btn btn-primary">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                            stroke="currentColor" class="w-5 h-5 mr-1">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                        </svg>
+                        Guardar Empleado
+                    </button>
+                    <button type="button" onclick="crearEmpleadoModal.close()" class="btn btn-neutral">
+                        Cancelar
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <form method="dialog" class="modal-backdrop">
+            <button></button>
+        </form>
+    </dialog>
+
+    <!-- Modal para seleccionar destino -->
+    <input type="checkbox" id="modal_elegir_destino" class="modal-toggle" />
+    <div class="modal">
+        <div class="modal-box max-w-4xl">
+            <h3 class="font-bold text-lg mb-4" id="titulo_modal_destino">
+                Seleccionar destino
+            </h3>
+
+            <input type="text" id="buscador_destino"
+                class="w-full h-10 rounded-md border border-base-300 bg-base-200 
+                        px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
+                        focus:border-primary transition"
+                placeholder="Buscar por nombre, patente, etc.">
+
+            <div class="overflow-x-auto mt-3">
+                <table class="table table-zebra w-full text-sm">
+                    <thead>
+                        <tr id="tabla_destino_head">
+                            {{-- cabeceras generadas por JS --}}
+                        </tr>
+                    </thead>
+                    <tbody id="tabla_destino_body">
+                        {{-- filas generadas por JS --}}
+                    </tbody>
+                </table>
+                <div class="flex justify-between items-center mt-3 text-xs">
+                    <button type="button" class="btn btn-xs" id="destino_prev_page">
+                        « Anterior
+                    </button>
+
+                    <span id="destino_pagination_info" class="mx-2">
+                        {{-- se completa por JS --}}
+                    </span>
+
+                    <button type="button" class="btn btn-xs" id="destino_next_page">
+                        Siguiente »
+                    </button>
+                </div>
+            </div>
+
+            <div class="modal-action">
+                <label for="modal_elegir_destino" class="btn btn-ghost">Cerrar</label>
+            </div>
+        </div>
+        <label class="modal-backdrop" for="modal_elegir_destino">Close</label>
+    </div>
+
 @endsection
-@section('js')
-   {{--  <script>
-        const oldDestinoId = "{{ old('destino_id') }}"; // <-- Blade se ejecuta acá
-
-        document.getElementById('destino_tipo').addEventListener('change', function() {
-            const tipo = this.value;
-            const destinoSelect = document.getElementById('destino_id');
-
-            destinoSelect.innerHTML = '<option value="">Cargando...</option>';
-
-            fetch('{{ url('api/destinos') }}/' + tipo)
-                .then(res => res.json())
-                .then(data => {
-                    destinoSelect.innerHTML = '<option value="">Seleccione...</option>';
-
-                    data.forEach(dest => {
-                        destinoSelect.innerHTML += `
-                            <option value="${dest.id}" ${oldDestinoId == dest.id ? 'selected' : ''}>
-                                ${dest.nombre}
-                            </option>`;
-                    });
-                });
-        });
-    </script> --}}
+@section('js') 
     <script>
         const oldDestinoId = "{{ old('destino_id') }}"; // <-- Blade se ejecuta acá
 
@@ -553,89 +881,8 @@
                             </option>`;
                     });
                 });
-        });
-    </script> 
-    <script>
-        $('#mitabla').DataTable({
-            "pageLength": 5,
-            "language": {
-                "emptyTable": "No hay información",
-                "info": "Mostrando _START_ a _END_ de _TOTAL_ Productos",
-                "infoEmpty": "Mostrando 0 a 0 de 0 Productos",
-                "infoFiltered": "(Filtrado de _MAX_ total Productos)",
-                "infoPostFix": "",
-                "thousands": ",",
-                "lengthMenu": "Mostrar _MENU_ Productos",
-                "loadingRecords": "Cargando...",
-                "processing": "Procesando...",
-                "search": "Buscador:",
-                "zeroRecords": "Sin resultados encontrados",
-                "paginate": {
-                    "first": "Primero",
-                    "last": "Ultimo",
-                    "next": "Siguiente",
-                    "previous": "Anterior"
-                }
-            }
         });
     </script>
-    <style>
-       /* SOLO SE APLICA SI EL BODY TIENE LA CLASE "dark" */
-        .dark #mitabla_wrapper,
-        .dark #mitabla_wrapper * {
-            color: var(--fallback-bc, #e5e7eb) !important;
-        }
-
-        .dark .dataTables_filter input {
-            background-color: #1f2937 !important;
-            color: #f3f4f6 !important;
-            border: 1px solid #4b5563 !important;
-            padding: 4px 8px;
-            border-radius: 6px;
-        }
-
-        .dark .dataTables_length select {
-            background-color: #1f2937 !important;
-            color: #f3f4f6 !important;
-            border: 1px solid #4b5563 !important;
-            border-radius: 6px;
-        }
-
-        .dark .dataTables_paginate a {
-            color: #f3f4f6 !important;
-        }
-
-        .dark .dataTables_paginate .current {
-            background-color: #374151 !important;
-            color: #ffffff !important;
-            border: none !important;
-        }
-
-        .dark .dataTables_wrapper {
-            color: #fff !important;
-        }
-
-        .dark .dataTables_length label,
-        .dark .dataTables_filter label {
-            color: #fff !important;
-        }
-
-        .dark .dataTables_filter input {
-            color: #fff !important;
-            background-color: #1f1f1f !important;
-            border: 1px solid #444 !important;
-        }
-
-        .dark .dataTables_paginate a {
-            color: #fff !important;
-        }
-
-        .dark .dataTables_paginate .current {
-            background-color: #444 !important;
-            border: 1px solid #666 !important;
-        }
-
-    </style>
     <script>
         // Agregar producto a la tabla
         // Colocá esto arriba de agregarProducto(), en el mismo scope global
@@ -692,7 +939,7 @@
                 </td>
 
                 <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap">
-                <button type="button" class="inline-flex items-center justify-center text-sm font-medium h-8 rounded-md gap-1.5 px-3 text-red-600"
+                <button type="button" class="btn inline-flex items-center justify-center text-sm font-medium h-8 rounded-md gap-1.5 px-3 text-red-600"
                     onclick="eliminarFila(this)">
                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
                     stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trash-2">
@@ -752,11 +999,728 @@
                     document.getElementById('cantidadTotal').textContent = cantidadTotal;
                 }
 
-        // Pequeña función para escapar texto (evita inyección al insertar nombre)
-        function escapeHtml(text) {
-        if (!text) return '';
-        return text.replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;').replaceAll("'",'&#39;');
+// Pequeña función para escapar texto (evita inyección al insertar nombre)
+function escapeHtml(text) {
+  if (!text) return '';
+  return text.replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;').replaceAll("'",'&#39;');
+}
+</script>
+
+<script>
+// ==============================
+//  MODAL DE SELECCIÓN DE PROVEEDOR
+// ==============================
+document.addEventListener("DOMContentLoaded", function() {
+    const proveedoresData = @json($proveedores);
+    let proveedoresCache = proveedoresData;
+    let paginaProveedor = 1;
+    const itemsPorPaginaProveedor = 5;
+
+    const tablaProveedorBody = document.getElementById('tabla_proveedor_body');
+    const proveedorPrev = document.getElementById('proveedor_prev_page');
+    const proveedorNext = document.getElementById('proveedor_next_page');
+    const proveedorInfo = document.getElementById('proveedor_pagination_info');
+    const buscadorProveedor = document.getElementById('buscador_proveedor');
+    const btnElegirProveedor = document.getElementById('btn_elegir_proveedor');
+    const proveedorInput = document.getElementById('proveedor_id');
+    const proveedorNombreVisible = document.getElementById('proveedor_nombre_visible');
+
+    function formatearCelda(valor) {
+        if (valor === null || valor === undefined || valor === '') return '-';
+        return String(valor);
+    }
+
+    function renderTablaProveedor(data) {
+        if (!tablaProveedorBody) return;
+
+        tablaProveedorBody.innerHTML = '';
+
+        const total = data.length;
+
+        if (!total) {
+            tablaProveedorBody.innerHTML = `<tr><td class="py-4 text-center text-sm text-gray-500" colspan="4">No se encontraron proveedores.</td></tr>`;
+            if (proveedorInfo) proveedorInfo.textContent = '0 de 0';
+            return;
         }
-    </script>
+
+        const totalPaginas = Math.ceil(total / itemsPorPaginaProveedor);
+        if (paginaProveedor > totalPaginas) paginaProveedor = totalPaginas;
+        if (paginaProveedor < 1) paginaProveedor = 1;
+
+        const inicio = (paginaProveedor - 1) * itemsPorPaginaProveedor;
+        const fin = inicio + itemsPorPaginaProveedor;
+        const pagina = data.slice(inicio, fin);
+
+        pagina.forEach(proveedor => {
+            const tr = document.createElement('tr');
+            tr.classList.add('cursor-pointer', 'hover:bg-base-300');
+
+            tr.innerHTML = `
+                <td>${formatearCelda(proveedor.nombre)}</td>
+                <td>${formatearCelda(proveedor.razon_social)}</td>
+                <td>${formatearCelda(proveedor.cuit)}</td>
+                <td>${formatearCelda(proveedor.telefono)}</td>
+            `;
+
+            tr.addEventListener('click', function () {
+                if (!proveedorInput) return;
+
+                proveedorInput.value = proveedor.id;
+
+                if (proveedorNombreVisible) {
+                    const texto = `${proveedor.nombre || ''} - ${proveedor.razon_social || ''}`;
+                    proveedorNombreVisible.value = texto.trim();
+                }
+
+                const modalCheckbox = document.getElementById('modal_elegir_proveedor');
+                if (modalCheckbox) modalCheckbox.checked = false;
+            });
+
+            tablaProveedorBody.appendChild(tr);
+        });
+
+        if (proveedorInfo) {
+            const desde = inicio + 1;
+            const hasta = Math.min(fin, total);
+            proveedorInfo.textContent = `Mostrando ${desde}-${hasta} de ${total}`;
+        }
+    }
+
+    function abrirModalProveedor() {
+        const modalCheckbox = document.getElementById('modal_elegir_proveedor');
+        if (modalCheckbox) modalCheckbox.checked = true;
+        paginaProveedor = 1;
+        renderTablaProveedor(proveedoresCache);
+        if (buscadorProveedor) buscadorProveedor.value = '';
+    }
+
+    if (btnElegirProveedor) {
+        btnElegirProveedor.addEventListener('click', function () {
+            abrirModalProveedor();
+        });
+    }
+
+    if (proveedorNombreVisible) {
+        proveedorNombreVisible.addEventListener('click', function () {
+            abrirModalProveedor();
+        });
+        proveedorNombreVisible.addEventListener('focus', function () {
+            abrirModalProveedor();
+        });
+    }
+
+    if (buscadorProveedor) {
+        buscadorProveedor.addEventListener('input', function () {
+            const term = this.value.toLowerCase();
+            const filtrados = proveedoresData.filter(proveedor => {
+                const texto = `${proveedor.nombre || ''} ${proveedor.razon_social || ''} ${proveedor.cuit || ''} ${proveedor.telefono || ''}`.toLowerCase();
+                return texto.includes(term);
+            });
+            paginaProveedor = 1;
+            renderTablaProveedor(filtrados);
+        });
+    }
+
+    if (proveedorPrev) {
+        proveedorPrev.addEventListener('click', function () {
+            if (paginaProveedor > 1) {
+                paginaProveedor--;
+                const term = buscadorProveedor ? buscadorProveedor.value.toLowerCase() : '';
+                const filtrados = term ? proveedoresData.filter(p => {
+                    const texto = `${p.nombre || ''} ${p.razon_social || ''} ${p.cuit || ''} ${p.telefono || ''}`.toLowerCase();
+                    return texto.includes(term);
+                }) : proveedoresCache;
+                renderTablaProveedor(filtrados);
+            }
+        });
+    }
+
+    if (proveedorNext) {
+        proveedorNext.addEventListener('click', function () {
+            const term = buscadorProveedor ? buscadorProveedor.value.toLowerCase() : '';
+            const filtrados = term ? proveedoresData.filter(p => {
+                const texto = `${p.nombre || ''} ${p.razon_social || ''} ${p.cuit || ''} ${p.telefono || ''}`.toLowerCase();
+                return texto.includes(term);
+            }) : proveedoresCache;
+            const totalPaginas = Math.ceil(filtrados.length / itemsPorPaginaProveedor);
+            if (paginaProveedor < totalPaginas) {
+                paginaProveedor++;
+                renderTablaProveedor(filtrados);
+            }
+        });
+    }
+});
+</script>
+
+<script>
+// ==============================
+//  MODAL DE SELECCIÓN DE EMPLEADO
+// ==============================
+document.addEventListener("DOMContentLoaded", function() {
+    const empleadosData = @json($empleados);
+    let empleadosCache = empleadosData;
+    let paginaEmpleado = 1;
+    const itemsPorPaginaEmpleado = 5;
+
+    const tablaEmpleadoBody = document.getElementById('tabla_empleado_body');
+    const empleadoPrev = document.getElementById('empleado_prev_page');
+    const empleadoNext = document.getElementById('empleado_next_page');
+    const empleadoInfo = document.getElementById('empleado_pagination_info');
+    const buscadorEmpleado = document.getElementById('buscador_empleado');
+    const empleadoInput = document.getElementById('empleado_id');
+    const empleadoNombreVisible = document.getElementById('empleado_nombre_visible');
+
+    function formatearCelda(valor) {
+        if (valor === null || valor === undefined || valor === '') return '-';
+        return String(valor);
+    }
+
+    function renderTablaEmpleado(data) {
+        if (!tablaEmpleadoBody) return;
+
+        tablaEmpleadoBody.innerHTML = '';
+
+        const total = data.length;
+
+        if (!total) {
+            tablaEmpleadoBody.innerHTML = `<tr><td class="py-4 text-center text-sm text-gray-500" colspan="5">No se encontraron empleados.</td></tr>`;
+            if (empleadoInfo) empleadoInfo.textContent = '0 de 0';
+            return;
+        }
+
+        const totalPaginas = Math.ceil(total / itemsPorPaginaEmpleado);
+        if (paginaEmpleado > totalPaginas) paginaEmpleado = totalPaginas;
+        if (paginaEmpleado < 1) paginaEmpleado = 1;
+
+        const inicio = (paginaEmpleado - 1) * itemsPorPaginaEmpleado;
+        const fin = inicio + itemsPorPaginaEmpleado;
+        const pagina = data.slice(inicio, fin);
+
+        pagina.forEach(empleado => {
+            const tr = document.createElement('tr');
+            tr.classList.add('cursor-pointer', 'hover:bg-base-300');
+
+            tr.innerHTML = `
+                <td>${formatearCelda(empleado.nombre)}</td>
+                <td>${formatearCelda(empleado.dni)}</td>
+                <td>${formatearCelda(empleado.celular)}</td>
+                <td>${formatearCelda(empleado.email)}</td>
+                <td>${formatearCelda(empleado.area)}</td>
+            `;
+
+            tr.addEventListener('click', function (e) {
+                if (!empleadoInput) return;
+
+                empleadoInput.value = empleado.id;
+
+                if (empleadoNombreVisible) {
+                    const texto = `${empleado.nombre || ''} - ${empleado.dni || ''}`;
+                    empleadoNombreVisible.value = texto.trim();
+                }
+
+                const modalCheckbox = document.getElementById('modal_elegir_empleado');
+                if (modalCheckbox) modalCheckbox.checked = false;
+            });
+
+            tablaEmpleadoBody.appendChild(tr);
+        });
+
+        if (empleadoInfo) {
+            const desde = inicio + 1;
+            const hasta = Math.min(fin, total);
+            empleadoInfo.textContent = `Mostrando ${desde}-${hasta} de ${total}`;
+        }
+    }
+
+    function abrirModalEmpleado() {
+        const modalCheckbox = document.getElementById('modal_elegir_empleado');
+        if (modalCheckbox) modalCheckbox.checked = true;
+        paginaEmpleado = 1;
+        renderTablaEmpleado(empleadosCache);
+        if (buscadorEmpleado) buscadorEmpleado.value = '';
+    }
+
+    if (empleadoNombreVisible) {
+        empleadoNombreVisible.addEventListener('click', function () {
+            abrirModalEmpleado();
+        });
+        empleadoNombreVisible.addEventListener('focus', function () {
+            abrirModalEmpleado();
+        });
+    }
+
+    if (buscadorEmpleado) {
+        buscadorEmpleado.addEventListener('input', function () {
+            const term = this.value.toLowerCase();
+            const filtrados = empleadosData.filter(empleado => {
+                const texto = `${empleado.nombre || ''} ${empleado.dni || ''} ${empleado.celular || ''} ${empleado.email || ''} ${empleado.area || ''}`.toLowerCase();
+                return texto.includes(term);
+            });
+            paginaEmpleado = 1;
+            renderTablaEmpleado(filtrados);
+        });
+    }
+
+    if (empleadoPrev) {
+        empleadoPrev.addEventListener('click', function () {
+            if (paginaEmpleado > 1) {
+                paginaEmpleado--;
+                const term = buscadorEmpleado ? buscadorEmpleado.value.toLowerCase() : '';
+                const filtrados = term ? empleadosData.filter(e => {
+                    const texto = `${e.nombre || ''} ${e.dni || ''} ${e.celular || ''} ${e.email || ''} ${e.area || ''}`.toLowerCase();
+                    return texto.includes(term);
+                }) : empleadosCache;
+                renderTablaEmpleado(filtrados);
+            }
+        });
+    }
+
+    if (empleadoNext) {
+        empleadoNext.addEventListener('click', function () {
+            const term = buscadorEmpleado ? buscadorEmpleado.value.toLowerCase() : '';
+            const filtrados = term ? empleadosData.filter(e => {
+                const texto = `${e.nombre || ''} ${e.dni || ''} ${e.celular || ''} ${e.email || ''} ${e.area || ''}`.toLowerCase();
+                return texto.includes(term);
+            }) : empleadosCache;
+            const totalPaginas = Math.ceil(filtrados.length / itemsPorPaginaEmpleado);
+            if (paginaEmpleado < totalPaginas) {
+                paginaEmpleado++;
+                renderTablaEmpleado(filtrados);
+            }
+        });
+    }
+});
+</script>
+
+<script>
+// ==============================
+//  MODAL DE SELECCIÓN DE DESTINO
+// ==============================
+document.addEventListener("DOMContentLoaded", function() {
+
+    const baseUrlListar = "{{ url('origen/listar') }}";
+
+    const destinoTipoSelect = document.getElementById("destino_tipo");
+    const destinoInput = document.getElementById("destino_id");
+    const destinoNombreVisible = document.getElementById("destino_nombre_visible");
+
+    // DESTINO (cache y elementos del modal)
+    let destinosCache = [];
+    let columnasDestino = [];
+    let paginaDestino = 1;
+    const itemsPorPaginaDestino = 5;
+
+    // Cache por tipo para que el modal abra instantáneo
+    const destinoCachePorTipo = {};
+    const destinoPrefetchEnCursoPorTipo = {};
+
+    const tablaDestinoHead = document.getElementById('tabla_destino_head');
+    const tablaDestinoBody = document.getElementById('tabla_destino_body');
+    const destinoPrev = document.getElementById('destino_prev_page');
+    const destinoNext = document.getElementById('destino_next_page');
+    const destinoInfo = document.getElementById('destino_pagination_info');
+    const buscadorDestino = document.getElementById('buscador_destino');
+    const btnElegirDestino = document.getElementById('btn_elegir_destino');
+    const tituloModalDestino = document.getElementById('titulo_modal_destino');
+
+    function formatearCelda(valor) {
+        if (valor === null || valor === undefined || valor === '') return '-';
+        return String(valor);
+    }
+
+    function esParteVisibleValida(valor) {
+        return !(valor === null || valor === undefined || valor === '');
+    }
+
+    function tipoShortDesdeClase(clase) {
+        if (!clase) return null;
+        if (clase.includes('Obra')) return 'obra';
+        if (clase.includes('Deposito')) return 'deposito';
+        return 'vehiculo';
+    }
+
+    function prefetchListado(tipoShort, cachePorTipo, prefetchEnCursoPorTipo, onOk) {
+        if (!tipoShort) return null;
+
+        if (cachePorTipo[tipoShort]) {
+            if (typeof onOk === 'function') onOk(cachePorTipo[tipoShort]);
+            return Promise.resolve(cachePorTipo[tipoShort]);
+        }
+
+        if (prefetchEnCursoPorTipo && prefetchEnCursoPorTipo[tipoShort]) {
+            const p = prefetchEnCursoPorTipo[tipoShort];
+            if (typeof onOk === 'function') p.then(onOk).catch(() => {});
+            return p;
+        }
+
+        const p = fetch(`${baseUrlListar}/${tipoShort}`)
+            .then(res => res.json())
+            .then(data => {
+                const lista = Array.isArray(data) ? data : [];
+                cachePorTipo[tipoShort] = lista;
+                return lista;
+            })
+            .catch(() => {
+                return [];
+            })
+            .finally(() => {
+                if (prefetchEnCursoPorTipo) delete prefetchEnCursoPorTipo[tipoShort];
+            });
+
+        if (prefetchEnCursoPorTipo) prefetchEnCursoPorTipo[tipoShort] = p;
+        if (typeof onOk === 'function') p.then(onOk).catch(() => {});
+        return p;
+    }
+
+    function configurarColumnasDestino(tipoShort) {
+        if (tipoShort === 'vehiculo') {
+            columnasDestino = [
+                { key: 'patente', label: 'Patente' },
+                { key: 'marca', label: 'Marca' },
+                { key: 'modelo', label: 'Modelo' },
+                { key: 'anio', label: 'Año' },
+                { key: 'color', label: 'Color' },
+                { key: 'tipo', label: 'Tipo' },
+            ];
+            tituloModalDestino.textContent = 'Seleccionar vehículo destino';
+        } else if (tipoShort === 'obra') {
+            columnasDestino = [
+                { key: 'nombre', label: 'Nombre' },
+                { key: 'direccion', label: 'Dirección' },
+                { key: 'barrio', label: 'Barrio' },
+                { key: 'responsable', label: 'Responsable' },
+                { key: 'ejecutado_por', label: 'Ejecutado por' },
+                { key: 'estado_obra', label: 'Estado' },
+            ];
+            tituloModalDestino.textContent = 'Seleccionar obra destino';
+        } else if (tipoShort === 'deposito') {
+            columnasDestino = [{ key: 'nombre', label: 'Depósito' }];
+            tituloModalDestino.textContent = 'Seleccionar depósito destino';
+        } else {
+            columnasDestino = [{ key: 'nombre', label: 'Nombre' }];
+            tituloModalDestino.textContent = 'Seleccionar destino';
+        }
+
+        if (tablaDestinoHead) {
+            tablaDestinoHead.innerHTML = columnasDestino
+                .map(col => `<th>${col.label}</th>`)
+                .join('');
+        }
+    }
+
+    function renderTablaDestino(data) {
+        if (!tablaDestinoBody) return;
+
+        tablaDestinoBody.innerHTML = '';
+
+        const total = data.length;
+
+        if (!total) {
+            tablaDestinoBody.innerHTML = `<tr><td class="py-4 text-center text-sm text-gray-500" colspan="${columnasDestino.length || 1}">No se encontraron elementos.</td></tr>`;
+            if (destinoInfo) destinoInfo.textContent = '0 de 0';
+            return;
+        }
+
+        const totalPaginas = Math.ceil(total / itemsPorPaginaDestino);
+        if (paginaDestino > totalPaginas) paginaDestino = totalPaginas;
+        if (paginaDestino < 1) paginaDestino = 1;
+
+        const inicio = (paginaDestino - 1) * itemsPorPaginaDestino;
+        const fin = inicio + itemsPorPaginaDestino;
+        const pagina = data.slice(inicio, fin);
+
+        pagina.forEach(dest => {
+            const tr = document.createElement('tr');
+            tr.classList.add('cursor-pointer', 'hover:bg-base-300');
+
+            tr.innerHTML = columnasDestino
+                .map(col => `<td>${formatearCelda(dest[col.key])}</td>`)
+                .join('');
+
+            tr.addEventListener('click', function () {
+                if (!destinoInput) return;
+
+                destinoInput.value = dest.id;
+
+                if (destinoNombreVisible) {
+                    const texto = columnasDestino
+                        .map(col => dest[col.key])
+                        .filter(esParteVisibleValida)
+                        .map(v => String(v))
+                        .join(' - ');
+                    destinoNombreVisible.value = texto || (dest.nombre ?? 'Elemento seleccionado');
+                }
+
+                const modalCheckbox = document.getElementById('modal_elegir_destino');
+                if (modalCheckbox) modalCheckbox.checked = false;
+            });
+
+            tablaDestinoBody.appendChild(tr);
+        });
+
+        if (destinoInfo) {
+            const desde = inicio + 1;
+            const hasta = Math.min(fin, total);
+            destinoInfo.textContent = `Mostrando ${desde}-${hasta} de ${total}`;
+        }
+    }
+
+    function cargarDestinosEnTabla() {
+        if (!tablaDestinoBody || !tablaDestinoHead) return;
+
+        const clase = destinoTipoSelect ? destinoTipoSelect.value : null;
+        const tipoShort = tipoShortDesdeClase(clase);
+
+        if (!clase || !tipoShort) {
+            columnasDestino = [];
+            tablaDestinoHead.innerHTML = '';
+            tablaDestinoBody.innerHTML = '<tr><td class="py-4 text-center text-sm text-gray-500">Primero seleccione un tipo de destino.</td></tr>';
+            if (destinoInfo) destinoInfo.textContent = '';
+            return;
+        }
+
+        configurarColumnasDestino(tipoShort);
+
+        // Si ya está en cache, renderizar instantáneo
+        if (destinoCachePorTipo[tipoShort]) {
+            destinosCache = destinoCachePorTipo[tipoShort];
+            paginaDestino = 1;
+            renderTablaDestino(destinosCache);
+            return;
+        }
+
+        tablaDestinoBody.innerHTML = `<tr><td class="py-4 text-center text-sm" colspan="${columnasDestino.length}">Cargando...</td></tr>`;
+
+        prefetchListado(tipoShort, destinoCachePorTipo, destinoPrefetchEnCursoPorTipo)
+            .then(lista => {
+                destinosCache = lista;
+                paginaDestino = 1;
+                renderTablaDestino(destinosCache);
+            })
+            .catch(err => {
+                console.error('Error en fetch DESTINO:', err);
+                tablaDestinoBody.innerHTML = `<tr><td class="py-4 text-center text-sm text-red-500" colspan="${columnasDestino.length}">Error al cargar los elementos.</td></tr>`;
+                if (destinoInfo) destinoInfo.textContent = '';
+            });
+    }
+
+    function abrirModalDestino() {
+        const modalCheckbox = document.getElementById('modal_elegir_destino');
+        if (modalCheckbox) modalCheckbox.checked = true;
+        cargarDestinosEnTabla();
+        if (buscadorDestino) buscadorDestino.value = '';
+    }
+
+    if (btnElegirDestino) {
+        btnElegirDestino.addEventListener('click', function () {
+            abrirModalDestino();
+        });
+    }
+
+    if (destinoNombreVisible) {
+        destinoNombreVisible.addEventListener('click', function () {
+            abrirModalDestino();
+        });
+        destinoNombreVisible.addEventListener('focus', function () {
+            abrirModalDestino();
+        });
+    }
+
+    if (buscadorDestino) {
+        buscadorDestino.addEventListener('input', function () {
+            const term = this.value.toLowerCase();
+            const filtrados = destinosCache.filter(dest => {
+                const texto = Object.values(dest).join(' ').toLowerCase();
+                return texto.includes(term);
+            });
+            paginaDestino = 1;
+            renderTablaDestino(filtrados);
+        });
+    }
+
+    if (destinoPrev) {
+        destinoPrev.addEventListener('click', function () {
+            if (paginaDestino > 1) {
+                paginaDestino--;
+                renderTablaDestino(destinosCache);
+            }
+        });
+    }
+
+    if (destinoNext) {
+        destinoNext.addEventListener('click', function () {
+            const totalPaginas = Math.ceil(destinosCache.length / itemsPorPaginaDestino);
+            if (paginaDestino < totalPaginas) {
+                paginaDestino++;
+                renderTablaDestino(destinosCache);
+            }
+        });
+    }
+
+    destinoTipoSelect?.addEventListener('change', function () {
+        const tipo = this.value;
+        const tipoShort = tipoShortDesdeClase(tipo);
+        prefetchListado(tipoShort, destinoCachePorTipo, destinoPrefetchEnCursoPorTipo);
+
+        if (destinoInput) destinoInput.value = '';
+        if (destinoNombreVisible) {
+            destinoNombreVisible.value = '';
+            destinoNombreVisible.placeholder = 'Seleccione un elemento desde el buscador';
+        }
+    });
+
+    const tipoDestinoInicial = tipoShortDesdeClase(destinoTipoSelect ? destinoTipoSelect.value : null);
+    prefetchListado(tipoDestinoInicial, destinoCachePorTipo, destinoPrefetchEnCursoPorTipo);
+});
+</script>
+
+<script>
+// ==============================
+//  MODAL DE SELECCIÓN DE PRODUCTOS
+// ==============================
+document.addEventListener("DOMContentLoaded", function() {
+    const productosData = @json($productos);
+    let productosCache = productosData;
+    let paginaProducto = 1;
+    const itemsPorPaginaProducto = 5; 
+
+    const tablaProductosBody = document.getElementById('tabla_productos_body');
+    const productoPrev = document.getElementById('producto_prev_page');
+    const productoNext = document.getElementById('producto_next_page');
+    const productoInfo = document.getElementById('producto_pagination_info');
+    const buscadorProducto = document.getElementById('buscador_producto');
+
+    function formatearCelda(valor) {
+        if (valor === null || valor === undefined || valor === '') return '-';
+        return String(valor);
+    }
+
+    function renderTablaProductos(data) {
+        if (!tablaProductosBody) return;
+
+        tablaProductosBody.innerHTML = '';
+
+        const total = data.length;
+
+        if (!total) {
+            tablaProductosBody.innerHTML = `<tr><td class="py-4 text-center text-sm text-gray-500" colspan="5">No se encontraron productos.</td></tr>`;
+            if (productoInfo) productoInfo.textContent = '0 de 0';
+            return;
+        }
+
+        const totalPaginas = Math.ceil(total / itemsPorPaginaProducto);
+        if (paginaProducto > totalPaginas) paginaProducto = totalPaginas;
+        if (paginaProducto < 1) paginaProducto = 1;
+
+        const inicio = (paginaProducto - 1) * itemsPorPaginaProducto;
+        const fin = inicio + itemsPorPaginaProducto;
+        const pagina = data.slice(inicio, fin);
+
+        pagina.forEach(producto => {
+            const tr = document.createElement('tr');
+            tr.classList.add('hover:bg-base-300');
+
+            const categoriaNombre = producto.categoria ? producto.categoria.nombre : '-';
+
+            tr.innerHTML = `
+                <td class="text-center">${formatearCelda(categoriaNombre)}</td>
+                <td class="text-center">${formatearCelda(producto.nombre)}</td>
+                <td class="text-center">${formatearCelda(producto.descripcion)}</td>
+                <td class="text-center">${formatearCelda(producto.unidad)}</td>
+                <td class="text-center">
+                    <button type="button" class="btn btn-primary btn-sm" onclick="agregarProducto(${producto.id}, '${producto.nombre.replace(/'/g, "\\'")}')"
+                        data-producto-id="${producto.id}">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+                        </svg>
+                        Agregar
+                    </button>
+                </td>
+            `;
+
+            tablaProductosBody.appendChild(tr);
+        });
+
+        if (productoInfo) {
+            const desde = inicio + 1;
+            const hasta = Math.min(fin, total);
+            productoInfo.textContent = `Mostrando ${desde}-${hasta} de ${total}`;
+        }
+    }
+
+    if (buscadorProducto) {
+        buscadorProducto.addEventListener('input', function () {
+            const term = this.value.toLowerCase();
+            const filtrados = productosData.filter(producto => {
+                const categoriaNombre = producto.categoria ? producto.categoria.nombre : '';
+                const texto = `${producto.nombre || ''} ${categoriaNombre} ${producto.descripcion || ''} ${producto.unidad || ''}`.toLowerCase();
+                return texto.includes(term);
+            });
+            paginaProducto = 1;
+            renderTablaProductos(filtrados);
+        });
+    }
+
+    if (productoPrev) {
+        productoPrev.addEventListener('click', function () {
+            if (paginaProducto > 1) {
+                paginaProducto--;
+                const term = buscadorProducto ? buscadorProducto.value.toLowerCase() : '';
+                const filtrados = term ? productosData.filter(p => {
+                    const categoriaNombre = p.categoria ? p.categoria.nombre : '';
+                    const texto = `${p.nombre || ''} ${categoriaNombre} ${p.descripcion || ''} ${p.unidad || ''}`.toLowerCase();
+                    return texto.includes(term);
+                }) : productosCache;
+                renderTablaProductos(filtrados);
+            }
+        });
+    }
+
+    if (productoNext) {
+        productoNext.addEventListener('click', function () {
+            const term = buscadorProducto ? buscadorProducto.value.toLowerCase() : '';
+            const filtrados = term ? productosData.filter(p => {
+                const categoriaNombre = p.categoria ? p.categoria.nombre : '';
+                const texto = `${p.nombre || ''} ${categoriaNombre} ${p.descripcion || ''} ${p.unidad || ''}`.toLowerCase();
+                return texto.includes(term);
+            }) : productosCache;
+            const totalPaginas = Math.ceil(filtrados.length / itemsPorPaginaProducto);
+            if (paginaProducto < totalPaginas) {
+                paginaProducto++;
+                renderTablaProductos(filtrados);
+            }
+        });
+    }
+
+    // Renderizar al abrir el modal
+    const modalAgregarItem = document.getElementById('modalAgregarItem');
+    if (modalAgregarItem) {
+        modalAgregarItem.addEventListener('click', function(e) {
+            if (e.target === modalAgregarItem || e.target.closest('button[class*="btn-sm btn-circle"]')) {
+                // Modal se está abriendo o cerrando
+                setTimeout(() => {
+                    if (modalAgregarItem.open) {
+                        paginaProducto = 1;
+                        if (buscadorProducto) buscadorProducto.value = '';
+                        renderTablaProductos(productosCache);
+                    }
+                }, 100);
+            }
+        });
+    }
+
+    // Renderizar inicial cuando se abre el modal por primera vez
+    const btnAbrirModal = document.querySelector('button[onclick*="modalAgregarItem.showModal"]');
+    if (btnAbrirModal) {
+        btnAbrirModal.addEventListener('click', function() {
+            setTimeout(() => {
+                paginaProducto = 1;
+                if (buscadorProducto) buscadorProducto.value = '';
+                renderTablaProductos(productosCache);
+            }, 100);
+        });
+    }
+});
+</script>
  
 @endsection 

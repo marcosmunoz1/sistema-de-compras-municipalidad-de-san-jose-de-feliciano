@@ -11,48 +11,43 @@ class EquipoSeeder extends Seeder
     {
         $equipos = [
             [
-                'nombre' => 'Motosierra Stihl',
-                'tipo_equipo' => 'motosierra',
+                'equipamiento' => 'Motosierra Stihl', 
                 'marca' => 'Stihl',
-                'modelo' => 'MS 170',
-                'numero_serie' => 'STH-00123',
-                'estado_equipo' => 'activo',
+                'descripcion' => 'motosierra', 
+                'area_id' => '1',
+                'catalogacion' => 'STH-00123',
                 'estado' => true,
             ],
             [
-                'nombre' => 'Compresor Industrial',
-                'tipo_equipo' => 'compresor',
+                'equipamiento' => 'Compresor Industrial',
                 'marca' => 'Gamma',
-                'modelo' => 'GA-50',
-                'numero_serie' => 'CMP-45876',
-                'estado_equipo' => 'en_reparacion',
+                'descripcion' => 'GA-50',
+                'area_id' => '2',
+                'catalogacion' => 'CMP-45876',
                 'estado' => true,
             ],
             [
-                'nombre' => 'Hidrolavadora',
-                'tipo_equipo' => 'hidrolavadora',
+                'equipamiento' => 'Hidrolavadora',
                 'marca' => 'Karcher',
-                'modelo' => 'K3',
-                'numero_serie' => 'HDR-78211',
-                'estado_equipo' => 'activo',
+                'descripcion' => 'K3',
+                'area_id' => '1',
+                'catalogacion' => 'HDR-78211',
                 'estado' => true,
             ],
             [
-                'nombre' => 'Taladro Percutor',
-                'tipo_equipo' => 'taladro',
+                'equipamiento' => 'Taladro Percutor',
                 'marca' => 'Bosch',
-                'modelo' => 'GSR 120',
-                'numero_serie' => 'TLR-99831',
-                'estado_equipo' => 'inactivo',
+                'descripcion' => 'GSR 120',
+                'area_id' => '2',
+                'catalogacion' => 'TLR-99831',
                 'estado' => false,
             ],
-            [
-                'nombre' => 'Soldadora Eléctrica',
-                'tipo_equipo' => 'soldadora',
+            [ 
+                'equipamiento' => 'Soldadora Eléctrica',
                 'marca' => 'Yelmo',
-                'modelo' => '200A',
-                'numero_serie' => 'SLD-66324',
-                'estado_equipo' => 'baja',
+                'descripcion' => '200A', 
+                'area_id' => '1',
+                'catalogacion' => 'SLD-66324',
                 'estado' => false,
             ],
         ];
@@ -61,4 +56,4 @@ class EquipoSeeder extends Seeder
             Equipo::create($equipo);
         }
     }
-}
+} 

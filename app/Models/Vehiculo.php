@@ -12,7 +12,9 @@ class Vehiculo extends Model
     use HasFactory, SoftDeletes, Catalogable;
     protected $table = 'vehiculos';
 
-    protected $fillable = [
+    protected $fillable = [ 
+        'area_id',
+        'catalogacion',  
         'imagen',
         'tipo',
         'patente',

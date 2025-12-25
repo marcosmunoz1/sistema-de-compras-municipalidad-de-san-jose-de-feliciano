@@ -5,7 +5,7 @@
  <div class="flex items-center justify-between mb-6">
     <h1 class="text-2xl font-semibold">Combustibles</h1> 
      <div class="flex  gap-2">
-        @can('combustibles-update')
+        @can('combustibles-update-prices') 
         <button onclick="crearCombustible.showModal()" class="btn btn-warning tooltip tooltip-warning mb-1" data-tip="Actualizar los precios de los combustibles">   
             <x-heroicon-s-cloud-arrow-up class="w-4 h-4 inline" /> 
             Actualizar Precios 

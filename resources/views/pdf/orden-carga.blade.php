@@ -6,6 +6,5 @@
     <title>Orden de Carga</title>
 </head>
 <body>
- <h1>Hola Abi amor</h1> 
 </body>
 </html>

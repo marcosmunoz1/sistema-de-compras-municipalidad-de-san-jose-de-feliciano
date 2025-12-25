@@ -1,6 +1,7 @@
 @import "tailwindcss";
 @plugin "daisyui"; 
 
+
 /* ---------- MODO CLARO ---------- */
 :root[data-theme="light"] {
     --dt-bg: #ffffff;
@@ -65,4 +66,4 @@ table.dataTable thead th {
 table.dataTable tbody td {
     color: var(--dt-text) !important;
     background: var(--dt-bg) !important;
-}
+} 

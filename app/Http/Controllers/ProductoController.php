@@ -56,6 +56,12 @@ class ProductoController extends Controller
         $producto->estado = true; 
         $producto->save(); 
 
+        if ($request->has('redirect_to') && $request->redirect_to === 'compras.create') {
+            return redirect()->route('compras.create')
+                ->with('mensaje', 'Producto creado exitosamente.')
+                ->with('icono', 'success');
+        }
+
         return redirect()->route('productos.index')
         ->with('mensaje', 'Producto creado exitosamente.')
         ->with('icono', 'success'); 

@@ -13,7 +13,7 @@ class VehiculoSeeder extends Seeder
         // Datos del vehículo:
         // patente, tipo, marca, modelo, tipo_combustible_id
         $vehiculos = [
-            ['AF941-KX', 'CAMION', 'VOLKSWAGEN', '17280', 3], // Diesel
+            ['AF941-KX', 'CAMION', 'VOLKSWAGEN', '17280', 3],
             ['RYG754', 'CAMION', 'MERCEDES BENZ', '16/20', 3],
             ['NIS-698', 'CAMION', 'IVECO', 'ATTACK', 3],
             ['NIJ-647', 'CAMION', 'IVECO', 'ATTACK', 3],
@@ -21,7 +21,7 @@ class VehiculoSeeder extends Seeder
             ['GON-352', 'CAMION', 'FORD', 'CARGO', 3],
             ['AC-869XQ', 'CAMION', 'IVECO', 'CURSOR', 3],
             ['AA-976-QY', 'CAMION', 'IVECO', 'ATTAK', 3],
-            ['VQU-386', 'CAMIONETA', 'FORD', 'F100', 1], // Nafta Súper
+            ['VQU-386', 'CAMIONETA', 'FORD', 'F100', 1],
             ['VJN-986', 'CAMIONETA', 'FORD', 'F250', 1],
             ['JKA 205', 'CAMIONETA', 'FORD', 'RANGER', 1],
             ['WIE744', 'COLECTIVO', 'MERCEDES BENZ', '—', 3],
@@ -36,7 +36,9 @@ class VehiculoSeeder extends Seeder
         ];
 
         foreach ($vehiculos as $v) {
-            DB::table('vehiculos')->insert([   
+            DB::table('vehiculos')->insert([    
+                'area_id'             => 1,
+                'catalogacion'        => Str::upper(Str::random(8)),
                 'imagen'              => null,
                 'tipo'                => $v[1],
                 'patente'             => $v[0],
@@ -46,9 +48,11 @@ class VehiculoSeeder extends Seeder
                 'color'               => 'Blanco',
                 'chasis'              => Str::upper(Str::random(12)),
                 'motor'               => Str::upper(Str::random(10)),
-                'tipo_combustible_id' => $v[4],   // FK correcto 
+                'estado'              => true,  
+                'deleted_at'          => null,
                 'created_at'          => now(),
-                'updated_at'          => now(), 
+                'updated_at'          => now(),
+                'tipo_combustible_id' => $v[4], 
             ]);
         }
     }

@@ -5,7 +5,7 @@
         <h1 class="text-2xl font-semibold">Listado de Roles</h1>
 
         {{-- Botón agregar rol --}}
-        @can('roles-create')
+        @can('roles-store')
         <button class="btn btn-primary btn-md" onclick="abrir_modal('ventana_modal','Agregar',0,[],[])">
             <x-heroicon-o-plus class="w-5 h-5" />Nuevo rol
         </button>

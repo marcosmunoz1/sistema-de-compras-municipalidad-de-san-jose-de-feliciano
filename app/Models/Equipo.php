@@ -13,12 +13,12 @@ class Equipo extends Model
   use SoftDeletes, Catalogable;
    protected $table = 'equipos';
     protected $fillable = [
-    'equipamiento',
-    'marca',
-    'descripcion',
-    'area_id',
-    'estado',
-    'catalogacion',
+    'equipamiento', 
+    'marca', 
+    'descripcion', 
+    'area_id', 
+    'estado', 
+    'catalogacion', 
     ];
      protected $attributes = [
       'estado' => true,
