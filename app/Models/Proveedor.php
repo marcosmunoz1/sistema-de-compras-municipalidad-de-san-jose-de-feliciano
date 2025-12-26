@@ -15,6 +15,7 @@ class Proveedor extends Model
     protected $fillable = [
         'localidad',
         'provincia',
+        'empresa',
         'pais',
         'nombre',
         'razon_social',
@@ -39,7 +40,7 @@ class Proveedor extends Model
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
-            ->logOnly(['nombre', 'razon_social', 'cuit', 'telefono', 'celular', 'email', 'direccion', 'localidad', 'provincia', 'pais', 'codigo_postal', 'observaciones'])
+            ->logOnly(['empresa','nombre', 'razon_social', 'cuit', 'telefono', 'celular', 'email', 'direccion', 'localidad', 'provincia', 'pais', 'codigo_postal', 'observaciones'])
             ->logOnlyDirty()
             ->dontSubmitEmptyLogs()
             ->setDescriptionForEvent(fn(string $eventName) => "Proveedor {$eventName}");

@@ -94,7 +94,7 @@
                             <td class="text-center">{{ $producto->descripcion }}</td>
                             <td class="text-center">{{ $producto->unidad }}</td>
                             <td class="text-center">
-                                <span class="badge {{ $producto->estado ? 'badge-success' : 'badge-error' }}">
+                                <span class="badge badge-sm badge-{{ $producto->estado ? 'success' : 'error' }}">
                                 {{ $producto->estado ? 'Activo' : 'Inactivo' }}
                                 </span>
                             </td>

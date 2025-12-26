@@ -25,7 +25,6 @@ class Compra extends Model
         'asunto_obra_automotor',
         'total',
         'observacion',
-        'total',
         'foto_factura',
     ];
     protected $attributes = [
@@ -69,7 +68,15 @@ class Compra extends Model
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
-            ->logOnly(['proveedor_id', 'empleado_id', 'destino_tipo', 'destino_id', 'nr_orden', 'fecha_orden', 'estado_compra', 'total', 'observacion'])
+            ->logOnly(['proveedor_id', 
+            'empleado_id', 
+            'destino_tipo', 
+            'destino_id', 
+            'nr_orden', 
+            'fecha_orden', 
+            'estado_compra', 
+            'total', 
+            'observacion'])
             ->logOnlyDirty()
             ->dontSubmitEmptyLogs()
             ->setDescriptionForEvent(fn(string $eventName) => "Compra {$eventName}");
