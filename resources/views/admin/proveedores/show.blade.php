@@ -177,21 +177,21 @@
         <!-- Card azul -->
         <div class="rounded-xl p-6 text-white shadow-md bg-gradient-to-br from-blue-500 to-blue-600">
             <p class="text-sm opacity-90 mb-2">Total Compras</p>
-            <p class="text-3xl font-bold">S/. 125,840</p>
+            <p class="text-3xl font-bold">$ {{ number_format($totalCompras12Meses ?? 0, 2, ',', '.') }}</p>
             <p class="text-sm opacity-75">Últimos 12 meses</p>
         </div>
 
         <!-- Card verde -->
         <div class="rounded-xl p-6 text-white shadow-md bg-gradient-to-br from-green-500 to-green-600">
             <p class="text-sm opacity-90 mb-2">Órdenes Activas</p>
-            <p class="text-3xl font-bold">8</p>
+            <p class="text-3xl font-bold">{{ $ordenesActivas ?? 0 }}</p>
             <p class="text-sm opacity-75">En proceso</p>
         </div>
 
         <!-- Card violeta -->
         <div class="rounded-xl p-6 text-white shadow-md bg-gradient-to-br from-purple-500 to-purple-600">
             <p class="text-sm opacity-90 mb-2">Productos</p>
-            <p class="text-3xl font-bold">156</p>
+            <p class="text-3xl font-bold">{{ $productosCount ?? 0 }}</p>
             <p class="text-sm opacity-75">En catálogo</p>
         </div>
 
@@ -221,28 +221,28 @@
             <!-- Contenido -->
             <div class="space-y-1">
                 <p class="text-sm text-gray-500 dark:text-gray-400">Dirección</p>
-                <p class="text-lg font-medium">{{ $proveedor->direccion }}</p>
+                <p class="text-lg font-medium">{{ $proveedor->direccion ?? 'No especificado' }}</p>
             </div>
 
             <div class="grid grid-cols-2 gap-4">
                 <div class="space-y-1">
                     <p class="text-sm text-gray-500 dark:text-gray-400">Localidad</p>
-                    <p>{{ $proveedor->localidad }}</p>
+                    <p>{{ $proveedor->localidad ?? 'No especificado' }}</p>
                 </div>
 
                 <div class="space-y-1">
                     <p class="text-sm text-gray-500 dark:text-gray-400">Código Postal</p>
-                    <p>{{ $proveedor->codigo_postal }}</p>
+                    <p>{{ $proveedor->codigo_postal ?? 'No especificado' }}</p>
                 </div>
 
                 <div class="space-y-1">
                     <p class="text-sm text-gray-500 dark:text-gray-400">Provincia</p>
-                    <p>{{ $proveedor->provincia }}</p>
+                    <p>{{ $proveedor->provincia ?? 'No especificado' }}</p>
                 </div>
 
                 <div class="space-y-1">
                     <p class="text-sm text-gray-500 dark:text-gray-400">País</p>
-                    <p>{{ $proveedor->pais }}</p>
+                    <p>{{ $proveedor->pais ?? 'No especificado' }}</p>
                 </div>
             </div>
         </div>
@@ -271,9 +271,7 @@
 
                 <p class="text-sm leading-relaxed bg-base-200 dark:bg-base-300 
                           p-3 rounded-md">
-                    Proveedor preferencial - Descuento 15%.<br>
-                    Tiempo de entrega: 3-5 días hábiles.<br>
-                    Forma de pago: 30 días.
+                      {{ $proveedor->observaciones ?? 'Sin observaciones' }} 
                 </p>
             </div>
 
@@ -294,12 +292,12 @@
                 <div class="space-y-2 text-sm">
                     <div class="flex justify-between">
                         <span class="text-gray-500 dark:text-gray-400">Creado:</span>
-                        <span>15/10/2024</span>
+                        <span>{{\Carbon\Carbon::parse($proveedor->created_at)->format('d/m/Y')}}</span> 
                     </div>
 
                     <div class="flex justify-between">
                         <span class="text-gray-500 dark:text-gray-400">Última Actualización:</span>
-                        <span>18/11/2024</span>
+                        <span>{{\Carbon\Carbon::parse($proveedor->updated_at)->format('d/m/Y')}}</span>
                     </div>
                 </div>
 
@@ -316,83 +314,48 @@
 
     <!-- Content -->
     <div class="px-6 py-4 space-y-3">
+        @forelse($comprasRecientes as $compra)
+            <!-- Item -->
+            <a href="{{ route('compras.show', Crypt::encryptString($compra->id)) }}" 
+               class="flex items-center justify-between p-4 rounded-lg bg-base-200 hover:bg-base-300 transition cursor-pointer block">
+                <div class="flex items-center gap-4">
+                    <div class="bg-blue-100 dark:bg-blue-900 p-2 rounded">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="size-5 text-blue-600 dark:text-blue-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z" />
+                            <path d="M14 2v5a1 1 0 0 0 1 1h5" />
+                            <path d="M10 9H8" />
+                            <path d="M16 13H8" />
+                            <path d="M16 17H8" />
+                        </svg>
+                    </div>
 
-        <!-- Item -->
-        <div class="flex items-center justify-between p-4 rounded-lg bg-base-200 hover:bg-base-300 transition">
-            <div class="flex items-center gap-4">
-                <div class="bg-blue-100 dark:bg-blue-900 p-2 rounded">
-                    <!-- Lucide o Heroicon -->
-                    <svg xmlns="http://www.w3.org/2000/svg" class="size-5 text-blue-600 dark:text-blue-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z" />
-                        <path d="M14 2v5a1 1 0 0 0 1 1h5" />
-                        <path d="M10 9H8" />
-                        <path d="M16 13H8" />
-                        <path d="M16 17H8" />
-                    </svg>
+                    <div>
+                        <p class="font-medium">{{ $compra->nr_orden }}</p>
+                        <p class="text-sm text-gray-500 dark:text-gray-400">
+                            @if($compra->detalle_compras->count() > 0)
+                                {{ $compra->detalle_compras->first()->producto->nombre ?? 'Producto' }}
+                                @if($compra->detalle_compras->count() > 1)
+                                    <span class="text-xs">+{{ $compra->detalle_compras->count() - 1 }} más</span>
+                                @endif
+                            @else
+                                Sin productos
+                            @endif
+                        </p>
+                    </div>
                 </div>
 
-                <div>
-                    <p class="font-medium">ORD-001</p>
-                    <p class="text-sm text-gray-500 dark:text-gray-400">Filtro de Aceite x50</p>
+                <div class="text-right">
+                    <p class="font-medium">$ {{ number_format($compra->total, 2, ',', '.') }}</p>
+                    <p class="text-sm text-gray-500 dark:text-gray-400">
+                        {{ \Carbon\Carbon::parse($compra->created_at)->format('d/m/Y') }}
+                    </p>
                 </div>
+            </a>
+        @empty
+            <div class="text-center py-8 text-gray-500 dark:text-gray-400">
+                <p>No hay compras registradas para este proveedor</p>
             </div>
-
-            <div class="text-right">
-                <p class="font-medium">S/. 1,250</p>
-                <p class="text-sm text-gray-500 dark:text-gray-400">19/11/2024</p>
-            </div>
-        </div>
-
-        <!-- Item -->
-        <div class="flex items-center justify-between p-4 rounded-lg bg-base-200 hover:bg-base-300 transition">
-            <div class="flex items-center gap-4">
-                <div class="bg-blue-100 dark:bg-blue-900 p-2 rounded">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="size-5 text-blue-600 dark:text-blue-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z" />
-                        <path d="M14 2v5a1 1 0 0 0 1 1h5" />
-                        <path d="M10 9H8" />
-                        <path d="M16 13H8" />
-                        <path d="M16 17H8" />
-                    </svg>
-                </div>
-
-                <div>
-                    <p class="font-medium">ORD-015</p>
-                    <p class="text-sm text-gray-500 dark:text-gray-400">Pastillas de Freno x30</p>
-                </div>
-            </div>
-
-            <div class="text-right">
-                <p class="font-medium">S/. 2,400</p>
-                <p class="text-sm text-gray-500 dark:text-gray-400">12/11/2024</p>
-            </div>
-        </div>
-
-        <!-- Item -->
-        <div class="flex items-center justify-between p-4 rounded-lg bg-base-200 hover:bg-base-300 transition">
-            <div class="flex items-center gap-4">
-                <div class="bg-blue-100 dark:bg-blue-900 p-2 rounded">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="size-5 text-blue-600 dark:text-blue-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z" />
-                        <path d="M14 2v5a1 1 0 0 0 1 1h5" />
-                        <path d="M10 9H8" />
-                        <path d="M16 13H8" />
-                        <path d="M16 17H8" />
-                    </svg>
-                </div>
-
-                <div>
-                    <p class="font-medium">ORD-024</p>
-                    <p class="text-sm text-gray-500 dark:text-gray-400">Aceite Motor 5W-30 x24</p>
-                </div>
-            </div>
-
-            <div class="text-right">
-                <p class="font-medium">S/. 3,200</p>
-                <p class="text-sm text-gray-500 dark:text-gray-400">05/11/2024</p>
-            </div>
-        </div>
-
+        @endforelse
     </div>
 </div>
 

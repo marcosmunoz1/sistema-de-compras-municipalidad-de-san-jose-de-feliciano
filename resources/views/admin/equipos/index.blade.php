@@ -70,7 +70,7 @@
                             <th class="text-center">Equipamiento</th>
                             <th class="text-center">Marca</th>
                             <th class="text-center">Área</th>
-                            <th class="text-center">Estado</th>
+                            <th class="text-center">Estado</th> 
                             <th class="text-center">Acciones</th>
                         </tr>
                     </thead>

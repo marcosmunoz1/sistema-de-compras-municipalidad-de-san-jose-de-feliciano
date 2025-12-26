@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Proveedor; 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ProveedorController extends Controller
 {
@@ -75,8 +76,40 @@ class ProveedorController extends Controller
      */
     public function show($id)
     { 
-        $proveedor = Proveedor::findOrFail($id); 
-        return view('admin.proveedores.show', compact('proveedor')); 
+        $proveedor = Proveedor::findOrFail($id);
+        
+        // Calcular total de compras de los últimos 12 meses
+        $totalCompras12Meses = $proveedor->compras()
+            ->where('created_at', '>=', now()->subMonths(12))
+            ->sum('total');
+        
+        // Contar órdenes activas (compras pendientes o en proceso)
+        // Ajusta el campo 'estado' según tu lógica de negocio
+        $ordenesActivas = $proveedor->compras()
+            ->whereIn('estado_compra', ['Pendiente de factura', 'en_proceso', 'aprobado']) 
+            ->count();
+        
+        // Contar productos únicos comprados a este proveedor
+        $productosCount = DB::table('detalle_compras')
+            ->join('compras', 'detalle_compras.compra_id', '=', 'compras.id')
+            ->where('compras.proveedor_id', $id)
+            ->distinct('detalle_compras.producto_id')
+            ->count('detalle_compras.producto_id');
+        
+        // Obtener las últimas 5 compras del proveedor con sus detalles
+        $comprasRecientes = $proveedor->compras()
+            ->with('detalle_compras.producto')
+            ->orderBy('created_at', 'desc')
+            ->take(5)
+            ->get();
+        
+        return view('admin.proveedores.show', compact(
+            'proveedor', 
+            'totalCompras12Meses', 
+            'ordenesActivas', 
+            'productosCount',
+            'comprasRecientes'
+        )); 
         
     }
 

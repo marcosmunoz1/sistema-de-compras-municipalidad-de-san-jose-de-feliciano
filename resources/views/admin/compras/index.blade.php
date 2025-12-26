@@ -108,7 +108,21 @@
                                 <td class="text-center">{{ $compra->proveedor->nombre ?? 'N/A' }}</td>
                                 <td class="text-center">{{ $compra->detalle_compras->count() ?? 'N/A' }}</td>
                                 <td class="text-center">${{ number_format($compra->total, 2) ?? 'N/A' }}</td>
-                                <td class="text-center">{{ $compra->estado_compra }}</td>
+                                <td class="text-center">
+                                    @php
+                                        $badgeClass = match($compra->estado_compra) {
+                                            'Pendiente de factura' => 'badge badge-outline badge-warning',
+                                            'Finalizada' => 'badge badge-outline badge-success',
+                                            'En proceso' => 'badge badge-outline badge-info',
+                                            'Cancelada' => 'badge badge-outline badge-error',
+                                            'Aprobada' => 'badge badge-outline badge-primary',
+                                            default => 'badge-ghost'
+                                        };
+                                    @endphp
+                                    <span class="badge {{ $badgeClass }} badge-sm"> 
+                                        {{ $compra->estado_compra }}
+                                    </span>
+                                </td>
                                 <td class="text-center">
                                     <div class="flex items-center justify-center gap-2">
                                         @can('compras-show')
