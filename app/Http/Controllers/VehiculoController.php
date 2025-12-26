@@ -53,7 +53,8 @@ class VehiculoController extends Controller
                     $qa->where('nombre', 'LIKE', "%{$search}%");
                 });
             })
-            ->paginate(5);
+            ->paginate(5)
+            ->withQueryString();
 
         return view('admin.vehiculos.index', compact('vehiculos'));
     }

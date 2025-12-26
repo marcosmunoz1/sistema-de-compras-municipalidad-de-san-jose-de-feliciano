@@ -321,7 +321,7 @@ class MovimientoController extends Controller
                         ->first();
 
                     if ($pivotDestino) {
-                        // Ya existe → Sumar cantidad_asignada y stock
+                        // Ya existe → Sumar cantidad_asignada y stock 
                         $pivotDestinoId = $pivotDestino->pivot->id;
                         
                         DB::table($destinoInfo['table'])
