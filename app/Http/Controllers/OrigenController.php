@@ -14,7 +14,7 @@ class OrigenController extends Controller
             'obra' => \App\Models\Obra::class,
             'deposito' => \App\Models\Deposito::class,
             'vehiculo' => \App\Models\Vehiculo::class,
-            'equipo' => \App\Models\Equipo::class,
+            'equipo' => \App\Models\Equipo::class, 
         ];
 
         if (!isset($map[$tipo])) {

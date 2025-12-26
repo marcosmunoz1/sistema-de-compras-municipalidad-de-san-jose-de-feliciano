@@ -252,4 +252,7 @@
 
     </div>
 
+    <!-- Historial de Actividad -->
+    <x-historial-actividad :model="$equipo" :limit="10" />
+
 @endsection

@@ -211,6 +211,9 @@ Route::get('/admin/equipos/{id}', [App\Http\Controllers\EquipoController::class,
 Route::delete('/admin/equipos/{id}', [App\Http\Controllers\EquipoController::class, 'destroy'])->name('equipos.destroy')->middleware('auth');
 Route::put('admin/equipos/{id}/restore', [App\Http\Controllers\EquipoController::class, 'restore'])->name('equipos.restore')->middleware('auth');
 
+//Rutas para auditoría
+Route::get('/admin/auditoria', [App\Http\Controllers\AuditoriaController::class, 'index'])->name('auditoria.index')->middleware('auth');
+Route::get('/admin/auditoria/{id}', [App\Http\Controllers\AuditoriaController::class, 'show'])->name('auditoria.show')->middleware('auth');
 
 
  

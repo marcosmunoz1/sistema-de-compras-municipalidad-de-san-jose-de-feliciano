@@ -250,7 +250,7 @@
                     </li>
                     @endcan
                     @can('empleados-index')               
-                    <li class="mr-15">
+                    <li class="mr-15"> 
                         <a href="{{ url('/admin/empleados') }}"
                            class="hover:bg-base-300 hover:text-primary transition-colors {{ request()->is('admin/empleados*') ? 'active bg-primary text-primary-content' : '' }}">
                             <x-heroicon-o-identification class="w-5 h-5" />
@@ -281,6 +281,13 @@
                         </a>
                     </li>
                     @endcan
+                    <li class="mr-15">
+                        <a href="{{ url('/admin/auditoria') }}"
+                           class="hover:bg-base-300 hover:text-primary transition-colors {{ request()->is('admin/auditoria*') ? 'active bg-primary text-primary-content' : '' }}">
+                            <x-heroicon-o-document-text class="w-5 h-5" />
+                            Auditoría
+                        </a>
+                    </li>
                 </ul>
 
                 {{-- FOOTER DEL SIDEBAR --}}

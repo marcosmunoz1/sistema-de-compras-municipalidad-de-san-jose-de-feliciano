@@ -4,10 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\Activitylog\LogOptions;
 
 class Obra extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes, LogsActivity;
 
     // Campos que se pueden cargar masivamente
     protected $fillable = [
@@ -82,5 +84,14 @@ class Obra extends Model
     public function movimientosComoDestino()
     {
         return $this->morphMany(Movimiento::class, 'destino', 'destino_tipo', 'destino_id');
+    }
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logOnly(['nombre', 'descripcion', 'direccion', 'barrio', 'ciudad', 'responsable', 'telefono_responsable', 'fecha_inicio', 'fecha_estimada_fin', 'fecha_fin', 'estado_obra', 'presupuesto', 'monto_ejecutado', 'observaciones', 'estado'])
+            ->logOnlyDirty()
+            ->dontSubmitEmptyLogs()
+            ->setDescriptionForEvent(fn(string $eventName) => "Obra {$eventName}");
     }
 }

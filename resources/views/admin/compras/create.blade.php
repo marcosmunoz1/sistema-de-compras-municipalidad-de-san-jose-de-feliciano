@@ -221,13 +221,14 @@
                             <label class="text-sm font-medium">Destino <span class="text-red-600">*</span></label>
                             <select id="destino_tipo" name="destino_tipo" 
                                 class="w-full h-10 rounded-md border border-base-300 bg-base-200 
-                                        px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
-                                        focus:border-primary @error('destino_tipo') input-error @enderror transition" required>
-                                <option value="">Seleccione destino...</option> 
+                                px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
+                                focus:border-primary @error('destino_tipo') input-error @enderror transition" required>
+                                <option value="">Seleccione destino...</option>  
                                 <option value="App\Models\Deposito">Depósito</option>
                                 <option value="App\Models\Obra">Obra</option>
                                 <option value="App\Models\Vehiculo">Vehículo</option>
-                            </select>
+                                <option value="App\Models\Equipo">Equipo</option> 
+                            </select> 
                             @error('destino_tipo')
                                 <small class="text-red-500">{{ $message }}</small>
                             @enderror
@@ -534,7 +535,7 @@
 
                 <!-- Botones -->
                 <div class="modal-action">
-                    <button class="btn btn-primary">
+                    <button class="btn btn-sm btn-primary">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                             stroke="currentColor" class="w-5 h-5 mr-1">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
@@ -542,7 +543,7 @@
                         Guardar Producto
                     </button>
 
-                    <button type="button" onclick="crearProductoModal.close()" class="btn btn-neutral">
+                    <button type="button" onclick="crearProductoModal.close()" class="btn btn-sm btn-neutral">
                         Cancelar
                     </button>
                 </div>
@@ -602,7 +603,7 @@
             </div>
 
             <div class="modal-action">
-                <label for="modal_elegir_proveedor" class="btn btn-ghost">Cerrar</label>
+                <label for="modal_elegir_proveedor" class="btn btn-sm btn-neutral">Cerrar</label>
             </div>
         </div>
         <label class="modal-backdrop" for="modal_elegir_proveedor">Close</label>
@@ -852,7 +853,7 @@
             </div>
 
             <div class="modal-action">
-                <label for="modal_elegir_destino" class="btn btn-ghost">Cerrar</label>
+                <label for="modal_elegir_destino" class="btn btn-sm btn-neutral">Cerrar</label>
             </div>
         </div>
         <label class="modal-backdrop" for="modal_elegir_destino">Close</label>
@@ -1296,7 +1297,7 @@ document.addEventListener("DOMContentLoaded", function() {
 // ==============================
 //  MODAL DE SELECCIÓN DE DESTINO
 // ==============================
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function() { 
 
     const baseUrlListar = "{{ url('origen/listar') }}";
 

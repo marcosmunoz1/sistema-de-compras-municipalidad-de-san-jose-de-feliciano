@@ -110,6 +110,10 @@
             </div>
         </div>
     </div>
+
+    <!-- Historial de Actividad -->
+    <x-historial-actividad :model="$usuario" :limit="10" />
+
 @endsection
 
 @section('js')

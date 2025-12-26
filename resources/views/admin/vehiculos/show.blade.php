@@ -353,6 +353,9 @@
 
 
     </div>
+
+    <!-- Historial de Actividad -->
+    <x-historial-actividad :model="$vehiculo" :limit="10" />
 @endsection
 @section('js')
     <script>

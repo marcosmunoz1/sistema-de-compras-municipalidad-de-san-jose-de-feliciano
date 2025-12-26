@@ -115,4 +115,7 @@
 
     </div>
 
+    <!-- Historial de Actividad -->
+    <x-historial-actividad :model="$empleado" :limit="10" />
+
 @endsection

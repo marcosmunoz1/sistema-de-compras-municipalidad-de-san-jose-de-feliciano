@@ -396,5 +396,7 @@
     </div>
 </div>
 
+<!-- Historial de Actividad -->
+<x-historial-actividad :model="$proveedor" :limit="10" />
 
 @endsection 

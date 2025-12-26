@@ -6,10 +6,12 @@ use App\Traits\Catalogable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\Activitylog\LogOptions;
 
 class Vehiculo extends Model
 {
-    use HasFactory, SoftDeletes, Catalogable;
+    use HasFactory, SoftDeletes, Catalogable, LogsActivity;
     protected $table = 'vehiculos';
 
     protected $fillable = [ 
@@ -59,5 +61,14 @@ class Vehiculo extends Model
     public function area()
     {
         return $this->belongsTo(Area::class);
+    }
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logOnly(['tipo', 'patente', 'marca', 'modelo', 'anio', 'color', 'chasis', 'motor', 'tipo_combustible_id', 'estado', 'area_id'])
+            ->logOnlyDirty()
+            ->dontSubmitEmptyLogs()
+            ->setDescriptionForEvent(fn(string $eventName) => "Vehiculo {$eventName}");
     }
 }

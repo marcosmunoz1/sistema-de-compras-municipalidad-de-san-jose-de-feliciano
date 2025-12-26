@@ -288,6 +288,11 @@
         </div>
     </div>
     <!-- ========================= -->
+    <!-- HISTORIAL DE ACTIVIDAD -->
+    <!-- ========================= -->
+    <x-historial-actividad :model="$compra" :limit="10" />
+
+    <!-- ========================= -->
     <!-- BOTONES DEL FORMULARIO -->
     <!-- ========================= -->
     <div class="flex justify-end pt-4">

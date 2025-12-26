@@ -284,4 +284,7 @@
             </div>
         @endif
     </div>
+
+    <!-- Historial de Actividad -->
+    <x-historial-actividad :model="$obra" :limit="10" />
 @endsection
