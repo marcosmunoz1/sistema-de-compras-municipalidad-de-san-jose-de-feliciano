@@ -54,8 +54,8 @@ class OrigenController extends Controller
         }
 
         if ($model === \App\Models\Equipo::class) {
-            $items = $model::query()
-                ->select('id', 'equipamiento', 'marca', 'descripcion', 'catalogacion')
+            $items = $model::with('area')
+                ->select('id', 'equipamiento', 'marca', 'descripcion', 'catalogacion', 'area_id')
                 ->get()
                 ->map(function ($e) {
                     return [
@@ -64,6 +64,7 @@ class OrigenController extends Controller
                         'marca' => $e->marca,
                         'descripcion' => $e->descripcion,
                         'catalogacion' => $e->catalogacion,
+                        'area_nombre' => $e->area ? $e->area->nombre : '-',
                         // compatibilidad (si algún select/uso viejo esperaba "nombre")
                         'nombre' => trim(($e->equipamiento ?? '') . ' - ' . ($e->descripcion ?? '') . ' - ' . ($e->marca ?? '') . ' - ' . ($e->catalogacion ?? '')),
                     ];

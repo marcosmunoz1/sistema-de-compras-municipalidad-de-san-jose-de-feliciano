@@ -1337,7 +1337,9 @@ document.addEventListener("DOMContentLoaded", function() {
         if (!clase) return null;
         if (clase.includes('Obra')) return 'obra';
         if (clase.includes('Deposito')) return 'deposito';
-        return 'vehiculo';
+        if (clase.includes('Equipo')) return 'equipo';
+        if (clase.includes('Vehiculo')) return 'vehiculo';
+        return null;
     }
 
     function prefetchListado(tipoShort, cachePorTipo, prefetchEnCursoPorTipo, onOk) {
@@ -1397,6 +1399,15 @@ document.addEventListener("DOMContentLoaded", function() {
         } else if (tipoShort === 'deposito') {
             columnasDestino = [{ key: 'nombre', label: 'Depósito' }];
             tituloModalDestino.textContent = 'Seleccionar depósito destino';
+        } else if (tipoShort === 'equipo') {
+            columnasDestino = [
+                { key: 'equipamiento', label: 'Equipamiento' },
+                { key: 'marca', label: 'Marca' },
+                { key: 'descripcion', label: 'Descripción' },
+                { key: 'area_nombre', label: 'Área' },
+                { key: 'catalogacion', label: 'Catalogación' },
+            ];
+            tituloModalDestino.textContent = 'Seleccionar equipo destino';
         } else {
             columnasDestino = [{ key: 'nombre', label: 'Nombre' }];
             tituloModalDestino.textContent = 'Seleccionar destino';
