@@ -40,7 +40,6 @@ class ProductoController extends Controller
      */
     public function store(Request $request)
     {   
-        /* return response()->json($request->all());   */
         $request->validate([
             'categoria_id' => 'required', 
             'nombre' => 'required',
@@ -48,23 +47,39 @@ class ProductoController extends Controller
             'unidad' => 'required'
         ]);
 
-        $producto = new Producto();
-        $producto->categoria_id = $request->categoria_id; 
-        $producto->nombre = $request->nombre;
-        $producto->descripcion = $request->descripcion;
-        $producto->unidad = $request->unidad;
-        $producto->estado = true; 
-        $producto->save(); 
+        if ($request->input('accion') == "1") {
+            $producto = new Producto();
+            $producto->categoria_id = $request->categoria_id; 
+            $producto->nombre = $request->nombre;
+            $producto->descripcion = $request->descripcion;
+            $producto->unidad = $request->unidad;
+            $producto->estado = true; 
+            $producto->save(); 
 
-        if ($request->has('redirect_to') && $request->redirect_to === 'compras.create') {
-            return redirect()->route('compras.create')
+            if ($request->has('redirect_to') && $request->redirect_to === 'compras.create') {
+                return redirect()->route('compras.create')
+                    ->with('mensaje', 'Producto creado exitosamente.')
+                    ->with('icono', 'success');
+            }
+
+            return redirect()->route('productos.index')
                 ->with('mensaje', 'Producto creado exitosamente.')
-                ->with('icono', 'success');
+                ->with('icono', 'success'); 
         }
 
-        return redirect()->route('productos.index')
-        ->with('mensaje', 'Producto creado exitosamente.')
-        ->with('icono', 'success'); 
+        if ($request->input('accion') == "2") {
+            $producto = Producto::findOrFail($request->id);
+            $producto->categoria_id = $request->categoria_id; 
+            $producto->nombre = $request->nombre;
+            $producto->descripcion = $request->descripcion;
+            $producto->unidad = $request->unidad;
+            $producto->estado = true; 
+            $producto->save(); 
+
+            return redirect()->route('productos.index')
+                ->with('mensaje', 'Producto actualizado exitosamente.')
+                ->with('icono', 'success'); 
+        }
     }
 
     /**
@@ -75,10 +90,13 @@ class ProductoController extends Controller
         $producto = Producto::findOrFail($id); 
         return view('admin.productos.show', compact('producto')); 
     }
-   public function data($id) 
+   public function data($id, $action = 'edit') 
     {
         $producto = Producto::findOrFail($id); 
-        return response()->json($producto);
+        return response()->json([
+            'producto' => $producto,
+            'action' => $action
+        ]);
     }
 
     /**

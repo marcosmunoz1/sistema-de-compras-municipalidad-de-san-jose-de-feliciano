@@ -25,7 +25,7 @@ class Proveedor extends Model
         'email',
         'codigo_postal',
         'direccion',
-        'observaciones',
+        'observaciones', 
     ];
 
     protected $attributes = [

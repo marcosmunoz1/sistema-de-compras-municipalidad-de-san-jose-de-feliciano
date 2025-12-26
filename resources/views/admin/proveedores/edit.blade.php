@@ -153,7 +153,9 @@
                     <!-- País -->
                     <div class="space-y-2">
                         <label for="pais" class="text-sm font-medium">País <span class="text-red-600">*</span></label>
-                        <select id="pais" value="{{ $proveedor->pais, old('pais') }}" name="pais" class="select select-bordered w-full h-9">
+                        <select id="pais" value="{{ $proveedor->pais, old('pais') }}" name="pais" class="select w-full h-10 rounded-md border-base-300 bg-base-200
+                        px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
+                        focus:border-primary transition @error('provincia') input-error @enderror">
                             <option>Argentina</option>
                             <option>Uruguay</option>
                             <option>Chile</option>
@@ -163,7 +165,9 @@
                     <!-- Provincia -->
                     <div class="space-y-2">
                         <label for="provincia" class="text-sm font-medium">Provincia <span class="text-red-600">*</span></label>
-                        <select id="provincia" value="{{ $proveedor->provincia, old('provincia') }}" name="provincia" class="select select-bordered w-full h-9">
+                        <select id="provincia" value="{{ $proveedor->provincia, old('provincia') }}" name="provincia" class="select w-full h-10 rounded-md border-base-300 bg-base-200
+                        px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
+                        focus:border-primary transition @error('provincia') input-error @enderror">
                             <option>Entre Ríos</option>
                             <option>Corrientes</option>
                             <option>Buenos Aires</option>
@@ -207,14 +211,10 @@
                     Observaciones / Notas
                 </label>
 
-                <textarea id="observaciones" name="observaciones" rows="5"
+                <textarea id="observaciones" name="observaciones" rows="4"
                     placeholder="Ingrese cualquier observación o nota relevante sobre el proveedor..."
-                    value="{{ $proveedor->observaciones, old('observaciones') }}"
-                    class="w-full h-10 rounded-md border border-base-300 bg-base-200 
-                    px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
-                    focus:border-primary transition">
-                
-                </textarea>
+                    class="textarea w-full rounded-md border border-base-300 bg-base-200 focus:outline-none focus:ring-2 focus:ring-primary 
+                        focus:border-primary transition @error('observaciones') input-error @enderror">{{ old('observaciones', $proveedor->observaciones) }}</textarea>
             </div>
         </div>
     </div>

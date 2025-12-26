@@ -78,7 +78,6 @@
                     <tr>
                         <th class="text-center">Nr</th>
                         <th class="text-center">Nombre de la empresa</th>
-                        <th class="text-center">Cuit</th>
                         <th class="text-center">Contacto</th>
                         <th class="text-center">Telefono</th>
                         <th class="text-center">Celular</th>
@@ -94,7 +93,6 @@
                         <tr>
                             <td class="text-center">{{ $nr++ }}</td>
                             <td class="text-center">{{ $proveedor->empresa }}</td>
-                            <td class="text-center">{{ $proveedor->cuit }}</td> 
                             <td class="text-center">{{ $proveedor->nombre ?? 'N/A' }}</td>
                             <td class="text-center">{{ $proveedor->telefono ?? 'N/A' }}</td>
                             <td class="text-center">{{ $proveedor->celular ?? 'N/A' }}</td>

@@ -52,7 +52,6 @@
   </ul>
 </div>
 
-<!-- Historial de Actividad -->
-<x-historial-actividad :model="$producto" :limit="10" />
+
 
 @endsection

@@ -86,13 +86,13 @@
                                 <td class="text-center"> {{ $usuario->email }}</td>
                                 <td class="text-center">
                                     <div
-                                        class="badge text-xs badge-info h-auto items-start whitespace-normal break-words px-3 py-0"><strong>{{ $usuario->roles->pluck('name')->join(', ') }}</strong></div>
+                                        class="badge badge-sm text-xs badge-info h-auto items-start whitespace-normal break-words px-3 py-0"><strong>{{ $usuario->roles->pluck('name')->join(', ') }}</strong></div>
                                 </td>
                                 <td class="text-center">{{ $usuario->last_login_at?->format('d/m/Y H:i') ?? 'Nunca' }}</td>
                                 <td class="text-center">{{ $usuario->last_logout_at?->format('d/m/Y H:i') ?? 'Nunca' }}
                                 </td>
                                 <td class="text-center">
-                                    <span class="badge {{ $usuario->estado ? 'badge-success' : 'badge-error' }}">
+                                    <span class="badge badge-sm {{ $usuario->estado ? 'badge-success' : 'badge-error' }}">
                                         {{ $usuario->estado ? 'Activo' : 'Inactivo' }}
                                     </span>
                                 </td>

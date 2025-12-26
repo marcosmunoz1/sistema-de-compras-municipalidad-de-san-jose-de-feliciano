@@ -272,7 +272,7 @@
                     </div>
                 </div>
                 <div class="grid grid-cols-1 gap-4">
-                    <div class="space-y-2">
+                    <div class="space-y-2"> 
                         <label for="observacion" class="text-sm font-medium">Observaciones (Opcional)</label>
                         <textarea type="text" id="observacion" name="observacion"  placeholder="Ingrese una justificacion breve de la compra" 
                         class="textarea w-full rounded-md border border-base-300 bg-base-200 focus:outline-none focus:ring-2 focus:ring-primary 
@@ -508,7 +508,7 @@
                     <textarea name="descripcion" rows="3" placeholder="Ingrese una descripción breve del producto..."
                         class="textarea w-full rounded-md border border-base-300 bg-base-200 focus:outline-none focus:ring-2 focus:ring-primary 
           focus:border-primary transition"
-                        required>{{ old('descripcion') }}</textarea>
+                        required>{{ old('descripcion') }}</textarea> 
 
                     @error('descripcion')
                         <small class="text-red-500">{{ $message }}</small>

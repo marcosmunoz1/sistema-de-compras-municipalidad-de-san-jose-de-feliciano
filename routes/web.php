@@ -68,7 +68,7 @@ Route::post('/admin/productos/store', [ App\Http\Controllers\ProductoController:
 
 
 // ESTA VA PRIMERO
-Route::get('/admin/productos/{id}/data', [ App\Http\Controllers\ProductoController::class, 'data'])->name('productos.data')->middleware('auth', 'can:productos-data');
+Route::get('/admin/productos/{id}/data/{action?}', [ App\Http\Controllers\ProductoController::class, 'data'])->name('productos.data')->middleware('auth', 'can:productos-data');
 
 Route::put('/admin/productos/{id}/update', [ App\Http\Controllers\ProductoController::class, 'update'])->name('productos.update')->middleware('auth', 'can:productos-update');
 

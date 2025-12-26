@@ -4,8 +4,8 @@
 <!-- Titulo y boton --> 
  <div class="flex items-center justify-between mb-6">
     <h1 class="text-2xl font-semibold">Productos</h1>
-    @can('productos-create')
-      <button onclick="crearProductoModal.showModal()" class="btn btn-primary"> 
+    @can('productos-store') 
+      <button onclick="abrir_modal('crearProductoModal', 'Crear Nuevo Producto', 1, [], [])" class="btn btn-primary"> 
         <x-heroicon-o-plus class="w-5 h-5"/>Nuevo Producto
       </button>
     @endcan  
@@ -103,15 +103,14 @@
 
                                     {{-- Ver --}}
                                     @can('productos-show')
-                                    <a href="{{ route('productos.show', $producto->id) }}"  
-                                    class="btn btn-info btn-sm">
+                                    <button onclick="abrir_modal('crearProductoModal', 'Detalles del Producto', 3, ['categoria_id', 'nombre', 'descripcion', 'unidad'], {{ $producto }}, true)" class="btn btn-info btn-sm">
                                         <x-heroicon-s-eye class="w-4 h-4"/>
-                                    </a>
+                                    </button>
                                     @endcan
 
                                     {{-- Editar --}}
                                     @can('productos-update')
-                                    <button class="btn btn-warning btn-sm" onclick="abrirModalEditar({{ $producto->id }})">
+                                    <button class="btn btn-warning btn-sm" onclick="abrir_modal('crearProductoModal', 'Editar Producto', 2, ['categoria_id', 'nombre', 'descripcion', 'unidad'], {{ $producto }})">
                                         <x-heroicon-o-pencil-square class="w-4 h-4"/>
                                     </button> 
                                     @endcan
@@ -252,23 +251,32 @@
     </div>
 </dialog>
 
-<!-- Modal para crear -->
+<!-- Modal para crear/ver -->
 <dialog id="crearProductoModal" class="modal">
 
   <div class="modal-box max-w-xl rounded-xl">
 
     <!-- Título -->
-    <h3 class="font-bold text-xl flex items-center gap-3 mb-4">
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-        stroke-width="1.5" stroke="currentColor" class="w-7 h-7 text-primary">
-        <path stroke-linecap="round" stroke-linejoin="round"
-          d="M16.5 6 21 6m-15 0L3 6m6 0L9 3m6 3 0 3m-6 9 6-9H6l6 9Z" />
-      </svg>
-      Crear Nuevo Producto
+    <h3 id="crearProductoModal_titulo" class="font-bold text-xl flex items-center gap-3 mb-4">
+       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round" class="lucide lucide-package-plus w-4 h-4">
+            <path d="M16 16h6"></path>
+            <path d="M19 13v6"></path>
+            <path
+                d="M21 10V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l2-1.14">
+            </path>
+            <path d="m7.5 4.27 9 5.15"></path>
+            <polyline points="3.29 7 12 12 20.71 7"></polyline>
+            <line x1="12" x2="12" y1="22" y2="12"></line>
+        </svg> 
+      <span>Crear Nuevo Producto</span>
     </h3>
 
-    <form action="{{ url('/admin/productos/store') }}" method="POST" class="space-y-5">
+    <form action="{{ route('productos.store') }}" name="formProducto" method="POST" class="space-y-5">
       @csrf
+      <input type="hidden" name="accion" id="accion" value="1">
+      <input type="hidden" name="id" id="id" value="0">
 
       <!-- Categoría -->
       <div class="form-control">
@@ -276,7 +284,7 @@
           <span class="label-text font-medium">Categoría</span>
         </label>
 
-        <select name="categoria_id" class="select select-bordered w-full rounded-md border border-base-300 bg-base-200 focus:outline-none focus:ring-2 focus:ring-primary 
+        <select id="categoria_id" name="categoria_id" class="select select-bordered w-full rounded-md border border-base-300 bg-base-200 focus:outline-none focus:ring-2 focus:ring-primary 
           focus:border-primary transition" required>
             <option value="">Seleccione una categoría</option>
           @foreach ($categorias as $categoria)
@@ -295,7 +303,7 @@
           <span class="label-text font-medium">Nombre del Producto</span>
         </label>
 
-        <input type="text" name="nombre" value="{{ old('nombre') }}"
+        <input id="nombre" type="text" name="nombre" value="{{ old('nombre') }}"
           placeholder="Ej: Aceite Motor 5W-30"
           class="w-full h-10 rounded-md border border-base-300 bg-base-200 px-3 
           text-sm focus:outline-none focus:ring-2 focus:ring-primary 
@@ -313,7 +321,7 @@
           <span class="label-text font-medium">Descripción</span>
         </label>
 
-        <textarea name="descripcion" rows="3"
+        <textarea id="descripcion" name="descripcion" rows="3"
           placeholder="Ingrese una descripción breve del producto..."
           class="textarea w-full rounded-md border border-base-300 bg-base-200 focus:outline-none focus:ring-2 focus:ring-primary 
           focus:border-primary transition" required>{{ old('descripcion') }}</textarea>
@@ -329,7 +337,7 @@
           <span class="label-text font-medium">Unidad</span>
         </label>
 
-        <input type="text" name="unidad" value="{{ old('unidad') }}"
+        <input id="unidad" type="text" name="unidad" value="{{ old('unidad') }}"
           placeholder="Ej: Unidad, Caja, Litro, Par..."
           class="w-full h-10 rounded-md border border-base-300 bg-base-200 px-3 
           text-sm focus:outline-none focus:ring-2 focus:ring-primary 
@@ -343,17 +351,16 @@
 
       <!-- Botones -->
       <div class="modal-action">
-        <button class="btn btn-primary"> 
+        <button type="button" onclick="document.getElementById('crearProductoModal').close()" class="btn btn-neutral">
+          Cerrar
+        </button>
+        <button id="btnGuardar" type="submit" class="btn btn-primary"> 
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
             stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-1">
             <path stroke-linecap="round" stroke-linejoin="round"
               d="M4.5 12.75l6 6 9-13.5" />
           </svg>
-          Guardar Producto
-        </button>
-
-        <button type="button" onclick="crearProductoModal.close()" class="btn btn-neutral">
-          Cancelar
+          Guardar
         </button>
       </div>
 
@@ -368,95 +375,7 @@
 
 </dialog>
 
-<!-- Modal Editar Producto -->
-<dialog id="editarProductoModal" class="modal">
-
-  <div class="modal-box max-w-xl rounded-xl">
-
-    <!-- Título -->
-    <h3 class="font-bold text-xl flex items-center gap-3 mb-4">
-      <x-heroicon-o-pencil-square class="w-7 h-7 text-warning" />
-      Editar Producto
-    </h3>
-
-    <form  id="formEditarProducto" method="POST" class="space-y-5"> 
-      @csrf
-      @method('PUT')  
-
-      <!-- ID oculto -->
-      <input type="hidden" name="producto_id" id="editar_id">
-
-      <!-- Categoría -->
-      <div class="form-control">
-        <label class="label">
-          <span class="label-text font-medium">Categoría</span>
-        </label>
-
-        <select name="categoria_id" id="editar_categoria_id"
-          class="select select-bordered w-full rounded-md border border-base-300 bg-base-200 focus:outline-none focus:ring-2 focus:ring-primary 
-          focus:border-primary transition" required>
-          <option value="">Seleccione una categoría</option>
-          @foreach ($categorias as $categoria)
-            <option value="{{ $categoria->id }}">{{ $categoria->nombre }}</option>
-          @endforeach
-        </select>
-      </div>
-
-      <!-- Nombre -->
-      <div class="form-control">
-        <label class="label">
-          <span class="label-text font-medium">Nombre</span>
-        </label>
-
-        <input id="editar_nombre" name="nombre" type="text"
-          class="w-full h-10 rounded-md border border-base-300 bg-base-200 px-3 
-          text-sm focus:outline-none focus:ring-2 focus:ring-primary 
-          focus:border-primary transition" required>
-      </div>
-
-      <!-- Descripción -->
-      <div class="form-control">
-        <label class="label">
-          <span class="label-text font-medium">Descripción</span>
-        </label>
-
-        <textarea id="editar_descripcion" name="descripcion" rows="3"
-          class="textarea w-full rounded-md border border-base-300 bg-base-200 focus:outline-none focus:ring-2 focus:ring-primary 
-          focus:border-primary transition" required></textarea>
-      </div>
-
-      <!-- Unidad -->
-      <div class="form-control">
-        <label class="label">
-          <span class="label-text font-medium">Unidad</span>
-        </label>
-
-        <input id="editar_unidad" name="unidad" type="text"
-          class="w-full h-10 rounded-md border border-base-300 bg-base-200 px-3 
-          text-sm focus:outline-none focus:ring-2 focus:ring-primary 
-          focus:border-primary transition" required>
-      </div>
-
-      <!-- Botones -->
-      <div class="modal-action">
-        <button class="btn btn-warning">
-          <x-heroicon-o-check class="w-5 h-5" />
-          Guardar Cambios
-        </button>
-
-        <button type="button" onclick="editarProductoModal.close()" class="btn btn-neutral">
-          Cancelar
-        </button>
-      </div>
-    </form>
-
-  </div>
-
-  <form method="dialog" class="modal-backdrop">
-    <button></button>
-  </form>
-
-</dialog> 
+ 
 
 
 @endsection 
@@ -479,31 +398,35 @@
       }
   </script>
  <script>
-function abrirModalEditar(id) {
-    if(id){
-    $.ajax({
-        url: "{{ url('admin/productos') }}/"+id+"/data",  
-        type: "GET",
-        success: function(data) { 
-            
-            // Rellenar inputs del modal
-            $('#editarProductoModal [name="categoria_id"]').val(data.categoria_id);
-            $('#editarProductoModal [name="nombre"]').val(data.nombre);
-            $('#editarProductoModal [name="descripcion"]').val(data.descripcion);
-            $('#editarProductoModal [name="unidad"]').val(data.unidad);
-            $('#editarProductoModal [name="producto_id"]').val(data.id); 
-
-            // Cambiar action del form
-            $('#formEditarProducto').attr('action', `/admin/productos/${id}/update`);
-
-            // Abrir modal (Bootstrap 4 o Native dialog)
-            document.getElementById('editarProductoModal').showModal();  
-        },
-        error: function(err) {
-            console.error(err);
-            alert("Error cargando datos del producto.");
-        }
-    });
+function abrir_modal(modal, title, accion, campos, dato, soloVer = false)
+{
+    $(`#${modal}`).get(0).showModal();
+    $(`#${modal}_titulo`).text(title);
+    document.getElementById("accion").value = accion;
+    
+    if(campos.length >= 1)
+    {
+        campos.forEach(
+            (campo) => {
+                document.getElementById(campo).value = dato[campo];
+            }
+        );
+        document.getElementById("id").value = dato['id'];
+    }
+    else
+    {
+        document.formProducto.reset();
+        document.getElementById("accion").value = 1;
+        document.getElementById("id").value = 0;
+    }
+    
+    // Si es solo ver (accion 3), deshabilitar campos y ocultar botón guardar
+    if(soloVer || accion === 3) {
+        $(`#${modal} input, #${modal} select, #${modal} textarea`).not('#accion, #id').prop('disabled', true);
+        $('#btnGuardar').hide();
+    } else {
+        $(`#${modal} input, #${modal} select, #${modal} textarea`).prop('disabled', false);
+        $('#btnGuardar').show();
     }
 }
 </script>

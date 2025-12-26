@@ -175,7 +175,9 @@
                     <!-- País -->
                     <div class="space-y-2">
                         <label for="pais" class="text-sm font-medium">País <span class="text-red-600">*</span></label>
-                        <select id="pais" name="pais" class="select select-bordered w-full h-9">
+                        <select id="pais" name="pais" class="select w-full h-10 rounded-md border-base-300 bg-base-200
+                        px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
+                        focus:border-primary transition @error('pais') input-error @enderror">
                             <option>Argentina</option>
                             <option>Uruguay</option>
                             <option>Chile</option>
@@ -185,7 +187,9 @@
                     <!-- Provincia -->
                     <div class="space-y-2">
                         <label for="provincia" class="text-sm font-medium">Provincia <span class="text-red-600">*</span></label>
-                        <select id="provincia" name="provincia" class="select select-bordered w-full h-9">
+                        <select id="provincia" name="provincia" class="select w-full h-10 rounded-md border-base-300 bg-base-200
+                        px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
+                        focus:border-primary transition @error('provincia') input-error @enderror">
                             <option>Entre Ríos</option>
                             <option>Corrientes</option>
                             <option>Buenos Aires</option>
@@ -198,7 +202,7 @@
                         <input id="localidad" name="localidad" value="{{ old('localidad') }}" 
                         class="w-full h-10 rounded-md border border-base-300 bg-base-200 
                         px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
-                        focus:border-primary transition" 
+                        focus:border-primary transition @error('localidad') input-error @enderror" 
                         placeholder="Localidad..." />
                     </div>
                 </div>
@@ -220,25 +224,22 @@
                 class="@container/card-header grid auto-rows-min grid-rows-[auto_auto] items-start gap-1.5 px-6 pt-6">
             <h3 class="text-1xl font-semibold">
                 Observaciones
-            </h3>
-
+            </h3> 
             <p class="">
                 Información adicional del proveedor
             </p>
 
-            <div>
+            <div class="space-y-2"> 
                 <label for="observaciones" class="block text-sm font-medium text-gray-700 mb-1">
                     Observaciones / Notas
-                </label>
-
-                <textarea id="observaciones" name="observaciones" rows="5"
-                    placeholder="Ingrese cualquier observación o nota relevante sobre el proveedor..."
-                    value="{{ old('observaciones') }}"
-                    class="w-full h-10 rounded-md border border-base-300 bg-base-200 
-                    px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
-                    focus:border-primary transition">
-                
-                </textarea>
+                </label> 
+                <textarea type="text" id="observaciones" name="observaciones"
+                    placeholder="Ingrese cualquier observación o nota relevante sobre el proveedor..." 
+                    class="textarea w-full rounded-md border border-base-300 bg-base-200 focus:outline-none focus:ring-2 focus:ring-primary 
+                        focus:border-primary transition @error('observaciones') input-error @enderror"></textarea>
+                 @error('observaciones')
+                    <small class="text-red-500">{{ $message }}</small>
+                @enderror 
             </div>
         </div>
     </div>
