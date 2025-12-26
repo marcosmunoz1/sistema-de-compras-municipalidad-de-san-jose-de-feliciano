@@ -1384,6 +1384,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 { key: 'anio', label: 'Año' },
                 { key: 'color', label: 'Color' },
                 { key: 'tipo', label: 'Tipo' },
+                { key: 'catalogacion', label: 'Catalogación'}
             ];
             tituloModalDestino.textContent = 'Seleccionar vehículo destino';
         } else if (tipoShort === 'obra') {

@@ -96,15 +96,23 @@ class PermisoHelper
         'obras-show' => 'Detalle obra',
         'obras-destroy' => 'Eliminar obra',
         'obras-restore' => 'Restaurar obra',
+        // Equipos
+        'equipos-index' => 'Ver equipos',
+        'equipos-create' => 'Formulario crear',
+        'equipos-store' => 'Crear equipo',
+        'equipos-edit' => 'Editar equipo',
+        'equipos-update' => 'Actualizar equipo',
+        'equipos-show' => 'Detalle equipo',
+        'equipos-destroy' => 'Eliminar equipo',
+        'equipos-restore' => 'Restaurar equipo',
         // Movimientos
         'movimientos-index' => 'Ver movimientos',
         'movimientos-create' => 'Formulario crear',
         'movimientos-store' => 'Crear movimiento',
-        'movimientos-edit' => 'Editar movimiento',
-        'movimientos-update' => 'Actualizar movimiento',
         'movimientos-show' => 'Detalle movimiento',
-        'movimientos-destroy' => 'Eliminar movimiento',
-        'movimientos-restore' => 'Restaurar movimiento',
+        // Auditoria
+        'auditoria-index' => 'Ver auditorias',
+        'auditoria-show' => 'Detalle auditoria',
         // Depósitos
         'depositos-index' => 'Ver depósitos',
         'depositos-show' => 'Detalle depósito',

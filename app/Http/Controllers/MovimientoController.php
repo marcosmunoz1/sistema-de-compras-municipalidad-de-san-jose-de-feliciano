@@ -148,7 +148,7 @@ class MovimientoController extends Controller
         }
 
         $movimientos = $movimientos
-            ->orderBy('fecha', 'desc')
+            ->orderBy('created_at', 'desc')
             ->paginate(10)
             ->withQueryString();
 
@@ -278,6 +278,10 @@ class MovimientoController extends Controller
                         ]);
                         
                 } else {
+                    // ✅ TRANSFERENCIA: Validar stock disponible
+                    if ($cantidadMovida > $stockActual) {
+                        throw new \Exception("No hay suficiente stock disponible para transferir del producto: {$pivotOrigen->nombre}");
+                    }
                     // ✅ TRANSFERENCIA: Restar de cantidad_asignada Y stock
                     $nuevaCantidadAsignada = $cantidadAsignadaActual - $cantidadMovida;
                     
@@ -365,15 +369,15 @@ class MovimientoController extends Controller
         } catch (\Throwable $e) {
             DB::rollBack();
             
-            // ✅ Log para debugging
+            /* ✅ Log para debugging
             Log::error('Error en movimiento: ' . $e->getMessage(), [
                 'request' => $request->all(),
                 'trace' => $e->getTraceAsString()
-            ]);
+            ]);*/
             
-            return back()
-                ->withInput()
-                ->with('error', 'Error al procesar el movimiento: ' . $e->getMessage())
+            return redirect()->back()->withInput()
+                ->with('titulo', 'Error en el movimiento')
+                ->with('mensaje', $e->getMessage())
                 ->with('icono', 'error');
         }
     }

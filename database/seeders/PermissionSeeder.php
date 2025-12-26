@@ -142,13 +142,31 @@ class PermissionSeeder extends Seeder
             ['name' => 'obras-restore'],
 
             // ===============================
+            // EQUIPOS
+            // ===============================
+            ['name' => 'equipos-index'],
+            ['name' => 'equipos-create'],
+            ['name' => 'equipos-store'],
+            ['name' => 'equipos-edit'],
+            ['name' => 'equipos-update'],
+            ['name' => 'equipos-show'],
+            ['name' => 'equipos-destroy'],
+            ['name' => 'equipos-restore'],
+
+            // ===============================
             // MOVIMIENTOS
             // ===============================
             ['name' => 'movimientos-index'],
             ['name' => 'movimientos-create'],
             ['name' => 'movimientos-store'],
             ['name' => 'movimientos-show'],
-            
+
+            // ===============================
+            // AUDITORIA
+            // ===============================
+            ['name' => 'auditoria-index'],
+            ['name' => 'auditoria-show'],
+
             // ===============================
             // DEPÓSITOS
             // ===============================

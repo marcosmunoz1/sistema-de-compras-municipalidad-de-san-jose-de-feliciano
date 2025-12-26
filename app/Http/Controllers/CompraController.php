@@ -109,60 +109,60 @@ class CompraController extends Controller
             'estado'         => true,
         ]);
 
-        foreach ($request->productos as $index => $producto_id) {
+        foreach ($request->productos as $index => $producto_id) 
+        {
 
-        $cantidad = $request->cantidades[$index];
+            $cantidad = $request->cantidades[$index];
 
-        // Crear detalle de compra
-        $detalleCompra = Detalle_compra::create([
-            'compra_id'   => $compra->id,
-            'producto_id' => $producto_id,
-            'cantidad'    => $cantidad,
-        ]);
-
-        // Registrar movimiento
-        Movimiento::create([
-            'compra_id'     => $compra->id,
-            'tipo'          => 'entrada',
-            'origen_tipo'   => Proveedor::class,
-            'origen_id'     => $request->proveedor_id,
-            'destino_tipo'  => modeloDestino($request->destino_tipo)['model'],
-            'destino_id'    => $request->destino_id,
-            'observacion'   => $request->asunto_obra_automotor,
-            'fecha'         => $request->fecha_orden,
-            'estado'        => true
-        ]);
-
-        // Carga al destino
-        $destinoInfo  = modeloDestino($request->destino_tipo);
-        $destinoClass = $destinoInfo['model'];
-        $campoCantidad = $destinoInfo['campo']; // cantidad_asignada
-        $destinoModel = $destinoClass::find($request->destino_id);
-
-        // Buscar fila pivote que corresponda a esta misma compra
-        $filaMismaCompra = $destinoModel->productos()
-            ->wherePivot('detalle_compra_id', $detalleCompra->id)
-            ->wherePivot('producto_id', $producto_id)
-            ->first();
-
-        if ($filaMismaCompra) {
-
-            // Si existe una entrada de la misma compra → actualizar ambas columnas
-            $destinoModel->productos()->updateExistingPivot($producto_id, [
-                $campoCantidad   => $filaMismaCompra->pivot->{$campoCantidad} + $cantidad,
-                'stock'   => $filaMismaCompra->pivot->stock_actual + $cantidad,
+            // Crear detalle de compra
+            $detalleCompra = Detalle_compra::create([
+                'compra_id'   => $compra->id,
+                'producto_id' => $producto_id,
+                'cantidad'    => $cantidad,
             ]);
 
-        } else {
+            // Carga al destino
+            $destinoInfo  = modeloDestino($request->destino_tipo);
+            $destinoClass = $destinoInfo['model'];
+            $campoCantidad = $destinoInfo['campo']; // cantidad_asignada
+            $destinoModel = $destinoClass::find($request->destino_id);
 
-            // Crear siempre una nueva fila por compra distinta
-            $destinoModel->productos()->attach($producto_id, [
-                $campoCantidad   => $cantidad,
-                'stock'   => $cantidad, // ↓↓↓ NUEVO
-                'detalle_compra_id' => $detalleCompra->id
-            ]);
+            // Buscar fila pivote que corresponda a esta misma compra
+            $filaMismaCompra = $destinoModel->productos()
+                ->wherePivot('detalle_compra_id', $detalleCompra->id)
+                ->wherePivot('producto_id', $producto_id)
+                ->first();
+
+            if ($filaMismaCompra) {
+
+                // Si existe una entrada de la misma compra → actualizar ambas columnas
+                $destinoModel->productos()->updateExistingPivot($producto_id, [
+                    $campoCantidad   => $filaMismaCompra->pivot->{$campoCantidad} + $cantidad,
+                    'stock'   => $filaMismaCompra->pivot->stock_actual + $cantidad,
+                ]);
+
+            } else {
+
+                // Crear siempre una nueva fila por compra distinta
+                $destinoModel->productos()->attach($producto_id, [
+                    $campoCantidad   => $cantidad,
+                    'stock'   => $cantidad, // ↓↓↓ NUEVO
+                    'detalle_compra_id' => $detalleCompra->id
+                ]);
+            }
         }
-    }
+        // Registrar movimiento
+            Movimiento::create([
+                'compra_id'     => $compra->id,
+                'tipo'          => 'entrada',
+                'origen_tipo'   => Proveedor::class,
+                'origen_id'     => $request->proveedor_id,
+                'destino_tipo'  => modeloDestino($request->destino_tipo)['model'],
+                'destino_id'    => $request->destino_id,
+                'observacion'   => $request->asunto_obra_automotor,
+                'fecha'         => $request->fecha_orden,
+                'estado'        => true
+            ]);
 
 
         return redirect()

@@ -578,6 +578,7 @@ focus:border-primary transition @error('empleado_id') input-error @enderror">
                 { key: 'anio',    label: 'Año' },
                 { key: 'color',   label: 'Color' },
                 { key: 'tipo',    label: 'Tipo' },
+                { key: 'catalogacion', label: 'Catalogación'}
             ];
         } else if (tipo === 'equipo') {
             columnasGlobal = [
@@ -585,7 +586,7 @@ focus:border-primary transition @error('empleado_id') input-error @enderror">
                 { key: 'tipo_equipo', label: 'Tipo equipo' },
                 { key: 'marca',       label: 'Marca' },
                 { key: 'modelo',      label: 'Modelo' },
-                { key: 'numero_serie',label: 'N° serie' },
+                { key: 'catalogacion',label: 'Catalogación' },
             ];
         } else { // destino / otros
             columnasGlobal = [

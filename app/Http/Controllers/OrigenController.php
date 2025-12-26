@@ -25,7 +25,7 @@ class OrigenController extends Controller
 
         if ($model === \App\Models\Vehiculo::class) {
             $items = $model::query()
-                ->select('id', 'patente', 'marca', 'modelo', 'anio', 'color', 'tipo')
+                ->select('id', 'patente', 'marca', 'modelo', 'anio', 'color', 'tipo','catalogacion')
                 ->get()
                 ->map(function ($v) {
                     return [
@@ -36,6 +36,7 @@ class OrigenController extends Controller
                         'anio' => $v->anio,
                         'color' => $v->color,
                         'tipo' => $v->tipo,
+                        'catalogacion'=> $v->catalogacion,
                         // compatibilidad (si algún select/uso viejo esperaba "nombre")
                         'nombre' => trim(($v->patente ?? '') . ' - ' . ($v->modelo ?? '')),
                     ];
