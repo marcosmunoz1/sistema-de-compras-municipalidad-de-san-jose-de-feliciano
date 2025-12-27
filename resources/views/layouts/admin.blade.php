@@ -288,6 +288,25 @@
                             Auditoría
                         </a>
                     </li>
+                      {{-- SECCIÓN: RespaldosDB --}}
+                    <li class="menu-title mt-4">
+                        <span class="text-xs uppercase tracking-wider text-base-content/50">Respaldos</span>
+                    </li>
+                    <li class="mr-15">
+                        <a href="{{ url('/admin/backups') }}"
+                           class="hover:bg-base-300 hover:text-primary transition-colors {{ request()->is('admin/backups*') ? 'active bg-primary text-primary-content' : '' }}">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M20.25 6.375c0 1.243-3.694 2.25-8.25 2.25s-8.25-1.007-8.25-2.25
+                                    m16.5 0c0-1.243-3.694-2.25-8.25-2.25s-8.25 1.007-8.25 2.25
+                                    m16.5 0v11.25c0 1.243-3.694 2.25-8.25 2.25s-8.25-1.007-8.25-2.25V6.375
+                                    m16.5 3.75c0 1.243-3.694 2.25-8.25 2.25s-8.25-1.007-8.25-2.25
+                                    m16.5 3.75c0 1.243-3.694 2.25-8.25 2.25s-8.25-1.007-8.25-2.25" />
+                            </svg> 
+                            Backups
+                        </a>
+                    </li>
                 </ul>
 
                 {{-- FOOTER DEL SIDEBAR --}}

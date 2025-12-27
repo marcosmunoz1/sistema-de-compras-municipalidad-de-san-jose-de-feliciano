@@ -1,5 +1,5 @@
 @extends('layouts.admin')
-@section('title', 'Auditoría del Sistema')
+@section('title', 'Auditoría') 
 
 @section('content')
     <div class="flex items-center justify-between mb-6">
@@ -194,12 +194,76 @@
                     </tbody>
                 </table>
             </div>
+            @if ($actividades->hasPages())
+                <div class="flex flex-col md:flex-row justify-between items-center mt-6 px-3 gap-4">
 
-            @if($actividades->hasPages())
-                <div class="mt-4">
-                    {{ $actividades->links() }}
+                    <!-- Texto "Mostrando X - Y" -->
+                    <div class="text-sm text-gray-500">
+                        Mostrando {{ $actividades->firstItem() }} - {{ $actividades->lastItem() }} de {{ $actividades->total() }} registros
+                    </div>
+
+                    <!-- Controles de paginación estilo DaisyUI -->
+                    <div class="join">
+
+                        {{-- Botón Anterior --}}
+                        @if ($actividades->onFirstPage())
+                            <button class="join-item btn btn-square btn-disabled">«</button>
+                        @else
+                            <a href="{{ $actividades->previousPageUrl() }}" class="join-item btn btn-square">«</a>
+                        @endif
+
+                        {{-- Botón Primera página --}}
+                        @if (!$actividades->onFirstPage())
+                            <a href="{{ $actividades->url(1) }}" class="join-item btn btn-square">1</a>
+                            @if ($actividades->currentPage() > 4)
+                                <button class="join-item btn btn-square btn-disabled">...</button>
+                            @endif
+                        @endif
+
+                        {{-- Números de página con ventana deslizante --}}
+                        @php
+                            $currentPage = $actividades->currentPage();
+                            $totalPages = $actividades->lastPage();
+                            $start = max(1, $currentPage - 2);
+                            $end = min($totalPages, $currentPage + 2);
+                            
+                            // Ajustar para mostrar siempre 5 páginas cuando sea posible
+                            if ($end - $start < 4) {
+                                if ($start == 1) {
+                                    $end = min($totalPages, 5);
+                                } elseif ($end == $totalPages) {
+                                    $start = max(1, $totalPages - 4);
+                                }
+                            }
+                        @endphp
+
+                        @for ($i = $start; $i <= $end; $i++)
+                            @if ($i == $currentPage)
+                                <button class="join-item btn btn-square btn-active">{{ $i }}</button>
+                            @else
+                                <a href="{{ $actividades->url($i) }}" class="join-item btn btn-square">{{ $i }}</a>
+                            @endif
+                        @endfor
+
+                        {{-- Botón Última página --}}
+                        @if ($actividades->currentPage() < $totalPages - 3)
+                            @if ($actividades->currentPage() < $totalPages - 4)
+                                <button class="join-item btn btn-square btn-disabled">...</button>
+                            @endif
+                            <a href="{{ $actividades->url($totalPages) }}" class="join-item btn btn-square">{{ $totalPages }}</a>
+                        @endif
+
+                        {{-- Botón Siguiente --}}
+                        @if ($actividades->hasMorePages())
+                            <a href="{{ $actividades->nextPageUrl() }}" class="join-item btn btn-square">»</a>
+                        @else
+                            <button class="join-item btn btn-square btn-disabled">»</button>
+                        @endif
+
+                    </div>
                 </div>
             @endif
+            
         </div>
     </div>
 @endsection

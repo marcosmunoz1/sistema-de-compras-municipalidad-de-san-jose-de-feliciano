@@ -264,37 +264,75 @@
             </table>
         </div>
         <!-- PAGINACIÓN -->
-        @if ($combustibles->hasPages())
-            <div class="flex flex-col md:flex-row justify-between items-center mt-6 px-3 gap-4">
+         @if ($combustibles->hasPages())
+                <div class="flex flex-col md:flex-row justify-between items-center mt-6 px-3 gap-4">
 
-                <div class="text-sm text-gray-500">
-                    Mostrando {{ $combustibles->firstItem() }} - {{ $combustibles->lastItem() }} 
-                    de {{ $combustibles->total() }} registros
-                </div>
+                    <!-- Texto "Mostrando X - Y" -->
+                    <div class="text-sm text-gray-500">
+                        Mostrando {{ $combustibles->firstItem() }} - {{ $combustibles->lastItem() }} de {{ $combustibles->total() }} registros
+                    </div>
 
-                <div class="join">
-                    @if ($combustibles->onFirstPage())
-                        <button class="join-item btn btn-square btn-disabled">«</button>
-                    @else
-                        <a href="{{ $combustibles->previousPageUrl() }}" class="join-item btn btn-square">«</a>
-                    @endif
+                    <!-- Controles de paginación estilo DaisyUI -->
+                    <div class="join">
 
-                    @foreach ($combustibles->links()->elements[0] ?? [] as $page => $url)
-                        @if ($page == $combustibles->currentPage())
-                            <button class="join-item btn btn-square btn-active">{{ $page }}</button>
+                        {{-- Botón Anterior --}}
+                        @if ($combustibles->onFirstPage())
+                            <button class="join-item btn btn-square btn-disabled">«</button>
                         @else
-                            <a href="{{ $url }}" class="join-item btn btn-square">{{ $page }}</a>
+                            <a href="{{ $combustibles->previousPageUrl() }}" class="join-item btn btn-square">«</a>
                         @endif
-                    @endforeach
 
-                    @if ($combustibles->hasMorePages())
-                        <a href="{{ $combustibles->nextPageUrl() }}" class="join-item btn btn-square">»</a>
-                    @else
-                        <button class="join-item btn btn-square btn-disabled">»</button>
-                    @endif
+                        {{-- Botón Primera página --}}
+                        @if (!$combustibles->onFirstPage())
+                            <a href="{{ $combustibles->url(1) }}" class="join-item btn btn-square">1</a>
+                            @if ($combustibles->currentPage() > 4)
+                                <button class="join-item btn btn-square btn-disabled">...</button>
+                            @endif
+                        @endif
+
+                        {{-- Números de página con ventana deslizante --}}
+                        @php
+                            $currentPage = $combustibles->currentPage();
+                            $totalPages = $combustibles->lastPage();
+                            $start = max(1, $currentPage - 2);
+                            $end = min($totalPages, $currentPage + 2);
+                            
+                            // Ajustar para mostrar siempre 5 páginas cuando sea posible
+                            if ($end - $start < 4) {
+                                if ($start == 1) {
+                                    $end = min($totalPages, 5);
+                                } elseif ($end == $totalPages) {
+                                    $start = max(1, $totalPages - 4);
+                                }
+                            }
+                        @endphp
+
+                        @for ($i = $start; $i <= $end; $i++)
+                            @if ($i == $currentPage)
+                                <button class="join-item btn btn-square btn-active">{{ $i }}</button>
+                            @else
+                                <a href="{{ $combustibles->url($i) }}" class="join-item btn btn-square">{{ $i }}</a>
+                            @endif
+                        @endfor
+
+                        {{-- Botón Última página --}}
+                        @if ($combustibles->currentPage() < $totalPages - 3)
+                            @if ($combustibles->currentPage() < $totalPages - 4)
+                                <button class="join-item btn btn-square btn-disabled">...</button>
+                            @endif
+                            <a href="{{ $combustibles->url($totalPages) }}" class="join-item btn btn-square">{{ $totalPages }}</a>
+                        @endif
+
+                        {{-- Botón Siguiente --}}
+                        @if ($combustibles->hasMorePages())
+                            <a href="{{ $combustibles->nextPageUrl() }}" class="join-item btn btn-square">»</a>
+                        @else
+                            <button class="join-item btn btn-square btn-disabled">»</button>
+                        @endif
+
+                    </div>
                 </div>
-            </div>
-        @endif
+            @endif
 
     </div>
 </div>

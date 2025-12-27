@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
+
 Route::get('/', function () {
     return view('welcome');
 });
@@ -215,6 +216,12 @@ Route::put('admin/equipos/{id}/restore', [App\Http\Controllers\EquipoController:
 Route::get('/admin/auditoria', [App\Http\Controllers\AuditoriaController::class, 'index'])->name('auditoria.index')->middleware('auth');
 Route::get('/admin/auditoria/{id}', [App\Http\Controllers\AuditoriaController::class, 'show'])->name('auditoria.show')->middleware('auth');
 
+//Rutas para backups
+Route::get('/admin/backups', [App\Http\Controllers\BackupController::class, 'index'])->name('backups.index')->middleware('auth', 'can:backups-index');
+Route::post('/admin/backups/create', [App\Http\Controllers\BackupController::class, 'create'])->name('backups.create')->middleware('auth', 'can:backups-create');
+Route::get('/admin/backups/download/{filename}', [App\Http\Controllers\BackupController::class, 'download'])->name('backups.download')->middleware('auth', 'can:backups-download');
+Route::post('/admin/backups/verify/{filename}', [App\Http\Controllers\BackupController::class, 'verify'])->name('backups.verify')->middleware('auth', 'can:backups-verify');
+Route::delete('/admin/backups/delete/{filename}', [App\Http\Controllers\BackupController::class, 'delete'])->name('backups.delete')->middleware('auth', 'can:backups-delete');
 
  
 require __DIR__.'/auth.php';

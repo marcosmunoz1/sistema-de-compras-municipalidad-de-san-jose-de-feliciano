@@ -174,33 +174,74 @@
         </div>
         <!-- PAGINACIÓN -->
         @if ($permisos->hasPages())
-            <div class="flex flex-col md:flex-row justify-between items-center mt-6 px-3 gap-4"> 
-                <div class="text-sm text-gray-500">
-                    Mostrando {{ $permisos->firstItem() }} - {{ $permisos->lastItem() }} 
-                    de {{ $permisos->total() }} registros
-                </div>
-                <div class="join">
-                    @if ($permisos->onFirstPage())
-                        <button class="join-item btn btn-square btn-disabled">«</button>
-                    @else
-                        <a href="{{ $permisos->previousPageUrl() }}" class="join-item btn btn-square">«</a>
-                    @endif
+                <div class="flex flex-col md:flex-row justify-between items-center mt-6 px-3 gap-4">
 
-                    @foreach ($permisos->links()->elements[0] ?? [] as $page => $url)
-                        @if ($page == $permisos->currentPage())
-                            <button class="join-item btn btn-square btn-active">{{ $page }}</button>
+                    <!-- Texto "Mostrando X - Y" -->
+                    <div class="text-sm text-gray-500">
+                        Mostrando {{ $permisos->firstItem() }} - {{ $permisos->lastItem() }} de {{ $permisos->total() }} registros
+                    </div>
+
+                    <!-- Controles de paginación estilo DaisyUI -->
+                    <div class="join">
+
+                        {{-- Botón Anterior --}}
+                        @if ($permisos->onFirstPage())
+                            <button class="join-item btn btn-square btn-disabled">«</button>
                         @else
-                            <a href="{{ $url }}" class="join-item btn btn-square">{{ $page }}</a>
+                            <a href="{{ $permisos->previousPageUrl() }}" class="join-item btn btn-square">«</a>
                         @endif
-                    @endforeach
-                    @if ($permisos->hasMorePages())
-                        <a href="{{ $permisos->nextPageUrl() }}" class="join-item btn btn-square">»</a>
-                    @else
-                        <button class="join-item btn btn-square btn-disabled">»</button>
-                    @endif
+
+                        {{-- Botón Primera página --}}
+                        @if (!$permisos->onFirstPage())
+                            <a href="{{ $permisos->url(1) }}" class="join-item btn btn-square">1</a>
+                            @if ($permisos->currentPage() > 4)
+                                <button class="join-item btn btn-square btn-disabled">...</button>
+                            @endif
+                        @endif
+
+                        {{-- Números de página con ventana deslizante --}}
+                        @php
+                            $currentPage = $permisos->currentPage();
+                            $totalPages = $permisos->lastPage();
+                            $start = max(1, $currentPage - 2);
+                            $end = min($totalPages, $currentPage + 2);
+                            
+                            // Ajustar para mostrar siempre 5 páginas cuando sea posible
+                            if ($end - $start < 4) {
+                                if ($start == 1) {
+                                    $end = min($totalPages, 5);
+                                } elseif ($end == $totalPages) {
+                                    $start = max(1, $totalPages - 4);
+                                }
+                            }
+                        @endphp
+
+                        @for ($i = $start; $i <= $end; $i++)
+                            @if ($i == $currentPage)
+                                <button class="join-item btn btn-square btn-active">{{ $i }}</button>
+                            @else
+                                <a href="{{ $permisos->url($i) }}" class="join-item btn btn-square">{{ $i }}</a>
+                            @endif
+                        @endfor
+
+                        {{-- Botón Última página --}}
+                        @if ($permisos->currentPage() < $totalPages - 3)
+                            @if ($permisos->currentPage() < $totalPages - 4)
+                                <button class="join-item btn btn-square btn-disabled">...</button>
+                            @endif
+                            <a href="{{ $permisos->url($totalPages) }}" class="join-item btn btn-square">{{ $totalPages }}</a>
+                        @endif
+
+                        {{-- Botón Siguiente --}}
+                        @if ($permisos->hasMorePages())
+                            <a href="{{ $permisos->nextPageUrl() }}" class="join-item btn btn-square">»</a>
+                        @else
+                            <button class="join-item btn btn-square btn-disabled">»</button>
+                        @endif
+
+                    </div>
                 </div>
-            </div>
-        @endif
+            @endif
     </div>
 </div>
 <!-- Modal para eliminar -->

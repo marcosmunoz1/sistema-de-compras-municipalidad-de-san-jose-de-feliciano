@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Proveedor; 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 
 class ProveedorController extends Controller
@@ -76,6 +77,7 @@ class ProveedorController extends Controller
      */
     public function show($id)
     { 
+        $id = Crypt::decrypt($id); 
         $proveedor = Proveedor::findOrFail($id);
         
         // Calcular total de compras de los últimos 12 meses
@@ -117,7 +119,8 @@ class ProveedorController extends Controller
      * Show the form for editing the specified resource.
      */
     public function edit($id)
-    {
+    {   
+        $id = Crypt::decrypt($id);
         $proveedor = Proveedor::findOrFail($id); 
         return view('admin.proveedores.edit', compact('proveedor'));   
     } 

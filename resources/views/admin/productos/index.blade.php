@@ -161,14 +161,46 @@
                             <a href="{{ $productos->previousPageUrl() }}" class="join-item btn btn-square">«</a>
                         @endif
 
-                        {{-- Números de página --}}
-                        @foreach ($productos->links()->elements[0] ?? [] as $page => $url)
-                            @if ($page == $productos->currentPage())
-                                <button class="join-item btn btn-square btn-active">{{ $page }}</button>
-                            @else
-                                <a href="{{ $url }}" class="join-item btn btn-square">{{ $page }}</a>
+                        {{-- Botón Primera página --}}
+                        @if (!$productos->onFirstPage())
+                            <a href="{{ $productos->url(1) }}" class="join-item btn btn-square">1</a>
+                            @if ($productos->currentPage() > 4)
+                                <button class="join-item btn btn-square btn-disabled">...</button>
                             @endif
-                        @endforeach
+                        @endif
+
+                        {{-- Números de página con ventana deslizante --}}
+                        @php
+                            $currentPage = $productos->currentPage();
+                            $totalPages = $productos->lastPage();
+                            $start = max(1, $currentPage - 2);
+                            $end = min($totalPages, $currentPage + 2);
+                            
+                            // Ajustar para mostrar siempre 5 páginas cuando sea posible
+                            if ($end - $start < 4) {
+                                if ($start == 1) {
+                                    $end = min($totalPages, 5);
+                                } elseif ($end == $totalPages) {
+                                    $start = max(1, $totalPages - 4);
+                                }
+                            }
+                        @endphp
+
+                        @for ($i = $start; $i <= $end; $i++)
+                            @if ($i == $currentPage)
+                                <button class="join-item btn btn-square btn-active">{{ $i }}</button>
+                            @else
+                                <a href="{{ $productos->url($i) }}" class="join-item btn btn-square">{{ $i }}</a>
+                            @endif
+                        @endfor
+
+                        {{-- Botón Última página --}}
+                        @if ($productos->currentPage() < $totalPages - 3)
+                            @if ($productos->currentPage() < $totalPages - 4)
+                                <button class="join-item btn btn-square btn-disabled">...</button>
+                            @endif
+                            <a href="{{ $productos->url($totalPages) }}" class="join-item btn btn-square">{{ $totalPages }}</a>
+                        @endif
 
                         {{-- Botón Siguiente --}}
                         @if ($productos->hasMorePages())

@@ -27,7 +27,7 @@
                 </a>
             </li>
             <li>
-                <a href="{{ route('productos.index') }}">
+                <a href="{{ route('categorias.index') }}">
                     <x-heroicon-o-tag class="w-4 h-4 inline" />
                     Categorias
                 </a>
@@ -152,14 +152,13 @@
                         @endforeach
                     </tbody>
                 </table>
-            </div>
-            @if ($categorias->hasPages())
+            </div> 
+             @if ($categorias->hasPages())
                 <div class="flex flex-col md:flex-row justify-between items-center mt-6 px-3 gap-4">
 
                     <!-- Texto "Mostrando X - Y" -->
                     <div class="text-sm text-gray-500">
-                        Mostrando {{ $categorias->firstItem() }} - {{ $categorias->lastItem() }} de
-                        {{ $categorias->total() }} registros
+                        Mostrando {{ $categorias->firstItem() }} - {{ $categorias->lastItem() }} de {{ $categorias->total() }} registros
                     </div>
 
                     <!-- Controles de paginación estilo DaisyUI -->
@@ -172,14 +171,46 @@
                             <a href="{{ $categorias->previousPageUrl() }}" class="join-item btn btn-square">«</a>
                         @endif
 
-                        {{-- Números de página --}}
-                        @foreach ($categorias->links()->elements[0] ?? [] as $page => $url)
-                            @if ($page == $categorias->currentPage())
-                                <button class="join-item btn btn-square btn-active">{{ $page }}</button>
-                            @else
-                                <a href="{{ $url }}" class="join-item btn btn-square">{{ $page }}</a>
+                        {{-- Botón Primera página --}}
+                        @if (!$categorias->onFirstPage())
+                            <a href="{{ $categorias->url(1) }}" class="join-item btn btn-square">1</a>
+                            @if ($categorias->currentPage() > 4)
+                                <button class="join-item btn btn-square btn-disabled">...</button>
                             @endif
-                        @endforeach
+                        @endif
+
+                        {{-- Números de página con ventana deslizante --}}
+                        @php
+                            $currentPage = $categorias->currentPage();
+                            $totalPages = $categorias->lastPage();
+                            $start = max(1, $currentPage - 2);
+                            $end = min($totalPages, $currentPage + 2);
+                            
+                            // Ajustar para mostrar siempre 5 páginas cuando sea posible
+                            if ($end - $start < 4) {
+                                if ($start == 1) {
+                                    $end = min($totalPages, 5);
+                                } elseif ($end == $totalPages) {
+                                    $start = max(1, $totalPages - 4);
+                                }
+                            }
+                        @endphp
+
+                        @for ($i = $start; $i <= $end; $i++)
+                            @if ($i == $currentPage)
+                                <button class="join-item btn btn-square btn-active">{{ $i }}</button>
+                            @else
+                                <a href="{{ $categorias->url($i) }}" class="join-item btn btn-square">{{ $i }}</a>
+                            @endif
+                        @endfor
+
+                        {{-- Botón Última página --}}
+                        @if ($categorias->currentPage() < $totalPages - 3)
+                            @if ($categorias->currentPage() < $totalPages - 4)
+                                <button class="join-item btn btn-square btn-disabled">...</button>
+                            @endif
+                            <a href="{{ $categorias->url($totalPages) }}" class="join-item btn btn-square">{{ $totalPages }}</a>
+                        @endif
 
                         {{-- Botón Siguiente --}}
                         @if ($categorias->hasMorePages())

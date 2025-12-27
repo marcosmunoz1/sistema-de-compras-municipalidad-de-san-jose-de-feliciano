@@ -172,34 +172,72 @@
                 </table>
             </div>
             <!-- PAGINACIÓN -->
-            @if ($compras->hasPages())
+            @if ($compras->hasPages()) 
                 <div class="flex flex-col md:flex-row justify-between items-center mt-6 px-3 gap-4">
 
+                    <!-- Texto "Mostrando X - Y" -->
                     <div class="text-sm text-gray-500">
-                        Mostrando {{ $compras->firstItem() }} - {{ $compras->lastItem() }}
-                        de {{ $compras->total() }} registros
+                        Mostrando {{ $compras->firstItem() }} - {{ $compras->lastItem() }} de {{ $compras->total() }} registros
                     </div>
 
+                    <!-- Controles de paginación estilo DaisyUI -->
                     <div class="join">
+
+                        {{-- Botón Anterior --}}
                         @if ($compras->onFirstPage())
                             <button class="join-item btn btn-square btn-disabled">«</button>
                         @else
                             <a href="{{ $compras->previousPageUrl() }}" class="join-item btn btn-square">«</a>
                         @endif
 
-                        @foreach ($compras->links()->elements[0] ?? [] as $page => $url)
-                            @if ($page == $compras->currentPage())
-                                <button class="join-item btn btn-square btn-active">{{ $page }}</button>
-                            @else
-                                <a href="{{ $url }}" class="join-item btn btn-square">{{ $page }}</a>
+                        {{-- Botón Primera página --}}
+                        @if (!$compras->onFirstPage())
+                            <a href="{{ $compras->url(1) }}" class="join-item btn btn-square">1</a>
+                            @if ($compras->currentPage() > 4)
+                                <button class="join-item btn btn-square btn-disabled">...</button>
                             @endif
-                        @endforeach
+                        @endif
 
+                        {{-- Números de página con ventana deslizante --}}
+                        @php
+                            $currentPage = $compras->currentPage();
+                            $totalPages = $compras->lastPage();
+                            $start = max(1, $currentPage - 2);
+                            $end = min($totalPages, $currentPage + 2);
+                            
+                            // Ajustar para mostrar siempre 5 páginas cuando sea posible
+                            if ($end - $start < 4) {
+                                if ($start == 1) {
+                                    $end = min($totalPages, 5);
+                                } elseif ($end == $totalPages) {
+                                    $start = max(1, $totalPages - 4);
+                                }
+                            }
+                        @endphp
+
+                        @for ($i = $start; $i <= $end; $i++)
+                            @if ($i == $currentPage)
+                                <button class="join-item btn btn-square btn-active">{{ $i }}</button>
+                            @else
+                                <a href="{{ $compras->url($i) }}" class="join-item btn btn-square">{{ $i }}</a>
+                            @endif
+                        @endfor
+
+                        {{-- Botón Última página --}}
+                        @if ($compras->currentPage() < $totalPages - 3)
+                            @if ($compras->currentPage() < $totalPages - 4)
+                                <button class="join-item btn btn-square btn-disabled">...</button>
+                            @endif
+                            <a href="{{ $compras->url($totalPages) }}" class="join-item btn btn-square">{{ $totalPages }}</a>
+                        @endif
+
+                        {{-- Botón Siguiente --}}
                         @if ($compras->hasMorePages())
                             <a href="{{ $compras->nextPageUrl() }}" class="join-item btn btn-square">»</a>
                         @else
                             <button class="join-item btn btn-square btn-disabled">»</button>
                         @endif
+
                     </div>
                 </div>
             @endif

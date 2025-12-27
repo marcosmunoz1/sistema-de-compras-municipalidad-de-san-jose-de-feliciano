@@ -102,14 +102,14 @@
 
                                     {{-- Ver --}}
                                     @can('proveedores-show')
-                                    <a href="{{ route('proveedores.show', $proveedor->id) }}"  
+                                    <a href="{{ route('proveedores.show', Crypt::encrypt($proveedor->id)) }}"  
                                     class="btn btn-info btn-sm">
                                         <x-heroicon-s-eye class="w-4 h-4"/>
                                     </a>
                                     @endcan
                                     {{-- Editar --}}
                                     @can('proveedores-edit')
-                                    <a href="{{ route('proveedores.edit', $proveedor->id) }}" 
+                                    <a href="{{ route('proveedores.edit', Crypt::encrypt($proveedor->id)) }}" 
                                         class="btn btn-warning btn-sm"
                                         
                                     >
@@ -148,7 +148,7 @@
             </table>
             
         </div>
-          @if ($proveedores->hasPages())
+           @if ($proveedores->hasPages())
                 <div class="flex flex-col md:flex-row justify-between items-center mt-6 px-3 gap-4">
 
                     <!-- Texto "Mostrando X - Y" -->
@@ -166,14 +166,46 @@
                             <a href="{{ $proveedores->previousPageUrl() }}" class="join-item btn btn-square">«</a>
                         @endif
 
-                        {{-- Números de página --}}
-                        @foreach ($proveedores->links()->elements[0] ?? [] as $page => $url)
-                            @if ($page == $proveedores->currentPage())
-                                <button class="join-item btn btn-square btn-active">{{ $page }}</button>
-                            @else
-                                <a href="{{ $url }}" class="join-item btn btn-square">{{ $page }}</a>
+                        {{-- Botón Primera página --}}
+                        @if (!$proveedores->onFirstPage())
+                            <a href="{{ $proveedores->url(1) }}" class="join-item btn btn-square">1</a>
+                            @if ($proveedores->currentPage() > 4)
+                                <button class="join-item btn btn-square btn-disabled">...</button>
                             @endif
-                        @endforeach
+                        @endif
+
+                        {{-- Números de página con ventana deslizante --}}
+                        @php
+                            $currentPage = $proveedores->currentPage();
+                            $totalPages = $proveedores->lastPage();
+                            $start = max(1, $currentPage - 2);
+                            $end = min($totalPages, $currentPage + 2);
+                            
+                            // Ajustar para mostrar siempre 5 páginas cuando sea posible
+                            if ($end - $start < 4) {
+                                if ($start == 1) {
+                                    $end = min($totalPages, 5);
+                                } elseif ($end == $totalPages) {
+                                    $start = max(1, $totalPages - 4);
+                                }
+                            }
+                        @endphp
+
+                        @for ($i = $start; $i <= $end; $i++)
+                            @if ($i == $currentPage)
+                                <button class="join-item btn btn-square btn-active">{{ $i }}</button>
+                            @else
+                                <a href="{{ $proveedores->url($i) }}" class="join-item btn btn-square">{{ $i }}</a>
+                            @endif
+                        @endfor
+
+                        {{-- Botón Última página --}}
+                        @if ($proveedores->currentPage() < $totalPages - 3)
+                            @if ($proveedores->currentPage() < $totalPages - 4)
+                                <button class="join-item btn btn-square btn-disabled">...</button>
+                            @endif
+                            <a href="{{ $proveedores->url($totalPages) }}" class="join-item btn btn-square">{{ $totalPages }}</a>
+                        @endif
 
                         {{-- Botón Siguiente --}}
                         @if ($proveedores->hasMorePages())
@@ -185,7 +217,6 @@
                     </div>
                 </div>
             @endif
-
     </div>
 </div>
 <!-- Modal para eliminar -->

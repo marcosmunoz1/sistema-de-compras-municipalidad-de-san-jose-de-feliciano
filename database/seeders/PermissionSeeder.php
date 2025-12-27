@@ -159,6 +159,15 @@ class PermissionSeeder extends Seeder
             // DESTINOS
             // ===============================
             ['name' => 'destinos-store'],
+
+            // ===============================
+            // BACKUPS
+            // ===============================
+            ['name' => 'backups-index'],
+            ['name' => 'backups-create'],
+            ['name' => 'backups-download'],
+            ['name' => 'backups-verify'],
+            ['name' => 'backups-delete'],
         ];
 
         // Crear permisos si no existen
