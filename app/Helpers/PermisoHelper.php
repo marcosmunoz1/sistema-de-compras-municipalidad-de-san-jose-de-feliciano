@@ -118,6 +118,13 @@ class PermisoHelper
         'depositos-show' => 'Detalle depósito',
         // Destinos
         'destinos-store' => 'Crear destino',
+
+        //Backups
+        'backups-index' => 'Ver backups',
+        'backups-create' => 'Crear backup',
+        'backups-download' => 'Descargar backup',
+        'backups-verify' => 'Verificar backup',
+        'backups-delete' => 'Eliminar backup'
     ];
 
     /**

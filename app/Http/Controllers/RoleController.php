@@ -84,6 +84,8 @@ class RoleController extends Controller
                 return 'Roles';
             } elseif (stripos($permiso->name, 'perm') !== false || stripos($permiso->name, 'per') !== false) {
                 return 'Permisos';
+            }elseif (stripos($permiso->name, 'back') !== false) {
+                return 'Backups';
             } elseif (stripos($permiso->name, 'empl') !== false) {
                 return 'Empleados';
             } elseif (stripos($permiso->name, 'prov') !== false) {
@@ -106,6 +108,10 @@ class RoleController extends Controller
                 return 'Depositos';
             }elseif (stripos($permiso->name, 'veh') !== false) {
                 return 'Vehiculos';
+            }elseif (stripos($permiso->name, 'equi') !== false) {
+                return 'Equipos';
+            }elseif (stripos($permiso->name, 'aud') !== false) {
+                return 'Auditoría';
             }
 
         })->map(function ($grupo) {

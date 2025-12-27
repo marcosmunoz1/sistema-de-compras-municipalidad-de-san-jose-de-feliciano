@@ -33,7 +33,7 @@
                         <h3 class="text-lg font-semibold text-primary mb-4">⚙️ Configuración del sistema</h3>
 
                         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                            @foreach (['Usuarios', 'Roles', 'Permisos'] as $modulo)
+                            @foreach (['Usuarios', 'Roles', 'Permisos','Backups','Auditoría'] as $modulo)
                                 @if (isset($permisos[$modulo]))
                                     <div class="border border-base-300 rounded-lg p-4">
                                         <h4 class="font-bold mb-3">{{ $modulo }}</h4>
