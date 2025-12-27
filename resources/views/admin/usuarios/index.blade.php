@@ -224,7 +224,9 @@
                     <div class="form-control">
                         <label class="label"><span class="label-text">Nombre de Usuario</span></label>
                         <input type="text" name="name" value="{{ old('name') }}"
-                            class="input input-bordered w-full" placeholder="Ej: Pablo Perez" required>
+                            class="w-full h-10 rounded-md border border-base-300 
+                            bg-base-200 px-3 text-sm focus:outline-none focus:ring-2 
+                            focus:ring-primary focus:border-primary transition" placeholder="Ej: Pablo Perez" required>
                         @error('name')
                             <small class="text-red-500">{{ $message }}</small>
                         @enderror
@@ -232,7 +234,8 @@
 
                     <div class="form-control">
                         <label class="label"><span class="label-text">Rol</span></label>
-                        <select name="role" class="select select-bordered w-full">
+                        <select name="role" class="select select-bordered w-full rounded-md border border-base-300 bg-base-200 focus:outline-none focus:ring-2 focus:ring-primary 
+                                                   focus:border-primary transition">
                             @foreach ($roles as $role)
                                 <option value="{{ $role->name }}">{{ $role->name }}</option>
                             @endforeach
@@ -244,7 +247,9 @@
                 <div class="form-control mt-4">
                     <label class="label"><span class="label-text">Correo</span></label>
                     <input type="email" name="email" value="{{ old('email') }}"
-                        class="input input-bordered w-full" placeholder="Ej: pabloperez@gmail.com" required>
+                        class="w-full h-10 rounded-md border border-base-300 
+                            bg-base-200 px-3 text-sm focus:outline-none focus:ring-2 
+                            focus:ring-primary focus:border-primary transition" placeholder="Ej: pabloperez@gmail.com" required>
                     @error('email')
                         <small class="text-red-500">{{ $message }}</small>
                     @enderror
@@ -255,7 +260,9 @@
 
                     <div class="form-control">
                         <label class="label"><span class="label-text">Contraseña</span></label>
-                        <input type="password" name="password" class="input input-bordered w-full" required>
+                        <input type="password" name="password" class="w-full h-10 rounded-md border border-base-300 
+                            bg-base-200 px-3 text-sm focus:outline-none focus:ring-2 
+                            focus:ring-primary focus:border-primary transition" required>
                         @error('password')
                             <small class="text-red-500">{{ $message }}</small>
                         @enderror
@@ -263,7 +270,9 @@
 
                     <div class="form-control">
                         <label class="label"><span class="label-text">Confirmar contraseña</span></label>
-                        <input type="password" name="password_confirmation" class="input input-bordered w-full" required>
+                        <input type="password" name="password_confirmation" class="w-full h-10 rounded-md border border-base-300 
+                            bg-base-200 px-3 text-sm focus:outline-none focus:ring-2 
+                            focus:ring-primary focus:border-primary transition" required>
                         @error('password_confirmation')
                             <small class="text-red-500">{{ $message }}</small>
                         @enderror

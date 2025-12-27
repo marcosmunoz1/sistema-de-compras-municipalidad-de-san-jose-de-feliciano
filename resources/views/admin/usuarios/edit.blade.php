@@ -53,7 +53,9 @@
                                     <label class="label">
                                         <span class="label-text font-semibold">Nombre de Usuario</span>
                                     </label>
-                                    <input type="text" name="name" class="input input-bordered w-full"
+                                    <input type="text" name="name" class="w-full h-10 rounded-md border border-base-300 
+                                        bg-base-200 px-3 text-sm focus:outline-none focus:ring-2 
+                                        focus:ring-primary focus:border-primary transition"
                                         value="{{ old('name', $usuario->name) }}">
                                     @error('name')
                                         <small class="text-red-500">{{ $message }}</small>
@@ -65,15 +67,15 @@
                                         <span class="label-text font-semibold">Rol</span>
                                     </label>
 
-                                    <select name="role" class="select select-bordered w-full">
-                                        @foreach ($roles as $role)
+                                    <select name="role" class="select select-bordered w-full rounded-md border border-base-300 bg-base-200 focus:outline-none focus:ring-2 focus:ring-primary 
+                                                               focus:border-primary transition">
+                                        @foreach ($roles as $role) 
                                             <option value="{{ $role->name }}"
                                                 {{ $usuario->roles->first() && $usuario->roles->first()->name === $role->name ? 'selected' : '' }}>
                                                 {{ $role->name }}
                                             </option>
                                         @endforeach
                                     </select>
-
                                     @error('role')
                                         <small class="text-red-500">{{ $message }}</small>
                                     @enderror
@@ -89,7 +91,9 @@
                                     <label class="label">
                                         <span class="label-text font-semibold">Correo</span>
                                     </label>
-                                    <input type="email" name="email" class="input input-bordered w-full"
+                                    <input type="email" name="email" class="w-full h-10 rounded-md border border-base-300 
+                                    bg-base-200 px-3 text-sm focus:outline-none focus:ring-2 
+                                    focus:ring-primary focus:border-primary transition"
                                         value="{{ old('email', $usuario->email) }}">
                                     @error('email')
                                         <small class="text-red-500">{{ $message }}</small>
@@ -102,7 +106,8 @@
                                         <span class="label-text font-semibold">Estado</span>
                                     </label>
 
-                                    <select name="estado" class="select select-bordered w-full">
+                                    <select name="estado" class="select select-bordered w-full rounded-md border border-base-300 bg-base-200 focus:outline-none focus:ring-2 focus:ring-primary 
+                                                                 focus:border-primary transition">
                                         <option value="1"
                                             {{ old('estado', $usuario->estado) == 1 ? 'selected' : '' }}>Activo</option>
                                         <option value="0"
@@ -123,7 +128,9 @@
                                     <label class="label">
                                         <span class="label-text font-semibold">Nueva contraseña</span>
                                     </label>
-                                    <input type="password" name="password" class="input input-bordered w-full"
+                                    <input type="password" name="password" class="w-full h-10 rounded-md border border-base-300 
+                                                                                bg-base-200 px-3 text-sm focus:outline-none focus:ring-2 
+                                                                                focus:ring-primary focus:border-primary transition"
                                         placeholder="Dejar vacío para no cambiar">
                                     @error('password')
                                         <small class="text-red-500">{{ $message }}</small>
@@ -134,7 +141,9 @@
                                     <label class="label">
                                         <span class="label-text font-semibold">Confirmar contraseña</span>
                                     </label>
-                                    <input type="password" name="password_confirmation" class="input input-bordered w-full"
+                                    <input type="password" name="password_confirmation" class="w-full h-10 rounded-md border border-base-300 
+                                                                                                bg-base-200 px-3 text-sm focus:outline-none focus:ring-2 
+                                                                                                focus:ring-primary focus:border-primary transition"
                                         placeholder="Repetir contraseña">
                                     @error('password_confirmation')
                                         <small class="text-red-500">{{ $message }}</small>

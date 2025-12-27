@@ -14,7 +14,8 @@ class OrigenController extends Controller
             'obra' => \App\Models\Obra::class,
             'deposito' => \App\Models\Deposito::class,
             'vehiculo' => \App\Models\Vehiculo::class,
-            'equipo' => \App\Models\Equipo::class, 
+            'equipo' => \App\Models\Equipo::class,
+            'destino' => \App\Models\Destino::class,
         ];
 
         if (!isset($map[$tipo])) {
@@ -25,7 +26,7 @@ class OrigenController extends Controller
 
         if ($model === \App\Models\Vehiculo::class) {
             $items = $model::query()
-                ->select('id', 'patente', 'marca', 'modelo', 'anio', 'color', 'tipo')
+                ->select('id', 'patente', 'marca', 'modelo', 'anio', 'color', 'tipo','catalogacion')
                 ->get()
                 ->map(function ($v) {
                     return [
@@ -36,6 +37,7 @@ class OrigenController extends Controller
                         'anio' => $v->anio,
                         'color' => $v->color,
                         'tipo' => $v->tipo,
+                        'catalogacion'=> $v->catalogacion,
                         // compatibilidad (si algún select/uso viejo esperaba "nombre")
                         'nombre' => trim(($v->patente ?? '') . ' - ' . ($v->modelo ?? '')),
                     ];
@@ -67,6 +69,23 @@ class OrigenController extends Controller
                         'area_nombre' => $e->area ? $e->area->nombre : '-',
                         // compatibilidad (si algún select/uso viejo esperaba "nombre")
                         'nombre' => trim(($e->equipamiento ?? '') . ' - ' . ($e->descripcion ?? '') . ' - ' . ($e->marca ?? '') . ' - ' . ($e->catalogacion ?? '')),
+                    ];
+                })
+                ->values();
+
+            return response()->json($items);
+        }
+
+        if ($model === \App\Models\Destino::class) {
+            $items = $model::query()
+                ->select('id', 'nombre', 'tipo', 'descripcion')
+                ->get()
+                ->map(function ($d) {
+                    return [
+                        'id' => $d->id,
+                        'nombre' => $d->nombre,
+                        'tipo' => $d->tipo,
+                        'descripcion' => $d->descripcion,
                     ];
                 })
                 ->values();

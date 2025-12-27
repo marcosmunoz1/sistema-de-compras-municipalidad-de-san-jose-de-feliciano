@@ -722,6 +722,19 @@
                     }
                 });
             }
+            //Filtro para que el destino no sea el mismo que el origen
+            function filtrarDestinoIgualAlOrigen(lista) {
+                const origenId = origenInput?.value;
+                const tipoOrigen = tipoShortDesdeClase(tipoSelect?.value);
+                const tipoDestino = tipoShortDesdeClase(destinoTipoSelect?.value);
+
+                // Si no hay origen seleccionado o no es el mismo tipo → no filtrar
+                if (!origenId || tipoOrigen !== tipoDestino) {
+                    return lista;
+                }
+
+                return lista.filter(dest => String(dest.id) !== String(origenId));
+            }
 
             function cargarDestinosEnTabla() {
                 if (!tablaDestinoBody || !tablaDestinoHead) return;
@@ -741,7 +754,7 @@
 
                 // Si ya está en cache, renderizar instantáneo
                 if (destinoCachePorTipo[tipoShort]) {
-                    destinosCache = destinoCachePorTipo[tipoShort];
+                    destinosCache = filtrarDestinoIgualAlOrigen(destinoCachePorTipo[tipoShort]);
                     paginaDestino = 1;
                     renderTablaDestino(destinosCache);
                     return;
@@ -753,7 +766,7 @@
                 // Si no, iniciar una y reutilizarla.
                 prefetchListado(tipoShort, destinoCachePorTipo, destinoPrefetchEnCursoPorTipo)
                     .then(lista => {
-                        destinosCache = lista;
+                        destinosCache = filtrarDestinoIgualAlOrigen(lista);
                         paginaDestino = 1;
                         renderTablaDestino(destinosCache);
                     })

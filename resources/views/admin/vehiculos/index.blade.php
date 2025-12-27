@@ -105,7 +105,7 @@
                             <td class="text-center">{{ $vehiculo->patente}}</td>
                             <td class="text-center">{{ $vehiculo->anio}}</td>
                             <td class="text-center">
-                                    <span class="badge {{ $vehiculo->estado ? 'badge-success' : 'badge-error' }}">
+                                    <span class="badge badge-sm {{ $vehiculo->estado ? 'badge-success' : 'badge-error' }}">
                                         {{ $vehiculo->estado ? 'Activo' : 'Inactivo' }}
                                     </span>
                                 </td>

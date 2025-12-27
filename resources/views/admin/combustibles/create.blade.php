@@ -578,14 +578,15 @@ focus:border-primary transition @error('empleado_id') input-error @enderror">
                 { key: 'anio',    label: 'Año' },
                 { key: 'color',   label: 'Color' },
                 { key: 'tipo',    label: 'Tipo' },
+                { key: 'catalogacion', label: 'Catalogación'}
             ];
         } else if (tipo === 'equipo') {
             columnasGlobal = [
-                { key: 'nombre',      label: 'Nombre' }, 
-                { key: 'tipo_equipo', label: 'Tipo equipo' },
+                { key: 'equipamiento', label: 'Equipamiento' },
                 { key: 'marca',       label: 'Marca' },
-                { key: 'modelo',      label: 'Modelo' },
-                { key: 'numero_serie',label: 'N° serie' },
+                { key: 'descripcion', label: 'Descripción' },
+                { key: 'area_nombre', label: 'Área' },
+                { key: 'catalogacion',label: 'Catalogación' },
             ];
         } else { // destino / otros
             columnasGlobal = [
@@ -600,12 +601,16 @@ focus:border-primary transition @error('empleado_id') input-error @enderror">
 
         tbody.innerHTML = '<tr><td class="py-4 text-center text-sm" colspan="'+columnasGlobal.length+'">Cargando...</td></tr>';
 
-        fetch('{{ url('api/destinos/combustible') }}/' + tipo) 
+        fetch('{{ url('origen/listar') }}/' + tipo) 
             .then(res => res.json())
             .then(data => {
                 destinosCache = data;
                 paginaActual = 1;   
                 renderTablaDestinos(destinosCache);
+            })
+            .catch(err => {
+                console.error('Error cargando destinos:', err);
+                tbody.innerHTML = '<tr><td class="py-4 text-center text-sm text-red-500" colspan="'+columnasGlobal.length+'">Error al cargar datos</td></tr>';
             });
     }
 
@@ -650,8 +655,8 @@ focus:border-primary transition @error('empleado_id') input-error @enderror">
                             ? `${dest.patente} - ${dest.marca ?? ''} ${dest.modelo ?? ''}`.trim()
                             : (dest.nombre ?? 'Sin datos'))
                     : tipoActual === 'equipo'
-                        ? (dest.nombre
-                            ? `${dest.nombre} - ${dest.tipo_equipo ?? ''} ${dest.marca ?? ''} ${dest.modelo ?? ''}`.trim()
+                        ? (dest.equipamiento
+                            ? `${dest.equipamiento} - ${dest.marca ?? ''} - ${dest.descripcion ?? ''}`.trim()
                             : 'Sin datos')
                     : (dest.nombre ?? 'Sin datos'); 
 

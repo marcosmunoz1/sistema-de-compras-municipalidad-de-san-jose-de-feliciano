@@ -88,7 +88,7 @@
                                 <td class="text-center">{{ $categoria->descripcion }}</td>
                                 <td class="text-center">{{ $categoria->created_at->format('d/m/Y H:i') }}</td>
                                 <td class="text-center">
-                                    <span class="badge {{ $categoria->estado ? 'badge-success' : 'badge-error' }}">
+                                    <span class="badge badge-sm {{ $categoria->estado ? 'badge-success' : 'badge-error' }}">
                                         {{ $categoria->estado ? 'Activo' : 'Inactivo' }}
                                     </span>
                                 </td>

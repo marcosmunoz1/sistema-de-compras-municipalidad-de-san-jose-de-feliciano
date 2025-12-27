@@ -94,7 +94,7 @@
                                     </span>
                                 </td>
                                 <td class="text-center">
-                                    <span class="badge {{ $equipo->estado ? 'badge-success' : 'badge-error' }}">
+                                    <span class="badge badge-sm {{ $equipo->estado ? 'badge-success' : 'badge-error' }}">
                                         {{ $equipo->estado ? 'Activo' : 'Inactivo' }}
                                     </span>
                                 </td>
