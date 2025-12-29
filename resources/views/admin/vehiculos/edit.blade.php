@@ -1,5 +1,5 @@
 @extends('layouts.admin')
-@section('title', 'Editar Vehículo') 
+@section('title', 'Editar Vehículo')
 
 @section('content')
     <!-- Título -->
@@ -98,11 +98,8 @@
                                 <label class="label">
                                     <span class="label-text font-medium">Área</span>
                                 </label>
-                                <input type="text" 
-                                    value="{{ $vehiculo->area->nombre }}"
-                                    class="input input-bordered w-full input-disabled"
-                                    disabled
-                                    readonly>
+                                <input type="text" value="{{ $vehiculo->area->nombre }}"
+                                    class="input input-bordered w-full input-disabled" disabled readonly>
                                 <!-- Hidden input para mantener el area_id -->
                                 <input type="hidden" name="area_id" value="{{ $vehiculo->area_id }}">
                             </div>
@@ -191,19 +188,51 @@
                                 @enderror
                             </div>
                         </div>
+                        <div class="grid grid-cols-2 gap-4">
+                            <!-- Chasis -->
+                            <div class="space-y-2">
+                                <label for="chasis" class="text-sm font-medium">N° de Chasis <span
+                                        class="text-red-600">*</span></label>
+                                <input id="chasis" name="chasis" value="{{ old('chasis', $vehiculo->chasis) }}"
+                                    class="w-full h-10 rounded-md border border-base-300 bg-base-200 px-3 text-sm 
+                                focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition @error('chasis') input-error @enderror"
+                                    placeholder="Número de Chasis..." required />
+                                @error('chasis')
+                                    <small class="text-red-500 error-message">{{ $message }}</small>
+                                @enderror
+                            </div>
 
-                        <!-- Chasis -->
-                        <div class="space-y-2">
-                            <label for="chasis" class="text-sm font-medium">N° de Chasis <span
-                                    class="text-red-600">*</span></label>
-                            <input id="chasis" name="chasis" value="{{ old('chasis', $vehiculo->chasis) }}"
-                                class="w-full h-10 rounded-md border border-base-300 bg-base-200 px-3 text-sm 
-                               focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition @error('chasis') input-error @enderror"
-                                placeholder="Número de Chasis..." required />
-                            @error('chasis')
-                                <small class="text-red-500 error-message">{{ $message }}</small>
-                            @enderror
+                            <!-- Tipo de combustible -->
+                            <div class="form-control w-full">
+                                <label class="label">
+                                    <span class="label-text font-medium">
+                                        Tipo de combustible <span class="text-error">*</span>
+                                    </span>
+                                </label>
+
+                                <select name="tipo_combustible_id"
+                                    class="select select-bordered w-full @error('tipo_combustible_id') select-error @enderror"
+                                    required>
+
+                                    <option disabled value="">Seleccionar tipo de combustible</option>
+
+                                    @foreach ($tiposCombustibles as $tipoCombustible)
+                                        <option value="{{ $tipoCombustible->id }}"
+                                            {{ old('tipo_combustible_id', $vehiculo->tipo_combustible_id) == $tipoCombustible->id ? 'selected' : '' }}>
+                                            {{ $tipoCombustible->nombre }}
+                                        </option>
+                                    @endforeach
+
+                                </select>
+
+                                @error('tipo_combustible_id')
+                                    <label class="label">
+                                        <span class="label-text-alt text-error">{{ $message }}</span>
+                                    </label>
+                                @enderror
+                            </div>
                         </div>
+
 
                     </div>
 

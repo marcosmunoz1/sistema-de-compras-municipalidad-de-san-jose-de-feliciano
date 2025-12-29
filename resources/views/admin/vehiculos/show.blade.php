@@ -1,5 +1,5 @@
 @extends('layouts.admin')
-@section('title', 'Ver Vehículo') 
+@section('title', 'Ver Vehículo')
 
 @section('content')
     <!-- Título -->
@@ -16,25 +16,25 @@
                 <span class="badge badge-error gap-2 px-3 py-2 mt-1">Inactivo</span>
             @endif
         </div>
-            
+
         <!-- Botones -->
         <div class="flex gap-2">
             @can('vehiculos-index')
-            <a href="{{ route('vehiculos.index') }}"
-                class="inline-flex items-center gap-2 h-9 px-4 py-2 rounded-md bg-warning text-sm hover:bg-accent">
-                <x-heroicon-o-arrow-left class="w-4 h-4 inline" />
-                Volver a Vehículos
-            </a>
+                <a href="{{ route('vehiculos.index') }}"
+                    class="inline-flex items-center gap-2 h-9 px-4 py-2 rounded-md bg-warning text-sm hover:bg-accent">
+                    <x-heroicon-o-arrow-left class="w-4 h-4 inline" />
+                    Volver a Vehículos
+                </a>
             @endcan
             @can('vehiculos-edit')
-            <a href="{{ route('vehiculos.edit', $vehiculo->id) }}"
-                class="inline-flex items-center gap-2 h-9 px-4 py-2 rounded-md text-sm bg-blue-600 hover:bg-blue-700 text-white">
-                <x-heroicon-o-pencil class="w-4 h-4 inline" />
-                Editar Vehículo
-            </a>
+                <a href="{{ route('vehiculos.edit', $vehiculo->id) }}"
+                    class="inline-flex items-center gap-2 h-9 px-4 py-2 rounded-md text-sm bg-blue-600 hover:bg-blue-700 text-white">
+                    <x-heroicon-o-pencil class="w-4 h-4 inline" />
+                    Editar Vehículo
+                </a>
             @endcan
         </div>
-        
+
     </div>
 
     <!-- Breadcrumbs -->
@@ -122,9 +122,7 @@
                                 <span class="label-text font-medium">Área
                             </label>
                             <select name="area_id"
-                                class="select select-bordered w-full @error('area_id') select-error @enderror"
-                                disabled
-                            >
+                                class="select select-bordered w-full @error('area_id') select-error @enderror" disabled>
                                 <option disabled value="">Seleccionar área</option>
 
                                 @foreach ($areas as $area)
@@ -204,11 +202,12 @@
                             <input type="text" name="catalogacion" value="{{ $vehiculo->catalogacion }}"
                                 placeholder="Ej: HP, Dell, Lenovo, Samsung"
                                 class="w-full h-10 rounded-md border border-base-300 bg-base-200 px-3 text-sm 
-                                focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition" readonly>
+                                focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition"
+                                readonly>
                         </div>
                     </div>
 
-                    <div class="grid grid-cols-1">
+                    <div class="grid grid-cols-2 gap-4">
                         <!-- Chasis -->
                         <div class="space-y-2">
                             <label for="chasis" class="text-sm font-medium">N° de Chasis</label>
@@ -216,6 +215,30 @@
                                 class="w-full h-10 rounded-md border border-base-300 bg-base-200 px-3 text-sm 
                                 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition"
                                 disabled />
+                        </div>
+
+                        <!-- Tipo de combustible -->
+                        <div class="form-control w-full">
+                            <label class="label">
+                                <span class="label-text font-medium">
+                                    Tipo de combustible
+                                </span>
+                            </label>
+
+                            <select name="tipo_combustible_id"
+                                class="select select-bordered w-full @error('tipo_combustible_id') select-error @enderror"
+                                disabled>
+
+                                <option disabled value="">Seleccionar tipo de combustible</option>
+
+                                @foreach ($tiposCombustibles as $tipoCombustible)
+                                    <option value="{{ $tipoCombustible->id }}"
+                                        {{ old('tipo_combustible_id', $vehiculo->tipo_combustible_id) == $tipoCombustible->id ? 'selected' : '' }}>
+                                        {{ $tipoCombustible->nombre }}
+                                    </option>
+                                @endforeach
+
+                            </select>
                         </div>
                     </div>
 
@@ -293,9 +316,9 @@
                                 <a href="{{ route('compras.show', [
                                     'id' => Crypt::encryptString($producto->compra_id),
                                     'from' => 'vehiculo',
-                                    'vehiculo_id' => $vehiculo->id
+                                    'vehiculo_id' => $vehiculo->id,
                                 ]) }}"
-                                class="btn btn-sm btn-primary">
+                                    class="btn btn-sm btn-primary">
                                     Ver compra
                                 </a>
                             @endif

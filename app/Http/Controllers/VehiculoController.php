@@ -168,6 +168,8 @@ class VehiculoController extends Controller
         $vehiculo = Vehiculo::findOrFail($id);
         $search = $request->input('search');
         $areas = Area::all();
+        $tiposCombustibles = Tipo_combustibles::all();
+
         // Traemos productos del vehículo con relación pivot
         $productos = DB::table('producto_vehiculo as pv')
             ->join('productos as p', 'p.id', '=', 'pv.producto_id')
@@ -207,7 +209,7 @@ class VehiculoController extends Controller
             ->selectRaw('SUM(pv.stock * COALESCE(dc.precio, 0)) as total')
             ->value('total');
 
-        return view('admin.vehiculos.show', compact('vehiculo', 'productos', 'totalGeneral', 'search', 'areas'));
+        return view('admin.vehiculos.show', compact('vehiculo', 'productos', 'totalGeneral', 'search', 'areas', 'tiposCombustibles'));
     }
 
     /**
@@ -215,8 +217,9 @@ class VehiculoController extends Controller
      */
     public function edit($id)
     {
-        $vehiculo = Vehiculo::withTrashed()->findOrFail($id);
-        return view('admin.vehiculos.edit', compact('vehiculo'));
+        $tiposCombustibles = Tipo_combustibles::all();
+        $vehiculo = Vehiculo::withTrashed()->with('area', 'tipo_combustible')->findOrFail($id);
+        return view('admin.vehiculos.edit', compact('vehiculo', 'tiposCombustibles'));
     }
 
     /**
@@ -237,10 +240,14 @@ class VehiculoController extends Controller
             'chasis'  => 'required|string|max:255|unique:vehiculos,chasis,' . $id,
             'motor'   => 'required|string|max:255|unique:vehiculos,motor,' . $id,
             'imagen'  => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:16384',
+            'tipo_combustible_id' => 'required|exists:tipo_combustibles,id'
         ], [
             'marca.required'   => 'La marca es obligatoria.',
             'marca.string'     => 'La marca debe ser texto.',
             'marca.max'        => 'La marca no puede superar los 255 caracteres.',
+
+            'tipo_combustible_id.required' => 'El tipo combustible es obligatorio.',
+            'tipo_combustible_id.exists'   => 'El tipo combustible seleccionado no es válido.',
 
             'tipo.required'    => 'El tipo de vehículo es obligatorio.',
             'tipo.string'      => 'El tipo debe ser texto.',
@@ -286,6 +293,7 @@ class VehiculoController extends Controller
         $vehiculo->anio = $request->anio;
         $vehiculo->chasis = $request->chasis;
         $vehiculo->motor = $request->motor;
+        $vehiculo->tipo_combustible_id = $request->tipo_combustible_id;
         // Manejo de la imagen
         if ($request->hasFile('imagen')) {
             if($vehiculo->imagen && Storage::disk('public')->exists($vehiculo->imagen)) {
