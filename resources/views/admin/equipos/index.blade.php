@@ -102,29 +102,36 @@
                                     <div class="flex items-center justify-center gap-2">
 
                                         {{-- Ver --}}
+                                        @can('equipos-show')
                                         <a href="{{ route('equipos.show', $equipo->id) }}" class="btn btn-info btn-sm">
                                             <x-heroicon-s-eye class="w-4 h-4" />
                                         </a>
+                                        @endcan
 
                                         {{-- Editar --}}
+                                        @can('equipos-edit')
                                         <a href="{{ route('equipos.edit', $equipo->id) }}" class="btn btn-warning btn-sm">
                                             <x-heroicon-s-pencil class="w-4 h-4" />
                                         </a>
-
+                                        @endcan
                                         {{-- Si está eliminado (tiene deleted_at) --}}
                                         @if ($equipo->trashed())
                                             {{-- Restaurar --}}
+                                            @can('equipos-restore')
                                             <button class="btn btn-sm btn-success"
                                                 onclick="abrirModalRestaurar('{{ url('/admin/equipos/' . $equipo->id . '/restore') }}')">
                                                 <x-heroicon-s-arrow-uturn-left class="w-4 h-4" />
                                             </button>
+                                            @endcan
                                             {{-- Si NO está eliminado --}}
                                         @else
                                             {{-- Eliminar --}}
+                                            @can('equipos-destroy')
                                             <button class="btn btn-error btn-sm"
                                                 onclick="confirmarEliminacion({{ $equipo->id }})">
                                                 <x-heroicon-s-trash class="w-4 h-4" />
                                             </button>
+                                            @endcan
                                         @endif
 
                                     </div>

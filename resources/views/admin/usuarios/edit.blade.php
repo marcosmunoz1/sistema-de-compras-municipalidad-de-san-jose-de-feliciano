@@ -1,13 +1,10 @@
 @extends('layouts.admin')
+@section('title', 'Editar Usuario')
 
 @section('content')
     <!-- Titulo y boton -->
     <div class="flex items-center justify-between mb-6">
         <h1 class="text-2xl font-semibold">Usuarios</h1>
-        <button onclick="crearUsuarioModal.showModal()" class="btn btn-primary">
-            Nuevo Usuario
-        </button>
-
     </div>
 
     <div class="breadcrumbs text-sm mb-6">
@@ -69,11 +66,13 @@
 
                                     <select name="role" class="select select-bordered w-full rounded-md border border-base-300 bg-base-200 focus:outline-none focus:ring-2 focus:ring-primary 
                                                                focus:border-primary transition">
-                                        @foreach ($roles as $role) 
-                                            <option value="{{ $role->name }}"
-                                                {{ $usuario->roles->first() && $usuario->roles->first()->name === $role->name ? 'selected' : '' }}>
-                                                {{ $role->name }}
-                                            </option>
+                                        @foreach ($roles as $role)
+                                            @if ($role->name !== 'Super-Admin' || auth()->user()->hasRole('Super-Admin'))
+                                                <option value="{{ $role->name }}"
+                                                    {{ $usuario->roles->first() && $usuario->roles->first()->name === $role->name ? 'selected' : '' }}>
+                                                    {{ $role->name }}
+                                                </option>
+                                            @endif
                                         @endforeach
                                     </select>
                                     @error('role')

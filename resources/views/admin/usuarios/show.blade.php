@@ -1,4 +1,5 @@
 @extends('layouts.admin')
+@section('title', 'Ver usuario')
 
 @section('content')
     <!-- Título -->
@@ -14,17 +15,31 @@
             @endif
         </div>
         <!-- Botones -->
+        @php
+            $usuarioLogueado = auth()->user();
+        @endphp
+
         <div class="flex gap-2">
             <a href="{{ route('usuarios.index') }}"
                 class="inline-flex items-center gap-2 h-9 px-4 py-2 rounded-md bg-warning text-sm hover:bg-accent">
                 <x-heroicon-o-arrow-left class="w-4 h-4 inline" />
                 Volver a Usuarios
             </a>
-            <a href="{{ route('usuarios.edit', $usuario->id) }}"
-                class="inline-flex items-center gap-2 h-9 px-4 py-2 rounded-md text-sm bg-blue-600 hover:bg-blue-700 text-white">
-                <x-heroicon-o-pencil class="w-4 h-4 inline" />
-                Editar Usuario
-            </a>
+            @can('usuarios-edit')
+                @if (
+                    // No es Super-Admin
+                    !$usuario->hasRole('Super-Admin') ||
+                        // o es él mismo
+                        $usuarioLogueado->id === $usuario->id ||
+                        // o el logueado es Super-Admin
+                        $usuarioLogueado->hasRole('Super-Admin'))
+                    <a href="{{ route('usuarios.edit', $usuario->id) }}"
+                        class="inline-flex items-center gap-2 h-9 px-4 py-2 rounded-md text-sm bg-blue-600 hover:bg-blue-700 text-white">
+                        <x-heroicon-o-pencil class="w-4 h-4 inline" />
+                        Editar Usuario
+                    </a>
+                @endif
+            @endcan
         </div>
     </div>
     <div class="breadcrumbs text-sm mb-6">
@@ -113,7 +128,6 @@
 
     <!-- Historial de Actividad -->
     <x-historial-actividad :model="$usuario" :limit="10" />
-
 @endsection
 
 @section('js')

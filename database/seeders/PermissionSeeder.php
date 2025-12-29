@@ -23,6 +23,8 @@ class PermissionSeeder extends Seeder
             // ROLES
             // ===============================
             ['name' => 'roles-index'],
+            ['name' => 'roles-show'],
+            ['name' => 'roles-edit'],
             ['name' => 'roles-store'],
             ['name' => 'roles-destroy'],
             ['name' => 'roles-asignar'],
@@ -32,6 +34,8 @@ class PermissionSeeder extends Seeder
             // PERMISOS
             // ===============================
             ['name' => 'permisos-index'],
+            ['name' => 'permisos-show'],
+            ['name' => 'permisos-edit'],
             ['name' => 'permisos-store'],
             ['name' => 'permisos-destroy'],
 
@@ -197,17 +201,44 @@ class PermissionSeeder extends Seeder
         $superAdminRole = Role::firstOrCreate(['name' => 'Super-Admin']);
         $superAdminRole->syncPermissions(Permission::all());
 
-        // Usuario superadmin
-        $superAdmin = \App\Models\User::firstOrCreate(
-            ['email' => 'superadmin@developer.com'],
+        // Usuario superadmin1
+        $superAdmin1 = \App\Models\User::firstOrCreate(
+            ['email' => 'nicodemaur@gmail.com'],
             [
-                'name' => 'Super Admin',
+                'name' => 'Nicolas De Mauri',
                 'password' => Hash::make('123456789'),
             ]
         );
 
-        $superAdmin->assignRole($superAdminRole);
+        $superAdmin1->assignRole($superAdminRole);
+
+        // Usuario superadmin2
+        $superAdmin2 = \App\Models\User::firstOrCreate(
+            ['email' => 'marcosdavidmunoz17@gmail.com'],
+            [
+                'name' => 'Marcos Muñoz',
+                'password' => Hash::make('123456789'),
+            ]
+        );
+
+        $superAdmin2->assignRole($superAdminRole);
+
+        // Crear rol Administrador con TODOS los permisos
+        $administradorRole = Role::firtOrCreate(['name' => 'Administrador']);
+        $administradorRole->syncPermissions(Permission::all());
+
+        // Usuario administrador
+        $administrador = User::firsOrCreate(
+            ['email' => 'damianarevalo@gmail.com'],
+            [
+                'name'=> 'Damian Arevalo',
+                'password' => Hash::make('123456789'),
+            ]
+        );
+
+        $administrador->syncPermissions(Permission::all());
 
         $this->command->info('Super-Admin creado con todos los permisos');
+        $this->command->info('Administrador creado con todos los permisos');
     }
 }

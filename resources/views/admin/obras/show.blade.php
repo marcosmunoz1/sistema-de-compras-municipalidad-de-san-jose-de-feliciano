@@ -8,16 +8,20 @@
         </div>
         <!-- Botones -->
         <div class="flex gap-2">
+            @can('obras-index')
             <a href="{{ route('obras.index') }}"
                 class="inline-flex items-center gap-2 h-9 px-4 py-2 rounded-md bg-warning text-sm hover:bg-accent">
                 <x-heroicon-o-arrow-left class="w-4 h-4 inline" />
                 Volver a Obras
             </a>
+            @endcan
+            @can('obras-edit')
             <a href="{{ route('obras.edit', $obra->id) }}"
                 class="inline-flex items-center gap-2 h-9 px-4 py-2 rounded-md text-sm bg-blue-600 hover:bg-blue-700 text-white">
                 <x-heroicon-o-pencil class="w-4 h-4 inline" />
                 Editar Obra
             </a>
+            @endcan
         </div>
     </div>
 
@@ -216,6 +220,7 @@
                         <td class="text-center">{{ $producto->stock_obra ?? 0 }}</td>
                         <td class="text-center">${{ number_format($producto->subtotal_real ?? 0, 2) }}</td>
                         <td class="text-center">
+                            @can('compras-show')
                             @if ($producto->compra_id)
                                 <a href="{{ route('compras.show', [
                                 'id' => Crypt::encryptString($producto->compra_id),
@@ -224,6 +229,7 @@
                                     class="btn btn-sm btn-primary">
                                     Ver compra
                                 </a>
+                            @endcan
                             @else
                                 —
                             @endif

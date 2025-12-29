@@ -148,7 +148,7 @@ Route::get('/admin/depositos/{deposito}/productos', [App\Http\Controllers\Produc
 // Rutas para Destinos 
 Route::post('/admin/destinos/store', [App\Http\Controllers\DestinoController::class, 'store'])->name('destinos.store')->middleware('auth', 'can:destinos-store');
 
-
+/*
 Route::get('/api/destinos/{tipo}', function ($tipo) {
 
     // Config de modelos y campos correctos
@@ -170,7 +170,7 @@ Route::get('/api/destinos/{tipo}', function ($tipo) {
     // SELECT seguro, sin confundir columnas
     return $modelo::select('id', "$campo as nombre")->get();
 });
-
+*/
 Route::get('/api/destinos/{tipo}', function ($tipo) {
 
     $map = [
@@ -188,6 +188,11 @@ Route::get('/api/destinos/{tipo}', function ($tipo) {
     $campo  = $map[$tipo]['campo'];
 
     $query = $modelo::select('id', "$campo as nombre");
+
+    // Excluir inactivos SOLO en modelos que tienen estado
+    if (in_array($tipo, ['obra', 'vehiculo', 'equipo'])) {
+        $query->where('estado', '!=', 0);
+    }
 
     // 🔎 Filtro SOLO para obras
     if ($tipo === 'obra') {

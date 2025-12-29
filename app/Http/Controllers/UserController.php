@@ -53,8 +53,10 @@ class UserController extends Controller
             ->paginate(10)->withQueryString();
 
         $roles = Role::all();
+        $usuarioLogueado = auth()->user();
 
-        return view('admin.usuarios.index', compact('usuarios', 'roles', 'contador'));
+
+        return view('admin.usuarios.index', compact('usuarios', 'roles', 'contador', 'usuarioLogueado'));
     }
 
 
@@ -134,6 +136,39 @@ class UserController extends Controller
      */
     public function update(Request $request, $id )
     {
+        $authUser = auth()->user();
+        $user = User::findOrFail($id);
+
+        /*
+        |--------------------------------------------------------------------------
+        | PROTECCIÓN DE ROLES
+        |--------------------------------------------------------------------------
+        */
+
+        // Si intenta editar a un Super-Admin
+        if (
+            $user->hasRole('Super-Admin') &&
+            !$authUser->hasRole('Super-Admin')
+        ) {
+            return redirect()
+                ->back()
+                ->with('mensaje', 'No tenés permisos para editar este usuario.')
+                ->with('icono', 'error');
+        }
+
+        // Si es Administrador y quiere editar a otro Administrador
+        if (
+            $authUser->hasRole('Administrador') &&
+            $user->hasRole('Administrador') &&
+            $authUser->id !== $user->id
+        ) {
+            return redirect()
+                ->back()
+                ->with('mensaje', 'No tenés permisos para editar este usuario.')
+                ->with('icono', 'error');
+        }
+
+
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users,email,' . $request->id,
@@ -176,7 +211,9 @@ class UserController extends Controller
 
         $user->syncRoles([$request->role]);
 
-        return redirect()->route('usuarios.index')->with('success', 'Usuario actualizado exitosamente.');
+        return redirect()->route('usuarios.index')
+        ->with('mensaje', 'Usuario actualizado exitosamente.')
+        ->with('icono', 'success');
     }
 
     /**

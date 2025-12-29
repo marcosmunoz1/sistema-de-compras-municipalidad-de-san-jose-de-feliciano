@@ -13,7 +13,7 @@
     <script src="https://cdn.datatables.net/2.0.5/js/dataTables.min.js"></script>
 
     <link rel="icon" href="{{ asset('favicon.ico') }}" sizes="any">
-    <link rel="icon" type="image/png" href="{{ asset('storage/login/logo-removebg-preview.png') }}"> 
+    <link rel="icon" type="image/png" href="{{ asset('logo/logo-removebg-preview.png') }}"> 
 
     <!-- Vite -->
     @vite(['resources/css/app.css', 'resources/js/app.js']) 
@@ -81,7 +81,7 @@
                 <div class="dropdown dropdown-end ml-2">
                     <label tabindex="0" class="btn btn-circle avatar">
                         <div class="w-10 rounded-full">
-                            <img src="{{ asset('storage/login/logo-removebg-preview.png') }}" />
+                            <img src="{{ asset('logo/logo-removebg-preview.png') }}" />
                         </div>
                     </label>
                     <ul tabindex="0" class="menu dropdown-content mt-3 z-[1] p-2 shadow bg-base-200 rounded-box w-52">
@@ -113,7 +113,7 @@
                 
                 {{-- LOGO / TÍTULO --}}
                 <div class="flex items-center gap-3 px-4 py-5 border-b border-base-300">
-                    <img src="{{ asset('storage/login/logo-removebg-preview.png') }}" class="w-10 h-10 rounded-lg" alt="Logo"/>
+                    <img src="{{ asset('logo/logo-removebg-preview.png') }}" class="w-10 h-10 rounded-lg" alt="Logo"/>
                     <div>
                         <h2 class="font-bold text-base leading-tight">Sistema Municipal</h2>
                         <span class="text-xs text-base-content/60">Panel de Gestión</span>
@@ -314,7 +314,7 @@
                     <div class="flex items-center gap-3">
                         <div class="avatar">
                             <div class="rounded-full w-9">
-                                <img src="{{ asset('storage/login/logo-removebg-preview.png') }}" alt="Logo" />
+                                <img src="{{ asset('logo/logo-removebg-preview.png') }}" alt="Logo" />
                             </div>
                         </div>
                         <div class="flex-1 min-w-0">

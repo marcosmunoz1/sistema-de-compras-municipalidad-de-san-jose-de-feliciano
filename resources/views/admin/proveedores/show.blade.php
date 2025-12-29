@@ -6,16 +6,20 @@
  <div class="flex items-center justify-between mb-6">
     <h1 class="text-2xl font-semibold">Ver Proveedor: {{ $proveedor->empresa }}</h1> 
     <div class="flex gap-2">
+        @can('proveedores-index')
         <a href="{{ route('proveedores.index') }}"
             class="inline-flex items-center gap-2 h-9 px-4 py-2 rounded-md bg-warning text-sm hover:bg-accent">
                 <x-heroicon-o-arrow-left class="w-4 h-4 inline" />
                 Volver a Proveedores
         </a>
+        @endcan
+        @can('proveedores-edit')
         <a href="{{ route('proveedores.edit', $proveedor->id) }}"
             class="inline-flex items-center gap-2 h-9 px-4 py-2 rounded-md text-sm bg-blue-600 hover:bg-blue-700 text-white">
                 <x-heroicon-o-pencil class="w-4 h-4 inline" />
                 Editar Proveedor 
         </a>
+        @endcan
     </div>
  </div> 
  <div class="breadcrumbs text-sm mb-6">

@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Area;
+use App\Models\Tipo_combustibles;
 use App\Models\Vehiculo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\Rules\Exists;
 
 class VehiculoController extends Controller
 {
@@ -66,7 +68,8 @@ class VehiculoController extends Controller
     public function create()
     {
         $areas = Area::all();
-        return view('admin.vehiculos.create', compact('areas'));
+        $tiposCombustibles = Tipo_combustibles::all();
+        return view('admin.vehiculos.create', compact('areas', 'tiposCombustibles'));
     }
 
     /**
@@ -87,9 +90,13 @@ class VehiculoController extends Controller
             'chasis' => 'nullable|string|max:255|unique:vehiculos,chasis',
             'motor' => 'nullable|string|max:255|unique:vehiculos,motor',
             'imagen' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:16384',
+            'tipo_combustible_id' => 'required|exists:tipo_combustibles,id'
         ], [
             'area_id.required' => 'El área es obligatoria.',
             'area_id.exists'   => 'El área seleccionada no es válida.',
+
+            'tipo_combustible_id.required' => 'El tipo combustible es obligatorio.',
+            'tipo_combustible_id.exists'   => 'El tipo combustible seleccionado no es válido.',
 
             'marca.required'   => 'La marca es obligatoria.',
             'marca.string'     => 'La marca debe ser texto.',
@@ -137,6 +144,7 @@ class VehiculoController extends Controller
         $vehiculo->anio = $request->anio;
         $vehiculo->chasis = $request->chasis;
         $vehiculo->motor = $request->motor;
+        $vehiculo->tipo_combustible_id = $request->tipo_combustible_id;
 
         // Manejo de la imagen
         if ($request->hasFile('imagen')) {

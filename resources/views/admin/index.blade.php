@@ -1,8 +1,8 @@
 @extends('layouts.admin')
 @section('title', 'Inicio')  
 @section('content')
+    <h3>¡Bienvenido {{ Auth::user()->name }}!</h3>
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-
         @can('proveedores-index')
         {{-- CARD PROVEEDORES --}}
         <div class="card bg-primary text-neutral-content shadow-xl hover:scale-[1.02] transition-transform">

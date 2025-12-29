@@ -200,7 +200,7 @@
                             </div>
                         </div>
 
-                        <div class="grid grid-cols-1">
+                        <div class="grid grid-cols-2">
                             <!-- Chasis -->
                             <div class="space-y-2">
                                 <label for="chasis" class="text-sm font-medium">N° de Chasis (Opcional)</label>
@@ -210,6 +210,27 @@
                                     placeholder="Número de Chasis..." required />
                                 @error('chasis')
                                     <small class="text-red-500 error-message">{{ $message }}</small>
+                                @enderror
+                            </div>
+
+                            <div class="form-control w-full">
+                                <label class="label">
+                                    <span class="label-text font-medium">Tipo de combustible <span class="text-error">*</span></span>
+                                </label>
+                                <select name="tipo_combustible_id" 
+                                        class="select select-bordered w-full @error('tipo_combustible_id') select-error @enderror"
+                                        required>
+                                    <option disabled selected value="">Seleccionar tipo de combustible</option>
+                                    @foreach($tiposCombustibles as $tipoCombustible)
+                                        <option value="{{ $tipoCombustible->id }}" {{ old('tipo_combustible_id') == $tipoCombustible->id ? 'selected' : '' }}>
+                                            {{ $tipoCombustible->nombre }} 
+                                        </option>
+                                    @endforeach
+                                </select>
+                                @error('tipo_combustible_id')
+                                    <label class="label">
+                                        <span class="label-text-alt text-error">{{ $message }}</span>
+                                    </label>
                                 @enderror
                             </div>
                         </div>

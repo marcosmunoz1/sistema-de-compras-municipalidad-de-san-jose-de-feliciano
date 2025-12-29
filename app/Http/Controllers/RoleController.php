@@ -16,9 +16,16 @@ class RoleController extends Controller
     public function index()
     {
         $contador = 1;
-        $roles = Role::all();
+
+        $roles = Role::query()
+            ->when(!auth()->user()->hasRole('Super-Admin'), function ($query) {
+                $query->where('name', '!=', 'Super-Admin');
+            })
+            ->get();
+
         return view('admin.roles.index', compact('contador', 'roles'));
     }
+
 
     /**
      * Show the form for creating a new resource.
@@ -60,6 +67,14 @@ class RoleController extends Controller
         if ($request->input('accion') == "2") {
 
             $role = Role::findOrFail($request->id);
+
+            // 🔒 PROTECCIÓN DE ROLES CRÍTICOS
+            if (in_array($role->name, ['Super-Admin', 'Administrador'])) {
+                return redirect()->back()
+                    ->with('mensaje', 'No podés editar este rol 🚫')
+                    ->with('icono', 'error');
+            }
+
             $role->name = $request->name;
             $role->save();
 
@@ -84,8 +99,6 @@ class RoleController extends Controller
                 return 'Roles';
             } elseif (stripos($permiso->name, 'perm') !== false || stripos($permiso->name, 'per') !== false) {
                 return 'Permisos';
-            }elseif (stripos($permiso->name, 'back') !== false) {
-                return 'Backups';
             } elseif (stripos($permiso->name, 'empl') !== false) {
                 return 'Empleados';
             } elseif (stripos($permiso->name, 'prov') !== false) {
@@ -126,7 +139,7 @@ class RoleController extends Controller
         return view('admin.roles.asignar', compact('rol', 'permisosDivididos', 'permisos', 'traducciones'));
     }
     
-     public function update_asignar(Request $request, $id)
+    public function update_asignar(Request $request, $id)
     {
         $request->validate([
             'permisos' => 'required|array',
@@ -138,12 +151,23 @@ class RoleController extends Controller
         /** @var \App\Models\User $userLogueado */
         $userLogueado = Auth::user();
 
-        //Bloquear cambios si el rol es Super-Admin y quien edita no lo es
-        if (strtolower($rol->name) === 'super-admin' && !optional($userLogueado)->hasRole('Super-Admin')) {
+        /*
+        |--------------------------------------------------------------------------
+        | PROTECCIÓN DE ROLES CRÍTICOS
+        |--------------------------------------------------------------------------
+        */
+
+        if (in_array($rol->name, ['Super-Admin', 'Administrador'])) {
             return redirect()->back()
-                ->with('mensaje', 'No podés modificar los permisos del rol Super-Admin 🚫')
+                ->with('mensaje', 'No podés modificar los permisos de este rol 🚫')
                 ->with('icono', 'error');
         }
+
+        /*
+        |--------------------------------------------------------------------------
+        | SINCRONIZAR PERMISOS
+        |--------------------------------------------------------------------------
+        */
 
         // Sincronizar permisos
         $rol->permissions()->sync($request->input('permisos'));
@@ -192,6 +216,14 @@ class RoleController extends Controller
     public function destroy($id)
     {
         $role = Role::findOrFail($id);
+
+        // 🔒 PROTECCIÓN DE ROLES CRÍTICOS
+        if (in_array($role->name, ['Super-Admin', 'Administrador'])) {
+            return redirect()->back()
+                ->with('mensaje', 'No podés eliminar este rol 🚫')
+                ->with('icono', 'error');
+        }
+
         $role->delete();
 
         return redirect()->route('admin.roles.index')

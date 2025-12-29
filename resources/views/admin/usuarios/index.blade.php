@@ -1,14 +1,14 @@
 @extends('layouts.admin')
-@section('title', 'Usuarios') 
+@section('title', 'Usuarios')
 @section('content')
 
     <!-- Titulo y boton -->
     <div class="flex items-center justify-between mb-6">
         <h1 class="text-2xl font-semibold">Usuarios</h1>
-        @can('usuarios-store') 
-        <button onclick="crearUsuarioModal.showModal()" class="btn btn-primary">
-            <x-heroicon-o-plus class="w-5 h-5" />Nuevo Usuario
-        </button>
+        @can('usuarios-store')
+            <button onclick="crearUsuarioModal.showModal()" class="btn btn-primary">
+                <x-heroicon-o-plus class="w-5 h-5" />Nuevo Usuario
+            </button>
         @endcan
 
     </div>
@@ -86,7 +86,9 @@
                                 <td class="text-center"> {{ $usuario->email }}</td>
                                 <td class="text-center">
                                     <div
-                                        class="badge badge-sm text-xs badge-info h-auto items-start whitespace-normal break-words px-3 py-0"><strong>{{ $usuario->roles->pluck('name')->join(', ') }}</strong></div>
+                                        class="badge badge-sm text-xs badge-info h-auto items-start whitespace-normal break-words px-3 py-0">
+                                        <strong>{{ $usuario->roles->pluck('name')->join(', ') }}</strong>
+                                    </div>
                                 </td>
                                 <td class="text-center">{{ $usuario->last_login_at?->format('d/m/Y H:i') ?? 'Nunca' }}</td>
                                 <td class="text-center">{{ $usuario->last_logout_at?->format('d/m/Y H:i') ?? 'Nunca' }}
@@ -100,36 +102,51 @@
                                     <div class="flex items-center justify-center gap-2">
                                         {{-- Ver --}}
                                         @can('usuarios-show')
-                                        <a href="{{ url('/admin/usuarios/' . $usuario->id) }}" class="btn btn-info btn-sm">
-                                            <x-heroicon-s-eye class="w-4 h-4" />
-                                        </a>
+                                            <a href="{{ url('/admin/usuarios/' . $usuario->id) }}" class="btn btn-info btn-sm">
+                                                <x-heroicon-s-eye class="w-4 h-4" />
+                                            </a>
                                         @endcan
                                         {{-- Editar --}}
                                         @can('usuarios-edit')
-                                        <a class="btn btn-warning btn-sm"
-                                            href="{{ url('/admin/usuarios/' . $usuario->id . '/edit') }}">
-                                            <x-heroicon-s-pencil class="w-4 h-4" />
-                                        </a>
+                                            @if (
+                                                // No es Super-Admin
+                                                !$usuario->hasRole('Super-Admin') ||
+                                                    // o es él mismo
+                                                    $usuarioLogueado->id === $usuario->id ||
+                                                    // o el logueado es Super-Admin
+                                                    $usuarioLogueado->hasRole('Super-Admin'))
+                                                <a class="btn btn-warning btn-sm"
+                                                    href="{{ url('/admin/usuarios/' . $usuario->id . '/edit') }}">
+                                                    <x-heroicon-s-pencil class="w-4 h-4" />
+                                                </a>
+                                            @endif
                                         @endcan
-                                        {{-- Si está eliminado (tiene deleted_at) --}}
+
+                                        {{-- Si está eliminado --}}
                                         @if ($usuario->trashed())
                                             {{-- Restaurar --}}
                                             @can('usuarios-restore')
-                                            <button class="btn btn-sm btn-success"
-                                                onclick="abrirModalRestaurar('{{ url('/admin/usuarios/' . $usuario->id . '/restore') }}')">
-                                                <x-heroicon-s-arrow-uturn-left class="w-4 h-4" />
-                                            </button>
+                                                @if (!$usuario->hasAnyRole(['Super-Admin', 'Administrador']) || auth()->user()->hasRole('Super-Admin'))
+                                                    <button class="btn btn-sm btn-success"
+                                                        onclick="abrirModalRestaurar('{{ url('/admin/usuarios/' . $usuario->id . '/restore') }}')">
+                                                        <x-heroicon-s-arrow-uturn-left class="w-4 h-4" />
+                                                    </button>
+                                                @endif
                                             @endcan
-                                            {{-- Si NO está eliminado --}}
                                         @else
-                                            {{-- Eliminar --}}
                                             @can('usuarios-destroy')
-                                            <button class="btn btn-error btn-sm"
-                                                onclick="confirmarEliminacion({{ $usuario->id }})">
-                                                <x-heroicon-s-trash class="w-4 h-4" />
-                                            </button>
+                                                @if (
+                                                    !$usuario->hasRole('Super-Admin') ||
+                                                        $usuarioLogueado->id === $usuario->id ||
+                                                        $usuarioLogueado->hasRole('Super-Admin'))
+                                                    <button class="btn btn-error btn-sm"
+                                                        onclick="confirmarEliminacion({{ $usuario->id }})">
+                                                        <x-heroicon-s-trash class="w-4 h-4" />
+                                                    </button>
+                                                @endif
                                             @endcan
                                         @endif
+
                                     </div>
                                 </td>
                             </tr>
@@ -137,12 +154,13 @@
                     </tbody>
                 </table>
             </div>
-             @if ($usuarios->hasPages()) 
+            @if ($usuarios->hasPages())
                 <div class="flex flex-col md:flex-row justify-between items-center mt-6 px-3 gap-4">
 
                     <!-- Texto "Mostrando X - Y" -->
                     <div class="text-sm text-gray-500">
-                        Mostrando {{ $usuarios->firstItem() }} - {{ $usuarios->lastItem() }} de {{ $usuarios->total() }} registros
+                        Mostrando {{ $usuarios->firstItem() }} - {{ $usuarios->lastItem() }} de {{ $usuarios->total() }}
+                        registros
                     </div>
 
                     <!-- Controles de paginación estilo DaisyUI -->
@@ -169,7 +187,7 @@
                             $totalPages = $usuarios->lastPage();
                             $start = max(1, $currentPage - 2);
                             $end = min($totalPages, $currentPage + 2);
-                            
+
                             // Ajustar para mostrar siempre 5 páginas cuando sea posible
                             if ($end - $start < 4) {
                                 if ($start == 1) {
@@ -184,7 +202,8 @@
                             @if ($i == $currentPage)
                                 <button class="join-item btn btn-square btn-active">{{ $i }}</button>
                             @else
-                                <a href="{{ $usuarios->url($i) }}" class="join-item btn btn-square">{{ $i }}</a>
+                                <a href="{{ $usuarios->url($i) }}"
+                                    class="join-item btn btn-square">{{ $i }}</a>
                             @endif
                         @endfor
 
@@ -193,7 +212,8 @@
                             @if ($usuarios->currentPage() < $totalPages - 4)
                                 <button class="join-item btn btn-square btn-disabled">...</button>
                             @endif
-                            <a href="{{ $usuarios->url($totalPages) }}" class="join-item btn btn-square">{{ $totalPages }}</a>
+                            <a href="{{ $usuarios->url($totalPages) }}"
+                                class="join-item btn btn-square">{{ $totalPages }}</a>
                         @endif
 
                         {{-- Botón Siguiente --}}
@@ -226,21 +246,33 @@
                         <input type="text" name="name" value="{{ old('name') }}"
                             class="w-full h-10 rounded-md border border-base-300 
                             bg-base-200 px-3 text-sm focus:outline-none focus:ring-2 
-                            focus:ring-primary focus:border-primary transition" placeholder="Ej: Pablo Perez" required>
+                            focus:ring-primary focus:border-primary transition"
+                            placeholder="Ej: Pablo Perez" required>
                         @error('name')
                             <small class="text-red-500">{{ $message }}</small>
                         @enderror
                     </div>
 
                     <div class="form-control">
-                        <label class="label"><span class="label-text">Rol</span></label>
-                        <select name="role" class="select select-bordered w-full rounded-md border border-base-300 bg-base-200 focus:outline-none focus:ring-2 focus:ring-primary 
-                                                   focus:border-primary transition">
+                        <label class="label">
+                            <span class="label-text">Rol</span>
+                        </label>
+
+                        <select name="role"
+                            class="select select-bordered w-full rounded-md border border-base-300 bg-base-200
+                                focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition">
+
                             @foreach ($roles as $role)
-                                <option value="{{ $role->name }}">{{ $role->name }}</option>
+                                @if ($role->name !== 'Super-Admin' || auth()->user()->hasRole('Super-Admin'))
+                                    <option value="{{ $role->name }}">
+                                        {{ $role->name }}
+                                    </option>
+                                @endif
                             @endforeach
+
                         </select>
                     </div>
+
                 </div>
 
                 <!-- Correo -->
@@ -249,7 +281,8 @@
                     <input type="email" name="email" value="{{ old('email') }}"
                         class="w-full h-10 rounded-md border border-base-300 
                             bg-base-200 px-3 text-sm focus:outline-none focus:ring-2 
-                            focus:ring-primary focus:border-primary transition" placeholder="Ej: pabloperez@gmail.com" required>
+                            focus:ring-primary focus:border-primary transition"
+                        placeholder="Ej: pabloperez@gmail.com" required>
                     @error('email')
                         <small class="text-red-500">{{ $message }}</small>
                     @enderror
@@ -260,9 +293,11 @@
 
                     <div class="form-control">
                         <label class="label"><span class="label-text">Contraseña</span></label>
-                        <input type="password" name="password" class="w-full h-10 rounded-md border border-base-300 
+                        <input type="password" name="password"
+                            class="w-full h-10 rounded-md border border-base-300 
                             bg-base-200 px-3 text-sm focus:outline-none focus:ring-2 
-                            focus:ring-primary focus:border-primary transition" required>
+                            focus:ring-primary focus:border-primary transition"
+                            required>
                         @error('password')
                             <small class="text-red-500">{{ $message }}</small>
                         @enderror
@@ -270,9 +305,11 @@
 
                     <div class="form-control">
                         <label class="label"><span class="label-text">Confirmar contraseña</span></label>
-                        <input type="password" name="password_confirmation" class="w-full h-10 rounded-md border border-base-300 
+                        <input type="password" name="password_confirmation"
+                            class="w-full h-10 rounded-md border border-base-300 
                             bg-base-200 px-3 text-sm focus:outline-none focus:ring-2 
-                            focus:ring-primary focus:border-primary transition" required>
+                            focus:ring-primary focus:border-primary transition"
+                            required>
                         @error('password_confirmation')
                             <small class="text-red-500">{{ $message }}</small>
                         @enderror

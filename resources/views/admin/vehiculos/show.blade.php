@@ -16,21 +16,25 @@
                 <span class="badge badge-error gap-2 px-3 py-2 mt-1">Inactivo</span>
             @endif
         </div>
-
+            
         <!-- Botones -->
         <div class="flex gap-2">
+            @can('vehiculos-index')
             <a href="{{ route('vehiculos.index') }}"
                 class="inline-flex items-center gap-2 h-9 px-4 py-2 rounded-md bg-warning text-sm hover:bg-accent">
                 <x-heroicon-o-arrow-left class="w-4 h-4 inline" />
                 Volver a Vehículos
             </a>
+            @endcan
+            @can('vehiculos-edit')
             <a href="{{ route('vehiculos.edit', $vehiculo->id) }}"
                 class="inline-flex items-center gap-2 h-9 px-4 py-2 rounded-md text-sm bg-blue-600 hover:bg-blue-700 text-white">
                 <x-heroicon-o-pencil class="w-4 h-4 inline" />
                 Editar Vehículo
             </a>
+            @endcan
         </div>
-
+        
     </div>
 
     <!-- Breadcrumbs -->

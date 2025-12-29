@@ -18,16 +18,20 @@
 
         <!-- Botones -->
         <div class="flex gap-2">
+            @can('equipos-index')
             <a href="{{ route('vehiculos.index') }}"
                 class="inline-flex items-center gap-2 h-9 px-4 py-2 rounded-md bg-warning text-sm hover:bg-accent">
                 <x-heroicon-o-arrow-left class="w-4 h-4 inline" />
                 Volver a Equipos
             </a>
+            @endcan
+            @can('equipos-edit')
             <a href="{{ route('equipos.edit', $equipo->id) }}"
                 class="inline-flex items-center gap-2 h-9 px-4 py-2 rounded-md text-sm bg-blue-600 hover:bg-blue-700 text-white">
                 <x-heroicon-o-pencil class="w-4 h-4 inline" />
                 Editar Equipo
             </a>
+            @endcan
         </div>
 
     </div>
