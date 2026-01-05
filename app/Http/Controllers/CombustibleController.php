@@ -19,11 +19,23 @@ class CombustibleController extends Controller
      * Display a listing of the resource.
      */
     public function index(Request $request) 
-    {       $totalMonto = Combustible::sum('monto');
-            $totalLitros = Combustible::sum('litros'); 
-            $totalCargas =  Combustible::count(); 
+    {       
             $tipos_combustibles = Tipo_combustibles::all(); 
-            $search = $request->get('search'); 
+            $search = $request->get('search');
+
+            //Consulta de datos según periodos
+            $desde = $request->desde;
+            $hasta = $request->hasta;
+
+            $consulta = Combustible::query();
+
+            if ($desde && $hasta) {
+                $consulta->whereBetween('fecha', [$desde, $hasta]);
+            }
+
+            $totalMonto = $consulta->sum('monto');
+            $totalLitros = $consulta->sum('litros');
+            $totalCargas = $consulta->count();
 
             $query = Combustible::with('destino')->withTrashed()->orderBy('id', 'desc');  
             if ($search) {
