@@ -26,35 +26,66 @@ class CombustibleController extends Controller
         $desde = $request->desde;
         $hasta = $request->hasta;
 
+        // 🧠 Detectar si el search es una fecha DD/MM/YYYY
+        $fechaFormateada = null;
+
+        if (!empty($search)) {
+            $formatos = ['d/m/Y', 'd-m-Y', 'Y-m-d'];
+
+            foreach ($formatos as $formato) {
+                try {
+                    $fechaFormateada = \Carbon\Carbon::createFromFormat($formato, trim($search))
+                        ->format('Y-m-d');
+                    break;
+                } catch (\Exception $e) {
+                    // seguimos intentando
+                }
+            }
+        }
+
+
         // QUERY BASE (UNO SOLO)
         $query = Combustible::with(['destino', 'empleado'])
             ->withTrashed()
             ->orderBy('id', 'desc');
 
         // Filtro por fechas
-        if ($desde && $hasta) {
+        if ($desde && $hasta && !$search) {
             $query->whereBetween('fecha', [$desde, $hasta]);
         }
 
+
         // Filtro de búsqueda
         if ($search) {
-            $query->where(function ($q) use ($search) {
-                $q->where('codigo', 'like', "%{$search}%")
+            $query->where(function ($q) use ($search, $fechaFormateada) {
+
+                // 🔹 Fecha escrita (DD/MM/YYYY, Y-m-d, etc.)
+                if ($fechaFormateada) {
+                    $q->orWhereDate('fecha', $fechaFormateada);
+                }
+
+                // 🔹 Campos propios
+                $q->orWhere('codigo', 'like', "%{$search}%")
                 ->orWhere('estacion', 'like', "%{$search}%")
+
+                // 🔹 Destino polimórfico
                 ->orWhereHasMorph(
                     'destino',
-                    [Vehiculo::class], // agregá más si hace falta
+                    [Vehiculo::class],
                     function ($d) use ($search) {
                         $d->where('marca', 'like', "%{$search}%")
-                        ->orWhere('patente', 'like', "%{$search}%")
-                        ->orWhere('modelo', 'like', "%{$search}%");
+                            ->orWhere('patente', 'like', "%{$search}%")
+                            ->orWhere('modelo', 'like', "%{$search}%");
                     }
                 )
-                ->orWhereHas('empleado', function ($v) use ($search) {
-                    $v->where('nombre', 'like', "%{$search}%");
+
+                // 🔹 Empleado
+                ->orWhereHas('empleado', function ($e) use ($search) {
+                    $e->where('nombre', 'like', "%{$search}%");
                 });
             });
         }
+
 
         // CLONAMOS para las cards
         $totalesQuery = clone $query;
