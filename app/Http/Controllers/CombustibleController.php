@@ -18,36 +18,63 @@ class CombustibleController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request) 
-    {       
-            $tipos_combustibles = Tipo_combustibles::all(); 
-            $search = $request->get('search');
+    public function index(Request $request)
+    {
+        $tipos_combustibles = Tipo_combustibles::all();
+        $search = $request->get('search');
 
-            //Consulta de datos según periodos
-            $desde = $request->desde;
-            $hasta = $request->hasta;
+        $desde = $request->desde;
+        $hasta = $request->hasta;
 
-            $consulta = Combustible::query();
+        // QUERY BASE (UNO SOLO)
+        $query = Combustible::with(['destino', 'empleado'])
+            ->withTrashed()
+            ->orderBy('id', 'desc');
 
-            if ($desde && $hasta) {
-                $consulta->whereBetween('fecha', [$desde, $hasta]);
-            }
+        // Filtro por fechas
+        if ($desde && $hasta) {
+            $query->whereBetween('fecha', [$desde, $hasta]);
+        }
 
-            $totalMonto = $consulta->sum('monto');
-            $totalLitros = $consulta->sum('litros');
-            $totalCargas = $consulta->count();
+        // Filtro de búsqueda
+        if ($search) {
+            $query->where(function ($q) use ($search) {
+                $q->where('codigo', 'like', "%{$search}%")
+                ->orWhere('estacion', 'like', "%{$search}%")
+                ->orWhereHasMorph(
+                    'destino',
+                    [Vehiculo::class], // agregá más si hace falta
+                    function ($d) use ($search) {
+                        $d->where('marca', 'like', "%{$search}%")
+                        ->orWhere('patente', 'like', "%{$search}%")
+                        ->orWhere('modelo', 'like', "%{$search}%");
+                    }
+                )
+                ->orWhereHas('empleado', function ($v) use ($search) {
+                    $v->where('nombre', 'like', "%{$search}%");
+                });
+            });
+        }
 
-            $query = Combustible::with('destino')->withTrashed()->orderBy('id', 'desc');  
-            if ($search) {
-                $query->where('codigo', 'like', "%{$search}%")
-                      ->orWhere('estacion', 'like', "%{$search}%")
-                      ->orWhereHas('vehiculo', function ($q) use ($search) {
-                        $q->where('marca', 'LIKE', "%{$search}%");
-                    });
-            }
-            $combustibles = $query->paginate(10); 
-        return view('admin.combustibles.index', compact('combustibles', 'tipos_combustibles', 'totalMonto', 'totalLitros','totalCargas')); 
+        // CLONAMOS para las cards
+        $totalesQuery = clone $query;
+
+        $totalMonto  = $totalesQuery->sum('monto');
+        $totalLitros = $totalesQuery->sum('litros');
+        $totalCargas = $totalesQuery->count();
+
+        // TABLA + PAGINACIÓN
+        $combustibles = $query->paginate(10)->withQueryString();
+
+        return view('admin.combustibles.index', compact(
+            'combustibles',
+            'tipos_combustibles',
+            'totalMonto',
+            'totalLitros',
+            'totalCargas'
+        ));
     }
+
 
     /**
      * Show the form for creating a new resource.
