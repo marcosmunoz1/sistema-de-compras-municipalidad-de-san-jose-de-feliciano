@@ -119,7 +119,6 @@ class ObraController extends Controller
         'fecha_estimada_fin' => 'nullable|date|after_or_equal:fecha_inicio',
         'fecha_fin' => 'nullable|date|after_or_equal:fecha_inicio',
         'estado_obra' => 'required|in:planificada,en_ejecucion,demorada,finalizada,cancelada',
-        'presupuesto' => 'nullable|numeric|min:0',
         'ejecutado_por' => 'required|string|max:255',
         'observaciones' => 'nullable|string',
         ],
@@ -139,7 +138,6 @@ class ObraController extends Controller
         $obra->fecha_estimada_fin = $request->fecha_estimada_fin;
         $obra->fecha_fin = $request->fecha_fin;
         $obra->estado_obra = $request->estado_obra;
-        $obra->presupuesto = $request->presupuesto;
         $obra->ejecutado_por = $request->ejecutado_por;
         $obra->observaciones = $request->observaciones;
 
@@ -245,7 +243,6 @@ class ObraController extends Controller
             'fecha_estimada_fin' => 'nullable|date|after_or_equal:fecha_inicio',
             'fecha_fin' => 'nullable|date|after_or_equal:fecha_inicio',
             'estado_obra' => 'required|in:planificada,en_ejecucion,demorada,finalizada,cancelada',
-            'presupuesto' => 'nullable|numeric|min:0',
             'ejecutado_por' => 'required|string|max:255',
             'observaciones' => 'nullable|string',
         ],
@@ -266,7 +263,6 @@ class ObraController extends Controller
         $obra->fecha_estimada_fin = $request->fecha_estimada_fin;
         $obra->fecha_fin = $request->fecha_fin;
         $obra->estado_obra = $request->estado_obra;
-        $obra->presupuesto = $request->presupuesto;
         $obra->ejecutado_por = $request->ejecutado_por;
         $obra->observaciones = $request->observaciones;
 

@@ -66,7 +66,7 @@
                 <!-- Descripción -->
                 <div class="form-control"> 
                     <label class="label font-semibold">Descripción (Opcional)</label>
-                    <textarea name="descripcion" rows="3"
+                    <textarea name="descripcion" rows="2"
                         class="textarea w-full rounded-md border border-base-300 bg-base-200 focus:outline-none focus:ring-2 focus:ring-primary 
                                 focus:border-primary transition"
                         placeholder="Ej: Mejoras y expansión del predio">{{ old('descripcion') }}</textarea>
