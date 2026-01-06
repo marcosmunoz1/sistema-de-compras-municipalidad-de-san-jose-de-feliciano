@@ -177,7 +177,7 @@
                 <!-- Fecha inicio -->
                 <div class="form-control">
                     <label class="label font-semibold">Fecha de Inicio</label>
-                    <input type="date" name="fecha_inicio" value="{{ $obra->fecha_inicio }}"
+                    <input type="date" name="fecha_inicio" value="{{ optional($obra->fecha_inicio)->format('Y-m-d') }}"
                         class="w-full h-10 rounded-md border border-base-300 bg-base-200 px-3 
                                 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
                                 focus:border-primary transition">
@@ -190,7 +190,7 @@
                 <div class="form-control">
                     <label class="label font-semibold">Fecha Estimada</label>
                     <input type="date" name="fecha_estimada_fin"
-                        value="{{ $obra->fecha_estimada_fin }}"
+                        value="{{ optional($obra->fecha_estimada_fin)->format('Y-m-d') }}"
                         class="w-full h-10 rounded-md border border-base-300 bg-base-200 px-3 
                                 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
                                 focus:border-primary transition">
@@ -203,7 +203,7 @@
                 <div class="form-control">
                     <label class="label font-semibold">Fecha de Finalización</label>
                     <input type="date" name="fecha_fin"
-                        value="{{ $obra->fecha_fin }}"
+                        value="{{ optional($obra->fecha_fin)->format('Y-m-d') }}"
                         class="w-full h-10 rounded-md border border-base-300 bg-base-200 px-3 
                                 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
                                 focus:border-primary transition">
