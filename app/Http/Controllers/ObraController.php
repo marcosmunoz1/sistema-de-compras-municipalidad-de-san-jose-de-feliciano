@@ -58,7 +58,7 @@ class ObraController extends Controller
         }
 
 
-        $obras = Obra::withTrashed()
+        $obras = Obra::withTrashed()->orderBy('id', 'desc')
 
         // 🔍 BÚSQUEDA TEXTUAL (solo si NO es estado)
         ->when($search && !$estadoObraBuscado, function ($q) use ($search, $estadoBuscado) {

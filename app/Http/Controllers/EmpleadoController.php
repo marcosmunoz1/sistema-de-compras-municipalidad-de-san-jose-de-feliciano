@@ -27,7 +27,7 @@ class EmpleadoController extends Controller
             }
         }
 
-        $empleados = Empleado::withTrashed()
+        $empleados = Empleado::withTrashed()->orderBy('id', 'desc')
             ->where(function ($query) use ($search, $estadoBuscado) {
 
                 // Búsqueda por texto en varios campos

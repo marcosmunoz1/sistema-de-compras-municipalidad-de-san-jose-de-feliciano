@@ -148,7 +148,7 @@ class MovimientoController extends Controller
         }
 
         $movimientos = $movimientos
-            ->orderBy('created_at', 'desc')
+            ->orderBy('id', 'desc')
             ->paginate(10)
             ->withQueryString();
 
