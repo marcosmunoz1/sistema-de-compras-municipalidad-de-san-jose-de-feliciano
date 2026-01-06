@@ -77,7 +77,8 @@
                                         class="text-red-600">*</span></label>
 
                                 <select id="tipo" name="tipo"
-                                    class="select select-bordered w-full h-10 @error('tipo') input-error @enderror"
+                                    class="select select-bordered w-full h-10 w-full h-10 rounded-md border border-base-300 bg-base-200 px-3 text-sm
+                                        focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition @error('tipo') input-error @enderror"
                                     required>
                                     <option value="" disabled selected>Seleccione un tipo...</option>
 
@@ -99,7 +100,8 @@
                                     <span class="label-text font-medium">Área <span class="text-error">*</span></span>
                                 </label>
                                 <select name="area_id" 
-                                        class="select select-bordered w-full @error('area_id') select-error @enderror"
+                                        class="select select-bordered w-full w-full h-10 rounded-md border border-base-300 bg-base-200 px-3 text-sm
+                                        focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition @error('area_id') select-error @enderror"
                                         required>
                                     <option disabled selected value="">Seleccionar área</option>
                                     @foreach($areas as $area)
@@ -200,7 +202,7 @@
                             </div>
                         </div>
 
-                        <div class="grid grid-cols-2">
+                        <div class="grid grid-cols-2 gap-4">
                             <!-- Chasis -->
                             <div class="space-y-2">
                                 <label for="chasis" class="text-sm font-medium">N° de Chasis (Opcional)</label>
@@ -218,7 +220,8 @@
                                     <span class="label-text font-medium">Tipo de combustible <span class="text-error">*</span></span>
                                 </label>
                                 <select name="tipo_combustible_id" 
-                                        class="select select-bordered w-full @error('tipo_combustible_id') select-error @enderror"
+                                        class="select select-bordered w-full h-10 rounded-md border border-base-300 bg-base-200 px-3 text-sm
+                                        focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition @error('tipo_combustible_id') select-error @enderror"
                                         required>
                                     <option disabled selected value="">Seleccionar tipo de combustible</option>
                                     @foreach($tiposCombustibles as $tipoCombustible)

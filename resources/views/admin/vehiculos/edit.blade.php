@@ -64,7 +64,8 @@
                             <div class="space-y-2">
                                 <label for="tipo" class="text-sm font-medium">Tipo <span
                                         class="text-red-600">*</span></label>
-                                <select id="tipo" name="tipo" class="select select-bordered w-full h-10" required>
+                                <select id="tipo" name="tipo" class="select select-bordered w-full h-10 w-full h-10 rounded-md border border-base-300 bg-base-200 px-3 text-sm
+                                        focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition" required>
                                     @php
                                         $tipos = [
                                             'AUTO',
@@ -211,7 +212,8 @@
                                 </label>
 
                                 <select name="tipo_combustible_id"
-                                    class="select select-bordered w-full @error('tipo_combustible_id') select-error @enderror"
+                                    class="select select-bordered w-full w-full h-10 rounded-md border border-base-300 bg-base-200 px-3 text-sm
+                                        focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition @error('tipo_combustible_id') select-error @enderror"
                                     required>
 
                                     <option disabled value="">Seleccionar tipo de combustible</option>

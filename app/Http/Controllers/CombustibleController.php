@@ -18,24 +18,94 @@ class CombustibleController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request) 
-    {       $totalMonto = Combustible::sum('monto');
-            $totalLitros = Combustible::sum('litros'); 
-            $totalCargas =  Combustible::count(); 
-            $tipos_combustibles = Tipo_combustibles::all(); 
-            $search = $request->get('search'); 
+    public function index(Request $request)
+    {
+        $tipos_combustibles = Tipo_combustibles::all();
+        $search = $request->get('search');
 
-            $query = Combustible::with('destino')->withTrashed()->orderBy('id', 'desc');  
-            if ($search) {
-                $query->where('codigo', 'like', "%{$search}%")
-                      ->orWhere('estacion', 'like', "%{$search}%")
-                      ->orWhereHas('vehiculo', function ($q) use ($search) {
-                        $q->where('marca', 'LIKE', "%{$search}%");
-                    });
+        $desde = $request->desde;
+        $hasta = $request->hasta;
+
+        // 🧠 Detectar si el search es una fecha DD/MM/YYYY
+        $fechaFormateada = null;
+
+        if (!empty($search)) {
+            $formatos = ['d/m/Y', 'd-m-Y', 'Y-m-d'];
+
+            foreach ($formatos as $formato) {
+                try {
+                    $fechaFormateada = \Carbon\Carbon::createFromFormat($formato, trim($search))
+                        ->format('Y-m-d');
+                    break;
+                } catch (\Exception $e) {
+                    // seguimos intentando
+                }
             }
-            $combustibles = $query->paginate(10); 
-        return view('admin.combustibles.index', compact('combustibles', 'tipos_combustibles', 'totalMonto', 'totalLitros','totalCargas')); 
+        }
+
+
+        // QUERY BASE (UNO SOLO)
+        $query = Combustible::with(['destino', 'empleado'])
+            ->withTrashed()
+            ->orderBy('id', 'desc');
+
+        // Filtro por fechas
+        if ($desde && $hasta && !$search) {
+            $query->whereBetween('fecha', [$desde, $hasta]);
+        }
+
+
+        // Filtro de búsqueda
+        if ($search) {
+            $query->where(function ($q) use ($search, $fechaFormateada) {
+
+                // 🔹 Fecha escrita (DD/MM/YYYY, Y-m-d, etc.)
+                if ($fechaFormateada) {
+                    $q->orWhereDate('fecha', $fechaFormateada);
+                }
+
+                // 🔹 Campos propios
+                $q->orWhere('codigo', 'like', "%{$search}%")
+                ->orWhere('estacion', 'like', "%{$search}%")
+
+                // 🔹 Destino polimórfico
+                ->orWhereHasMorph(
+                    'destino',
+                    [Vehiculo::class],
+                    function ($d) use ($search) {
+                        $d->where('marca', 'like', "%{$search}%")
+                            ->orWhere('patente', 'like', "%{$search}%")
+                            ->orWhere('modelo', 'like', "%{$search}%");
+                    }
+                )
+
+                // 🔹 Empleado
+                ->orWhereHas('empleado', function ($e) use ($search) {
+                    $e->where('nombre', 'like', "%{$search}%");
+                });
+            });
+        }
+
+
+        // CLONAMOS para las cards
+        $totalesQuery = clone $query;
+
+        $totalMonto  = $totalesQuery->sum('monto');
+        $totalLitros = $totalesQuery->sum('litros');
+        $totalCargas = $totalesQuery->count();
+
+        // TABLA + PAGINACIÓN
+        $combustibles = $query->paginate(10)->withQueryString();
+
+        return view('admin.combustibles.index', compact(
+            'combustibles',
+            'tipos_combustibles',
+            'totalMonto',
+            'totalLitros',
+            'totalCargas'
+        ));
     }
+
 
     /**
      * Show the form for creating a new resource.

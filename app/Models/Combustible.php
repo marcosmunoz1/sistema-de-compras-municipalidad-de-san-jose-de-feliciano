@@ -40,8 +40,10 @@ class  Combustible extends Model
         return $this->belongsTo(User::class);
     }
     public function destino()
-{
-    return $this->morphTo(__FUNCTION__, 'destino_tipo', 'destino_id');
-} 
+    {
+        return $this->morphTo(__FUNCTION__, 'destino_tipo', 'destino_id');
+    }
+
+    
 
 }
