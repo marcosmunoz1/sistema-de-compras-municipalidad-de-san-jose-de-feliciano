@@ -73,7 +73,7 @@
                 <div class="flex items-center justify-between">
                     <div>
                         <p class="text-gray-500">Total del Mes</p>
-                        <h3 class="mt-2">${{ number_format($totalMonto, 2, '.', ',') }}</h3>
+                        <h3 class="mt-2">${{ number_format($totalMonto, 2) }}</h3>
                     </div>
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
