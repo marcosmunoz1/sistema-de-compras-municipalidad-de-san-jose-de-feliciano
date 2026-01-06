@@ -126,7 +126,7 @@
                                 <td class="text-center">
                                     <div class="flex items-center justify-center gap-2">
                                         @can('compras-show')
-                                        <a href="{{ route('compras.show', Crypt::encryptString($compra->id)) }}" class="btn btn-info btn-sm">
+                                        <a href="{{ route('compras.show', Crypt::encryptString($compra->id)) }}" title="Ver orden de compra" class="btn btn-info btn-sm">
                                             <x-heroicon-s-eye class="w-4 h-4" />
                                         </a>
                                         @endcan
@@ -145,11 +145,10 @@
                                     </a> --}}
 
                                     @can('compras-report')
-                                     <a href="{{ route('compras.report', $compra->id ) }}"  
-                                        class="btn bg-primary btn-sm" 
-                                        target="_blank">
+                                     <button onclick="abrirModalPDF({{ $compra->id }})"  
+                                        class="btn bg-primary btn-sm">
                                             <x-heroicon-o-printer class="w-4 h-4"/> 
-                                     </a>
+                                     </button>
                                      @endcan
 
                                    {{--  @if ($compra->trashed())
@@ -244,4 +243,97 @@
 
         </div>
     </div>
+
+    <!-- Modal para visualizar PDF -->
+    <dialog id="modalPDF" class="modal">
+        <div class="modal-box w-11/12 max-w-5xl h-[90vh] p-0 flex flex-col">
+            <!-- Header del Modal -->
+            <div class="flex items-center justify-between p-4 border-b">
+                <h3 class="font-bold text-lg">Vista Previa - Orden de Compra</h3>
+                <div class="flex gap-2">
+                    <a id="btnDescargarPDF" href="#" class="btn btn-success btn-sm" download>
+                        <x-heroicon-o-arrow-down-tray class="w-4 h-4" />
+                        Descargar
+                    </a>
+                    <button onclick="cerrarModalPDF()" class="btn btn-sm btn-circle">
+                        <x-heroicon-o-x-mark class="w-5 h-5" />
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Contenedor del iframe -->
+            <div class="flex-1 overflow-auto bg-base-200 relative">
+                <!-- Spinner de carga personalizado -->
+                <div id="loadingSpinner" class="absolute inset-0 flex items-center justify-center bg-base-100 z-10 transition-all duration-300">
+                    <div class="text-center space-y-4">
+                        <!-- Spinner animado -->
+                        <div class="relative">
+                            <span class="loading loading-spinner loading-lg text-primary"></span>
+                            <div class="absolute inset-0 loading loading-ring loading-lg text-primary opacity-30"></div>
+                        </div>
+                        <!-- Texto con animación -->
+                        <div class="space-y-2">
+                            <p class="text-base font-bold text-base-content animate-pulse">
+                                Generando PDF
+                            </p>
+                            <p class="text-sm text-base-content/70 font-medium">
+                                Orden de Compra
+                            </p>
+                        </div>
+                        <!-- Barra de progreso decorativa -->
+                        <div class="w-48 h-1 bg-base-300 rounded-full overflow-hidden">
+                            <div class="h-full bg-primary rounded-full animate-pulse" style="width: 60%;"></div>
+                        </div>
+                    </div>
+                </div>
+                <iframe id="iframePDF" src="" class="w-full h-full border-0" style="min-height: 100%;"></iframe>
+            </div>
+        </div>
+        <form method="dialog" class="modal-backdrop">
+            <button onclick="cerrarModalPDF()">close</button>
+        </form>
+    </dialog>
+
+    <script>
+        function abrirModalPDF(compraId) {
+            const modal = document.getElementById('modalPDF');
+            const iframe = document.getElementById('iframePDF');
+            const btnDescargar = document.getElementById('btnDescargarPDF');
+            const loadingSpinner = document.getElementById('loadingSpinner');
+            
+            // Mostrar spinner
+            loadingSpinner.style.display = 'flex';
+            
+            // Construir las URLs usando route de Laravel
+            const previewUrl = "{{ url('admin/compras') }}/" + compraId + "/preview";
+            const downloadUrl = "{{ url('admin/compras') }}/" + compraId + "/download";
+            
+            // Asignar URLs
+            iframe.src = previewUrl;
+            btnDescargar.href = downloadUrl;
+            
+            // Ocultar spinner cuando el iframe termine de cargar
+            iframe.onload = function() {
+                loadingSpinner.style.display = 'none';
+            };
+            
+            // Abrir modal
+            modal.showModal();
+        }
+
+        function cerrarModalPDF() {
+            const modal = document.getElementById('modalPDF');
+            const iframe = document.getElementById('iframePDF');
+            const loadingSpinner = document.getElementById('loadingSpinner');
+            
+            // Limpiar iframe al cerrar
+            iframe.src = '';
+            
+            // Resetear spinner para próxima apertura
+            loadingSpinner.style.display = 'flex';
+            
+            // Cerrar modal
+            modal.close();
+        }
+    </script>
 @endsection

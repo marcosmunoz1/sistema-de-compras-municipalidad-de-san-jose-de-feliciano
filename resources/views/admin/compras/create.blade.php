@@ -1555,17 +1555,27 @@ document.addEventListener("DOMContentLoaded", function() {
         destinoPrev.addEventListener('click', function () {
             if (paginaDestino > 1) {
                 paginaDestino--;
-                renderTablaDestino(destinosCache);
+                const term = buscadorDestino ? buscadorDestino.value.toLowerCase() : '';
+                const filtrados = term ? destinosCache.filter(dest => {
+                    const texto = Object.values(dest).join(' ').toLowerCase();
+                    return texto.includes(term);
+                }) : destinosCache;
+                renderTablaDestino(filtrados);
             }
         });
     }
 
     if (destinoNext) {
         destinoNext.addEventListener('click', function () {
-            const totalPaginas = Math.ceil(destinosCache.length / itemsPorPaginaDestino);
+            const term = buscadorDestino ? buscadorDestino.value.toLowerCase() : '';
+            const filtrados = term ? destinosCache.filter(dest => {
+                const texto = Object.values(dest).join(' ').toLowerCase();
+                return texto.includes(term);
+            }) : destinosCache;
+            const totalPaginas = Math.ceil(filtrados.length / itemsPorPaginaDestino);
             if (paginaDestino < totalPaginas) {
                 paginaDestino++;
-                renderTablaDestino(destinosCache);
+                renderTablaDestino(filtrados);
             }
         });
     }

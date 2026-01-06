@@ -191,7 +191,6 @@
             <table class="table table-zebra w-full">
                 <thead>
                     <tr>
-                        <th class="text-center">Nr</th>
                         <th class="text-center">Nr orden</th> 
                         <th class="text-center">Fecha</th>
                         <th class="text-center">Vehículo</th> 
@@ -204,13 +203,8 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @php
-                        $nr = $combustibles->firstItem();
-                    @endphp
-
                     @foreach ($combustibles as $combustible)
                         <tr> 
-                            <td class="text-center">{{ $nr++ }}</td>
                             <td class="text-center">{{ $combustible->codigo }}</td> 
                             <td class="text-center">{{ $combustible->fecha ? \Carbon\Carbon::parse($combustible->fecha)->format('d/m/Y') : '—' }}</td> 
                             <td class="text-center">{{ $combustible->destino->marca ?? 'N/A' }}</td> 
@@ -234,11 +228,10 @@
                                     </a>
                                     @endcan 
                                     @can('combustibles-report')
-                                    <a href="{{ route('combustibles.report', Crypt::encrypt($combustible->id)) }}" 
-                                       class="btn bg-primary btn-sm" 
-                                       target="_blank">
+                                    <button onclick="abrirModalPDFCarga({{ $combustible->id }})"  
+                                       class="btn bg-primary btn-sm">
                                         <x-heroicon-o-printer class="w-4 h-4"/>
-                                    </a>
+                                    </button>
                                     @endcan
                                     @if ($combustible->trashed())
                                         @can('combustibles-restore')
@@ -543,4 +536,97 @@
         modal_restaurar_combustible.showModal(); 
       }
   </script>
+
+    <!-- Modal para visualizar PDF de Orden de Carga -->
+    <dialog id="modalPDFCarga" class="modal">
+        <div class="modal-box w-11/12 max-w-5xl h-[90vh] p-0 flex flex-col">
+            <!-- Header del Modal -->
+            <div class="flex items-center justify-between p-4 border-b">
+                <h3 class="font-bold text-lg">Vista Previa - Orden de Carga de Combustible</h3>
+                <div class="flex gap-2">
+                    <a id="btnDescargarPDFCarga" href="#" class="btn btn-success btn-sm" download>
+                        <x-heroicon-o-arrow-down-tray class="w-4 h-4" />
+                        Descargar
+                    </a>
+                    <button onclick="cerrarModalPDFCarga()" class="btn btn-sm btn-circle">
+                        <x-heroicon-o-x-mark class="w-5 h-5" />
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Contenedor del iframe -->
+            <div class="flex-1 overflow-auto bg-base-200 relative">
+                <!-- Spinner de carga personalizado -->
+                <div id="loadingSpinnerCarga" class="absolute inset-0 flex items-center justify-center bg-base-100 z-10 transition-all duration-300">
+                    <div class="text-center space-y-4">
+                        <!-- Spinner animado -->
+                        <div class="relative">
+                            <span class="loading loading-spinner loading-lg text-primary"></span>
+                            <div class="absolute inset-0 loading loading-ring loading-lg text-primary opacity-30"></div>
+                        </div>
+                        <!-- Texto con animación -->
+                        <div class="space-y-2">
+                            <p class="text-base font-bold text-base-content animate-pulse">
+                                Generando PDF
+                            </p>
+                            <p class="text-sm text-base-content/70 font-medium">
+                                Orden de Carga de Combustible
+                            </p>
+                        </div>
+                        <!-- Barra de progreso decorativa -->
+                        <div class="w-48 h-1 bg-base-300 rounded-full overflow-hidden">
+                            <div class="h-full bg-primary rounded-full animate-pulse" style="width: 60%;"></div>
+                        </div>
+                    </div>
+                </div>
+                <iframe id="iframePDFCarga" src="" class="w-full h-full border-0" style="min-height: 100%;"></iframe>
+            </div>
+        </div>
+        <form method="dialog" class="modal-backdrop">
+            <button onclick="cerrarModalPDFCarga()">close</button>
+        </form>
+    </dialog>
+
+    <script>
+        function abrirModalPDFCarga(combustibleId) {
+            const modal = document.getElementById('modalPDFCarga');
+            const iframe = document.getElementById('iframePDFCarga');
+            const btnDescargar = document.getElementById('btnDescargarPDFCarga');
+            const loadingSpinner = document.getElementById('loadingSpinnerCarga');
+            
+            // Mostrar spinner
+            loadingSpinner.style.display = 'flex';
+            
+            // Construir las URLs usando route de Laravel
+            const previewUrl = "{{ url('admin/combustibles') }}/" + combustibleId + "/preview";
+            const downloadUrl = "{{ url('admin/combustibles') }}/" + combustibleId + "/download";
+            
+            // Asignar URLs
+            iframe.src = previewUrl;
+            btnDescargar.href = downloadUrl;
+            
+            // Ocultar spinner cuando el iframe termine de cargar
+            iframe.onload = function() {
+                loadingSpinner.style.display = 'none';
+            };
+            
+            // Abrir modal
+            modal.showModal();
+        }
+
+        function cerrarModalPDFCarga() {
+            const modal = document.getElementById('modalPDFCarga');
+            const iframe = document.getElementById('iframePDFCarga');
+            const loadingSpinner = document.getElementById('loadingSpinnerCarga');
+            
+            // Limpiar iframe al cerrar
+            iframe.src = '';
+            
+            // Resetear spinner para próxima apertura
+            loadingSpinner.style.display = 'flex';
+            
+            // Cerrar modal
+            modal.close();
+        }
+    </script>
 @endsection

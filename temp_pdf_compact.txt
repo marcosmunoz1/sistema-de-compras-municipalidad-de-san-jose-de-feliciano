@@ -1,0 +1,23 @@
+<!-- Tabla compactada -->
+            <table>
+                <thead>
+                    <tr>
+                        <th width="18%">CANT. / U.M.</th>
+                        <th width="82%">DESCRIPCIÓN DEL INSUMO</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($compra->detalle_compras as $detalle)
+                    <tr>
+                        <td style="font-weight: 600;">{{ $detalle->cantidad }} {{ $detalle->producto->unidad_medida ?? 'UND' }}</td>
+                        <td>{{ $detalle->producto->nombre ?? 'N/A' }}</td>
+                    </tr>
+                    @endforeach
+                    @for($i = count($compra->detalle_compras); $i < 3; $i++)
+                    <tr>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    @endfor
+                </tbody>
+            </table>
