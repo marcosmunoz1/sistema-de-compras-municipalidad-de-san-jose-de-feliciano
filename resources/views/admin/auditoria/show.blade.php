@@ -183,6 +183,48 @@
                             </tbody>
                         </table>
                     </div>
+                @elseif(isset($actividad->properties['permisos_agregados']) || isset($actividad->properties['permisos_quitados']))
+                    <div class="mt-4 space-y-4">
+                        @if(isset($actividad->properties['permisos_agregados']) && count($actividad->properties['permisos_agregados']) > 0)
+                            <div>
+                                <h3 class="font-semibold text-success mb-2 flex items-center gap-2">
+                                    <x-heroicon-o-plus-circle class="w-5 h-5" />
+                                    Permisos Agregados
+                                </h3>
+                                <div class="flex flex-wrap gap-2">
+                                    @foreach($actividad->properties['permisos_agregados'] as $permiso)
+                                        <span class="badge badge-success">{{ $permiso }}</span>
+                                    @endforeach
+                                </div>
+                            </div>
+                        @endif
+
+                        @if(isset($actividad->properties['permisos_quitados']) && count($actividad->properties['permisos_quitados']) > 0)
+                            <div>
+                                <h3 class="font-semibold text-error mb-2 flex items-center gap-2">
+                                    <x-heroicon-o-minus-circle class="w-5 h-5" />
+                                    Permisos Quitados
+                                </h3>
+                                <div class="flex flex-wrap gap-2">
+                                    @foreach($actividad->properties['permisos_quitados'] as $permiso)
+                                        <span class="badge badge-error">{{ $permiso }}</span>
+                                    @endforeach
+                                </div>
+                            </div>
+                        @endif
+
+                        @if(isset($actividad->properties['permisos_nuevos']))
+                            <div class="divider"></div>
+                            <div>
+                                <h3 class="font-semibold text-gray-600 mb-2">Permisos Totales Después del Cambio</h3>
+                                <div class="flex flex-wrap gap-2">
+                                    @foreach($actividad->properties['permisos_nuevos'] as $permiso)
+                                        <span class="badge badge-outline">{{ $permiso }}</span>
+                                    @endforeach
+                                </div>
+                            </div>
+                        @endif
+                    </div>
                 @else
                     <div class="alert alert-info mt-4">
                         <span>No hay cambios específicos registrados para esta actividad.</span>

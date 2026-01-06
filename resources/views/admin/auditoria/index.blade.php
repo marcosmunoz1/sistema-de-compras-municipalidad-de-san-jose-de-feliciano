@@ -152,17 +152,23 @@
                                 </td>
                                 <td>
                                     @php
-                                        $badgeClass = match($actividad->event) {
-                                            'created' => 'badge-success',
-                                            'updated' => 'badge-info',
-                                            'deleted' => 'badge-error',
-                                            default => 'badge-ghost'
+                                        $badgeClass = match($actividad->description) {
+                                            'Permisos actualizados' => 'badge-warning',
+                                            default => match($actividad->event) {
+                                                'created' => 'badge-success',
+                                                'updated' => 'badge-info',
+                                                'deleted' => 'badge-error',
+                                                default => 'badge-ghost'
+                                            }
                                         };
-                                        $eventText = match($actividad->event) {
-                                            'created' => 'Creado',
-                                            'updated' => 'Actualizado',
-                                            'deleted' => 'Eliminado',
-                                            default => ucfirst($actividad->event)
+                                        $eventText = match($actividad->description) {
+                                            'Permisos actualizados' => 'Permisos Actualizados',
+                                            default => match($actividad->event) {
+                                                'created' => 'Creado',
+                                                'updated' => 'Actualizado',
+                                                'deleted' => 'Eliminado',
+                                                default => ucfirst($actividad->event)
+                                            }
                                         };
                                     @endphp
                                     <span class="badge {{ $badgeClass }} badge-sm">{{ $eventText }}</span>

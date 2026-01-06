@@ -174,8 +174,29 @@ class RoleController extends Controller
         |--------------------------------------------------------------------------
         */
 
+        // Capturar permisos antes del cambio
+        $permisosAnteriores = $rol->permissions->pluck('name')->toArray();
+        $permisosNuevos = Permission::whereIn('id', $request->input('permisos'))->pluck('name')->toArray();
+
         // Sincronizar permisos
         $rol->permissions()->sync($request->input('permisos'));
+
+        // Registrar en activity log
+        $permisosAgregados = array_diff($permisosNuevos, $permisosAnteriores);
+        $permisosQuitados = array_diff($permisosAnteriores, $permisosNuevos);
+
+        if (!empty($permisosAgregados) || !empty($permisosQuitados)) {
+            activity()
+                ->performedOn($rol)
+                ->causedBy($userLogueado)
+                ->withProperties([
+                    'permisos_agregados' => $permisosAgregados,
+                    'permisos_quitados' => $permisosQuitados,
+                    'permisos_anteriores' => $permisosAnteriores,
+                    'permisos_nuevos' => $permisosNuevos,
+                ])
+                ->log('Permisos actualizados');
+        }
 
         // Limpiar cache de permisos de Spatie
         app(\Spatie\Permission\PermissionRegistrar::class)->forgetCachedPermissions();
