@@ -224,11 +224,11 @@ class PermissionSeeder extends Seeder
         $superAdmin2->assignRole($superAdminRole);
 
         // Crear rol Administrador con TODOS los permisos
-        $administradorRole = Role::firtOrCreate(['name' => 'Administrador']);
+        $administradorRole = Role::firstOrCreate(['name' => 'Administrador']);
         $administradorRole->syncPermissions(Permission::all());
 
         // Usuario administrador
-        $administrador = User::firsOrCreate(
+        $administrador = User::firstOrCreate(
             ['email' => 'damianarevalo@gmail.com'],
             [
                 'name'=> 'Damian Arevalo',

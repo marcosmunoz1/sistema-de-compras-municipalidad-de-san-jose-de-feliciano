@@ -30,7 +30,7 @@ class UserController extends Controller
         }
 
         $usuarios = User::with(['roles'])
-            ->withTrashed()
+            ->withTrashed()->orderBy('id', 'desc')
             ->where(function ($query) use ($search, $estadoBuscado) {
 
                 // Campos de texto básicos

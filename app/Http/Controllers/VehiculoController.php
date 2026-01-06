@@ -33,6 +33,7 @@ class VehiculoController extends Controller
         }
 
         $vehiculos = Vehiculo::withTrashed()
+            ->orderBy('id', 'desc')
             ->where(function ($query) use ($search, $estadoBuscado) {
 
                 // Búsqueda de texto

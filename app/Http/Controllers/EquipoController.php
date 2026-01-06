@@ -30,7 +30,7 @@ class EquipoController extends Controller
         }
 
         $equipos = Equipo::with('area')
-            ->withTrashed()
+            ->withTrashed()->orderBy('id', 'desc')
             ->when($search, function ($query) use ($search, $estadoBuscado) {
                 $query->where(function ($q) use ($search, $estadoBuscado) {
 

@@ -71,7 +71,7 @@ class CategoriaController extends Controller
         }
     }
 
-    $categorias = Categoria::withTrashed()
+    $categorias = Categoria::withTrashed()->orderBy('id', 'desc')
         ->where(function ($query) use (
             $search,
             $estadoBuscado,
