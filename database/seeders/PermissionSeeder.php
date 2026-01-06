@@ -237,6 +237,7 @@ class PermissionSeeder extends Seeder
         );
 
         $administrador->syncPermissions(Permission::all());
+        $administrador->assignRole($administradorRole);
 
         $this->command->info('Super-Admin creado con todos los permisos');
         $this->command->info('Administrador creado con todos los permisos');

@@ -157,9 +157,14 @@ class RoleController extends Controller
         |--------------------------------------------------------------------------
         */
 
-        if (in_array($rol->name, ['Super-Admin', 'Administrador'])) {
+         $rolesProtegidos = ['Super-Admin', 'Administrador'];
+
+        $esRolProtegido = in_array($rol->name, $rolesProtegidos);
+        $esSuperAdmin   = $userLogueado->hasRole('Super-Admin');
+
+        if ($esRolProtegido && !$esSuperAdmin) {
             return redirect()->back()
-                ->with('mensaje', 'No podés modificar los permisos de este rol 🚫')
+                ->with('mensaje', 'Solo un Super-Admin puede modificar este rol 🚫')
                 ->with('icono', 'error');
         }
 
