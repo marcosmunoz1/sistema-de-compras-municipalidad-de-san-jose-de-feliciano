@@ -25,11 +25,13 @@ Route::get('/admin/compras', [App\Http\Controllers\CompraController::class, 'ind
 Route::get('/admin/compras/create', [App\Http\Controllers\CompraController::class, 'create'])->name('compras.create')->middleware('auth','can:compras-create');
 Route::post('/admin/compras/store', [App\Http\Controllers\CompraController::class, 'store'])->name('compras.store')->middleware('auth', 'can:compras-store'); 
 Route::get('/admin/compras/{id}/edit', [App\Http\Controllers\CompraController::class, 'edit'])->name('compras.edit')->middleware('auth', 'can:compras-edit');
+Route::get('/admin/compras/{id}/report', [App\Http\Controllers\PDFController::class, 'PdfOrdenCompra'])->name('compras.report')->middleware('auth', 'can:compras-report');
+Route::get('/admin/compras/{id}/preview', [App\Http\Controllers\PDFController::class, 'previewOrdenCompra'])->name('compras.preview')->middleware('auth', 'can:compras-report');
+Route::get('/admin/compras/{id}/download', [App\Http\Controllers\PDFController::class, 'downloadOrdenCompra'])->name('compras.download')->middleware('auth', 'can:compras-report');
+Route::put('/admin/compras/{id}/restore', [App\Http\Controllers\CompraController::class, 'restore'])->name('compras.restore')->middleware('auth', 'can:compras-restore');
 Route::put('/admin/compras/{id}', [App\Http\Controllers\CompraController::class, 'update'])->name('compras.update')->middleware('auth', 'can:compras-update');
 Route::get('/admin/compras/{id}', [App\Http\Controllers\CompraController::class, 'show'])->name('compras.show')->middleware('auth', 'can:compras-show');
-Route::delete('/admin/compras/{id}', [App\Http\Controllers\CompraController::class, 'destroy'])->name('compras.destroy')->middleware('auth', 'can:compras-destroy');
-Route::put('/admin/compras/{id}/restore', [App\Http\Controllers\CompraController::class, 'restore'])->name('compras.restore')->middleware('auth', 'can:compras-restore');
-Route::get('/admin/compras/{id}/report', [App\Http\Controllers\PDFController::class, 'PdfOrdenCompra'])->name('compras.report')->middleware('auth', 'can:compras-report'); 
+Route::delete('/admin/compras/{id}', [App\Http\Controllers\CompraController::class, 'destroy'])->name('compras.destroy')->middleware('auth', 'can:compras-destroy'); 
 
 //rutas para roles
 Route::get('/admin/roles', [App\Http\Controllers\RoleController::class, 'index'])->name('admin.roles.index')->middleware('auth', 'can:roles-index');
@@ -84,12 +86,14 @@ Route::get('/admin/combustibles', [App\Http\Controllers\CombustibleController::c
 Route::get('/admin/combustibles/create', [App\Http\Controllers\CombustibleController::class, 'create'])->name('combustibles.create')->middleware('auth', 'can:combustibles-create');
 Route::post('/admin/combustibles/store', [App\Http\Controllers\CombustibleController::class, 'store'])->name('combustibles.store')->middleware('auth', 'can:combustibles-store'); 
 Route::get('/admin/combustibles/{id}/edit', [App\Http\Controllers\CombustibleController::class, 'edit'])->name('combustibles.edit')->middleware('auth', 'can:combustibles-edit');
+Route::get('/admin/combustibles/report/{id}', [App\Http\Controllers\PDFController::class, 'PdfOrdenCarga'])->name('combustibles.report')->middleware('auth', 'can:combustibles-report');
+Route::get('/admin/combustibles/{id}/preview', [App\Http\Controllers\PDFController::class, 'previewOrdenCarga'])->name('combustibles.preview')->middleware('auth', 'can:combustibles-report');
+Route::get('/admin/combustibles/{id}/download', [App\Http\Controllers\PDFController::class, 'downloadOrdenCarga'])->name('combustibles.download')->middleware('auth', 'can:combustibles-report');
+Route::put('/admin/combustibles/{id}/restore', [App\Http\Controllers\CombustibleController::class, 'restore'])->name('combustibles.restore')->middleware('auth', 'can:combustibles-restore');
+Route::post('/admin/combustibles/update-prices', [App\Http\Controllers\CombustibleController::class, 'updatePrices'])->name('combustibles.update-prices')->middleware('auth', 'can:combustibles-update-prices');
 Route::put('/admin/combustibles/{id}', [App\Http\Controllers\CombustibleController::class, 'update'])->name('combustibles.update')->middleware('auth', 'can:combustibles-update');
 Route::get('/admin/combustibles/{id}', [App\Http\Controllers\CombustibleController::class, 'show'])->name('combustibles.show')->middleware('auth', 'can:combustibles-show');
 Route::delete('/admin/combustibles/{id}', [App\Http\Controllers\CombustibleController::class, 'destroy'])->name('combustibles.destroy')->middleware('auth', 'can:combustibles-destroy');
-Route::put('/admin/combustibles/{id}/restore', [App\Http\Controllers\CombustibleController::class, 'restore'])->name('combustibles.restore')->middleware('auth', 'can:combustibles-restore');
-Route::post('/admin/combustibles/update-prices', [App\Http\Controllers\CombustibleController::class, 'updatePrices'])->name('combustibles.update-prices')->middleware('auth', 'can:combustibles-update-prices');
-Route::get('/admin/combustibles/report/{id}', [App\Http\Controllers\PDFController::class, 'PdfOrdenCarga'])->name('combustibles.report')->middleware('auth', 'can:combustibles-report');
 
 //rutas para vehiculos
 Route::get('/admin/vehiculos', [App\Http\Controllers\VehiculoController::class, 'index'])->name('vehiculos.index')->middleware('auth', 'can:vehiculos-index');
