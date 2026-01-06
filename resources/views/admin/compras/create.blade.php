@@ -458,6 +458,7 @@
 
             <form action="{{ url('/admin/productos/store') }}" method="POST" class="space-y-5">
                 @csrf
+                <input type="hidden" name="accion" value="1">
                 <input type="hidden" name="redirect_to" value="compras.create">
 
                 <!-- Categoría -->
@@ -1715,24 +1716,27 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 
-    // Renderizar al abrir el modal
+    // Renderizar inicial cuando se abre el modal
     const modalAgregarItem = document.getElementById('modalAgregarItem');
     if (modalAgregarItem) {
-        modalAgregarItem.addEventListener('click', function(e) {
-            if (e.target === modalAgregarItem || e.target.closest('button[class*="btn-sm btn-circle"]')) {
-                // Modal se está abriendo o cerrando
-                setTimeout(() => {
-                    if (modalAgregarItem.open) {
-                        paginaProducto = 1;
-                        if (buscadorProducto) buscadorProducto.value = '';
-                        renderTablaProductos(productosCache);
-                    }
-                }, 100);
-            }
+        // Observar cuando el modal se abre
+        const observer = new MutationObserver(function(mutations) {
+            mutations.forEach(function(mutation) {
+                if (mutation.attributeName === 'open' && modalAgregarItem.open) {
+                    paginaProducto = 1;
+                    if (buscadorProducto) buscadorProducto.value = '';
+                    renderTablaProductos(productosCache);
+                }
+            });
+        });
+        
+        observer.observe(modalAgregarItem, {
+            attributes: true,
+            attributeFilter: ['open']
         });
     }
 
-    // Renderizar inicial cuando se abre el modal por primera vez
+    // También agregar listener al botón que abre el modal
     const btnAbrirModal = document.querySelector('button[onclick*="modalAgregarItem.showModal"]');
     if (btnAbrirModal) {
         btnAbrirModal.addEventListener('click', function() {
@@ -1740,7 +1744,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 paginaProducto = 1;
                 if (buscadorProducto) buscadorProducto.value = '';
                 renderTablaProductos(productosCache);
-            }, 100);
+            }, 50);
         });
     }
 });
