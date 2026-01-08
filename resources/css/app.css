@@ -66,4 +66,15 @@ table.dataTable thead th {
 table.dataTable tbody td {
     color: var(--dt-text) !important;
     background: var(--dt-bg) !important;
+}
+
+/* ---------- CHART.JS - COLORES DE TEXTO ---------- */
+:root[data-theme="light"] {
+    --chart-text: #111827;
+    --chart-grid: #e5e7eb;
+}
+
+:root[data-theme="synthwave"] {
+    --chart-text: #f9fafb;
+    --chart-grid: #374151;
 } 

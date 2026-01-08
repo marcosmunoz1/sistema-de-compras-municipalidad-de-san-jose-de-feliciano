@@ -181,7 +181,6 @@
             </div>
         </div>
         </div> 
-
         <!-- Otra seccion -->
         <div data-slot="card" class="card bg-base-100 shadow-xl p-4 mt-4">
             <div data-slot="card-header"

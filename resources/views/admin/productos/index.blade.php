@@ -67,7 +67,13 @@
 
 <!-- Tabla -->
 <div class="card bg-base-100 shadow">
-    <div class="card-body p-4">
+    <div class="card-body p-4"> 
+        <div class="flex flex-col gap-3">
+                <!-- TÍTULO-->
+                <div class="flex items-center justify-between">
+                    <h4 class="text-lg font-semibold">Historial de productos</h4> 
+                </div>
+            </div> 
 
         <div class="overflow-x-auto">
             <table class="table table-zebra w-full">

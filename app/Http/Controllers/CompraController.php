@@ -21,10 +21,12 @@ class CompraController extends Controller
     public function index(Request $request)
     {
         $search = $request->get('search');
-
+        $totalMonto = Compra::sum('total'); 
+        $totalCompras = Compra::count();
+        $pendientes = Compra::where('estado_compra','Pendiente de factura')->count(); 
         $query = Compra::withTrashed()->orderBy('id', 'desc');
 
-        if ($search) {
+        if ($search) { 
 
             // 🧠 Detectar si viene una fecha DD/MM/YYYY
             $fechaFormateada = null;
@@ -54,7 +56,36 @@ class CompraController extends Controller
 
         $compras = $query->paginate(10)->withQueryString();
 
-        return view('admin.compras.index', compact('compras'));
+        // 📊 Datos para gráficos
+        // Compras por mes (últimos 6 meses)
+        $comprasPorMes = Compra::selectRaw('DATE_FORMAT(fecha_orden, "%Y-%m") as mes, SUM(total) as total, COUNT(*) as cantidad')
+            ->where('fecha_orden', '>=', now()->subMonths(6))
+            ->groupBy('mes')
+            ->orderBy('mes')
+            ->get();
+
+        // Estados de compras
+        $comprasPorEstado = Compra::selectRaw('estado_compra, COUNT(*) as cantidad')
+            ->groupBy('estado_compra')
+            ->get();
+
+        // Top 5 proveedores
+        $topProveedores = Compra::selectRaw('proveedor_id, SUM(total) as total_gastado, COUNT(*) as cantidad_ordenes')
+            ->with('proveedor')
+            ->groupBy('proveedor_id')
+            ->orderByDesc('total_gastado')
+            ->limit(5)
+            ->get();
+
+        return view('admin.compras.index', compact(
+            'compras', 
+            'totalMonto', 
+            'totalCompras',
+            'pendientes',
+            'comprasPorMes',
+            'comprasPorEstado',
+            'topProveedores'
+        ));  
     }
 
 
@@ -90,9 +121,11 @@ class CompraController extends Controller
 
         // Generar número de orden
         $lastOrder = Compra::max('nr_orden');
-        $newOrder = $lastOrder ? $lastOrder + 1 : 13000;
+        $newOrder = $lastOrder ? $lastOrder + 1 : 00000;
         $nr_orden = str_pad($newOrder, 8, '0', STR_PAD_LEFT);
-
+         
+        DB::beginTransaction();
+        try{  
         // Crear la compra
         $compra = Compra::create([
             'proveedor_id'   => $request->proveedor_id,
@@ -164,11 +197,20 @@ class CompraController extends Controller
                 'estado'        => true
             ]);
 
-
-        return redirect()
+        DB::commit();
+        return redirect() 
             ->route('compras.index')
             ->with('mensaje', 'Orden de compra realizada correctamente')
-            ->with('icono', 'success');
+            ->with('icono', 'success'); 
+
+        } catch (\Exception $e) {
+            DB::rollback();
+            // Log the error for debugging
+            \Illuminate\Support\Facades\Log::error('Error al crear la compra: ' . $e->getMessage());
+            \Illuminate\Support\Facades\Log::error('Error trace: ' . $e->getTraceAsString());
+            return redirect()->back()->with('error', 'Error al crear la compra. Por favor intente nuevamente.');
+        } 
+
     }
 
 

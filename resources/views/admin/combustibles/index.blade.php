@@ -15,7 +15,7 @@
             @can('combustibles-create')
                 <a href="{{ route('combustibles.create') }}" class="btn btn-primary tooltip tooltip-primary tooltip-bottom mb-1"
                     data-tip="Crear orden de carga">
-                    + Nueva Orden de Carga
+                    + Nueva Carga
                 </a>
             @endcan
         </div>
@@ -46,15 +46,19 @@
                 </a>
             </li>
         </ul>
-        <form method="GET" action="{{ route('combustibles.index') }}" class="flex gap-4 items-end mb-6 mx-4">
+        <form method="GET" action="{{ route('combustibles.index') }}" class="flex gap-4 items-end mb-6 mt-3">
             <div>
                 <label class="text-sm text-gray-500">Desde</label>
-                <input type="date" name="desde" class="input input-bordered" value="{{ request('desde') }}">
+                <input type="date" name="desde" class="w-full h-10 rounded-md border border-base-300 bg-base-200
+                        px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
+                        focus:border-primary transition" value="{{ request('desde') }}">
             </div>
 
             <div>
                 <label class="text-sm text-gray-500">Hasta</label>
-                <input type="date" name="hasta" class="input input-bordered" value="{{ request('hasta') }}">
+                <input type="date" name="hasta" class="w-full h-10 rounded-md border border-base-300 bg-base-200
+                        px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
+                        focus:border-primary transition" value="{{ request('hasta') }}"> 
             </div>
 
             <div class="flex gap-2">
@@ -68,7 +72,7 @@
     <div class="grid grid-cols-1 md:grid-cols-3 pd-6 mb-6">
 
         <!-- Card 1 -->
-        <div class="bg-base-100 shadow-xl bg-card text-card-foreground flex flex-col gap-6 rounded-xl mx-4">
+        <div class="bg-base-100 shadow-xl bg-card text-card-foreground flex flex-col gap-6 rounded-xl mr-2">
             <div class="px-6 pt-6 pb-6">
                 <div class="flex items-center justify-between">
                     <div>
@@ -81,14 +85,14 @@
                         <path d="M14 13h2a2 2 0 0 1 2 2v2a2 2 0 0 0 4 0v-6.998a2 2 0 0 0-.59-1.42L18 5"></path>
                         <path d="M14 21V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v16"></path>
                         <path d="M2 21h13"></path>
-                        <path d="M3 9h11"></path>
+                        <path d="M3 9h11"></path> 
                     </svg>
                 </div>
             </div>
         </div>
 
         <!-- Card 2 -->
-        <div class="bg-base-100 shadow-xl bg-card text-card-foreground flex flex-col gap-6 rounded-xl mx-4">
+        <div class="bg-base-100 shadow-xl bg-card text-card-foreground flex flex-col gap-6 rounded-xl mr-2">
             <div class="px-6 pt-6 pb-6">
                 <div class="flex items-center justify-between">
                     <div>
@@ -108,7 +112,7 @@
         </div>
 
         <!-- Card 3 -->
-        <div class="bg-base-100 shadow-xl bg-card text-card-foreground flex flex-col gap-6 rounded-xl mx-4">
+        <div class="bg-base-100 shadow-xl bg-card text-card-foreground flex flex-col gap-6 rounded-xl mr-2">
             <div class="px-6 pt-6 pb-6">
                 <div class="flex items-center justify-between">
                     <div>
@@ -164,13 +168,13 @@
                     <h4 class="text-lg font-semibold">Historial de Cargas</h4>
                     <!-- BUSCADOR -->
                     <div class="relative">
-                        <!-- BOTÓN IMPRIMIR -->
+                       {{--  <!-- BOTÓN IMPRIMIR -->
                         <div class="flex justify-start">
                             <button onclick="window.print()" class="btn btn-outline btn-sm">
                                 <x-heroicon-o-printer class="w-4 h-4 mr-2" />
                                 Imprimir Historial
                             </button>
-                        </div>
+                        </div> --}} 
                 </div>
             </div>
         </div>
@@ -205,19 +209,19 @@
                                 <div class="flex items-center justify-center gap-2"> 
                                     @can('combustibles-show') 
                                     <a href="{{ route('combustibles.show', Crypt::encrypt($combustible->id)) }}"  
-                                       class="btn btn-info btn-sm">
+                                       class="btn btn-info btn-sm" title="ver carga">
                                         <x-heroicon-s-eye class="w-4 h-4"/>
                                     </a>
                                     @endcan 
-                                     @can('combustibles-edit')
+                                    {{--  @can('combustibles-edit')
                                     <a href="{{ route('combustibles.edit', $combustible->id) }}" 
                                        class="btn btn-warning btn-sm">
                                         <x-heroicon-s-pencil class="w-4 h-4"/>
                                     </a>
-                                    @endcan 
+                                    @endcan --}}  
                                     @can('combustibles-report')
                                     <button onclick="abrirModalPDFCarga({{ $combustible->id }})"  
-                                       class="btn bg-primary btn-sm">
+                                       class="btn bg-primary btn-sm" title="Imprimir orden"> 
                                         <x-heroicon-o-printer class="w-4 h-4"/>
                                     </button>
                                     @endcan
@@ -318,6 +322,61 @@
                 </div>
             @endif
 
+        </div>
+    </div>
+
+    <!-- Sección de Gráficos - Estadísticas -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-8 mb-6">
+        
+        <!-- Gráfico: Consumo Mensual -->
+        <div class="card bg-base-100 shadow">
+            <div class="card-body p-5">
+                <h2 class="text-sm font-semibold text-base-content/70 mb-3 flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M3 3v18h18"></path>
+                        <path d="m19 9-5 5-4-4-3 3"></path>
+                    </svg>
+                    Consumo Mensual (Últimos 6 meses)
+                </h2>
+                <div class="h-64">
+                    <canvas id="chartConsumoMensual"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Gráfico: Distribución por Tipo de Combustible -->
+        <div class="card bg-base-100 shadow">
+            <div class="card-body p-5">
+                <h2 class="text-sm font-semibold text-base-content/70 mb-3 flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21.21 15.89A10 10 0 1 1 8 2.83"></path>
+                        <path d="M22 12A10 10 0 0 0 12 2v10z"></path>
+                    </svg>
+                    Distribución por Tipo de Combustible
+                </h2>
+                <div class="h-64">
+                    <canvas id="chartTipoCombustible"></canvas>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Gráfico: Top Destinos -->
+    <div class="card bg-base-100 shadow mb-6">
+        <div class="card-body p-5">
+            <h2 class="text-sm font-semibold text-base-content/70 mb-3 flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2"></path>
+                    <circle cx="7" cy="17" r="2"></circle>
+                    <path d="M9 17h6"></path>
+                    <circle cx="17" cy="17" r="2"></circle>
+                </svg>
+                Top 5 Destinos con Mayor Consumo
+            </h2>
+            <div class="h-72">
+                <canvas id="chartTopVehiculos"></canvas>
+            </div>
         </div>
     </div>
     <dialog id="crearCombustible" class="modal">
@@ -621,5 +680,393 @@
             // Cerrar modal
             modal.close();
         }
+    </script>
+
+    <!-- Estilos para forzar colores en gráficos -->
+    <style>
+        [data-theme="light"] canvas {
+            color: #000000 !important;
+        }
+        [data-theme="dark"] canvas,
+        [data-theme="synthwave"] canvas {
+            color: #ffffff !important;
+        }
+    </style>
+
+    <!-- Chart.js Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Detectar tema desde localStorage (donde app.js lo guarda)
+            const savedTheme = localStorage.getItem('theme');
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const isDark = savedTheme === 'dark' || currentTheme === 'dark' || currentTheme === 'synthwave';
+            
+            // Colores según el tema
+            const gridColor = isDark ? '#374151' : '#e5e7eb';
+            const textColor = isDark ? '#f9fafb' : '#111827';
+            const labelColor = isDark ? '#f9fafb' : '#111827';
+            const tooltipBg = isDark ? '#1f2937' : '#ffffff';
+            const tooltipBorder = isDark ? '#4b5563' : '#d1d5db';
+            
+            const colors = {
+                primary: isDark ? '#60a5fa' : '#2563eb',
+                secondary: isDark ? '#a78bfa' : '#7c3aed',
+                accent: isDark ? '#34d399' : '#059669',
+                success: isDark ? '#4ade80' : '#16a34a',
+                warning: isDark ? '#fbbf24' : '#d97706',
+                error: isDark ? '#f87171' : '#dc2626',
+                info: isDark ? '#38bdf8' : '#0284c7',
+            };
+
+            // Listener para recargar cuando cambie el tema
+            const themeToggle = document.getElementById('themeToggle');
+            if (themeToggle) {
+                themeToggle.addEventListener('change', function() {
+                    setTimeout(() => location.reload(), 100);
+                });
+            }
+
+            // Configuración global - USAR LABELCOLOR PARA TODOS LOS TEXTOS
+            Chart.defaults.font.family = 'system-ui, -apple-system, sans-serif';
+            Chart.defaults.font.size = 11;
+            Chart.defaults.color = labelColor;
+            Chart.defaults.borderColor = gridColor;
+
+            // 📊 GRÁFICO 1: Consumo Mensual (Línea con doble eje)
+            const dataConsumo = @json($consumoPorMes);
+            const meses = dataConsumo.map(item => {
+                const [year, month] = item.mes.split('-');
+                const fecha = new Date(year, month - 1);
+                return fecha.toLocaleDateString('es-ES', { month: 'short', year: 'numeric' });
+            });
+            const litrosMes = dataConsumo.map(item => parseFloat(item.total_litros) || 0);
+            const montosMes = dataConsumo.map(item => parseFloat(item.total_monto) || 0);
+
+            const ctxConsumo = document.getElementById('chartConsumoMensual').getContext('2d');
+            new Chart(ctxConsumo, {
+                type: 'line',
+                data: {
+                    labels: meses,
+                    datasets: [{
+                        label: 'Litros',
+                        data: litrosMes,
+                        borderColor: colors.primary,
+                        backgroundColor: isDark ? 'rgba(96, 165, 250, 0.1)' : 'rgba(59, 130, 246, 0.1)',
+                        borderWidth: 2,
+                        fill: true,
+                        tension: 0.3,
+                        pointRadius: 3,
+                        pointHoverRadius: 5,
+                        pointBackgroundColor: colors.primary,
+                        pointBorderColor: isDark ? '#1f2937' : '#ffffff',
+                        pointBorderWidth: 2,
+                        pointHoverBackgroundColor: colors.primary,
+                        pointHoverBorderColor: isDark ? '#1f2937' : '#ffffff',
+                        yAxisID: 'y',
+                    }, {
+                        label: 'Monto ($)',
+                        data: montosMes,
+                        borderColor: colors.accent,
+                        backgroundColor: isDark ? 'rgba(52, 211, 153, 0.1)' : 'rgba(16, 185, 129, 0.1)',
+                        borderWidth: 2,
+                        fill: true,
+                        tension: 0.3,
+                        pointRadius: 3,
+                        pointHoverRadius: 5,
+                        pointBackgroundColor: colors.accent,
+                        pointBorderColor: isDark ? '#1f2937' : '#ffffff',
+                        pointBorderWidth: 2,
+                        pointHoverBackgroundColor: colors.accent,
+                        pointHoverBorderColor: isDark ? '#1f2937' : '#ffffff',
+                        yAxisID: 'y1',
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    interaction: {
+                        intersect: false,
+                        mode: 'index',
+                    },
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'top',
+                            labels: {
+                                color: labelColor,
+                                font: { size: 11 },
+                                usePointStyle: true,
+                                boxWidth: 8,
+                                boxHeight: 8,
+                                padding: 15,
+                            }
+                        },
+                        tooltip: {
+                            backgroundColor: tooltipBg,
+                            titleColor: textColor,
+                            bodyColor: textColor,
+                            borderColor: tooltipBorder,
+                            borderWidth: 1,
+                            padding: 10,
+                            displayColors: true,
+                            titleFont: { size: 11, weight: '600' },
+                            bodyFont: { size: 11 },
+                        }
+                    },
+                    scales: {
+                        y: {
+                            type: 'linear',
+                            position: 'left',
+                            beginAtZero: true,
+                            border: { display: false },
+                            ticks: {
+                                color: labelColor,
+                                font: { size: 10 },
+                                callback: function(value) {
+                                    return value.toFixed(0) + ' L';
+                                }
+                            },
+                            grid: {
+                                color: gridColor,
+                                drawTicks: false,
+                            }
+                        },
+                        y1: {
+                            type: 'linear',
+                            position: 'right',
+                            beginAtZero: true,
+                            border: { display: false },
+                            ticks: {
+                                color: labelColor,
+                                font: { size: 10 },
+                                callback: function(value) {
+                                    return '$' + (value / 1000).toFixed(0) + 'k';
+                                }
+                            },
+                            grid: {
+                                display: false,
+                            }
+                        },
+                        x: {
+                            border: { display: false },
+                            ticks: {
+                                color: labelColor,
+                                font: { size: 10 }
+                            },
+                            grid: {
+                                display: false
+                            }
+                        }
+                    }
+                }
+            });
+
+            // 📊 GRÁFICO 2: Distribución por Tipo de Combustible (Dona)
+            const dataTipo = @json($consumoPorTipo);
+            const tipos = dataTipo.map(item => item.tipo);
+            const litrosTipo = dataTipo.map(item => parseFloat(item.total_litros));
+
+            const coloresTipo = [
+                colors.primary,
+                colors.accent,
+                colors.warning,
+                colors.secondary,
+                colors.info,
+            ];
+
+            const ctxTipo = document.getElementById('chartTipoCombustible').getContext('2d');
+            new Chart(ctxTipo, {
+                type: 'doughnut',
+                data: {
+                    labels: tipos,
+                    datasets: [{
+                        data: litrosTipo,
+                        backgroundColor: coloresTipo,
+                        borderWidth: 2,
+                        borderColor: isDark ? '#1f2937' : '#ffffff',
+                        hoverOffset: 6,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                padding: 12,
+                                usePointStyle: true,
+                                pointStyle: 'circle',
+                                color: labelColor,
+                                font: { size: 11 },
+                                boxWidth: 8,
+                                boxHeight: 8,
+                            }
+                        },
+                        tooltip: {
+                            backgroundColor: tooltipBg,
+                            titleColor: textColor,
+                            bodyColor: textColor,
+                            borderColor: tooltipBorder,
+                            borderWidth: 1,
+                            padding: 10,
+                            displayColors: true,
+                            titleFont: { size: 11, weight: '600' },
+                            bodyFont: { size: 11 },
+                            callbacks: {
+                                label: function(context) {
+                                    const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                    const porcentaje = ((context.parsed / total) * 100).toFixed(1);
+                                    return context.label + ': ' + context.parsed.toFixed(0) + ' L (' + porcentaje + '%)';
+                                }
+                            }
+                        }
+                    },
+                    cutout: '65%',
+                }
+            });
+
+            // 📊 GRÁFICO 3: Top Destinos (Vehículos, Equipos, etc.) - Barras Horizontales
+            const dataVehiculos = @json($topVehiculos);
+            const vehiculos = dataVehiculos.map(item => {
+                if (!item.destino) {
+                    return 'Sin datos';
+                }
+
+                const destino = item.destino;
+                const tipo = item.destino_tipo;
+
+                // Determinar el tipo de destino y formatear apropiadamente
+                if (tipo.includes('Vehiculo')) {
+                    // VEHÍCULO: Patente - Marca Modelo
+                    const patente = destino.patente || '';
+                    const marca = destino.marca || '';
+                    const modelo = destino.modelo || '';
+                    
+                    if (patente && marca && modelo) {
+                        return `🚗 ${patente} - ${marca} ${modelo}`;
+                    } else if (patente && marca) {
+                        return `🚗 ${patente} - ${marca}`;
+                    } else if (patente) {
+                        return `🚗 ${patente}`;
+                    } else if (marca) {
+                        return `🚗 ${marca}`;
+                    }
+                } else if (tipo.includes('Equipo')) {
+                    // EQUIPO: Equipamiento - Marca
+                    const equipamiento = destino.equipamiento || '';
+                    const marca = destino.marca || '';
+                    
+                    if (equipamiento && marca) {
+                        return `⚙️ ${equipamiento} - ${marca}`;
+                    } else if (equipamiento) {
+                        return `⚙️ ${equipamiento}`;
+                    } else if (marca) {
+                        return `⚙️ ${marca}`;
+                    }
+                } else if (tipo.includes('Destino')) {
+                    // DESTINO GENÉRICO (Acuerdo policial, etc.): Nombre - Tipo
+                    const nombre = destino.nombre || '';
+                    const tipoDestino = destino.tipo || '';
+                    
+                    if (nombre && tipoDestino) {
+                        return `📍 ${nombre} (${tipoDestino})`;
+                    } else if (nombre) {
+                        return `📍 ${nombre}`;
+                    } else if (tipoDestino) {
+                        return `📍 ${tipoDestino}`;
+                    }
+                }
+                
+                return 'Sin identificar';
+            });
+            const litrosVehiculos = dataVehiculos.map(item => parseFloat(item.total_litros) || 0);
+            const cargasVehiculos = dataVehiculos.map(item => parseInt(item.cantidad_cargas) || 0);
+            const montosVehiculos = dataVehiculos.map(item => parseFloat(item.total_monto) || 0);
+
+            const ctxVehiculos = document.getElementById('chartTopVehiculos').getContext('2d');
+            new Chart(ctxVehiculos, {
+                type: 'bar',
+                data: {
+                    labels: vehiculos,
+                    datasets: [{
+                        label: 'Litros Consumidos',
+                        data: litrosVehiculos,
+                        backgroundColor: [
+                            isDark ? 'rgba(96, 165, 250, 0.7)' : 'rgba(59, 130, 246, 0.7)',
+                            isDark ? 'rgba(167, 139, 250, 0.7)' : 'rgba(139, 92, 246, 0.7)',
+                            isDark ? 'rgba(52, 211, 153, 0.7)' : 'rgba(16, 185, 129, 0.7)',
+                            isDark ? 'rgba(56, 189, 248, 0.7)' : 'rgba(14, 165, 233, 0.7)',
+                            isDark ? 'rgba(74, 222, 128, 0.7)' : 'rgba(34, 197, 94, 0.7)',
+                        ],
+                        borderWidth: 0,
+                        borderRadius: 6,
+                        barThickness: 32,
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            backgroundColor: tooltipBg,
+                            titleColor: textColor,
+                            bodyColor: textColor,
+                            borderColor: tooltipBorder,
+                            borderWidth: 1,
+                            padding: 10,
+                            displayColors: false,
+                            titleFont: { size: 11, weight: '600' },
+                            bodyFont: { size: 11 },
+                            callbacks: {
+                                label: function(context) {
+                                    return 'Litros: ' + context.parsed.x.toFixed(0) + ' L';
+                                },
+                                afterLabel: function(context) {
+                                    const idx = context.dataIndex;
+                                    return [
+                                        'Cargas: ' + cargasVehiculos[idx],
+                                        'Monto: $' + montosVehiculos[idx].toLocaleString('es-AR', {minimumFractionDigits: 2})
+                                    ];
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            border: { display: false },
+                            ticks: {
+                                color: labelColor,
+                                font: { size: 10 },
+                                callback: function(value) {
+                                    return value.toFixed(0) + ' L';
+                                }
+                            },
+                            grid: {
+                                color: gridColor,
+                                drawTicks: false,
+                            }
+                        },
+                        y: {
+                            border: { display: false },
+                            ticks: {
+                                color: isDark ? '#f9fafb' : '#111827',
+                                font: { size: 12, weight: 'bold' }
+                            },
+                            grid: {
+                                display: false
+                            }
+                        }
+                    }
+                }
+            });
+
+            });
     </script>
 @endsection

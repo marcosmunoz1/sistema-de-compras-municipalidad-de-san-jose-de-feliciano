@@ -60,7 +60,6 @@
          class="@container/card-header grid auto-rows-min grid-rows-[auto_auto] items-start 
          gap-1.5 px-6 pt-6">
         <h4 class="text-1xl font-semibold">Información de la Orden de Carga</h4>
-        <p class="text-muted-foreground">Autorización para carga de combustible</p>
     </div>
 
     <!-- CONTENT -->
@@ -89,21 +88,67 @@
                 <!-- Usuario -->
                 <div class="space-y-2">
                     <label for="sub_cuenta" class="text-sm font-medium">Sub cuenta<span class="text-red-600">*</span></label>
-                    <select 
-                        id="sub_cuenta"
-                        name="sub_cuenta"
-                        class="select w-full h-10 rounded-md border-base-300 bg-base-200
-                        px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
-                        focus:border-primary transition @error('sub_cuenta') input-error @enderror" required> 
-                        <option value="">Seleccione una sub cuenta</option>
-                        <option value="Secretaria de obras publicas">Secretaria de obras publicas</option>
-                        <option value="Secretaria de desarrollos humanos">Secretaria de desarrollos humanos</option>
-                        <option value="Secretaria de gobierno">Secretaria de gobierno</option>
-                        <option value="Departamento ejecutivo municipal">Departamento ejecutivo municipal</option> 
-                    </select>
-                    @error('sub_cuenta')
-                        <small class="text-red-500 error-message">{{ $message }}</small>
-                    @enderror
+                        <div
+                            x-data="selectSearch({
+                                options: @js([
+                                    ['value' => 'Secretaria de obras publicas', 'label' => 'Secretaria de Obras Publicas'],
+                                    ['value' => 'Secretaria de desarrollos humanos', 'label' => 'Secretaria de Desarrollo Humano'],
+                                    ['value' => 'Secretaria de gobierno', 'label' => 'Secretaria de Gobierno'],
+                                    ['value' => 'Departamento ejecutivo municipal', 'label' => 'Departamento Ejecutivo Municipal'],
+                                ]),
+                                placeholder: 'Seleccione la sub cuenta',
+                                value: @js(old('sub_cuenta'))
+                            })"
+                            x-init="init()"
+                            class="relative w-full"
+                        >
+                            <button
+                                type="button"
+                                @click="open = !open"
+                                class="select w-full h-10 rounded-md border-base-300 bg-base-200 px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition flex items-center justify-between @error('sub_cuenta') input-error @enderror"
+                            >
+                                <span x-text="selected?.label ?? placeholder" class="truncate"></span>
+                            </button>
+
+                            <div
+                                x-show="open"
+                                x-transition
+                                @click.outside="open = false"
+                                class="absolute z-50 mt-1 w-full bg-base-100 border border-base-300 rounded-md shadow"
+                            >
+                                <input
+                                    type="text"
+                                    x-model="search"
+                                    class="input w-full border-0 border-b border-base-300 bg-base-200 px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
+                                    placeholder="Buscar..."
+                                >
+
+                                <ul class="max-h-60 overflow-y-auto">
+                                    <template x-for="option in filtered" :key="option.value">
+                                        <li
+                                            @click="select(option)"
+                                            class="px-3 py-2 cursor-pointer hover:bg-primary hover:text-primary-content"
+                                            x-text="option.label"
+                                        ></li>
+                                    </template>
+
+                                    <li x-show="filtered.length === 0" class="px-3 py-2 opacity-50">
+                                        Sin resultados
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <select id="sub_cuenta" name="sub_cuenta" class="hidden" x-model="selectedValue" required>
+                                <option value="">Seleccione la sub cuenta</option>
+                                <option value="Secretaria de obras publicas" @selected(old('sub_cuenta') == 'Secretaria de obras publicas')>Secretaria de Obras Publicas</option>
+                                <option value="Secretaria de desarrollos humanos" @selected(old('sub_cuenta') == 'Secretaria de desarrollos humanos')>Secretaria de Desarrollo Humano</option>
+                                <option value="Secretaria de gobierno" @selected(old('sub_cuenta') == 'Secretaria de gobierno')>Secretaria de Gobierno</option>
+                                <option value="Departamento ejecutivo municipal" @selected(old('sub_cuenta') == 'Departamento ejecutivo municipal')>Departamento Ejecutivo Municipal</option>
+                            </select>
+                        </div>
+                        @error('sub_cuenta')
+                            <small class="text-red-500 error-message">{{ $message }}</small>
+                        @enderror
                 </div>
             </div>
         </div>
@@ -133,32 +178,7 @@
 <div class="grid gap-4">
 
 <!-- FILA SELECT VEHÍCULO & SELECT CHOFER -->
-<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-
-<!-- Select Vehículo -->
-{{-- <div class="space-y-2">
-<label for="vehiculo_id" class="text-sm font-medium">Vehículo<span class="text-red-600">*</span></label>
-<select id="vehiculo_id" name="vehiculo_id"
-    class="w-full h-10 rounded-md border border-base-300 bg-base-200
-    px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary
-    focus:border-primary transition @error('vehiculo_id') input-error @enderror" required>
-    <option value="">Seleccione un vehículo</option>
-    @foreach ($vehiculos as $vehiculo) 
-    <option value="{{ $vehiculo->id }}"
-        data-marca="{{ $vehiculo->marca }}"
-        data-modelo="{{ $vehiculo->modelo }}"
-        data-tipo="{{ $vehiculo->tipo }}" 
-        data-combustible="{{ $vehiculo->tipo_combustible_id }}" 
-        data-ultima="{{ $vehiculo->created_at }}">
-        Patente: {{ $vehiculo->patente }} 
-        - Marca: {{ $vehiculo->marca }}  
-        - Modelo: {{ $vehiculo->modelo }}</option> 
-    @endforeach
-</select>
- @error('vehiculo_id') 
-    <small class="text-red-500 error-message">{{ $message }}</small>
-@enderror
-</div> --}} 
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4"> 
  <div class="space-y-2 mb-2">
     <label for="destino_tipo" class="text-sm font-medium">Tipo de destino <span class="text-red-600">*</span></label> 
     <select id="destino_tipo" name="destino_tipo"
@@ -174,7 +194,7 @@
         <small class="text-red-500 error-message">{{ $message }}</small> 
     @enderror
 </div>  
-<div class="space-y-2 -mt-4">
+<div id="btn_elegir_destino" class="space-y-2 -mt-4"> 
     <div class="flex items-center justify-between gap-4">
         <label class="text-sm font-medium mb-0">Destinar a: <span class="text-red-600">*</span></label>
         <button type="button" id="btn_elegir_destino" class="btn btn-sm btn-warning"
@@ -188,7 +208,7 @@
 
     {{-- campo solo lectura mostrando el nombre elegido --}}
     <input type="text" id="destino_nombre_visble"
-        class="w-full h-10 rounded-md border border-base-300 bg-base-200 px-3 text-sm"
+        class="w-full h-10 rounded-md border border-base-300 bg-base-200 px-3 text-sm cursor-pointer"
         placeholder="Ningún destino seleccionado" readonly>
 
     @error('destino_id') 
@@ -234,76 +254,52 @@
     </div>
 
     <div class="modal-action">
-      <label for="modal_elegir_destino" class="btn btn-ghost">Cerrar</label>
+      <label for="modal_elegir_destino" class="btn">Cerrar</label> 
     </div>
   </div>
   <label class="modal-backdrop" for="modal_elegir_destino">Close</label>
 </div>
 <!-- Select Conductor / Chofer -->
-<div id="empleado-card" class="space-y-2 hidden"> 
-<label for="empleado_id" class="text-sm font-medium">Empleado que efectua la carga<span class="text-red-600">*</span></label>
-<select
-id="empleado_id"
-name="empleado_id"
-class="w-full h-10 rounded-md border border-base-300 bg-base-200
-px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary
-focus:border-primary transition @error('empleado_id') input-error @enderror">
-<option value="">Seleccione un conductor</option> 
-@foreach ($empleados as $empleado) 
-<option value="{{ $empleado->id }}">Nombre: {{ $empleado->nombre }} - DNI: {{ $empleado->dni }}</option> 
-@endforeach
-</select>
- @error('empleado_id')  
-    <small class="text-red-500 error-message">{{ $message }}</small>
-@enderror
+<div id="empleado-card" class="space-y-2 hidden">  
+    <label for="empleado_id" class="text-sm font-medium">Empleado que efectúa la carga<span class="text-red-600">*</span></label>
+
+    <!-- ID oculto que se envía en el request -->
+    <input type="hidden" id="empleado_id" name="empleado_id" value="{{ old('empleado_id') }}">
+
+    <!-- Campo solo lectura mostrando el nombre elegido -->
+    <input type="text" id="empleado_nombre_visible"
+        class="w-full h-10 rounded-md border border-base-300 bg-base-200
+        px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
+        focus:border-primary cursor-pointer transition @error('empleado_id') input-error @enderror"
+        placeholder="Seleccione un empleado"
+        value=""
+        readonly>
+
+    @error('empleado_id')  
+        <small class="text-red-500 error-message">{{ $message }}</small>
+    @enderror
 </div> 
 </div>
 
-</div>
+</div> 
+<!-- CARD DATOS DEL DESTINO OCULTO  -->   
+<div id="destino_info" class="hidden card bg-gradient-to-br from-base-100 to-base-200 shadow-xl mt-6 border border-base-300">  
+    <div class="card-body p-6">
+        <div class="flex items-center gap-3 mb-4 pb-3 border-b border-base-300">
+            <div id="destino_info_icono" class="p-2 rounded-lg bg-primary/10">
+                <!-- Icono dinámico -->
+            </div>
+            <div>
+                <h3 class="font-semibold text-lg" id="destino_info_titulo">Información del Destino</h3>
+                <p class="text-xs text-muted-foreground" id="destino_info_subtitulo">Detalles del destino seleccionado</p>
+            </div>
+        </div>
 
-<!-- CARD DATOS DEL VEHÍCULO OCULTO  -->  
-<div id="vehiculo_info" class="hidden p-4 card bg-base-100 shadow-xl mt-6"> 
-    <div class="flex items-center gap-2 mb-2">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" 
-             fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" 
-             stroke-linejoin="round" class="lucide lucide-fuel w-5 h-5">
-            <path d="M14 13h2a2 2 0 0 1 2 2v2a2 2 0 0 0 4 0v-6.998a2 2 0 0 0-.59-1.42L18 5"></path>
-            <path d="M14 21V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v16"></path>
-            <path d="M2 21h13"></path>
-            <path d="M3 9h11"></path>
-        </svg>
-        <span class="font-medium">Información del Vehículo</span>
+        <div id="destino_info_contenido" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <!-- Contenido dinámico generado por JavaScript -->
+        </div>
     </div>
-
-    <div class="grid grid-cols-3 gap-4 text-sm">
-        <div>
-            <span class="text-muted-foreground">Marca/Modelo:</span>
-            <p class="font-medium" id="v_marca_modelo"></p>
-        </div>
-        <div>
-            <span class="text-muted-foreground">Tipo:</span>
-            <p class="font-medium" id="v_tipo"></p>
-        </div>
-        {{-- <div>
-            <span class="text-muted-foreground">Kilometraje:</span>
-            <p class="font-medium">45,680 km</p>
-        </div> --}} 
-        <div>
-            <span class="text-muted-foreground">Combustible:</span>
-            <span id="v_tipo_combustible" class="inline-flex items-center justify-center rounded-md border px-2 py-0.5 text-xs font-medium 
-                           w-fit whitespace-nowrap shrink-0 mt-1 bg-secondary text-secondary-foreground">
-            </span>
-        </div>
-        <div>
-            <span class="text-muted-foreground">Última Carga:</span>
-            <p id="v_ultima_carga" class="font-medium"> (42L)</p> 
-        </div>
-        {{-- <div>
-            <span class="text-muted-foreground">Promedio:</span>
-            <p id="v_promedio" class="font-medium">12.5 km/L</p>
-        </div> --}} 
-    </div>
-</div>
+</div> 
 
 </div>
 
@@ -317,7 +313,7 @@ focus:border-primary transition @error('empleado_id') input-error @enderror">
          class="@container/card-header grid auto-rows-min grid-rows-[auto_auto] items-start 
          gap-1.5 px-6 pt-6">
         <h4 class="text-1xl font-semibold">Detalles de la Carga Autorizada</h4>
-        <p class="text-muted-foreground">Especificaciones de la carga de combustible</p>
+        {{-- <p class="text-muted-foreground">Especificaciones de la carga de combustible</p> --}}
     </div>
 
     <!-- CONTENT -->
@@ -353,7 +349,7 @@ focus:border-primary transition @error('empleado_id') input-error @enderror">
                         class="w-full h-10 rounded-md border border-base-300 bg-base-200 
                         px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary
                         focus:border-primary @error('litros') input-error @enderror transition" required>
-                    <p class="text-xs text-gray-500">Dejar vacío para carga completa</p>
+                   {{--  <p class="text-xs text-gray-500">Dejar vacío para carga completa</p> --}} 
                      @error('litros')
                         <small class="text-red-500 error-message">{{ $message }}</small>
                     @enderror 
@@ -410,17 +406,6 @@ focus:border-primary transition @error('empleado_id') input-error @enderror">
                 </div>
 
             </div>
-
-           {{--  <!-- MOTIVO -->
-            <div class="space-y-2">
-                <label for="motivo" class="text-sm font-medium">Motivo / Justificación</label>
-                <textarea id="motivo" name="motivo" rows="2"
-                    placeholder="Describa el motivo o justificación..."
-                    class="w-full rounded-md border border-base-300 bg-base-200
-                    px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary
-                    focus:border-primary transition resize-none"></textarea>
-            </div> --}}
-
             <!-- OBSERVACIONES -->
             <div class="space-y-2">
                 <label for="observaciones" class="text-sm font-medium">
@@ -501,7 +486,7 @@ focus:border-primary transition @error('empleado_id') input-error @enderror">
             </div>
 
             <div class="modal-action">
-                <label for="crear_destino_modal" class="btn btn-ghost">
+                <label for="crear_destino_modal" class="btn">
                     Cancelar
                 </label>
                 <button type="submit" class="btn btn-primary">
@@ -512,6 +497,57 @@ focus:border-primary transition @error('empleado_id') input-error @enderror">
     </div>
 
     <label class="modal-backdrop" for="crear_destino_modal">Close</label>
+</div>
+
+<!-- Modal para seleccionar empleado -->
+<input type="checkbox" id="modal_elegir_empleado" class="modal-toggle" />
+<div class="modal">
+    <div class="modal-box max-w-4xl">
+        <h3 class="font-bold text-lg mb-4" id="titulo_modal_empleado">
+            Seleccionar empleado
+        </h3>
+
+        <input type="text" id="buscador_empleado"
+            class="w-full h-10 rounded-md border border-base-300 bg-base-200 
+                    px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
+                    focus:border-primary transition"
+            placeholder="Buscar por nombre, DNI, email, área...">
+
+        <div class="overflow-x-auto mt-3">
+            <table class="table table-zebra w-full text-sm">
+                <thead>
+                    <tr id="tabla_empleado_head">
+                        <th>Nombre</th>
+                        <th>DNI</th>
+                        <th>Celular</th>
+                        <th>Email</th>
+                        <th>Área</th>
+                    </tr>
+                </thead>
+                <tbody id="tabla_empleado_body">
+                    {{-- filas generadas por JS --}}
+                </tbody>
+            </table>
+            <div class="flex justify-between items-center mt-3 text-xs">
+                <button type="button" class="btn btn-xs" id="empleado_prev_page">
+                    « Anterior
+                </button>
+
+                <span id="empleado_pagination_info" class="mx-2">
+                    {{-- se completa por JS --}}
+                </span>
+
+                <button type="button" class="btn btn-xs" id="empleado_next_page">
+                    Siguiente »
+                </button>
+            </div>
+        </div>
+
+        <div class="modal-action">
+            <label for="modal_elegir_empleado" class="btn btn-sm btn-neutral">Cerrar</label>
+        </div>
+    </div>
+    <label class="modal-backdrop" for="modal_elegir_empleado">Close</label>
 </div>
 @endsection
 
@@ -661,6 +697,27 @@ focus:border-primary transition @error('empleado_id') input-error @enderror">
                     : (dest.nombre ?? 'Sin datos'); 
 
                 document.getElementById('destino_nombre_visble').value = visibleName;
+
+                // Si es un vehículo, llenar automáticamente el tipo de combustible
+                if (tipoActual === 'vehiculo' && dest.tipo_combustible_nombre) {
+                    const selectCombustible = document.getElementById('combustible');
+                    if (selectCombustible) {
+                        // Buscar la opción que coincida con el nombre del combustible
+                        const options = selectCombustible.options;
+                        for (let i = 0; i < options.length; i++) {
+                            if (options[i].value === dest.tipo_combustible_nombre) {
+                                selectCombustible.selectedIndex = i;
+                                // Disparar el evento change para actualizar el precio
+                                selectCombustible.dispatchEvent(new Event('change'));
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                // Mostrar información del destino
+                mostrarInfoDestino(dest, tipoActual);
+
                 document.getElementById('modal_elegir_destino').checked = false;
             });
 
@@ -674,6 +731,232 @@ focus:border-primary transition @error('empleado_id') input-error @enderror">
        }
     }
 
+    // Función para mostrar información del destino
+    function mostrarInfoDestino(dest, tipo) {
+        const infoCard = document.getElementById('destino_info');
+        const infoTitulo = document.getElementById('destino_info_titulo');
+        const infoSubtitulo = document.getElementById('destino_info_subtitulo');
+        const infoIcono = document.getElementById('destino_info_icono');
+        const infoContenido = document.getElementById('destino_info_contenido');
+
+        if (!dest || !tipo) {
+            infoCard.classList.add('hidden');
+            return;
+        }
+
+        let htmlContent = '';
+        let titulo = '';
+        let subtitulo = '';
+        let icono = '';
+
+        if (tipo === 'vehiculo') {
+            titulo = 'Información del Vehículo';
+            subtitulo = 'Datos del vehículo seleccionado para la carga';
+            icono = `
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" 
+                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" 
+                     stroke-linejoin="round" class="text-primary">
+                    <path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2"></path>
+                    <circle cx="7" cy="17" r="2"></circle>
+                    <path d="M9 17h6"></path>
+                    <circle cx="17" cy="17" r="2"></circle>
+                </svg>
+            `;
+            htmlContent = `
+                <div class="bg-base-100 p-3 rounded-lg border border-base-300 hover:shadow-md transition-shadow">
+                    <div class="flex items-center gap-2 mb-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-primary">
+                            <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                        </svg>
+                        <span class="text-xs text-muted-foreground font-medium">Marca/Modelo</span>
+                    </div>
+                    <p class="font-semibold text-sm">${dest.marca || '-'} ${dest.modelo || '-'}</p>
+                </div>
+                <div class="bg-base-100 p-3 rounded-lg border border-base-300 hover:shadow-md transition-shadow">
+                    <div class="flex items-center gap-2 mb-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-primary">
+                            <rect width="18" height="12" x="3" y="4" rx="2" ry="2"></rect>
+                            <line x1="2" x2="22" y1="20" y2="20"></line>
+                        </svg>
+                        <span class="text-xs text-muted-foreground font-medium">Patente</span>
+                    </div>
+                    <p class="font-semibold text-sm">${dest.patente || '-'}</p>
+                </div>
+                <div class="bg-base-100 p-3 rounded-lg border border-base-300 hover:shadow-md transition-shadow">
+                    <div class="flex items-center gap-2 mb-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-primary">
+                            <path d="M3 3v18h18"></path>
+                            <path d="m19 9-5 5-4-4-3 3"></path>
+                        </svg>
+                        <span class="text-xs text-muted-foreground font-medium">Tipo</span>
+                    </div>
+                    <p class="font-semibold text-sm">${dest.tipo || '-'}</p>
+                </div>
+                <div class="bg-base-100 p-3 rounded-lg border border-base-300 hover:shadow-md transition-shadow">
+                    <div class="flex items-center gap-2 mb-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-primary">
+                            <rect width="18" height="18" x="3" y="4" rx="2" ry="2"></rect>
+                            <line x1="16" x2="16" y1="2" y2="6"></line>
+                            <line x1="8" x2="8" y1="2" y2="6"></line>
+                            <line x1="3" x2="21" y1="10" y2="10"></line>
+                        </svg>
+                        <span class="text-xs text-muted-foreground font-medium">Año</span>
+                    </div>
+                    <p class="font-semibold text-sm">${dest.anio || '-'}</p>
+                </div>
+                <div class="bg-base-100 p-3 rounded-lg border border-base-300 hover:shadow-md transition-shadow">
+                    <div class="flex items-center gap-2 mb-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-primary">
+                            <path d="M12 2a10 10 0 1 0 10 10 4 4 0 0 1-5-5 4 4 0 0 1-5-5"></path>
+                            <path d="M8.5 8.5v.01"></path>
+                            <path d="M16 15.5v.01"></path>
+                            <path d="M12 12v.01"></path>
+                            <path d="M11 17v.01"></path>
+                            <path d="M7 14v.01"></path>
+                        </svg>
+                        <span class="text-xs text-muted-foreground font-medium">Color</span>
+                    </div>
+                    <p class="font-semibold text-sm">${dest.color || '-'}</p>
+                </div>
+                <div class="bg-base-100 p-3 rounded-lg border border-base-300 hover:shadow-md transition-shadow">
+                    <div class="flex items-center gap-2 mb-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-primary">
+                            <path d="M14 13h2a2 2 0 0 1 2 2v2a2 2 0 0 0 4 0v-6.998a2 2 0 0 0-.59-1.42L18 5"></path>
+                            <path d="M14 21V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v16"></path>
+                            <path d="M2 21h13"></path>
+                            <path d="M3 9h11"></path>
+                        </svg>
+                        <span class="text-xs text-muted-foreground font-medium">Combustible</span>
+                    </div>
+                    <span class="inline-flex items-center rounded-md px-2 py-1 text-xs font-semibold bg-primary/20 text-primary border border-primary/30">
+                        ${dest.tipo_combustible_nombre || '-'}
+                    </span>
+                </div>
+            `;
+        } else if (tipo === 'equipo') {
+            titulo = 'Información del Equipo';
+            subtitulo = 'Datos del equipo seleccionado para la carga';
+            icono = `
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" 
+                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" 
+                     stroke-linejoin="round" class="text-primary">
+                    <path d="M3 9h18v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9Z"></path>
+                    <path d="m3 9 2.45-4.9A2 2 0 0 1 7.24 3h9.52a2 2 0 0 1 1.8 1.1L21 9"></path>
+                    <path d="M12 3v6"></path>
+                </svg>
+            `;
+            htmlContent = `
+                <div class="bg-base-100 p-3 rounded-lg border border-base-300 hover:shadow-md transition-shadow">
+                    <div class="flex items-center gap-2 mb-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-primary">
+                            <path d="M3 9h18v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9Z"></path>
+                            <path d="m3 9 2.45-4.9A2 2 0 0 1 7.24 3h9.52a2 2 0 0 1 1.8 1.1L21 9"></path>
+                        </svg>
+                        <span class="text-xs text-muted-foreground font-medium">Equipamiento</span>
+                    </div>
+                    <p class="font-semibold text-sm">${dest.equipamiento || '-'}</p>
+                </div>
+                <div class="bg-base-100 p-3 rounded-lg border border-base-300 hover:shadow-md transition-shadow">
+                    <div class="flex items-center gap-2 mb-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-primary">
+                            <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                        </svg>
+                        <span class="text-xs text-muted-foreground font-medium">Marca</span>
+                    </div>
+                    <p class="font-semibold text-sm">${dest.marca || '-'}</p>
+                </div>
+                <div class="bg-base-100 p-3 rounded-lg border border-base-300 hover:shadow-md transition-shadow">
+                    <div class="flex items-center gap-2 mb-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-primary">
+                            <path d="M4 7V4h16v3"></path>
+                            <path d="M5 20h6"></path>
+                            <path d="M13 4 8 20"></path>
+                            <path d="m15 15 5 5"></path>
+                            <path d="m20 15-5 5"></path>
+                        </svg>
+                        <span class="text-xs text-muted-foreground font-medium">Descripción</span>
+                    </div>
+                    <p class="font-semibold text-sm">${dest.descripcion || '-'}</p>
+                </div>
+                <div class="bg-base-100 p-3 rounded-lg border border-base-300 hover:shadow-md transition-shadow">
+                    <div class="flex items-center gap-2 mb-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-primary">
+                            <rect width="7" height="9" x="3" y="3" rx="1"></rect>
+                            <rect width="7" height="5" x="14" y="3" rx="1"></rect>
+                            <rect width="7" height="9" x="14" y="12" rx="1"></rect>
+                            <rect width="7" height="5" x="3" y="16" rx="1"></rect>
+                        </svg>
+                        <span class="text-xs text-muted-foreground font-medium">Área</span>
+                    </div>
+                    <p class="font-semibold text-sm">${dest.area_nombre || '-'}</p>
+                </div>
+                <div class="bg-base-100 p-3 rounded-lg border border-base-300 hover:shadow-md transition-shadow">
+                    <div class="flex items-center gap-2 mb-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-primary">
+                            <path d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z"></path>
+                        </svg>
+                        <span class="text-xs text-muted-foreground font-medium">Catalogación</span>
+                    </div>
+                    <p class="font-semibold text-sm">${dest.catalogacion || '-'}</p>
+                </div>
+            `;
+        } else if (tipo === 'destino') {
+            titulo = 'Información del Destino';
+            subtitulo = 'Datos del destino seleccionado para la carga';
+            icono = `
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" 
+                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" 
+                     stroke-linejoin="round" class="text-primary">
+                    <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"></path>
+                    <circle cx="12" cy="10" r="3"></circle>
+                </svg>
+            `;
+            htmlContent = `
+                <div class="bg-base-100 p-3 rounded-lg border border-base-300 hover:shadow-md transition-shadow">
+                    <div class="flex items-center gap-2 mb-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-primary">
+                            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="9" cy="7" r="4"></circle>
+                            <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
+                            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                        </svg>
+                        <span class="text-xs text-muted-foreground font-medium">Nombre</span>
+                    </div>
+                    <p class="font-semibold text-sm">${dest.nombre || '-'}</p>
+                </div>
+                <div class="bg-base-100 p-3 rounded-lg border border-base-300 hover:shadow-md transition-shadow">
+                    <div class="flex items-center gap-2 mb-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-primary">
+                            <path d="M3 3v18h18"></path>
+                            <path d="m19 9-5 5-4-4-3 3"></path>
+                        </svg>
+                        <span class="text-xs text-muted-foreground font-medium">Tipo</span>
+                    </div>
+                    <p class="font-semibold text-sm">${dest.tipo || '-'}</p>
+                </div>
+                <div class="bg-base-100 p-3 rounded-lg border border-base-300 hover:shadow-md transition-shadow">
+                    <div class="flex items-center gap-2 mb-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-primary">
+                            <path d="M4 7V4h16v3"></path>
+                            <path d="M5 20h6"></path>
+                            <path d="M13 4 8 20"></path>
+                            <path d="m15 15 5 5"></path>
+                            <path d="m20 15-5 5"></path>
+                        </svg>
+                        <span class="text-xs text-muted-foreground font-medium">Descripción</span>
+                    </div>
+                    <p class="font-semibold text-sm">${dest.descripcion || '-'}</p>
+                </div>
+            `;
+        }
+
+        infoTitulo.textContent = titulo;
+        infoSubtitulo.textContent = subtitulo;
+        infoIcono.innerHTML = icono;
+        infoContenido.innerHTML = htmlContent;
+        infoCard.classList.remove('hidden');
+    }
+
     // Cambio de tipo
     document.getElementById('destino_tipo').addEventListener('change', function () {
         const tipo = this.value;
@@ -681,6 +964,8 @@ focus:border-primary transition @error('empleado_id') input-error @enderror">
         document.getElementById('destino_id').value = '';
         document.getElementById('destino_nombre_visble').value = '';
         document.getElementById('buscador_destinos').value = '';
+        // Ocultar la card de información al cambiar el tipo
+        document.getElementById('destino_info').classList.add('hidden');
     });
 
     // Botón para abrir modal
@@ -688,6 +973,25 @@ focus:border-primary transition @error('empleado_id') input-error @enderror">
         const tipo = document.getElementById('destino_tipo').value;
         cargarDestinosEnTabla(tipo);
     });
+
+    // Input clickeable para abrir modal
+    const destinoNombreVisible = document.getElementById('destino_nombre_visble');
+    if (destinoNombreVisible) {
+        destinoNombreVisible.addEventListener('click', function () {
+            const tipo = document.getElementById('destino_tipo').value;
+            if (tipo) {
+                cargarDestinosEnTabla(tipo);
+                document.getElementById('modal_elegir_destino').checked = true;
+            }
+        });
+        destinoNombreVisible.addEventListener('focus', function () {
+            const tipo = document.getElementById('destino_tipo').value;
+            if (tipo) {
+                cargarDestinosEnTabla(tipo);
+                document.getElementById('modal_elegir_destino').checked = true;
+            }
+        });
+    }
 
     // Buscador
     document.getElementById('buscador_destinos').addEventListener('input', function () {
@@ -764,5 +1068,144 @@ document.getElementById('buscador_destinos').addEventListener('input', function 
         // Para aplicar la lógica si viene con old('destino_tipo')
         MostrarValorDelCombustible();  
     });
+</script>
+<script>
+// ==============================
+//  MODAL DE SELECCIÓN DE EMPLEADO
+// ==============================
+document.addEventListener("DOMContentLoaded", function() {
+    const empleadosData = @json($empleados);
+    let empleadosCache = empleadosData;
+    let paginaEmpleado = 1;
+    const itemsPorPaginaEmpleado = 5;
+
+    const tablaEmpleadoBody = document.getElementById('tabla_empleado_body');
+    const empleadoPrev = document.getElementById('empleado_prev_page');
+    const empleadoNext = document.getElementById('empleado_next_page');
+    const empleadoInfo = document.getElementById('empleado_pagination_info');
+    const buscadorEmpleado = document.getElementById('buscador_empleado');
+    const empleadoInput = document.getElementById('empleado_id');
+    const empleadoNombreVisible = document.getElementById('empleado_nombre_visible');
+
+    function formatearCelda(valor) {
+        if (valor === null || valor === undefined || valor === '') return '-';
+        return String(valor);
+    }
+
+    function renderTablaEmpleado(data) {
+        if (!tablaEmpleadoBody) return;
+
+        tablaEmpleadoBody.innerHTML = '';
+
+        const total = data.length;
+
+        if (!total) {
+            tablaEmpleadoBody.innerHTML = `<tr><td class="py-4 text-center text-sm text-gray-500" colspan="5">No se encontraron empleados.</td></tr>`;
+            if (empleadoInfo) empleadoInfo.textContent = '0 de 0';
+            return;
+        }
+
+        const totalPaginas = Math.ceil(total / itemsPorPaginaEmpleado);
+        if (paginaEmpleado > totalPaginas) paginaEmpleado = totalPaginas;
+        if (paginaEmpleado < 1) paginaEmpleado = 1;
+
+        const inicio = (paginaEmpleado - 1) * itemsPorPaginaEmpleado;
+        const fin = inicio + itemsPorPaginaEmpleado;
+        const pagina = data.slice(inicio, fin);
+
+        pagina.forEach(empleado => {
+            const tr = document.createElement('tr');
+            tr.classList.add('cursor-pointer', 'hover:bg-base-300');
+
+            tr.innerHTML = `
+                <td>${formatearCelda(empleado.nombre)}</td>
+                <td>${formatearCelda(empleado.dni)}</td>
+                <td>${formatearCelda(empleado.celular)}</td>
+                <td>${formatearCelda(empleado.email)}</td>
+                <td>${formatearCelda(empleado.area)}</td>
+            `;
+
+            tr.addEventListener('click', function (e) {
+                if (!empleadoInput) return;
+
+                empleadoInput.value = empleado.id;
+
+                if (empleadoNombreVisible) {
+                    const texto = `${empleado.nombre || ''} - ${empleado.dni || ''}`;
+                    empleadoNombreVisible.value = texto.trim();
+                }
+
+                const modalCheckbox = document.getElementById('modal_elegir_empleado');
+                if (modalCheckbox) modalCheckbox.checked = false;
+            });
+
+            tablaEmpleadoBody.appendChild(tr);
+        });
+
+        if (empleadoInfo) {
+            const desde = inicio + 1;
+            const hasta = Math.min(fin, total);
+            empleadoInfo.textContent = `Mostrando ${desde}-${hasta} de ${total}`;
+        }
+    }
+
+    function abrirModalEmpleado() {
+        const modalCheckbox = document.getElementById('modal_elegir_empleado');
+        if (modalCheckbox) modalCheckbox.checked = true;
+        paginaEmpleado = 1;
+        renderTablaEmpleado(empleadosCache);
+        if (buscadorEmpleado) buscadorEmpleado.value = '';
+    }
+
+    if (empleadoNombreVisible) {
+        empleadoNombreVisible.addEventListener('click', function () {
+            abrirModalEmpleado();
+        });
+        empleadoNombreVisible.addEventListener('focus', function () {
+            abrirModalEmpleado();
+        });
+    }
+
+    if (buscadorEmpleado) {
+        buscadorEmpleado.addEventListener('input', function () {
+            const term = this.value.toLowerCase();
+            const filtrados = empleadosData.filter(empleado => {
+                const texto = `${empleado.nombre || ''} ${empleado.dni || ''} ${empleado.celular || ''} ${empleado.email || ''} ${empleado.area || ''}`.toLowerCase();
+                return texto.includes(term);
+            });
+            paginaEmpleado = 1;
+            renderTablaEmpleado(filtrados);
+        });
+    }
+
+    if (empleadoPrev) {
+        empleadoPrev.addEventListener('click', function () {
+            if (paginaEmpleado > 1) {
+                paginaEmpleado--;
+                const term = buscadorEmpleado ? buscadorEmpleado.value.toLowerCase() : '';
+                const filtrados = term ? empleadosData.filter(e => {
+                    const texto = `${e.nombre || ''} ${e.dni || ''} ${e.celular || ''} ${e.email || ''} ${e.area || ''}`.toLowerCase();
+                    return texto.includes(term);
+                }) : empleadosCache;
+                renderTablaEmpleado(filtrados);
+            }
+        });
+    }
+
+    if (empleadoNext) {
+        empleadoNext.addEventListener('click', function () {
+            const term = buscadorEmpleado ? buscadorEmpleado.value.toLowerCase() : '';
+            const filtrados = term ? empleadosData.filter(e => {
+                const texto = `${e.nombre || ''} ${e.dni || ''} ${e.celular || ''} ${e.email || ''} ${e.area || ''}`.toLowerCase();
+                return texto.includes(term);
+            }) : empleadosCache;
+            const totalPaginas = Math.ceil(filtrados.length / itemsPorPaginaEmpleado);
+            if (paginaEmpleado < totalPaginas) {
+                paginaEmpleado++;
+                renderTablaEmpleado(filtrados);
+            }
+        });
+    }
+});
 </script>
 @endsection 

@@ -25,8 +25,8 @@ class OrigenController extends Controller
         $model = $map[$tipo];
 
         if ($model === \App\Models\Vehiculo::class) {
-            $items = $model::query()
-                ->select('id', 'patente', 'marca', 'modelo', 'anio', 'color', 'tipo','catalogacion')
+            $items = $model::with('tipo_combustible')
+                ->select('id', 'patente', 'marca', 'modelo', 'anio', 'color', 'tipo','catalogacion', 'tipo_combustible_id')
                 ->get()
                 ->map(function ($v) {
                     return [
@@ -38,6 +38,8 @@ class OrigenController extends Controller
                         'color' => $v->color,
                         'tipo' => $v->tipo,
                         'catalogacion'=> $v->catalogacion,
+                        'tipo_combustible_id' => $v->tipo_combustible_id,
+                        'tipo_combustible_nombre' => $v->tipo_combustible ? $v->tipo_combustible->nombre : null,
                         // compatibilidad (si algún select/uso viejo esperaba "nombre")
                         'nombre' => trim(($v->patente ?? '') . ' - ' . ($v->modelo ?? '')),
                     ];

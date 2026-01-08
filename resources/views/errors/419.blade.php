@@ -15,10 +15,10 @@
     <!-- Vite -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
-    <title>Panel Administrativo</title> 
+    <title>Error 419</title> 
 </head> 
 <body> 
-<main class="flex-1 overflow-y-auto p-4">
+<main class="flex-1 overflow-y-auto">
     <div
         class="min-h-screen flex items-center justify-center bg-gradient-to-br from-orange-50 via-red-50 to-pink-50 p-4">
         <div data-slot="card"
@@ -93,7 +93,8 @@
                     </div>
                 </div>
             </div>
-            <div class="flex flex-col sm:flex-row gap-4 justify-center"><button data-slot="button"
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="{{ route('login') }}" data-slot="button"
                     class="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg:not([class*='size-'])]:size-4 shrink-0 [&amp;_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive hover:bg-primary/90 h-10 rounded-md px-6 has-[&gt;svg]:px-4 bg-gradient-to-r from-orange-600 to-red-600 hover:from-orange-700 hover:to-red-700 text-white gap-2 shadow-lg"><svg
                         xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -102,7 +103,9 @@
                         <path
                             d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z">
                         </path>
-                    </svg>Iniciar Sesión</button><button data-slot="button"
+                    </svg>Iniciar Sesión
+                </a>
+                <a href="{{ route('login') }}" data-slot="button"
                     class="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg:not([class*='size-'])]:size-4 shrink-0 [&amp;_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive bg-background hover:text-accent-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50 h-10 rounded-md px-6 has-[&gt;svg]:px-4 gap-2 border-2 border-orange-300 text-orange-700 hover:bg-orange-50"><svg
                         xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -111,7 +114,9 @@
                         <path d="M21 3v5h-5"></path>
                         <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"></path>
                         <path d="M8 16H3v5"></path>
-                    </svg>Recargar Página</button></div>
+                    </svg>Recargar Página
+                </a> 
+            </div> 
             <div class="mt-12 flex justify-center gap-2">
                 <div class="w-2 h-2 bg-orange-400 rounded-full animate-bounce" style="animation-delay: 0ms;"></div>
                 <div class="w-2 h-2 bg-red-400 rounded-full animate-bounce" style="animation-delay: 150ms;"></div>
