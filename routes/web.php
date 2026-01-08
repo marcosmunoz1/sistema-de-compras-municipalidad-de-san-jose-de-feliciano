@@ -86,6 +86,9 @@ Route::get('/admin/productos/{id}', [ App\Http\Controllers\ProductoController::c
 Route::delete('/admin/productos/{id}', [ App\Http\Controllers\ProductoController::class, 'destroy'])->name('productos.destroy')->middleware('auth', 'can:productos-destroy');
 Route::put('/admin/productos/{id}/restore', [ App\Http\Controllers\ProductoController::class, 'restore'])->name('productos.restore')->middleware('auth', 'can:productos-restore');
 
+// Ruta para OCR de facturas
+Route::post('/admin/ocr/procesar-factura', [App\Http\Controllers\OcrController::class, 'procesarFactura'])->name('ocr.procesar-factura')->middleware('auth');
+
 //rutas para combustibles
 Route::get('/admin/combustibles', [App\Http\Controllers\CombustibleController::class, 'index'])->name('combustibles.index')->middleware('auth', 'can:combustibles-index');
 Route::get('/admin/combustibles/create', [App\Http\Controllers\CombustibleController::class, 'create'])->name('combustibles.create')->middleware('auth', 'can:combustibles-create');

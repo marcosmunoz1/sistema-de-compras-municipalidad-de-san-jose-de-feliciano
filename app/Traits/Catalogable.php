@@ -34,7 +34,6 @@ trait Catalogable
                 ->delete();
         });
     }
-
     /**
      * Relación con la catalogación
      */
