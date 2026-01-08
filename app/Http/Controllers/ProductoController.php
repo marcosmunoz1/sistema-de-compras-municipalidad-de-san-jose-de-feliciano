@@ -36,48 +36,65 @@ class ProductoController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-    {   
+    {
         $request->validate([
-            'categoria_id' => 'required', 
+            'categoria_id' => 'required',
             'nombre' => 'required',
             'descripcion' => 'required',
             'unidad' => 'required'
         ]);
 
+        // CREAR
         if ($request->input('accion') == "1") {
+
             $producto = new Producto();
-            $producto->categoria_id = $request->categoria_id; 
+            $producto->categoria_id = $request->categoria_id;
             $producto->nombre = $request->nombre;
             $producto->descripcion = $request->descripcion;
             $producto->unidad = $request->unidad;
-            $producto->estado = true; 
-            $producto->save(); 
+            $producto->estado = true;
+            $producto->save();
 
-            if ($request->has('redirect_to') && $request->redirect_to === 'compras.create') {
-                return redirect()->route('compras.create')
-                    ->with('mensaje', 'Producto creado exitosamente.')
-                    ->with('icono', 'success');
+            // 👉 SI VIENE POR AJAX
+            if ($request->expectsJson()) {
+                return response()->json([
+                    'success' => true,
+                    'mensaje' => 'Producto creado exitosamente.',
+                    'producto' => $producto
+                ]);
             }
+
 
             return redirect()->route('productos.index')
                 ->with('mensaje', 'Producto creado exitosamente.')
-                ->with('icono', 'success'); 
+                ->with('icono', 'success');
         }
 
+        // EDITAR
         if ($request->input('accion') == "2") {
+
             $producto = Producto::findOrFail($request->id);
-            $producto->categoria_id = $request->categoria_id; 
+            $producto->categoria_id = $request->categoria_id;
             $producto->nombre = $request->nombre;
             $producto->descripcion = $request->descripcion;
             $producto->unidad = $request->unidad;
-            $producto->estado = true; 
-            $producto->save(); 
+            $producto->estado = true;
+            $producto->save();
+
+            if ($request->expectsJson()) {
+                return response()->json([
+                    'success' => true,
+                    'mensaje' => 'Producto actualizado exitosamente.',
+                    'producto' => $producto
+                ]);
+            }
 
             return redirect()->route('productos.index')
                 ->with('mensaje', 'Producto actualizado exitosamente.')
-                ->with('icono', 'success'); 
+                ->with('icono', 'success');
         }
     }
+
 
     /**
      * Display the specified resource.
@@ -162,7 +179,15 @@ class ProductoController extends Controller
         return response()->json($productos);
     }
 
+    public function listarAjax()
+    {
+        $productos = Producto::with('categoria')
+            ->where('estado', true)
+            ->orderBy('nombre')
+            ->get();
 
+        return response()->json($productos);
+    }
 
 
 

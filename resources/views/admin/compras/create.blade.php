@@ -1,5 +1,5 @@
 @extends('layouts.admin')
-@section('title', 'Nueva compra') 
+@section('title', 'Nueva compra')
 
 @section('content')
     <!-- Titulo y boton -->
@@ -18,7 +18,7 @@
                     Home
                 </a>
             </li>
-            <li> 
+            <li>
                 <a href="{{ route('compras.index') }}">
                     <x-heroicon-o-shopping-bag class="w-4 h-4 inline" />
                     Compras
@@ -80,18 +80,19 @@
                         <div class="space-y-2">
                             <label for="fecha_orden" class="text-sm font-medium">Fecha de Emisión<span
                                     class="text-red-600">*</span></label>
-                            <input type="date" id="fecha_orden" name="fecha_orden" value="{{ old('fecha_orden',date('Y-m-d')) }}"
+                            <input type="date" id="fecha_orden" name="fecha_orden"
+                                value="{{ old('fecha_orden', date('Y-m-d')) }}"
                                 class="w-full h-10 rounded-md border border-base-300 bg-base-200
                                 px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
                                 focus:border-primary transition @error('fecha_orden') input-error @enderror"
-                                required> 
+                                required>
                             @error('fecha_orden')
                                 <small class="text-red-500 error-message">{{ $message }}</small>
                             @enderror
-                        </div> 
+                        </div>
 
                         <!-- entregar a -->
-                        <div class="space-y-2"> 
+                        <div class="space-y-2">
                             <label for="empleado_id" class="text-sm font-medium">Entregar a<span
                                     class="text-red-600">*</span></label>
 
@@ -103,84 +104,67 @@
                                 class="w-full h-10 rounded-md border border-base-300 bg-base-200
                                 px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
                                 focus:border-primary cursor-pointer transition @error('empleado_id') input-error @enderror"
-                                placeholder="Seleccione un empleado"
-                                value=""
-                                readonly>
+                                placeholder="Seleccione un empleado" value="" readonly>
 
                             @error('empleado_id')
                                 <small class="text-red-500 error-message">{{ $message }}</small>
                             @enderror
                         </div>
 
-                    <!-- Provincia -->
-                    <div class="space-y-2">
-                        <label for="sub_cuenta" class="text-sm font-medium">Sub cuenta<span class="text-red-600">*</span></label>
-                        <div
-                            x-data="selectSearch({
-                                options: @js([
-                                    ['value' => 'Secretaria de obras publicas', 'label' => 'Secretaria de Obras Publicas'],
-                                    ['value' => 'Secretaria de desarrollos humanos', 'label' => 'Secretaria de Desarrollo Humano'],
-                                    ['value' => 'Secretaria de gobierno', 'label' => 'Secretaria de Gobierno'],
-                                    ['value' => 'Departamento ejecutivo municipal', 'label' => 'Departamento Ejecutivo Municipal'],
-                                ]),
+                        <!-- Provincia -->
+                        <div class="space-y-2">
+                            <label for="sub_cuenta" class="text-sm font-medium">Sub cuenta<span
+                                    class="text-red-600">*</span></label>
+                            <div x-data="selectSearch({
+                                options: @js([['value' => 'Secretaria de obras publicas', 'label' => 'Secretaria de Obras Publicas'], ['value' => 'Secretaria de desarrollos humanos', 'label' => 'Secretaria de Desarrollo Humano'], ['value' => 'Secretaria de gobierno', 'label' => 'Secretaria de Gobierno'], ['value' => 'Departamento ejecutivo municipal', 'label' => 'Departamento Ejecutivo Municipal']]),
                                 placeholder: 'Seleccione la sub cuenta',
                                 value: @js(old('sub_cuenta'))
-                            })"
-                            x-init="init()"
-                            class="relative w-full"
-                        >
-                            <button
-                                type="button"
-                                @click="open = !open"
-                                class="select w-full h-10 rounded-md border-base-300 bg-base-200 px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition flex items-center justify-between @error('sub_cuenta') input-error @enderror"
-                            >
-                                <span x-text="selected?.label ?? placeholder" class="truncate"></span>
-                            </button>
+                            })" x-init="init()" class="relative w-full">
+                                <button type="button" @click="open = !open"
+                                    class="select w-full h-10 rounded-md border-base-300 bg-base-200 px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition flex items-center justify-between @error('sub_cuenta') input-error @enderror">
+                                    <span x-text="selected?.label ?? placeholder" class="truncate"></span>
+                                </button>
 
-                            <div
-                                x-show="open"
-                                x-transition
-                                @click.outside="open = false"
-                                class="absolute z-50 mt-1 w-full bg-base-100 border border-base-300 rounded-md shadow"
-                            >
-                                <input
-                                    type="text"
-                                    x-model="search"
-                                    class="input w-full border-0 border-b border-base-300 bg-base-200 px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
-                                    placeholder="Buscar..."
-                                >
+                                <div x-show="open" x-transition @click.outside="open = false"
+                                    class="absolute z-50 mt-1 w-full bg-base-100 border border-base-300 rounded-md shadow">
+                                    <input type="text" x-model="search"
+                                        class="input w-full border-0 border-b border-base-300 bg-base-200 px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
+                                        placeholder="Buscar...">
 
-                                <ul class="max-h-60 overflow-y-auto">
-                                    <template x-for="option in filtered" :key="option.value">
-                                        <li
-                                            @click="select(option)"
-                                            class="px-3 py-2 cursor-pointer hover:bg-primary hover:text-primary-content"
-                                            x-text="option.label"
-                                        ></li>
-                                    </template>
+                                    <ul class="max-h-60 overflow-y-auto">
+                                        <template x-for="option in filtered" :key="option.value">
+                                            <li @click="select(option)"
+                                                class="px-3 py-2 cursor-pointer hover:bg-primary hover:text-primary-content"
+                                                x-text="option.label"></li>
+                                        </template>
 
-                                    <li x-show="filtered.length === 0" class="px-3 py-2 opacity-50">
-                                        Sin resultados
-                                    </li>
-                                </ul>
+                                        <li x-show="filtered.length === 0" class="px-3 py-2 opacity-50">
+                                            Sin resultados
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <select id="sub_cuenta" name="sub_cuenta" class="hidden" x-model="selectedValue"
+                                    required>
+                                    <option value="">Seleccione la sub cuenta</option>
+                                    <option value="Secretaria de obras publicas" @selected(old('sub_cuenta') == 'Secretaria de obras publicas')>Secretaria de
+                                        Obras Publicas</option>
+                                    <option value="Secretaria de desarrollos humanos" @selected(old('sub_cuenta') == 'Secretaria de desarrollos humanos')>
+                                        Secretaria de Desarrollo Humano</option>
+                                    <option value="Secretaria de gobierno" @selected(old('sub_cuenta') == 'Secretaria de gobierno')>Secretaria de
+                                        Gobierno</option>
+                                    <option value="Departamento ejecutivo municipal" @selected(old('sub_cuenta') == 'Departamento ejecutivo municipal')>
+                                        Departamento Ejecutivo Municipal</option>
+                                </select>
                             </div>
-
-                            <select id="sub_cuenta" name="sub_cuenta" class="hidden" x-model="selectedValue" required>
-                                <option value="">Seleccione la sub cuenta</option>
-                                <option value="Secretaria de obras publicas" @selected(old('sub_cuenta') == 'Secretaria de obras publicas')>Secretaria de Obras Publicas</option>
-                                <option value="Secretaria de desarrollos humanos" @selected(old('sub_cuenta') == 'Secretaria de desarrollos humanos')>Secretaria de Desarrollo Humano</option>
-                                <option value="Secretaria de gobierno" @selected(old('sub_cuenta') == 'Secretaria de gobierno')>Secretaria de Gobierno</option>
-                                <option value="Departamento ejecutivo municipal" @selected(old('sub_cuenta') == 'Departamento ejecutivo municipal')>Departamento Ejecutivo Municipal</option>
-                            </select>
+                            @error('sub_cuenta')
+                                <small class="text-red-500 error-message">{{ $message }}</small>
+                            @enderror
                         </div>
-                        @error('sub_cuenta')
-                            <small class="text-red-500 error-message">{{ $message }}</small>
-                        @enderror
-                    </div> 
+                    </div>
                 </div>
             </div>
         </div>
-        </div> 
         <!-- Otra seccion -->
         <div data-slot="card" class="card bg-base-100 shadow-xl p-4 mt-4">
             <div data-slot="card-header"
@@ -195,20 +179,20 @@
                     <div class="grid grid-cols-3 gap-4">
                         <div class="space-y-2">
                             <div class="flex items-center justify-between gap-4">
-                                <label class="text-sm font-medium mb-0">Proveedor <span class="text-red-600">*</span></label>
+                                <label class="text-sm font-medium mb-0">Proveedor <span
+                                        class="text-red-600">*</span></label>
                             </div>
 
                             <!-- ID oculto que se envía en el request -->
-                            <input type="hidden" id="proveedor_id" name="proveedor_id" value="{{ old('proveedor_id') }}">
+                            <input type="hidden" id="proveedor_id" name="proveedor_id"
+                                value="{{ old('proveedor_id') }}">
 
                             <!-- Campo solo lectura mostrando el nombre elegido -->
                             <input type="text" id="proveedor_nombre_visible"
                                 class="w-full h-10 rounded-md border border-base-300 bg-base-200
                                 px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
                                 focus:border-primary cursor-pointer transition @error('proveedor_id') input-error @enderror"
-                                placeholder="Seleccione un proveedor desde el buscador"
-                                value=""
-                                readonly>
+                                placeholder="Seleccione un proveedor desde el buscador" value="" readonly>
 
                             @error('proveedor_id')
                                 <small class="text-red-500 error-message">{{ $message }}</small>
@@ -218,16 +202,17 @@
                         <!-- DESTINO TIPO -->
                         <div class="space-y-1">
                             <label class="text-sm font-medium">Destino <span class="text-red-600">*</span></label>
-                            <select id="destino_tipo" name="destino_tipo" 
+                            <select id="destino_tipo" name="destino_tipo"
                                 class="w-full h-10 rounded-md border border-base-300 bg-base-200 
                                 px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
-                                focus:border-primary @error('destino_tipo') input-error @enderror transition" required>
-                                <option value="">Seleccione destino...</option>  
+                                focus:border-primary @error('destino_tipo') input-error @enderror transition"
+                                required>
+                                <option value="">Seleccione destino...</option>
                                 <option value="App\Models\Deposito">Depósito</option>
                                 <option value="App\Models\Obra">Obra</option>
                                 <option value="App\Models\Vehiculo">Vehículo</option>
-                                <option value="App\Models\Equipo">Equipo</option> 
-                            </select> 
+                                <option value="App\Models\Equipo">Equipo</option>
+                            </select>
                             @error('destino_tipo')
                                 <small class="text-red-500">{{ $message }}</small>
                             @enderror
@@ -236,7 +221,8 @@
                         <!-- DESTINO ID -->
                         <div class="space-y-2 -mt-4">
                             <div class="flex items-center justify-between gap-4">
-                                <label class="text-sm font-medium mb-0">Elemento <span class="text-red-600">*</span></label>
+                                <label class="text-sm font-medium mb-0">Elemento <span
+                                        class="text-red-600">*</span></label>
                                 <button type="button" id="btn_elegir_destino" class="btn btn-sm btn-warning">
                                     Buscar / seleccionar destino
                                 </button>
@@ -250,39 +236,41 @@
                                 class="w-full h-10 rounded-md border border-base-300 bg-base-200
                                 px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
                                 focus:border-primary cursor-pointer transition @error('destino_id') input-error @enderror"
-                                placeholder="Seleccione un elemento desde el buscador"
-                                value=""
-                                readonly>
+                                placeholder="Seleccione un elemento desde el buscador" value="" readonly>
 
                             @error('destino_id')
                                 <small class="text-red-500">{{ $message }}</small>
                             @enderror
                         </div>
-                </div>
-                <div class="grid grid-cols-1 gap-4">
-                    <div class="space-y-2">
-                        <label for="asunto_obra_automotor" class="text-sm font-medium">Asunto de la compra<span class="text-red-600">*</span></label>
-                        <textarea value="{{ old('asunto_obra_automotor') }}" type="text" id="asunto_obra_automotor" name="asunto_obra_automotor"  placeholder="Ingrese una justificacion breve de la compra" 
-                        class="textarea w-full rounded-md border border-base-300 bg-base-200 focus:outline-none focus:ring-2 focus:ring-primary 
-                        focus:border-primary transition @error('asunto_obra_automotor') input-error @enderror" required></textarea> 
-                        @error('asunto_obra_automotor') 
-                            <small class="text-red-500 error-message">{{ $message }}</small>
-                        @enderror
+                    </div>
+                    <div class="grid grid-cols-1 gap-4">
+                        <div class="space-y-2">
+                            <label for="asunto_obra_automotor" class="text-sm font-medium">Asunto de la compra<span
+                                    class="text-red-600">*</span></label>
+                            <textarea value="{{ old('asunto_obra_automotor') }}" type="text" id="asunto_obra_automotor"
+                                name="asunto_obra_automotor" placeholder="Ingrese una justificacion breve de la compra"
+                                class="textarea w-full rounded-md border border-base-300 bg-base-200 focus:outline-none focus:ring-2 focus:ring-primary 
+                        focus:border-primary transition @error('asunto_obra_automotor') input-error @enderror"
+                                required></textarea>
+                            @error('asunto_obra_automotor')
+                                <small class="text-red-500 error-message">{{ $message }}</small>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 gap-4">
+                        <div class="space-y-2">
+                            <label for="observacion" class="text-sm font-medium">Observaciones (Opcional)</label>
+                            <textarea type="text" id="observacion" name="observacion"
+                                placeholder="Ingrese una justificacion breve de la compra"
+                                class="textarea w-full rounded-md border border-base-300 bg-base-200 focus:outline-none focus:ring-2 focus:ring-primary 
+                        focus:border-primary transition @error('observacion') input-error @enderror"></textarea>
+                            @error('observacion')
+                                <small class="text-red-500 error-message">{{ $message }}</small>
+                            @enderror
+                        </div>
                     </div>
                 </div>
-                <div class="grid grid-cols-1 gap-4">
-                    <div class="space-y-2"> 
-                        <label for="observacion" class="text-sm font-medium">Observaciones (Opcional)</label>
-                        <textarea type="text" id="observacion" name="observacion"  placeholder="Ingrese una justificacion breve de la compra" 
-                        class="textarea w-full rounded-md border border-base-300 bg-base-200 focus:outline-none focus:ring-2 focus:ring-primary 
-                        focus:border-primary transition @error('observacion') input-error @enderror"></textarea> 
-                        @error('observacion') 
-                            <small class="text-red-500 error-message">{{ $message }}</small>
-                        @enderror
-                    </div>
-                </div> 
             </div>
-        </div>
         </div>
         <div class="bg-base-100 shadow-xl rounded-xl  mt-6">
             <!-- Header -->
@@ -328,17 +316,23 @@
                     <p class="text-sm mt-1">Haz clic en "Agregar Insumo" para comenzar</p>
                 </div>
 
-                <div data-slot="card-content" class="px-6 [&:last-child]:pb-6"> 
-                <div class="overflow-x-auto"> 
-                    <div data-slot="table-container" class="relative w-full overflow-x-auto">
-                    <table id="tablaItems" class="w-full caption-bottom text-sm hidden">
-                        <thead data-slot="table-header" class="[&_tr]:border-b">
-                        <tr data-slot="table-row" class="border-b border-gray-200 transition-colors"> 
-                            <th class="text-foreground h-10 px-2 text-left align-middle font-medium whitespace-nowrap w-[300px]">Producto</th>
-                            <th class="text-foreground h-10 px-2 text-left align-middle font-medium whitespace-nowrap w-[120px]">Cantidad</th>
-                            <th class="text-foreground h-10 px-2 text-left align-middle font-medium whitespace-nowrap w-[80px]"></th>
-                        </tr>
-                        </thead> 
+                <div data-slot="card-content" class="px-6 [&:last-child]:pb-6">
+                    <div class="overflow-x-auto">
+                        <div data-slot="table-container" class="relative w-full overflow-x-auto">
+                            <table id="tablaItems" class="w-full caption-bottom text-sm hidden">
+                                <thead data-slot="table-header" class="[&_tr]:border-b">
+                                    <tr data-slot="table-row" class="border-b border-gray-200 transition-colors">
+                                        <th
+                                            class="text-foreground h-10 px-2 text-left align-middle font-medium whitespace-nowrap w-[300px]">
+                                            Producto</th>
+                                        <th
+                                            class="text-foreground h-10 px-2 text-left align-middle font-medium whitespace-nowrap w-[120px]">
+                                            Cantidad</th>
+                                        <th
+                                            class="text-foreground h-10 px-2 text-left align-middle font-medium whitespace-nowrap w-[80px]">
+                                        </th>
+                                    </tr>
+                                </thead>
 
                                 <tbody id="tablaProductos" data-slot="table-body" class="[&_tr:last-child]:border-0">
                                     <!-- filas dinámicas -->
@@ -347,7 +341,8 @@
                         </div>
                     </div>
 
-                    <div id="resumenItems" class="mt-4 p-4 rounded-lg hidden
+                    <div id="resumenItems"
+                        class="mt-4 p-4 rounded-lg hidden
                                 bg-gray-50 text-gray-700
                                 dark:bg-gray-800 dark:text-gray-200">
                         <p class="text-sm text-gray-400"><strong>Total de items:</strong> <span id="totalItems">0</span>
@@ -455,7 +450,7 @@
                 Crear Nuevo Producto
             </h3>
 
-            <form action="{{ url('/admin/productos/store') }}" method="POST" class="space-y-5">
+            <form id="crearProductoForm" method="POST" class="space-y-5">
                 @csrf
                 <input type="hidden" name="accion" value="1">
                 <input type="hidden" name="redirect_to" value="compras.create">
@@ -508,7 +503,7 @@
                     <textarea name="descripcion" rows="3" placeholder="Ingrese una descripción breve del producto..."
                         class="textarea w-full rounded-md border border-base-300 bg-base-200 focus:outline-none focus:ring-2 focus:ring-primary 
           focus:border-primary transition"
-                        required>{{ old('descripcion') }}</textarea> 
+                        required>{{ old('descripcion') }}</textarea>
 
                     @error('descripcion')
                         <small class="text-red-500">{{ $message }}</small>
@@ -654,10 +649,10 @@
             </div>
 
             <div class="modal-action">
-                <button type="button" onclick="crearEmpleadoModal.showModal()" 
-                    class="btn btn-sm btn-success">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" 
-                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <button type="button" onclick="crearEmpleadoModal.showModal()" class="btn btn-sm btn-success">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
                         <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
                         <circle cx="9" cy="7" r="4"></circle>
                         <line x1="19" x2="19" y1="8" y2="14"></line>
@@ -679,8 +674,9 @@
             </form>
 
             <h3 class="font-bold text-xl flex items-center gap-3 mb-4">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" 
-                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round">
                     <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
                     <circle cx="9" cy="7" r="4"></circle>
                     <line x1="19" x2="19" y1="8" y2="14"></line>
@@ -860,44 +856,83 @@
     </div>
 
 @endsection
-@section('js') 
+@section('js')
+    <!-- Script para crear producto vía AJAX -->
     <script>
-        const oldDestinoId = "{{ old('destino_id') }}"; // <-- Blade se ejecuta acá
+        document.getElementById('crearProductoForm').addEventListener('submit', function(e) {
+            e.preventDefault(); // 🚫 no recargar
 
-        document.getElementById('destino_tipo').addEventListener('change', function() {
-            const tipo = this.value;
-            const destinoSelect = document.getElementById('destino_id');
+            const form = this;
+            const formData = new FormData(form);
 
-            destinoSelect.innerHTML = '<option value="">Cargando...</option>';
+            fetch("{{ url('/admin/productos/store') }}", {
+                    method: "POST",
+                    headers: {
+                        'X-CSRF-TOKEN': "{{ csrf_token() }}",
+                        'Accept': 'application/json'
+                    },
+                    body: formData
+                })
+                .then(async response => {
+                    let data;
 
-            fetch('{{ url('api/destinos') }}/' + tipo)
-                .then(res => res.json())
+                    try {
+                        data = await response.json();
+                    } catch (e) {
+                        throw {
+                            message: 'Respuesta inválida del servidor'
+                        };
+                    }
+
+                    if (!response.ok) {
+                        throw data;
+                    }
+
+                    return data;
+                })
                 .then(data => {
-                    destinoSelect.innerHTML = '<option value="">Seleccione...</option>';
+                    // ✅ ÉXITO
+                    Swal.fire({
+                        icon: 'success',
+                        title: '¡Listo!',
+                        text: data.mensaje,
+                        timer: 2000,
+                        showConfirmButton: false
+                    });
 
-                    data.forEach(dest => {
-                        destinoSelect.innerHTML += `
-                            <option value="${dest.id}" ${oldDestinoId == dest.id ? 'selected' : ''}>
-                                ${dest.nombre}
-                            </option>`;
+                    crearProductoModal.close();
+                    document.getElementById('btnNuevoProducto')?.focus();
+                    form.reset();
+
+                    
+                    // opcional: actualizar select
+                    // agregarProductoAlSelect(data.producto);
+                })
+                .catch(error => {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Ups...',
+                        text: error.message || 'Ocurrió un error inesperado'
                     });
                 });
-        });
+            });
     </script>
+    <!-- Fin script crear producto -->
     <script>
         // Agregar producto a la tabla
         // Colocá esto arriba de agregarProducto(), en el mismo scope global
         function escapeHtml(text) {
-        if (text === null || text === undefined) return '';
-        return String(text)
-            .replaceAll('&','&amp;')
-            .replaceAll('<','&lt;')
-            .replaceAll('>','&gt;')
-            .replaceAll('"','&quot;')
-            .replaceAll("'",'&#39;');
-        } 
+            if (text === null || text === undefined) return '';
+            return String(text)
+                .replaceAll('&', '&amp;')
+                .replaceAll('<', '&lt;')
+                .replaceAll('>', '&gt;')
+                .replaceAll('"', '&quot;')
+                .replaceAll("'", '&#39;');
+        }
+
         function agregarProducto(id, nombre) {
-            const tabla = document.getElementById('tablaProductos'); 
+            const tabla = document.getElementById('tablaProductos');
             // ✅ Buscar si ya existe el producto
             const filaExistente = [...tabla.querySelectorAll('tr')].find(fila => {
                 const inputHidden = fila.querySelector('input[type="hidden"][name="productos[]"]');
@@ -919,7 +954,7 @@
 
             // ✅ Si NO existe crear la fila con TUS ESTILOS
             const fila = document.createElement('tr');
-            fila.setAttribute('data-slot','table-row'); 
+            fila.setAttribute('data-slot', 'table-row');
             fila.className = 'hover:bg-muted/50 transition-colors';
 
             fila.innerHTML = `
@@ -965,243 +1000,253 @@
         }
 
 
-                // Eliminar fila (botón)
-                function eliminarFila(btn) {
-                    const tr = btn.closest('tr');
-                    if (!tr) return;
-                    tr.remove();
-                    actualizarTotales();
+        // Eliminar fila (botón)
+        function eliminarFila(btn) {
+            const tr = btn.closest('tr');
+            if (!tr) return;
+            tr.remove();
+            actualizarTotales();
 
-                    // si ya no hay filas, ocultar tabla y mostrar mensaje
-                    const tabla = document.getElementById('tablaProductos');
-                    if (!tabla.querySelector('tr')) {
-                        document.getElementById('tablaItems').classList.add('hidden');
-                        document.getElementById('mensajeVacio').classList.remove('hidden');
-                        document.getElementById('resumenItems').classList.add('hidden');
-                    }
-                }
-
-                // Recalcula totales: total items (filas) y suma de cantidades
-                function actualizarTotales() {
-                    const tabla = document.getElementById('tablaProductos');
-                    const filas = tabla.querySelectorAll('tr');
-                    const totalItems = filas.length;
-                    let cantidadTotal = 0;
-
-                    filas.forEach(fila => {
-                        const inputCant = fila.querySelector('input[type="number"][name="cantidades[]"]');
-                        if (inputCant) {
-                            const val = parseInt(inputCant.value) || 0;
-                            cantidadTotal += val;
-                        }
-                    });
-
-                    document.getElementById('totalItems').textContent = totalItems;
-                    document.getElementById('cantidadTotal').textContent = cantidadTotal;
-                }
-
-// Pequeña función para escapar texto (evita inyección al insertar nombre)
-function escapeHtml(text) {
-  if (!text) return '';
-  return text.replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;').replaceAll("'",'&#39;');
-}
-</script>
-
-<script>
-// ==============================
-//  MODAL DE SELECCIÓN DE PROVEEDOR
-// ==============================
-document.addEventListener("DOMContentLoaded", function() {
-    const proveedoresData = @json($proveedores);
-    let proveedoresCache = proveedoresData;
-    let paginaProveedor = 1;
-    const itemsPorPaginaProveedor = 5;
-
-    const tablaProveedorBody = document.getElementById('tabla_proveedor_body');
-    const proveedorPrev = document.getElementById('proveedor_prev_page');
-    const proveedorNext = document.getElementById('proveedor_next_page');
-    const proveedorInfo = document.getElementById('proveedor_pagination_info');
-    const buscadorProveedor = document.getElementById('buscador_proveedor');
-    const btnElegirProveedor = document.getElementById('btn_elegir_proveedor');
-    const proveedorInput = document.getElementById('proveedor_id');
-    const proveedorNombreVisible = document.getElementById('proveedor_nombre_visible');
-
-    function formatearCelda(valor) {
-        if (valor === null || valor === undefined || valor === '') return '-';
-        return String(valor);
-    }
-
-    function renderTablaProveedor(data) {
-        if (!tablaProveedorBody) return;
-
-        tablaProveedorBody.innerHTML = '';
-
-        const total = data.length;
-
-        if (!total) {
-            tablaProveedorBody.innerHTML = `<tr><td class="py-4 text-center text-sm text-gray-500" colspan="4">No se encontraron proveedores.</td></tr>`;
-            if (proveedorInfo) proveedorInfo.textContent = '0 de 0';
-            return;
+            // si ya no hay filas, ocultar tabla y mostrar mensaje
+            const tabla = document.getElementById('tablaProductos');
+            if (!tabla.querySelector('tr')) {
+                document.getElementById('tablaItems').classList.add('hidden');
+                document.getElementById('mensajeVacio').classList.remove('hidden');
+                document.getElementById('resumenItems').classList.add('hidden');
+            }
         }
 
-        const totalPaginas = Math.ceil(total / itemsPorPaginaProveedor);
-        if (paginaProveedor > totalPaginas) paginaProveedor = totalPaginas;
-        if (paginaProveedor < 1) paginaProveedor = 1;
+        // Recalcula totales: total items (filas) y suma de cantidades
+        function actualizarTotales() {
+            const tabla = document.getElementById('tablaProductos');
+            const filas = tabla.querySelectorAll('tr');
+            const totalItems = filas.length;
+            let cantidadTotal = 0;
 
-        const inicio = (paginaProveedor - 1) * itemsPorPaginaProveedor;
-        const fin = inicio + itemsPorPaginaProveedor;
-        const pagina = data.slice(inicio, fin);
+            filas.forEach(fila => {
+                const inputCant = fila.querySelector('input[type="number"][name="cantidades[]"]');
+                if (inputCant) {
+                    const val = parseInt(inputCant.value) || 0;
+                    cantidadTotal += val;
+                }
+            });
 
-        pagina.forEach(proveedor => {
-            const tr = document.createElement('tr');
-            tr.classList.add('cursor-pointer', 'hover:bg-base-300');
+            document.getElementById('totalItems').textContent = totalItems;
+            document.getElementById('cantidadTotal').textContent = cantidadTotal;
+        }
 
-            tr.innerHTML = `
+        // Pequeña función para escapar texto (evita inyección al insertar nombre)
+        function escapeHtml(text) {
+            if (!text) return '';
+            return text.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;')
+                .replaceAll("'", '&#39;');
+        }
+    </script>
+
+    <script>
+        // ==============================
+        //  MODAL DE SELECCIÓN DE PROVEEDOR
+        // ==============================
+        document.addEventListener("DOMContentLoaded", function() {
+            const proveedoresData = @json($proveedores);
+            let proveedoresCache = proveedoresData;
+            let paginaProveedor = 1;
+            const itemsPorPaginaProveedor = 5;
+
+            const tablaProveedorBody = document.getElementById('tabla_proveedor_body');
+            const proveedorPrev = document.getElementById('proveedor_prev_page');
+            const proveedorNext = document.getElementById('proveedor_next_page');
+            const proveedorInfo = document.getElementById('proveedor_pagination_info');
+            const buscadorProveedor = document.getElementById('buscador_proveedor');
+            const btnElegirProveedor = document.getElementById('btn_elegir_proveedor');
+            const proveedorInput = document.getElementById('proveedor_id');
+            const proveedorNombreVisible = document.getElementById('proveedor_nombre_visible');
+
+            function formatearCelda(valor) {
+                if (valor === null || valor === undefined || valor === '') return '-';
+                return String(valor);
+            }
+
+            function renderTablaProveedor(data) {
+                if (!tablaProveedorBody) return;
+
+                tablaProveedorBody.innerHTML = '';
+
+                const total = data.length;
+
+                if (!total) {
+                    tablaProveedorBody.innerHTML =
+                        `<tr><td class="py-4 text-center text-sm text-gray-500" colspan="4">No se encontraron proveedores.</td></tr>`;
+                    if (proveedorInfo) proveedorInfo.textContent = '0 de 0';
+                    return;
+                }
+
+                const totalPaginas = Math.ceil(total / itemsPorPaginaProveedor);
+                if (paginaProveedor > totalPaginas) paginaProveedor = totalPaginas;
+                if (paginaProveedor < 1) paginaProveedor = 1;
+
+                const inicio = (paginaProveedor - 1) * itemsPorPaginaProveedor;
+                const fin = inicio + itemsPorPaginaProveedor;
+                const pagina = data.slice(inicio, fin);
+
+                pagina.forEach(proveedor => {
+                    const tr = document.createElement('tr');
+                    tr.classList.add('cursor-pointer', 'hover:bg-base-300');
+
+                    tr.innerHTML = `
                 <td>${formatearCelda(proveedor.nombre)}</td>
                 <td>${formatearCelda(proveedor.razon_social)}</td>
                 <td>${formatearCelda(proveedor.cuit)}</td>
                 <td>${formatearCelda(proveedor.telefono)}</td>
             `;
 
-            tr.addEventListener('click', function () {
-                if (!proveedorInput) return;
+                    tr.addEventListener('click', function() {
+                        if (!proveedorInput) return;
 
-                proveedorInput.value = proveedor.id;
+                        proveedorInput.value = proveedor.id;
 
-                if (proveedorNombreVisible) {
-                    const texto = `${proveedor.nombre || ''} - ${proveedor.razon_social || ''}`;
-                    proveedorNombreVisible.value = texto.trim();
+                        if (proveedorNombreVisible) {
+                            const texto =
+                                `${proveedor.nombre || ''} - ${proveedor.razon_social || ''}`;
+                            proveedorNombreVisible.value = texto.trim();
+                        }
+
+                        const modalCheckbox = document.getElementById('modal_elegir_proveedor');
+                        if (modalCheckbox) modalCheckbox.checked = false;
+                    });
+
+                    tablaProveedorBody.appendChild(tr);
+                });
+
+                if (proveedorInfo) {
+                    const desde = inicio + 1;
+                    const hasta = Math.min(fin, total);
+                    proveedorInfo.textContent = `Mostrando ${desde}-${hasta} de ${total}`;
+                }
+            }
+
+            function abrirModalProveedor() {
+                const modalCheckbox = document.getElementById('modal_elegir_proveedor');
+                if (modalCheckbox) modalCheckbox.checked = true;
+                paginaProveedor = 1;
+                renderTablaProveedor(proveedoresCache);
+                if (buscadorProveedor) buscadorProveedor.value = '';
+            }
+
+            if (btnElegirProveedor) {
+                btnElegirProveedor.addEventListener('click', function() {
+                    abrirModalProveedor();
+                });
+            }
+
+            if (proveedorNombreVisible) {
+                proveedorNombreVisible.addEventListener('click', function() {
+                    abrirModalProveedor();
+                });
+                proveedorNombreVisible.addEventListener('focus', function() {
+                    abrirModalProveedor();
+                });
+            }
+
+            if (buscadorProveedor) {
+                buscadorProveedor.addEventListener('input', function() {
+                    const term = this.value.toLowerCase();
+                    const filtrados = proveedoresData.filter(proveedor => {
+                        const texto =
+                            `${proveedor.nombre || ''} ${proveedor.razon_social || ''} ${proveedor.cuit || ''} ${proveedor.telefono || ''}`
+                            .toLowerCase();
+                        return texto.includes(term);
+                    });
+                    paginaProveedor = 1;
+                    renderTablaProveedor(filtrados);
+                });
+            }
+
+            if (proveedorPrev) {
+                proveedorPrev.addEventListener('click', function() {
+                    if (paginaProveedor > 1) {
+                        paginaProveedor--;
+                        const term = buscadorProveedor ? buscadorProveedor.value.toLowerCase() : '';
+                        const filtrados = term ? proveedoresData.filter(p => {
+                            const texto =
+                                `${p.nombre || ''} ${p.razon_social || ''} ${p.cuit || ''} ${p.telefono || ''}`
+                                .toLowerCase();
+                            return texto.includes(term);
+                        }) : proveedoresCache;
+                        renderTablaProveedor(filtrados);
+                    }
+                });
+            }
+
+            if (proveedorNext) {
+                proveedorNext.addEventListener('click', function() {
+                    const term = buscadorProveedor ? buscadorProveedor.value.toLowerCase() : '';
+                    const filtrados = term ? proveedoresData.filter(p => {
+                        const texto =
+                            `${p.nombre || ''} ${p.razon_social || ''} ${p.cuit || ''} ${p.telefono || ''}`
+                            .toLowerCase();
+                        return texto.includes(term);
+                    }) : proveedoresCache;
+                    const totalPaginas = Math.ceil(filtrados.length / itemsPorPaginaProveedor);
+                    if (paginaProveedor < totalPaginas) {
+                        paginaProveedor++;
+                        renderTablaProveedor(filtrados);
+                    }
+                });
+            }
+        });
+    </script>
+
+    <script>
+        // ==============================
+        //  MODAL DE SELECCIÓN DE EMPLEADO
+        // ==============================
+        document.addEventListener("DOMContentLoaded", function() {
+            const empleadosData = @json($empleados);
+            let empleadosCache = empleadosData;
+            let paginaEmpleado = 1;
+            const itemsPorPaginaEmpleado = 5;
+
+            const tablaEmpleadoBody = document.getElementById('tabla_empleado_body');
+            const empleadoPrev = document.getElementById('empleado_prev_page');
+            const empleadoNext = document.getElementById('empleado_next_page');
+            const empleadoInfo = document.getElementById('empleado_pagination_info');
+            const buscadorEmpleado = document.getElementById('buscador_empleado');
+            const empleadoInput = document.getElementById('empleado_id');
+            const empleadoNombreVisible = document.getElementById('empleado_nombre_visible');
+
+            function formatearCelda(valor) {
+                if (valor === null || valor === undefined || valor === '') return '-';
+                return String(valor);
+            }
+
+            function renderTablaEmpleado(data) {
+                if (!tablaEmpleadoBody) return;
+
+                tablaEmpleadoBody.innerHTML = '';
+
+                const total = data.length;
+
+                if (!total) {
+                    tablaEmpleadoBody.innerHTML =
+                        `<tr><td class="py-4 text-center text-sm text-gray-500" colspan="5">No se encontraron empleados.</td></tr>`;
+                    if (empleadoInfo) empleadoInfo.textContent = '0 de 0';
+                    return;
                 }
 
-                const modalCheckbox = document.getElementById('modal_elegir_proveedor');
-                if (modalCheckbox) modalCheckbox.checked = false;
-            });
+                const totalPaginas = Math.ceil(total / itemsPorPaginaEmpleado);
+                if (paginaEmpleado > totalPaginas) paginaEmpleado = totalPaginas;
+                if (paginaEmpleado < 1) paginaEmpleado = 1;
 
-            tablaProveedorBody.appendChild(tr);
-        });
+                const inicio = (paginaEmpleado - 1) * itemsPorPaginaEmpleado;
+                const fin = inicio + itemsPorPaginaEmpleado;
+                const pagina = data.slice(inicio, fin);
 
-        if (proveedorInfo) {
-            const desde = inicio + 1;
-            const hasta = Math.min(fin, total);
-            proveedorInfo.textContent = `Mostrando ${desde}-${hasta} de ${total}`;
-        }
-    }
+                pagina.forEach(empleado => {
+                    const tr = document.createElement('tr');
+                    tr.classList.add('cursor-pointer', 'hover:bg-base-300');
 
-    function abrirModalProveedor() {
-        const modalCheckbox = document.getElementById('modal_elegir_proveedor');
-        if (modalCheckbox) modalCheckbox.checked = true;
-        paginaProveedor = 1;
-        renderTablaProveedor(proveedoresCache);
-        if (buscadorProveedor) buscadorProveedor.value = '';
-    }
-
-    if (btnElegirProveedor) {
-        btnElegirProveedor.addEventListener('click', function () {
-            abrirModalProveedor();
-        });
-    }
-
-    if (proveedorNombreVisible) {
-        proveedorNombreVisible.addEventListener('click', function () {
-            abrirModalProveedor();
-        });
-        proveedorNombreVisible.addEventListener('focus', function () {
-            abrirModalProveedor();
-        });
-    }
-
-    if (buscadorProveedor) {
-        buscadorProveedor.addEventListener('input', function () {
-            const term = this.value.toLowerCase();
-            const filtrados = proveedoresData.filter(proveedor => {
-                const texto = `${proveedor.nombre || ''} ${proveedor.razon_social || ''} ${proveedor.cuit || ''} ${proveedor.telefono || ''}`.toLowerCase();
-                return texto.includes(term);
-            });
-            paginaProveedor = 1;
-            renderTablaProveedor(filtrados);
-        });
-    }
-
-    if (proveedorPrev) {
-        proveedorPrev.addEventListener('click', function () {
-            if (paginaProveedor > 1) {
-                paginaProveedor--;
-                const term = buscadorProveedor ? buscadorProveedor.value.toLowerCase() : '';
-                const filtrados = term ? proveedoresData.filter(p => {
-                    const texto = `${p.nombre || ''} ${p.razon_social || ''} ${p.cuit || ''} ${p.telefono || ''}`.toLowerCase();
-                    return texto.includes(term);
-                }) : proveedoresCache;
-                renderTablaProveedor(filtrados);
-            }
-        });
-    }
-
-    if (proveedorNext) {
-        proveedorNext.addEventListener('click', function () {
-            const term = buscadorProveedor ? buscadorProveedor.value.toLowerCase() : '';
-            const filtrados = term ? proveedoresData.filter(p => {
-                const texto = `${p.nombre || ''} ${p.razon_social || ''} ${p.cuit || ''} ${p.telefono || ''}`.toLowerCase();
-                return texto.includes(term);
-            }) : proveedoresCache;
-            const totalPaginas = Math.ceil(filtrados.length / itemsPorPaginaProveedor);
-            if (paginaProveedor < totalPaginas) {
-                paginaProveedor++;
-                renderTablaProveedor(filtrados);
-            }
-        });
-    }
-});
-</script>
-
-<script>
-// ==============================
-//  MODAL DE SELECCIÓN DE EMPLEADO
-// ==============================
-document.addEventListener("DOMContentLoaded", function() {
-    const empleadosData = @json($empleados);
-    let empleadosCache = empleadosData;
-    let paginaEmpleado = 1;
-    const itemsPorPaginaEmpleado = 5;
-
-    const tablaEmpleadoBody = document.getElementById('tabla_empleado_body');
-    const empleadoPrev = document.getElementById('empleado_prev_page');
-    const empleadoNext = document.getElementById('empleado_next_page');
-    const empleadoInfo = document.getElementById('empleado_pagination_info');
-    const buscadorEmpleado = document.getElementById('buscador_empleado');
-    const empleadoInput = document.getElementById('empleado_id');
-    const empleadoNombreVisible = document.getElementById('empleado_nombre_visible');
-
-    function formatearCelda(valor) {
-        if (valor === null || valor === undefined || valor === '') return '-';
-        return String(valor);
-    }
-
-    function renderTablaEmpleado(data) {
-        if (!tablaEmpleadoBody) return;
-
-        tablaEmpleadoBody.innerHTML = '';
-
-        const total = data.length;
-
-        if (!total) {
-            tablaEmpleadoBody.innerHTML = `<tr><td class="py-4 text-center text-sm text-gray-500" colspan="5">No se encontraron empleados.</td></tr>`;
-            if (empleadoInfo) empleadoInfo.textContent = '0 de 0';
-            return;
-        }
-
-        const totalPaginas = Math.ceil(total / itemsPorPaginaEmpleado);
-        if (paginaEmpleado > totalPaginas) paginaEmpleado = totalPaginas;
-        if (paginaEmpleado < 1) paginaEmpleado = 1;
-
-        const inicio = (paginaEmpleado - 1) * itemsPorPaginaEmpleado;
-        const fin = inicio + itemsPorPaginaEmpleado;
-        const pagina = data.slice(inicio, fin);
-
-        pagina.forEach(empleado => {
-            const tr = document.createElement('tr');
-            tr.classList.add('cursor-pointer', 'hover:bg-base-300');
-
-            tr.innerHTML = `
+                    tr.innerHTML = `
                 <td>${formatearCelda(empleado.nombre)}</td>
                 <td>${formatearCelda(empleado.dni)}</td>
                 <td>${formatearCelda(empleado.celular)}</td>
@@ -1209,443 +1254,537 @@ document.addEventListener("DOMContentLoaded", function() {
                 <td>${formatearCelda(empleado.area)}</td>
             `;
 
-            tr.addEventListener('click', function (e) {
-                if (!empleadoInput) return;
+                    tr.addEventListener('click', function(e) {
+                        if (!empleadoInput) return;
 
-                empleadoInput.value = empleado.id;
+                        empleadoInput.value = empleado.id;
 
-                if (empleadoNombreVisible) {
-                    const texto = `${empleado.nombre || ''} - ${empleado.dni || ''}`;
-                    empleadoNombreVisible.value = texto.trim();
+                        if (empleadoNombreVisible) {
+                            const texto = `${empleado.nombre || ''} - ${empleado.dni || ''}`;
+                            empleadoNombreVisible.value = texto.trim();
+                        }
+
+                        const modalCheckbox = document.getElementById('modal_elegir_empleado');
+                        if (modalCheckbox) modalCheckbox.checked = false;
+                    });
+
+                    tablaEmpleadoBody.appendChild(tr);
+                });
+
+                if (empleadoInfo) {
+                    const desde = inicio + 1;
+                    const hasta = Math.min(fin, total);
+                    empleadoInfo.textContent = `Mostrando ${desde}-${hasta} de ${total}`;
                 }
+            }
 
+            function abrirModalEmpleado() {
                 const modalCheckbox = document.getElementById('modal_elegir_empleado');
-                if (modalCheckbox) modalCheckbox.checked = false;
-            });
+                if (modalCheckbox) modalCheckbox.checked = true;
+                paginaEmpleado = 1;
+                renderTablaEmpleado(empleadosCache);
+                if (buscadorEmpleado) buscadorEmpleado.value = '';
+            }
 
-            tablaEmpleadoBody.appendChild(tr);
-        });
+            if (empleadoNombreVisible) {
+                empleadoNombreVisible.addEventListener('click', function() {
+                    abrirModalEmpleado();
+                });
+                empleadoNombreVisible.addEventListener('focus', function() {
+                    abrirModalEmpleado();
+                });
+            }
 
-        if (empleadoInfo) {
-            const desde = inicio + 1;
-            const hasta = Math.min(fin, total);
-            empleadoInfo.textContent = `Mostrando ${desde}-${hasta} de ${total}`;
-        }
-    }
+            if (buscadorEmpleado) {
+                buscadorEmpleado.addEventListener('input', function() {
+                    const term = this.value.toLowerCase();
+                    const filtrados = empleadosData.filter(empleado => {
+                        const texto =
+                            `${empleado.nombre || ''} ${empleado.dni || ''} ${empleado.celular || ''} ${empleado.email || ''} ${empleado.area || ''}`
+                            .toLowerCase();
+                        return texto.includes(term);
+                    });
+                    paginaEmpleado = 1;
+                    renderTablaEmpleado(filtrados);
+                });
+            }
 
-    function abrirModalEmpleado() {
-        const modalCheckbox = document.getElementById('modal_elegir_empleado');
-        if (modalCheckbox) modalCheckbox.checked = true;
-        paginaEmpleado = 1;
-        renderTablaEmpleado(empleadosCache);
-        if (buscadorEmpleado) buscadorEmpleado.value = '';
-    }
+            if (empleadoPrev) {
+                empleadoPrev.addEventListener('click', function() {
+                    if (paginaEmpleado > 1) {
+                        paginaEmpleado--;
+                        const term = buscadorEmpleado ? buscadorEmpleado.value.toLowerCase() : '';
+                        const filtrados = term ? empleadosData.filter(e => {
+                            const texto =
+                                `${e.nombre || ''} ${e.dni || ''} ${e.celular || ''} ${e.email || ''} ${e.area || ''}`
+                                .toLowerCase();
+                            return texto.includes(term);
+                        }) : empleadosCache;
+                        renderTablaEmpleado(filtrados);
+                    }
+                });
+            }
 
-    if (empleadoNombreVisible) {
-        empleadoNombreVisible.addEventListener('click', function () {
-            abrirModalEmpleado();
-        });
-        empleadoNombreVisible.addEventListener('focus', function () {
-            abrirModalEmpleado();
-        });
-    }
-
-    if (buscadorEmpleado) {
-        buscadorEmpleado.addEventListener('input', function () {
-            const term = this.value.toLowerCase();
-            const filtrados = empleadosData.filter(empleado => {
-                const texto = `${empleado.nombre || ''} ${empleado.dni || ''} ${empleado.celular || ''} ${empleado.email || ''} ${empleado.area || ''}`.toLowerCase();
-                return texto.includes(term);
-            });
-            paginaEmpleado = 1;
-            renderTablaEmpleado(filtrados);
-        });
-    }
-
-    if (empleadoPrev) {
-        empleadoPrev.addEventListener('click', function () {
-            if (paginaEmpleado > 1) {
-                paginaEmpleado--;
-                const term = buscadorEmpleado ? buscadorEmpleado.value.toLowerCase() : '';
-                const filtrados = term ? empleadosData.filter(e => {
-                    const texto = `${e.nombre || ''} ${e.dni || ''} ${e.celular || ''} ${e.email || ''} ${e.area || ''}`.toLowerCase();
-                    return texto.includes(term);
-                }) : empleadosCache;
-                renderTablaEmpleado(filtrados);
+            if (empleadoNext) {
+                empleadoNext.addEventListener('click', function() {
+                    const term = buscadorEmpleado ? buscadorEmpleado.value.toLowerCase() : '';
+                    const filtrados = term ? empleadosData.filter(e => {
+                        const texto =
+                            `${e.nombre || ''} ${e.dni || ''} ${e.celular || ''} ${e.email || ''} ${e.area || ''}`
+                            .toLowerCase();
+                        return texto.includes(term);
+                    }) : empleadosCache;
+                    const totalPaginas = Math.ceil(filtrados.length / itemsPorPaginaEmpleado);
+                    if (paginaEmpleado < totalPaginas) {
+                        paginaEmpleado++;
+                        renderTablaEmpleado(filtrados);
+                    }
+                });
             }
         });
-    }
+    </script>
 
-    if (empleadoNext) {
-        empleadoNext.addEventListener('click', function () {
-            const term = buscadorEmpleado ? buscadorEmpleado.value.toLowerCase() : '';
-            const filtrados = term ? empleadosData.filter(e => {
-                const texto = `${e.nombre || ''} ${e.dni || ''} ${e.celular || ''} ${e.email || ''} ${e.area || ''}`.toLowerCase();
-                return texto.includes(term);
-            }) : empleadosCache;
-            const totalPaginas = Math.ceil(filtrados.length / itemsPorPaginaEmpleado);
-            if (paginaEmpleado < totalPaginas) {
-                paginaEmpleado++;
-                renderTablaEmpleado(filtrados);
+    <script>
+        // ==============================
+        //  MODAL DE SELECCIÓN DE DESTINO
+        // ==============================
+        document.addEventListener("DOMContentLoaded", function() {
+
+            const baseUrlListar = "{{ url('origen/listar') }}";
+
+            const destinoTipoSelect = document.getElementById("destino_tipo");
+            const destinoInput = document.getElementById("destino_id");
+            const destinoNombreVisible = document.getElementById("destino_nombre_visible");
+
+            // DESTINO (cache y elementos del modal)
+            let destinosCache = [];
+            let columnasDestino = [];
+            let paginaDestino = 1;
+            const itemsPorPaginaDestino = 5;
+
+            // Cache por tipo para que el modal abra instantáneo
+            const destinoCachePorTipo = {};
+            const destinoPrefetchEnCursoPorTipo = {};
+
+            const tablaDestinoHead = document.getElementById('tabla_destino_head');
+            const tablaDestinoBody = document.getElementById('tabla_destino_body');
+            const destinoPrev = document.getElementById('destino_prev_page');
+            const destinoNext = document.getElementById('destino_next_page');
+            const destinoInfo = document.getElementById('destino_pagination_info');
+            const buscadorDestino = document.getElementById('buscador_destino');
+            const btnElegirDestino = document.getElementById('btn_elegir_destino');
+            const tituloModalDestino = document.getElementById('titulo_modal_destino');
+
+            function formatearCelda(valor) {
+                if (valor === null || valor === undefined || valor === '') return '-';
+                return String(valor);
             }
-        });
-    }
-});
-</script>
 
-<script>
-// ==============================
-//  MODAL DE SELECCIÓN DE DESTINO
-// ==============================
-document.addEventListener("DOMContentLoaded", function() { 
+            function esParteVisibleValida(valor) {
+                return !(valor === null || valor === undefined || valor === '');
+            }
 
-    const baseUrlListar = "{{ url('origen/listar') }}";
+            function tipoShortDesdeClase(clase) {
+                if (!clase) return null;
+                if (clase.includes('Obra')) return 'obra';
+                if (clase.includes('Deposito')) return 'deposito';
+                if (clase.includes('Equipo')) return 'equipo';
+                if (clase.includes('Vehiculo')) return 'vehiculo';
+                return null;
+            }
 
-    const destinoTipoSelect = document.getElementById("destino_tipo");
-    const destinoInput = document.getElementById("destino_id");
-    const destinoNombreVisible = document.getElementById("destino_nombre_visible");
+            function prefetchListado(tipoShort, cachePorTipo, prefetchEnCursoPorTipo, onOk) {
+                if (!tipoShort) return null;
 
-    // DESTINO (cache y elementos del modal)
-    let destinosCache = [];
-    let columnasDestino = [];
-    let paginaDestino = 1;
-    const itemsPorPaginaDestino = 5;
-
-    // Cache por tipo para que el modal abra instantáneo
-    const destinoCachePorTipo = {};
-    const destinoPrefetchEnCursoPorTipo = {};
-
-    const tablaDestinoHead = document.getElementById('tabla_destino_head');
-    const tablaDestinoBody = document.getElementById('tabla_destino_body');
-    const destinoPrev = document.getElementById('destino_prev_page');
-    const destinoNext = document.getElementById('destino_next_page');
-    const destinoInfo = document.getElementById('destino_pagination_info');
-    const buscadorDestino = document.getElementById('buscador_destino');
-    const btnElegirDestino = document.getElementById('btn_elegir_destino');
-    const tituloModalDestino = document.getElementById('titulo_modal_destino');
-
-    function formatearCelda(valor) {
-        if (valor === null || valor === undefined || valor === '') return '-';
-        return String(valor);
-    }
-
-    function esParteVisibleValida(valor) {
-        return !(valor === null || valor === undefined || valor === '');
-    }
-
-    function tipoShortDesdeClase(clase) {
-        if (!clase) return null;
-        if (clase.includes('Obra')) return 'obra';
-        if (clase.includes('Deposito')) return 'deposito';
-        if (clase.includes('Equipo')) return 'equipo';
-        if (clase.includes('Vehiculo')) return 'vehiculo';
-        return null;
-    }
-
-    function prefetchListado(tipoShort, cachePorTipo, prefetchEnCursoPorTipo, onOk) {
-        if (!tipoShort) return null;
-
-        if (cachePorTipo[tipoShort]) {
-            if (typeof onOk === 'function') onOk(cachePorTipo[tipoShort]);
-            return Promise.resolve(cachePorTipo[tipoShort]);
-        }
-
-        if (prefetchEnCursoPorTipo && prefetchEnCursoPorTipo[tipoShort]) {
-            const p = prefetchEnCursoPorTipo[tipoShort];
-            if (typeof onOk === 'function') p.then(onOk).catch(() => {});
-            return p;
-        }
-
-        const p = fetch(`${baseUrlListar}/${tipoShort}`)
-            .then(res => res.json())
-            .then(data => {
-                const lista = Array.isArray(data) ? data : [];
-                cachePorTipo[tipoShort] = lista;
-                return lista;
-            })
-            .catch(() => {
-                return [];
-            })
-            .finally(() => {
-                if (prefetchEnCursoPorTipo) delete prefetchEnCursoPorTipo[tipoShort];
-            });
-
-        if (prefetchEnCursoPorTipo) prefetchEnCursoPorTipo[tipoShort] = p;
-        if (typeof onOk === 'function') p.then(onOk).catch(() => {});
-        return p;
-    }
-
-    function configurarColumnasDestino(tipoShort) {
-        if (tipoShort === 'vehiculo') {
-            columnasDestino = [
-                { key: 'patente', label: 'Patente' },
-                { key: 'marca', label: 'Marca' },
-                { key: 'modelo', label: 'Modelo' },
-                { key: 'anio', label: 'Año' },
-                { key: 'color', label: 'Color' },
-                { key: 'tipo', label: 'Tipo' },
-                { key: 'catalogacion', label: 'Catalogación'}
-            ];
-            tituloModalDestino.textContent = 'Seleccionar vehículo destino';
-        } else if (tipoShort === 'obra') {
-            columnasDestino = [
-                { key: 'nombre', label: 'Nombre' },
-                { key: 'direccion', label: 'Dirección' },
-                { key: 'barrio', label: 'Barrio' },
-                { key: 'responsable', label: 'Responsable' },
-                { key: 'ejecutado_por', label: 'Ejecutado por' },
-                { key: 'estado_obra', label: 'Estado' },
-            ];
-            tituloModalDestino.textContent = 'Seleccionar obra destino';
-        } else if (tipoShort === 'deposito') {
-            columnasDestino = [{ key: 'nombre', label: 'Depósito' }];
-            tituloModalDestino.textContent = 'Seleccionar depósito destino';
-        } else if (tipoShort === 'equipo') {
-            columnasDestino = [
-                { key: 'equipamiento', label: 'Equipamiento' },
-                { key: 'marca', label: 'Marca' },
-                { key: 'descripcion', label: 'Descripción' },
-                { key: 'area_nombre', label: 'Área' },
-                { key: 'catalogacion', label: 'Catalogación' },
-            ];
-            tituloModalDestino.textContent = 'Seleccionar equipo destino';
-        } else {
-            columnasDestino = [{ key: 'nombre', label: 'Nombre' }];
-            tituloModalDestino.textContent = 'Seleccionar destino';
-        }
-
-        if (tablaDestinoHead) {
-            tablaDestinoHead.innerHTML = columnasDestino
-                .map(col => `<th>${col.label}</th>`)
-                .join('');
-        }
-    }
-
-    function renderTablaDestino(data) {
-        if (!tablaDestinoBody) return;
-
-        tablaDestinoBody.innerHTML = '';
-
-        const total = data.length;
-
-        if (!total) {
-            tablaDestinoBody.innerHTML = `<tr><td class="py-4 text-center text-sm text-gray-500" colspan="${columnasDestino.length || 1}">No se encontraron elementos.</td></tr>`;
-            if (destinoInfo) destinoInfo.textContent = '0 de 0';
-            return;
-        }
-
-        const totalPaginas = Math.ceil(total / itemsPorPaginaDestino);
-        if (paginaDestino > totalPaginas) paginaDestino = totalPaginas;
-        if (paginaDestino < 1) paginaDestino = 1;
-
-        const inicio = (paginaDestino - 1) * itemsPorPaginaDestino;
-        const fin = inicio + itemsPorPaginaDestino;
-        const pagina = data.slice(inicio, fin);
-
-        pagina.forEach(dest => {
-            const tr = document.createElement('tr');
-            tr.classList.add('cursor-pointer', 'hover:bg-base-300');
-
-            tr.innerHTML = columnasDestino
-                .map(col => `<td>${formatearCelda(dest[col.key])}</td>`)
-                .join('');
-
-            tr.addEventListener('click', function () {
-                if (!destinoInput) return;
-
-                destinoInput.value = dest.id;
-
-                if (destinoNombreVisible) {
-                    const texto = columnasDestino
-                        .map(col => dest[col.key])
-                        .filter(esParteVisibleValida)
-                        .map(v => String(v))
-                        .join(' - ');
-                    destinoNombreVisible.value = texto || (dest.nombre ?? 'Elemento seleccionado');
+                if (cachePorTipo[tipoShort]) {
+                    if (typeof onOk === 'function') onOk(cachePorTipo[tipoShort]);
+                    return Promise.resolve(cachePorTipo[tipoShort]);
                 }
 
+                if (prefetchEnCursoPorTipo && prefetchEnCursoPorTipo[tipoShort]) {
+                    const p = prefetchEnCursoPorTipo[tipoShort];
+                    if (typeof onOk === 'function') p.then(onOk).catch(() => {});
+                    return p;
+                }
+
+                const p = fetch(`${baseUrlListar}/${tipoShort}`)
+                    .then(res => res.json())
+                    .then(data => {
+                        const lista = Array.isArray(data) ? data : [];
+                        cachePorTipo[tipoShort] = lista;
+                        return lista;
+                    })
+                    .catch(() => {
+                        return [];
+                    })
+                    .finally(() => {
+                        if (prefetchEnCursoPorTipo) delete prefetchEnCursoPorTipo[tipoShort];
+                    });
+
+                if (prefetchEnCursoPorTipo) prefetchEnCursoPorTipo[tipoShort] = p;
+                if (typeof onOk === 'function') p.then(onOk).catch(() => {});
+                return p;
+            }
+
+            function configurarColumnasDestino(tipoShort) {
+                if (tipoShort === 'vehiculo') {
+                    columnasDestino = [{
+                            key: 'patente',
+                            label: 'Patente'
+                        },
+                        {
+                            key: 'marca',
+                            label: 'Marca'
+                        },
+                        {
+                            key: 'modelo',
+                            label: 'Modelo'
+                        },
+                        {
+                            key: 'anio',
+                            label: 'Año'
+                        },
+                        {
+                            key: 'color',
+                            label: 'Color'
+                        },
+                        {
+                            key: 'tipo',
+                            label: 'Tipo'
+                        },
+                        {
+                            key: 'catalogacion',
+                            label: 'Catalogación'
+                        }
+                    ];
+                    tituloModalDestino.textContent = 'Seleccionar vehículo destino';
+                } else if (tipoShort === 'obra') {
+                    columnasDestino = [{
+                            key: 'nombre',
+                            label: 'Nombre'
+                        },
+                        {
+                            key: 'direccion',
+                            label: 'Dirección'
+                        },
+                        {
+                            key: 'barrio',
+                            label: 'Barrio'
+                        },
+                        {
+                            key: 'responsable',
+                            label: 'Responsable'
+                        },
+                        {
+                            key: 'ejecutado_por',
+                            label: 'Ejecutado por'
+                        },
+                        {
+                            key: 'estado_obra',
+                            label: 'Estado'
+                        },
+                    ];
+                    tituloModalDestino.textContent = 'Seleccionar obra destino';
+                } else if (tipoShort === 'deposito') {
+                    columnasDestino = [{
+                        key: 'nombre',
+                        label: 'Depósito'
+                    }];
+                    tituloModalDestino.textContent = 'Seleccionar depósito destino';
+                } else if (tipoShort === 'equipo') {
+                    columnasDestino = [{
+                            key: 'equipamiento',
+                            label: 'Equipamiento'
+                        },
+                        {
+                            key: 'marca',
+                            label: 'Marca'
+                        },
+                        {
+                            key: 'descripcion',
+                            label: 'Descripción'
+                        },
+                        {
+                            key: 'area_nombre',
+                            label: 'Área'
+                        },
+                        {
+                            key: 'catalogacion',
+                            label: 'Catalogación'
+                        },
+                    ];
+                    tituloModalDestino.textContent = 'Seleccionar equipo destino';
+                } else {
+                    columnasDestino = [{
+                        key: 'nombre',
+                        label: 'Nombre'
+                    }];
+                    tituloModalDestino.textContent = 'Seleccionar destino';
+                }
+
+                if (tablaDestinoHead) {
+                    tablaDestinoHead.innerHTML = columnasDestino
+                        .map(col => `<th>${col.label}</th>`)
+                        .join('');
+                }
+            }
+
+            function renderTablaDestino(data) {
+                if (!tablaDestinoBody) return;
+
+                tablaDestinoBody.innerHTML = '';
+
+                const total = data.length;
+
+                if (!total) {
+                    tablaDestinoBody.innerHTML =
+                        `<tr><td class="py-4 text-center text-sm text-gray-500" colspan="${columnasDestino.length || 1}">No se encontraron elementos.</td></tr>`;
+                    if (destinoInfo) destinoInfo.textContent = '0 de 0';
+                    return;
+                }
+
+                const totalPaginas = Math.ceil(total / itemsPorPaginaDestino);
+                if (paginaDestino > totalPaginas) paginaDestino = totalPaginas;
+                if (paginaDestino < 1) paginaDestino = 1;
+
+                const inicio = (paginaDestino - 1) * itemsPorPaginaDestino;
+                const fin = inicio + itemsPorPaginaDestino;
+                const pagina = data.slice(inicio, fin);
+
+                pagina.forEach(dest => {
+                    const tr = document.createElement('tr');
+                    tr.classList.add('cursor-pointer', 'hover:bg-base-300');
+
+                    tr.innerHTML = columnasDestino
+                        .map(col => `<td>${formatearCelda(dest[col.key])}</td>`)
+                        .join('');
+
+                    tr.addEventListener('click', function() {
+                        if (!destinoInput) return;
+
+                        destinoInput.value = dest.id;
+
+                        if (destinoNombreVisible) {
+                            const texto = columnasDestino
+                                .map(col => dest[col.key])
+                                .filter(esParteVisibleValida)
+                                .map(v => String(v))
+                                .join(' - ');
+                            destinoNombreVisible.value = texto || (dest.nombre ??
+                                'Elemento seleccionado');
+                        }
+
+                        const modalCheckbox = document.getElementById('modal_elegir_destino');
+                        if (modalCheckbox) modalCheckbox.checked = false;
+                    });
+
+                    tablaDestinoBody.appendChild(tr);
+                });
+
+                if (destinoInfo) {
+                    const desde = inicio + 1;
+                    const hasta = Math.min(fin, total);
+                    destinoInfo.textContent = `Mostrando ${desde}-${hasta} de ${total}`;
+                }
+            }
+
+            function cargarDestinosEnTabla() {
+                if (!tablaDestinoBody || !tablaDestinoHead) return;
+
+                const clase = destinoTipoSelect ? destinoTipoSelect.value : null;
+                const tipoShort = tipoShortDesdeClase(clase);
+
+                if (!clase || !tipoShort) {
+                    columnasDestino = [];
+                    tablaDestinoHead.innerHTML = '';
+                    tablaDestinoBody.innerHTML =
+                        '<tr><td class="py-4 text-center text-sm text-gray-500">Primero seleccione un tipo de destino.</td></tr>';
+                    if (destinoInfo) destinoInfo.textContent = '';
+                    return;
+                }
+
+                configurarColumnasDestino(tipoShort);
+
+                // Si ya está en cache, renderizar instantáneo
+                if (destinoCachePorTipo[tipoShort]) {
+                    destinosCache = destinoCachePorTipo[tipoShort];
+                    paginaDestino = 1;
+                    renderTablaDestino(destinosCache);
+                    return;
+                }
+
+                tablaDestinoBody.innerHTML =
+                    `<tr><td class="py-4 text-center text-sm" colspan="${columnasDestino.length}">Cargando...</td></tr>`;
+
+                prefetchListado(tipoShort, destinoCachePorTipo, destinoPrefetchEnCursoPorTipo)
+                    .then(lista => {
+                        destinosCache = lista;
+                        paginaDestino = 1;
+                        renderTablaDestino(destinosCache);
+                    })
+                    .catch(err => {
+                        console.error('Error en fetch DESTINO:', err);
+                        tablaDestinoBody.innerHTML =
+                            `<tr><td class="py-4 text-center text-sm text-red-500" colspan="${columnasDestino.length}">Error al cargar los elementos.</td></tr>`;
+                        if (destinoInfo) destinoInfo.textContent = '';
+                    });
+            }
+
+            function abrirModalDestino() {
                 const modalCheckbox = document.getElementById('modal_elegir_destino');
-                if (modalCheckbox) modalCheckbox.checked = false;
-            });
-
-            tablaDestinoBody.appendChild(tr);
-        });
-
-        if (destinoInfo) {
-            const desde = inicio + 1;
-            const hasta = Math.min(fin, total);
-            destinoInfo.textContent = `Mostrando ${desde}-${hasta} de ${total}`;
-        }
-    }
-
-    function cargarDestinosEnTabla() {
-        if (!tablaDestinoBody || !tablaDestinoHead) return;
-
-        const clase = destinoTipoSelect ? destinoTipoSelect.value : null;
-        const tipoShort = tipoShortDesdeClase(clase);
-
-        if (!clase || !tipoShort) {
-            columnasDestino = [];
-            tablaDestinoHead.innerHTML = '';
-            tablaDestinoBody.innerHTML = '<tr><td class="py-4 text-center text-sm text-gray-500">Primero seleccione un tipo de destino.</td></tr>';
-            if (destinoInfo) destinoInfo.textContent = '';
-            return;
-        }
-
-        configurarColumnasDestino(tipoShort);
-
-        // Si ya está en cache, renderizar instantáneo
-        if (destinoCachePorTipo[tipoShort]) {
-            destinosCache = destinoCachePorTipo[tipoShort];
-            paginaDestino = 1;
-            renderTablaDestino(destinosCache);
-            return;
-        }
-
-        tablaDestinoBody.innerHTML = `<tr><td class="py-4 text-center text-sm" colspan="${columnasDestino.length}">Cargando...</td></tr>`;
-
-        prefetchListado(tipoShort, destinoCachePorTipo, destinoPrefetchEnCursoPorTipo)
-            .then(lista => {
-                destinosCache = lista;
-                paginaDestino = 1;
-                renderTablaDestino(destinosCache);
-            })
-            .catch(err => {
-                console.error('Error en fetch DESTINO:', err);
-                tablaDestinoBody.innerHTML = `<tr><td class="py-4 text-center text-sm text-red-500" colspan="${columnasDestino.length}">Error al cargar los elementos.</td></tr>`;
-                if (destinoInfo) destinoInfo.textContent = '';
-            });
-    }
-
-    function abrirModalDestino() {
-        const modalCheckbox = document.getElementById('modal_elegir_destino');
-        if (modalCheckbox) modalCheckbox.checked = true;
-        cargarDestinosEnTabla();
-        if (buscadorDestino) buscadorDestino.value = '';
-    }
-
-    if (btnElegirDestino) {
-        btnElegirDestino.addEventListener('click', function () {
-            abrirModalDestino();
-        });
-    }
-
-    if (destinoNombreVisible) {
-        destinoNombreVisible.addEventListener('click', function () {
-            abrirModalDestino();
-        });
-        destinoNombreVisible.addEventListener('focus', function () {
-            abrirModalDestino();
-        });
-    }
-
-    if (buscadorDestino) {
-        buscadorDestino.addEventListener('input', function () {
-            const term = this.value.toLowerCase();
-            const filtrados = destinosCache.filter(dest => {
-                const texto = Object.values(dest).join(' ').toLowerCase();
-                return texto.includes(term);
-            });
-            paginaDestino = 1;
-            renderTablaDestino(filtrados);
-        });
-    }
-
-    if (destinoPrev) {
-        destinoPrev.addEventListener('click', function () {
-            if (paginaDestino > 1) {
-                paginaDestino--;
-                const term = buscadorDestino ? buscadorDestino.value.toLowerCase() : '';
-                const filtrados = term ? destinosCache.filter(dest => {
-                    const texto = Object.values(dest).join(' ').toLowerCase();
-                    return texto.includes(term);
-                }) : destinosCache;
-                renderTablaDestino(filtrados);
+                if (modalCheckbox) modalCheckbox.checked = true;
+                cargarDestinosEnTabla();
+                if (buscadorDestino) buscadorDestino.value = '';
             }
-        });
-    }
 
-    if (destinoNext) {
-        destinoNext.addEventListener('click', function () {
-            const term = buscadorDestino ? buscadorDestino.value.toLowerCase() : '';
-            const filtrados = term ? destinosCache.filter(dest => {
-                const texto = Object.values(dest).join(' ').toLowerCase();
-                return texto.includes(term);
-            }) : destinosCache;
-            const totalPaginas = Math.ceil(filtrados.length / itemsPorPaginaDestino);
-            if (paginaDestino < totalPaginas) {
-                paginaDestino++;
-                renderTablaDestino(filtrados);
+            if (btnElegirDestino) {
+                btnElegirDestino.addEventListener('click', function() {
+                    abrirModalDestino();
+                });
             }
+
+            if (destinoNombreVisible) {
+                destinoNombreVisible.addEventListener('click', function() {
+                    abrirModalDestino();
+                });
+                destinoNombreVisible.addEventListener('focus', function() {
+                    abrirModalDestino();
+                });
+            }
+
+            if (buscadorDestino) {
+                buscadorDestino.addEventListener('input', function() {
+                    const term = this.value.toLowerCase();
+                    const filtrados = destinosCache.filter(dest => {
+                        const texto = Object.values(dest).join(' ').toLowerCase();
+                        return texto.includes(term);
+                    });
+                    paginaDestino = 1;
+                    renderTablaDestino(filtrados);
+                });
+            }
+
+            if (destinoPrev) {
+                destinoPrev.addEventListener('click', function() {
+                    if (paginaDestino > 1) {
+                        paginaDestino--;
+                        const term = buscadorDestino ? buscadorDestino.value.toLowerCase() : '';
+                        const filtrados = term ? destinosCache.filter(dest => {
+                            const texto = Object.values(dest).join(' ').toLowerCase();
+                            return texto.includes(term);
+                        }) : destinosCache;
+                        renderTablaDestino(filtrados);
+                    }
+                });
+            }
+
+            if (destinoNext) {
+                destinoNext.addEventListener('click', function() {
+                    const term = buscadorDestino ? buscadorDestino.value.toLowerCase() : '';
+                    const filtrados = term ? destinosCache.filter(dest => {
+                        const texto = Object.values(dest).join(' ').toLowerCase();
+                        return texto.includes(term);
+                    }) : destinosCache;
+                    const totalPaginas = Math.ceil(filtrados.length / itemsPorPaginaDestino);
+                    if (paginaDestino < totalPaginas) {
+                        paginaDestino++;
+                        renderTablaDestino(filtrados);
+                    }
+                });
+            }
+
+            destinoTipoSelect?.addEventListener('change', function() {
+                const tipo = this.value;
+                const tipoShort = tipoShortDesdeClase(tipo);
+                prefetchListado(tipoShort, destinoCachePorTipo, destinoPrefetchEnCursoPorTipo);
+
+                if (destinoInput) destinoInput.value = '';
+                if (destinoNombreVisible) {
+                    destinoNombreVisible.value = '';
+                    destinoNombreVisible.placeholder = 'Seleccione un elemento desde el buscador';
+                }
+            });
+
+            const tipoDestinoInicial = tipoShortDesdeClase(destinoTipoSelect ? destinoTipoSelect.value : null);
+            prefetchListado(tipoDestinoInicial, destinoCachePorTipo, destinoPrefetchEnCursoPorTipo);
         });
-    }
+    </script>
 
-    destinoTipoSelect?.addEventListener('change', function () {
-        const tipo = this.value;
-        const tipoShort = tipoShortDesdeClase(tipo);
-        prefetchListado(tipoShort, destinoCachePorTipo, destinoPrefetchEnCursoPorTipo);
+    <script>
+        // ==============================
+        //  MODAL DE SELECCIÓN DE PRODUCTOS
+        // ==============================
+        document.addEventListener("DOMContentLoaded", function() {
 
-        if (destinoInput) destinoInput.value = '';
-        if (destinoNombreVisible) {
-            destinoNombreVisible.value = '';
-            destinoNombreVisible.placeholder = 'Seleccione un elemento desde el buscador';
-        }
-    });
+            let productosCache = [];
+            let productosData = [];
 
-    const tipoDestinoInicial = tipoShortDesdeClase(destinoTipoSelect ? destinoTipoSelect.value : null);
-    prefetchListado(tipoDestinoInicial, destinoCachePorTipo, destinoPrefetchEnCursoPorTipo);
-});
-</script>
+            let paginaProducto = 1;
+            const itemsPorPaginaProducto = 5;
 
-<script>
-// ==============================
-//  MODAL DE SELECCIÓN DE PRODUCTOS
-// ==============================
-document.addEventListener("DOMContentLoaded", function() {
-    const productosData = @json($productos);
-    let productosCache = productosData;
-    let paginaProducto = 1;
-    const itemsPorPaginaProducto = 5; 
+            const tablaProductosBody = document.getElementById('tabla_productos_body');
+            const productoPrev = document.getElementById('producto_prev_page');
+            const productoNext = document.getElementById('producto_next_page');
+            const productoInfo = document.getElementById('producto_pagination_info');
+            const buscadorProducto = document.getElementById('buscador_producto');
 
-    const tablaProductosBody = document.getElementById('tabla_productos_body');
-    const productoPrev = document.getElementById('producto_prev_page');
-    const productoNext = document.getElementById('producto_next_page');
-    const productoInfo = document.getElementById('producto_pagination_info');
-    const buscadorProducto = document.getElementById('buscador_producto');
+            function cargarProductosAjax() {
+                fetch("{{ route('productos.ajax.listar') }}", {
+                        headers: {
+                            'Accept': 'application/json'
+                        }
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        productosCache = data;
+                        productosData = data;
+                        paginaProducto = 1;
+                        renderTablaProductos(productosCache);
+                    })
+                    .catch(error => {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: 'No se pudieron cargar los productos'
+                        });
+                    });
+            }
 
-    function formatearCelda(valor) {
-        if (valor === null || valor === undefined || valor === '') return '-';
-        return String(valor);
-    }
 
-    function renderTablaProductos(data) {
-        if (!tablaProductosBody) return;
+            function formatearCelda(valor) {
+                if (valor === null || valor === undefined || valor === '') return '-';
+                return String(valor);
+            }
 
-        tablaProductosBody.innerHTML = '';
+            function renderTablaProductos(data) {
+                if (!tablaProductosBody) return;
 
-        const total = data.length;
+                tablaProductosBody.innerHTML = '';
 
-        if (!total) {
-            tablaProductosBody.innerHTML = `<tr><td class="py-4 text-center text-sm text-gray-500" colspan="5">No se encontraron productos.</td></tr>`;
-            if (productoInfo) productoInfo.textContent = '0 de 0';
-            return;
-        }
+                const total = data.length;
 
-        const totalPaginas = Math.ceil(total / itemsPorPaginaProducto);
-        if (paginaProducto > totalPaginas) paginaProducto = totalPaginas;
-        if (paginaProducto < 1) paginaProducto = 1;
+                if (!total) {
+                    tablaProductosBody.innerHTML =
+                        `<tr><td class="py-4 text-center text-sm text-gray-500" colspan="5">No se encontraron productos.</td></tr>`;
+                    if (productoInfo) productoInfo.textContent = '0 de 0';
+                    return;
+                }
 
-        const inicio = (paginaProducto - 1) * itemsPorPaginaProducto;
-        const fin = inicio + itemsPorPaginaProducto;
-        const pagina = data.slice(inicio, fin);
+                const totalPaginas = Math.ceil(total / itemsPorPaginaProducto);
+                if (paginaProducto > totalPaginas) paginaProducto = totalPaginas;
+                if (paginaProducto < 1) paginaProducto = 1;
 
-        pagina.forEach(producto => {
-            const tr = document.createElement('tr');
-            tr.classList.add('hover:bg-base-300');
+                const inicio = (paginaProducto - 1) * itemsPorPaginaProducto;
+                const fin = inicio + itemsPorPaginaProducto;
+                const pagina = data.slice(inicio, fin);
 
-            const categoriaNombre = producto.categoria ? producto.categoria.nombre : '-';
+                pagina.forEach(producto => {
+                    const tr = document.createElement('tr');
+                    tr.classList.add('hover:bg-base-300');
 
-            tr.innerHTML = `
+                    const categoriaNombre = producto.categoria ? producto.categoria.nombre : '-';
+
+                    tr.innerHTML = `
                 <td class="text-center">${formatearCelda(categoriaNombre)}</td>
                 <td class="text-center">${formatearCelda(producto.nombre)}</td>
                 <td class="text-center">${formatearCelda(producto.descripcion)}</td>
@@ -1661,92 +1800,98 @@ document.addEventListener("DOMContentLoaded", function() {
                 </td>
             `;
 
-            tablaProductosBody.appendChild(tr);
-        });
+                    tablaProductosBody.appendChild(tr);
+                });
 
-        if (productoInfo) {
-            const desde = inicio + 1;
-            const hasta = Math.min(fin, total);
-            productoInfo.textContent = `Mostrando ${desde}-${hasta} de ${total}`;
-        }
-    }
-
-    if (buscadorProducto) {
-        buscadorProducto.addEventListener('input', function () {
-            const term = this.value.toLowerCase();
-            const filtrados = productosData.filter(producto => {
-                const categoriaNombre = producto.categoria ? producto.categoria.nombre : '';
-                const texto = `${producto.nombre || ''} ${categoriaNombre} ${producto.descripcion || ''} ${producto.unidad || ''}`.toLowerCase();
-                return texto.includes(term);
-            });
-            paginaProducto = 1;
-            renderTablaProductos(filtrados);
-        });
-    }
-
-    if (productoPrev) {
-        productoPrev.addEventListener('click', function () {
-            if (paginaProducto > 1) {
-                paginaProducto--;
-                const term = buscadorProducto ? buscadorProducto.value.toLowerCase() : '';
-                const filtrados = term ? productosData.filter(p => {
-                    const categoriaNombre = p.categoria ? p.categoria.nombre : '';
-                    const texto = `${p.nombre || ''} ${categoriaNombre} ${p.descripcion || ''} ${p.unidad || ''}`.toLowerCase();
-                    return texto.includes(term);
-                }) : productosCache;
-                renderTablaProductos(filtrados);
-            }
-        });
-    }
-
-    if (productoNext) {
-        productoNext.addEventListener('click', function () {
-            const term = buscadorProducto ? buscadorProducto.value.toLowerCase() : '';
-            const filtrados = term ? productosData.filter(p => {
-                const categoriaNombre = p.categoria ? p.categoria.nombre : '';
-                const texto = `${p.nombre || ''} ${categoriaNombre} ${p.descripcion || ''} ${p.unidad || ''}`.toLowerCase();
-                return texto.includes(term);
-            }) : productosCache;
-            const totalPaginas = Math.ceil(filtrados.length / itemsPorPaginaProducto);
-            if (paginaProducto < totalPaginas) {
-                paginaProducto++;
-                renderTablaProductos(filtrados);
-            }
-        });
-    }
-
-    // Renderizar inicial cuando se abre el modal
-    const modalAgregarItem = document.getElementById('modalAgregarItem');
-    if (modalAgregarItem) {
-        // Observar cuando el modal se abre
-        const observer = new MutationObserver(function(mutations) {
-            mutations.forEach(function(mutation) {
-                if (mutation.attributeName === 'open' && modalAgregarItem.open) {
-                    paginaProducto = 1;
-                    if (buscadorProducto) buscadorProducto.value = '';
-                    renderTablaProductos(productosCache);
+                if (productoInfo) {
+                    const desde = inicio + 1;
+                    const hasta = Math.min(fin, total);
+                    productoInfo.textContent = `Mostrando ${desde}-${hasta} de ${total}`;
                 }
-            });
-        });
-        
-        observer.observe(modalAgregarItem, {
-            attributes: true,
-            attributeFilter: ['open']
-        });
-    }
+            }
 
-    // También agregar listener al botón que abre el modal
-    const btnAbrirModal = document.querySelector('button[onclick*="modalAgregarItem.showModal"]');
-    if (btnAbrirModal) {
-        btnAbrirModal.addEventListener('click', function() {
-            setTimeout(() => {
-                paginaProducto = 1;
-                if (buscadorProducto) buscadorProducto.value = '';
-                renderTablaProductos(productosCache);
-            }, 50);
+            if (buscadorProducto) {
+                buscadorProducto.addEventListener('input', function() {
+                    const term = this.value.toLowerCase();
+                    const filtrados = productosData.filter(producto => {
+                        const categoriaNombre = producto.categoria ? producto.categoria.nombre : '';
+                        const texto =
+                            `${producto.nombre || ''} ${categoriaNombre} ${producto.descripcion || ''} ${producto.unidad || ''}`
+                            .toLowerCase();
+                        return texto.includes(term);
+                    });
+                    paginaProducto = 1;
+                    renderTablaProductos(filtrados);
+                });
+            }
+
+            if (productoPrev) {
+                productoPrev.addEventListener('click', function() {
+                    if (paginaProducto > 1) {
+                        paginaProducto--;
+                        const term = buscadorProducto ? buscadorProducto.value.toLowerCase() : '';
+                        const filtrados = term ? productosData.filter(p => {
+                            const categoriaNombre = p.categoria ? p.categoria.nombre : '';
+                            const texto =
+                                `${p.nombre || ''} ${categoriaNombre} ${p.descripcion || ''} ${p.unidad || ''}`
+                                .toLowerCase();
+                            return texto.includes(term);
+                        }) : productosCache;
+                        renderTablaProductos(filtrados);
+                    }
+                });
+            }
+
+            if (productoNext) {
+                productoNext.addEventListener('click', function() {
+                    const term = buscadorProducto ? buscadorProducto.value.toLowerCase() : '';
+                    const filtrados = term ? productosData.filter(p => {
+                        const categoriaNombre = p.categoria ? p.categoria.nombre : '';
+                        const texto =
+                            `${p.nombre || ''} ${categoriaNombre} ${p.descripcion || ''} ${p.unidad || ''}`
+                            .toLowerCase();
+                        return texto.includes(term);
+                    }) : productosCache;
+                    const totalPaginas = Math.ceil(filtrados.length / itemsPorPaginaProducto);
+                    if (paginaProducto < totalPaginas) {
+                        paginaProducto++;
+                        renderTablaProductos(filtrados);
+                    }
+                });
+            }
+
+            // Renderizar inicial cuando se abre el modal
+            const modalAgregarItem = document.getElementById('modalAgregarItem');
+            if (modalAgregarItem) {
+                // Observar cuando el modal se abre
+                const observer = new MutationObserver(function(mutations) {
+                    mutations.forEach(function(mutation) {
+                        if (mutation.attributeName === 'open' && modalAgregarItem.open) {
+                            paginaProducto = 1;
+                            if (buscadorProducto) buscadorProducto.value = '';
+                            cargarProductosAjax();
+                        }
+                    });
+                });
+
+                observer.observe(modalAgregarItem, {
+                    attributes: true,
+                    attributeFilter: ['open']
+                });
+            }
+
+            // También agregar listener al botón que abre el modal
+            const btnAbrirModal = document.querySelector('button[onclick*="modalAgregarItem.showModal"]');
+            if (btnAbrirModal) {
+                btnAbrirModal.addEventListener('click', function() {
+                    setTimeout(() => {
+                        paginaProducto = 1;
+                        if (buscadorProducto) buscadorProducto.value = '';
+                        cargarProductosAjax();
+                    }, 50);
+                });
+            }
         });
-    }
-});
-</script>
- 
-@endsection 
+    </script>
+
+@endsection
