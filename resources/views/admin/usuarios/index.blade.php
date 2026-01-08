@@ -242,7 +242,7 @@
                 <i class="fas fa-file-alt"></i> Crear Nuevo Usuario
             </h3>
 
-            <form action="{{ url('/admin/usuarios/store') }}" method="POST" class="mt-4">
+            <form action="{{ url('/admin/usuarios/store') }}" method="POST" class="mt-4" enctype="multipart/form-data">
                 @csrf
 
                 <!-- Primera fila -->
@@ -294,16 +294,42 @@
                     @enderror
                 </div>
 
+                <!-- Firma -->
+                <div class="form-control mt-4">
+                    <label class="label">
+                        <span class="label-text">Firma</span>
+                    </label>
+
+                    <input type="file" name="firma" accept="image/*"
+                        class="file-input file-input-bordered w-full bg-base-200
+                            focus:outline-none focus:ring-2 focus:ring-primary transition">
+
+                    <small class="text-xs text-gray-500 mt-1">
+                        Formatos permitidos: JPG, PNG. Tamaño recomendado: firma escaneada.
+                    </small>
+
+                    @error('firma')
+                        <small class="text-red-500">{{ $message }}</small>
+                    @enderror
+                </div>
+
+
                 <!-- Contraseñas -->
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
 
                     <div class="form-control">
                         <label class="label"><span class="label-text">Contraseña</span></label>
-                        <input type="password" name="password"
+                        <input type="password" name="password" id="password"
                             class="w-full h-10 rounded-md border border-base-300 
                             bg-base-200 px-3 text-sm focus:outline-none focus:ring-2 
                             focus:ring-primary focus:border-primary transition"
                             required>
+                        <button type="button"
+                            class="mt-2 text-sm text-primary hover:underline"
+                            onclick="togglePassword()">
+                            Mostrar contraseñas
+                        </button>
+
                         @error('password')
                             <small class="text-red-500">{{ $message }}</small>
                         @enderror
@@ -311,7 +337,7 @@
 
                     <div class="form-control">
                         <label class="label"><span class="label-text">Confirmar contraseña</span></label>
-                        <input type="password" name="password_confirmation"
+                        <input type="password" name="password_confirmation" id="password_confirmation"
                             class="w-full h-10 rounded-md border border-base-300 
                             bg-base-200 px-3 text-sm focus:outline-none focus:ring-2 
                             focus:ring-primary focus:border-primary transition"
@@ -425,4 +451,16 @@
             modal_restaurar_usuario.showModal();
         }
     </script>
+    <script>
+        function togglePassword() {
+            const password = document.getElementById('password');
+            const confirm = document.getElementById('password_confirmation');
+
+            const type = password.type === 'password' ? 'text' : 'password';
+
+            password.type = type;
+            confirm.type = type;
+        }
+    </script>
+
 @endsection

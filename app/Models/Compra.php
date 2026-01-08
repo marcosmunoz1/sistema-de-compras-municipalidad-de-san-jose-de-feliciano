@@ -15,6 +15,7 @@ class Compra extends Model
     protected $fillable = [
         'proveedor_id',
         'empleado_id',
+        'user_id',
         'destino_tipo',
         'destino_id',
         'area_solicitante',
@@ -38,6 +39,11 @@ class Compra extends Model
     public function proveedor()
     {
         return $this->belongsTo(Proveedor::class);
+    }
+
+    public function usuario()
+    {
+        return $this->belongsTo(User::class);
     }
 
     public function empleado()

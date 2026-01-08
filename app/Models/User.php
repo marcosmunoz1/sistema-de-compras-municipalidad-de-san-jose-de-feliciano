@@ -24,6 +24,7 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
+        'firma',
         'password',
         'last_login_at',
         'last_logout_at',
@@ -57,6 +58,11 @@ class User extends Authenticatable
     public function combustible()
     {
       return $this->hasMany(combustible::class);
+    }
+
+    public function compras()
+    {
+      return $this->hasMany(Compra::class);
     }
 
     public function getActivitylogOptions(): LogOptions

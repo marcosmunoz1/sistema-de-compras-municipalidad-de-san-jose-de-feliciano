@@ -388,7 +388,7 @@ class MovimientoController extends Controller
      */
     public function show($id)
     {
-        $movimiento = Movimiento::with(['detalles.producto', 'origen', 'destino', 'compra.detalle_compras.producto'])->find($id);
+        $movimiento = Movimiento::with(['detalles.producto','detalles.detalle_compra', 'origen', 'destino', 'compra.detalle_compras.producto'])->find($id);
         return view('admin.movimientos.show', compact('movimiento'));
     }
 

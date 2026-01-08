@@ -110,6 +110,7 @@ class CompraController extends Controller
         // return response()->json($request->all());
         $request->validate([
             'fecha_orden' => 'required',
+            'user_id' => 'required', 'exists:users,id',
             'empleado_id' => 'required',
             'proveedor_id' => 'required',
             'sub_cuenta' => 'required',
@@ -127,6 +128,7 @@ class CompraController extends Controller
         try{  
         // Crear la compra
         $compra = Compra::create([
+            'user_id'       => $request->user_id,
             'proveedor_id'   => $request->proveedor_id,
             'empleado_id'    => $request->empleado_id,
             'destino_tipo'   => modeloDestino($request->destino_tipo)['model'],

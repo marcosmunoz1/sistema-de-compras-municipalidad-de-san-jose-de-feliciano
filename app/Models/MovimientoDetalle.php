@@ -12,6 +12,7 @@ class MovimientoDetalle extends Model
         'movimiento_id',
         'producto_id',
         'cantidad',
+        'detalle_compra_id',
     ];
 
     public function movimiento()
@@ -21,5 +22,12 @@ class MovimientoDetalle extends Model
     public function producto()
     {
         return $this->belongsTo(Producto::class);
+    }
+
+    // En app/Models/MovimientoDetalle.php
+
+    public function detalle_compra()
+    {
+        return $this->belongsTo(Detalle_compra::class, 'detalle_compra_id');
     }
 }

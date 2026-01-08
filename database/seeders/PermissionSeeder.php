@@ -129,8 +129,6 @@ class PermissionSeeder extends Seeder
             ['name' => 'compras-edit'],
             ['name' => 'compras-update'],
             ['name' => 'compras-show'],
-            ['name' => 'compras-destroy'],
-            ['name' => 'compras-restore'],
             ['name' => 'compras-report'],
 
             // ===============================

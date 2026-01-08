@@ -84,8 +84,6 @@ class PermisoHelper
         'compras-edit' => 'Editar compra',
         'compras-update' => 'Actualizar compra',
         'compras-show' => 'Detalle compra',
-        'compras-destroy' => 'Eliminar compra',
-        'compras-restore' => 'Restaurar compra',
         'compras-report' => 'Imprimir reporte',
         // Obras
         'obras-index' => 'Ver obras',
