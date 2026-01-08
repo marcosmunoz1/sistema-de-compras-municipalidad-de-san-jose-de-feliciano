@@ -43,7 +43,7 @@
 <div class="grid grid-cols-1 md:grid-cols-4 pd-6 mb-6">
 
     <!-- Card 1 -->
-    <div class="bg-base-100 shadow-xl bg-card text-card-foreground flex flex-col gap-6 rounded-xl mx-4">
+    <div class="bg-base-100 shadow-xl bg-card text-card-foreground flex flex-col gap-6 rounded-xl">
         <div class="px-6 pt-6 pb-6">
             <div class="flex items-center justify-between">
                 <div>
@@ -101,13 +101,13 @@
                 <h4 class="text-lg font-semibold">Historial de Permisos</h4>
                 <!-- BUSCADOR -->
                 <div class="relative">
-                      <!-- BOTÓN IMPRIMIR -->
+                      {{-- <!-- BOTÓN IMPRIMIR -->
                         <div class="flex justify-start">
                             <button onclick="window.print()" class="btn btn-outline btn-sm">
                                 <x-heroicon-o-printer class="w-4 h-4 mr-2"/>
                                 Imprimir Historial 
                             </button>
-                        </div>
+                        </div> --}}
                 </div>
             </div>
         </div>

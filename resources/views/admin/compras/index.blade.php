@@ -1,5 +1,5 @@
 @extends('layouts.admin')
-@section('title', 'Compras') 
+@section('title', 'Compras')
 @section('content')
 
     <div class="flex items-center justify-between mb-6">
@@ -7,9 +7,9 @@
 
         {{-- Botón agregar compra --}}
         @can('compras-create')
-        <a href="{{ route('compras.create') }}" class="btn btn-primary">
-            + Nueva Compra
-        </a>
+            <a href="{{ route('compras.create') }}" class="btn btn-primary">
+                + Nueva Compra
+            </a>
         @endcan
 
     </div>
@@ -32,7 +32,66 @@
             </li>
         </ul>
     </div>
+    <div class="grid grid-cols-1 md:grid-cols-3 pd-6 mb-6">
 
+        <!-- Card 1 -->
+        <div class="bg-base-100 shadow-xl bg-card text-card-foreground flex flex-col gap-6 rounded-xl mr-2">
+            <div class="px-6 pt-6 pb-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-gray-500">Monto Total</p>
+                        <h3 class="mt-2">${{ number_format($totalMonto, 2) }}</h3> 
+                    </div>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="lucide lucide-shopping-cart text-green-600 w-10 h-10" aria-hidden="true">
+                        <circle cx="8" cy="21" r="1"></circle>
+                        <circle cx="19" cy="21" r="1"></circle>
+                        <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"></path>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="bg-base-100 shadow-xl bg-card text-card-foreground flex flex-col gap-6 rounded-xl mr-2">
+            <div class="px-6 pt-6 pb-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-gray-500">Cantidad de compras</p>
+                        <h3 class="mt-2">{{ $totalCompras }}</h3>
+                    </div>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="lucide lucide-shopping-cart text-blue-600 w-10 h-10" aria-hidden="true">
+                        <circle cx="8" cy="21" r="1"></circle>
+                        <circle cx="19" cy="21" r="1"></circle>
+                        <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"></path>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="bg-base-100 shadow-xl bg-card text-card-foreground flex flex-col gap-6 rounded-xl mr-2">
+            <div class="px-6 pt-6 pb-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-gray-500">Pendiente/sin facturas</p>
+                        <h3 class="mt-2">{{$pendientes}}</h3> 
+                    </div>
+                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="lucide lucide-shopping-cart text-red-600 w-10 h-10" aria-hidden="true">
+                        <circle cx="8" cy="21" r="1"></circle>
+                        <circle cx="19" cy="21" r="1"></circle> 
+                        <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"></path>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+    </div>
 
     <!-- Buscador -->
     <form action="{{ route('compras.index') }}" method="GET">
@@ -71,12 +130,12 @@
                     <!-- BUSCADOR -->
                     <div class="relative">
                         <!-- BOTÓN IMPRIMIR -->
-                        <div class="flex justify-start">
+                        {{-- <div class="flex justify-start">
                             <button onclick="window.print()" class="btn btn-outline btn-sm">
                                 <x-heroicon-o-printer class="w-4 h-4 mr-2" />
                                 Imprimir Historial
                             </button>
-                        </div>
+                        </div> --}}
                     </div>
                 </div>
             </div>
@@ -110,32 +169,34 @@
                                 <td class="text-center">${{ number_format($compra->total, 2) ?? 'N/A' }}</td>
                                 <td class="text-center">
                                     @php
-                                        $badgeClass = match($compra->estado_compra) {
+                                        $badgeClass = match ($compra->estado_compra) {
                                             'Pendiente de factura' => 'badge badge-outline badge-warning',
                                             'Finalizada' => 'badge badge-outline badge-success',
                                             'En proceso' => 'badge badge-outline badge-info',
                                             'Cancelada' => 'badge badge-outline badge-error',
                                             'Aprobada' => 'badge badge-outline badge-primary',
-                                            default => 'badge-ghost'
+                                            default => 'badge-ghost',
                                         };
                                     @endphp
-                                    <span class="badge {{ $badgeClass }} badge-sm"> 
+                                    <span class="badge {{ $badgeClass }} badge-sm">
                                         {{ $compra->estado_compra }}
                                     </span>
                                 </td>
                                 <td class="text-center">
                                     <div class="flex items-center justify-center gap-2">
                                         @can('compras-show')
-                                        <a href="{{ route('compras.show', Crypt::encryptString($compra->id)) }}" title="Ver orden de compra" class="btn btn-info btn-sm">
-                                            <x-heroicon-s-eye class="w-4 h-4" />
-                                        </a>
+                                            <a href="{{ route('compras.show', Crypt::encryptString($compra->id)) }}"
+                                                title="Ver orden de compra" class="btn btn-info btn-sm">
+                                                <x-heroicon-s-eye class="w-4 h-4" />
+                                            </a>
                                         @endcan
                                         @can('compras-edit')
-                                        @if ($compra->estado_compra == 'Pendiente de factura')
-                                            <a href="{{ route('compras.edit', Crypt::encryptString($compra->id)) }}" class="btn btn-warning btn-sm">
-                                                <x-heroicon-s-pencil class="w-4 h-4" />
-                                            </a>
-                                        @endif
+                                            @if ($compra->estado_compra == 'Pendiente de factura')
+                                                <a href="{{ route('compras.edit', Crypt::encryptString($compra->id)) }}"
+                                                    class="btn btn-warning btn-sm" title="Cargar Factura">
+                                                    <x-heroicon-s-document-currency-dollar class="w-4 h-4" />
+                                                </a>
+                                            @endif
                                         @endcan
 
                                         {{--  <a href="{{ route('compras.report', $compra->id ) }}"  
@@ -144,14 +205,14 @@
                                         <x-heroicon-o-printer class="w-4 h-4"/>
                                     </a> --}}
 
-                                    @can('compras-report')
-                                     <button onclick="abrirModalPDF({{ $compra->id }})"  
-                                        class="btn bg-primary btn-sm">
-                                            <x-heroicon-o-printer class="w-4 h-4"/> 
-                                     </button>
-                                     @endcan
+                                        @can('compras-report')
+                                            <button onclick="abrirModalPDF({{ $compra->id }})"
+                                                class="btn bg-primary btn-sm" title="Imprimir orden de compra">
+                                                <x-heroicon-o-printer class="w-4 h-4" />
+                                            </button>
+                                        @endcan
 
-                                   {{--  @if ($compra->trashed())
+                                        {{--  @if ($compra->trashed())
                                         <button class="btn btn-success btn-sm"
                                                 onclick="abrirModalRestaurar('{{ url('/admin/compras/'. $compra->id.'/restore') }}')">
                                             <x-heroicon-s-arrow-uturn-left class="w-4 h-4"/>
@@ -171,12 +232,13 @@
                 </table>
             </div>
             <!-- PAGINACIÓN -->
-            @if ($compras->hasPages()) 
+            @if ($compras->hasPages())
                 <div class="flex flex-col md:flex-row justify-between items-center mt-6 px-3 gap-4">
 
                     <!-- Texto "Mostrando X - Y" -->
                     <div class="text-sm text-gray-500">
-                        Mostrando {{ $compras->firstItem() }} - {{ $compras->lastItem() }} de {{ $compras->total() }} registros
+                        Mostrando {{ $compras->firstItem() }} - {{ $compras->lastItem() }} de {{ $compras->total() }}
+                        registros
                     </div>
 
                     <!-- Controles de paginación estilo DaisyUI -->
@@ -203,7 +265,7 @@
                             $totalPages = $compras->lastPage();
                             $start = max(1, $currentPage - 2);
                             $end = min($totalPages, $currentPage + 2);
-                            
+
                             // Ajustar para mostrar siempre 5 páginas cuando sea posible
                             if ($end - $start < 4) {
                                 if ($start == 1) {
@@ -218,7 +280,8 @@
                             @if ($i == $currentPage)
                                 <button class="join-item btn btn-square btn-active">{{ $i }}</button>
                             @else
-                                <a href="{{ $compras->url($i) }}" class="join-item btn btn-square">{{ $i }}</a>
+                                <a href="{{ $compras->url($i) }}"
+                                    class="join-item btn btn-square">{{ $i }}</a>
                             @endif
                         @endfor
 
@@ -227,7 +290,8 @@
                             @if ($compras->currentPage() < $totalPages - 4)
                                 <button class="join-item btn btn-square btn-disabled">...</button>
                             @endif
-                            <a href="{{ $compras->url($totalPages) }}" class="join-item btn btn-square">{{ $totalPages }}</a>
+                            <a href="{{ $compras->url($totalPages) }}"
+                                class="join-item btn btn-square">{{ $totalPages }}</a>
                         @endif
 
                         {{-- Botón Siguiente --}}
@@ -241,6 +305,58 @@
                 </div>
             @endif
 
+        </div>
+    </div>
+
+    <!-- Sección de Gráficos - Estadísticas -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-8 mb-6">
+        
+        <!-- Gráfico: Tendencia de Compras (Últimos 6 meses) -->
+        <div class="card bg-base-100 shadow">
+            <div class="card-body p-5">
+                <h2 class="text-sm font-semibold text-base-content/70 mb-3 flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M3 3v18h18"></path>
+                        <path d="m19 9-5 5-4-4-3 3"></path>
+                    </svg>
+                    Tendencia de Compras (Últimos 6 meses)
+                </h2>
+                <div class="h-64">
+                    <canvas id="chartTendencia"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Gráfico: Estados de Compras -->
+        <div class="card bg-base-100 shadow">
+            <div class="card-body p-5">
+                <h2 class="text-sm font-semibold text-base-content/70 mb-3 flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21.21 15.89A10 10 0 1 1 8 2.83"></path>
+                        <path d="M22 12A10 10 0 0 0 12 2v10z"></path>
+                    </svg>
+                    Distribución por Estado
+                </h2>
+                <div class="h-64">
+                    <canvas id="chartEstados"></canvas>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Gráfico: Top Proveedores -->
+    <div class="card bg-base-100 shadow mb-6">
+        <div class="card-body p-5">
+            <h2 class="text-sm font-semibold text-base-content/70 mb-3 flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                </svg>
+                Top 5 Proveedores por Monto Total
+            </h2>
+            <div class="h-72">
+                <canvas id="chartProveedores"></canvas>
+            </div>
         </div>
     </div>
 
@@ -260,11 +376,12 @@
                     </button>
                 </div>
             </div>
-            
+
             <!-- Contenedor del iframe -->
             <div class="flex-1 overflow-auto bg-base-200 relative">
                 <!-- Spinner de carga personalizado -->
-                <div id="loadingSpinner" class="absolute inset-0 flex items-center justify-center bg-base-100 z-10 transition-all duration-300">
+                <div id="loadingSpinner"
+                    class="absolute inset-0 flex items-center justify-center bg-base-100 z-10 transition-all duration-300">
                     <div class="text-center space-y-4">
                         <!-- Spinner animado -->
                         <div class="relative">
@@ -300,23 +417,23 @@
             const iframe = document.getElementById('iframePDF');
             const btnDescargar = document.getElementById('btnDescargarPDF');
             const loadingSpinner = document.getElementById('loadingSpinner');
-            
+
             // Mostrar spinner
             loadingSpinner.style.display = 'flex';
-            
+
             // Construir las URLs usando route de Laravel
             const previewUrl = "{{ url('admin/compras') }}/" + compraId + "/preview";
             const downloadUrl = "{{ url('admin/compras') }}/" + compraId + "/download";
-            
+
             // Asignar URLs
             iframe.src = previewUrl;
             btnDescargar.href = downloadUrl;
-            
+
             // Ocultar spinner cuando el iframe termine de cargar
             iframe.onload = function() {
                 loadingSpinner.style.display = 'none';
             };
-            
+
             // Abrir modal
             modal.showModal();
         }
@@ -325,15 +442,308 @@
             const modal = document.getElementById('modalPDF');
             const iframe = document.getElementById('iframePDF');
             const loadingSpinner = document.getElementById('loadingSpinner');
-            
+
             // Limpiar iframe al cerrar
             iframe.src = '';
-            
+
             // Resetear spinner para próxima apertura
             loadingSpinner.style.display = 'flex';
-            
+
             // Cerrar modal
             modal.close();
         }
+    </script>
+
+    <!-- Chart.js Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Detectar tema desde localStorage (donde app.js lo guarda)
+            const savedTheme = localStorage.getItem('theme');
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const isDark = savedTheme === 'dark' || currentTheme === 'dark' || currentTheme === 'synthwave';
+            
+            // Colores según el tema
+            const gridColor = isDark ? '#374151' : '#e5e7eb';
+            const textColor = isDark ? '#f9fafb' : '#111827';
+            const labelColor = isDark ? '#f9fafb' : '#111827';
+            const tooltipBg = isDark ? '#1f2937' : '#ffffff';
+            const tooltipBorder = isDark ? '#4b5563' : '#d1d5db';
+            
+            const colors = {
+                primary: isDark ? '#60a5fa' : '#2563eb',
+                secondary: isDark ? '#a78bfa' : '#7c3aed',
+                accent: isDark ? '#34d399' : '#059669',
+                success: isDark ? '#4ade80' : '#16a34a',
+                warning: isDark ? '#fbbf24' : '#d97706',
+                error: isDark ? '#f87171' : '#dc2626',
+                info: isDark ? '#38bdf8' : '#0284c7',
+            };
+
+            // Listener para recargar cuando cambie el tema
+            const themeToggle = document.getElementById('themeToggle');
+            if (themeToggle) {
+                themeToggle.addEventListener('change', function() {
+                    setTimeout(() => location.reload(), 100);
+                });
+            }
+
+            // Configuración global minimalista
+            Chart.defaults.font.family = 'system-ui, -apple-system, sans-serif';
+            Chart.defaults.font.size = 11;
+            Chart.defaults.color = labelColor;
+            Chart.defaults.borderColor = gridColor;
+
+            // 📊 GRÁFICO 1: Tendencia de Compras (Línea)
+            const dataTendencia = @json($comprasPorMes);
+            const meses = dataTendencia.map(item => {
+                const [year, month] = item.mes.split('-');
+                const fecha = new Date(year, month - 1);
+                return fecha.toLocaleDateString('es-ES', { month: 'short', year: 'numeric' });
+            });
+            const montos = dataTendencia.map(item => parseFloat(item.total) || 0);
+            const cantidades = dataTendencia.map(item => parseInt(item.cantidad) || 0);
+
+            const ctxTendencia = document.getElementById('chartTendencia').getContext('2d');
+            new Chart(ctxTendencia, {
+                type: 'line',
+                data: {
+                    labels: meses,
+                    datasets: [{
+                        label: 'Monto Total',
+                        data: montos,
+                        borderColor: colors.primary,
+                        backgroundColor: isDark ? 'rgba(96, 165, 250, 0.1)' : 'rgba(59, 130, 246, 0.1)',
+                        borderWidth: 2,
+                        fill: true,
+                        tension: 0.3,
+                        pointRadius: 3,
+                        pointHoverRadius: 5,
+                        pointBackgroundColor: colors.primary,
+                        pointBorderColor: isDark ? '#1f2937' : '#ffffff',
+                        pointBorderWidth: 2,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    interaction: {
+                        intersect: false,
+                        mode: 'index',
+                    },
+                    plugins: {
+                        legend: {
+                            display: false,
+                        },
+                        tooltip: {
+                            backgroundColor: tooltipBg,
+                            titleColor: textColor,
+                            bodyColor: textColor,
+                            borderColor: tooltipBorder,
+                            borderWidth: 1,
+                            padding: 10,
+                            displayColors: false,
+                            titleFont: { size: 11, weight: '600' },
+                            bodyFont: { size: 11 },
+                            callbacks: {
+                                label: function(context) {
+                                    return 'Monto: $' + context.parsed.y.toLocaleString('es-AR', {minimumFractionDigits: 2});
+                                },
+                                afterLabel: function(context) {
+                                    return 'Compras: ' + cantidades[context.dataIndex];
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            border: { display: false },
+                            ticks: {
+                                color: labelColor,
+                                font: { size: 10 },
+                                callback: function(value) {
+                                    return '$' + (value / 1000).toFixed(0) + 'k';
+                                }
+                            },
+                            grid: {
+                                color: gridColor,
+                                drawTicks: false,
+                            }
+                        },
+                        x: {
+                            border: { display: false },
+                            ticks: {
+                                color: labelColor,
+                                font: { size: 10 }
+                            },
+                            grid: {
+                                display: false
+                            }
+                        }
+                    }
+                }
+            });
+
+            // 📊 GRÁFICO 2: Estados de Compras (Dona)
+            const dataEstados = @json($comprasPorEstado);
+            const estados = dataEstados.map(item => item.estado_compra);
+            const cantidadesEstados = dataEstados.map(item => parseInt(item.cantidad));
+
+            // Colores según el estado
+            const coloresEstados = estados.map(estado => {
+                switch(estado) {
+                    case 'Pendiente de factura': return colors.warning;
+                    case 'Finalizada': return colors.success;
+                    case 'En proceso': return colors.info;
+                    case 'Cancelada': return colors.error;
+                    case 'Aprobada': return colors.primary;
+                    default: return colors.secondary;
+                }
+            });
+
+            const ctxEstados = document.getElementById('chartEstados').getContext('2d');
+            new Chart(ctxEstados, {
+                type: 'doughnut',
+                data: {
+                    labels: estados,
+                    datasets: [{
+                        data: cantidadesEstados,
+                        backgroundColor: coloresEstados,
+                        borderWidth: 2,
+                        borderColor: isDark ? '#1f2937' : '#ffffff',
+                        hoverOffset: 6,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                padding: 12,
+                                usePointStyle: true,
+                                pointStyle: 'circle',
+                                color: labelColor,
+                                font: { size: 11 },
+                                boxWidth: 8,
+                                boxHeight: 8,
+                            }
+                        },
+                        tooltip: {
+                            backgroundColor: tooltipBg,
+                            titleColor: textColor,
+                            bodyColor: textColor,
+                            borderColor: tooltipBorder,
+                            borderWidth: 1,
+                            padding: 10,
+                            displayColors: true,
+                            titleFont: { size: 11, weight: '600' },
+                            bodyFont: { size: 11 },
+                            callbacks: {
+                                label: function(context) {
+                                    const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                    const porcentaje = ((context.parsed / total) * 100).toFixed(1);
+                                    return context.label + ': ' + context.parsed + ' (' + porcentaje + '%)';
+                                }
+                            }
+                        }
+                    },
+                    cutout: '65%',
+                }
+            });
+
+            // 📊 GRÁFICO 3: Top Proveedores (Barras Horizontales)
+            const dataProveedores = @json($topProveedores);
+            const proveedores = dataProveedores.map(item => item.proveedor?.nombre || 'Sin proveedor');
+            const montosProveedores = dataProveedores.map(item => parseFloat(item.total_gastado) || 0);
+            const ordenesProveedores = dataProveedores.map(item => parseInt(item.cantidad_ordenes) || 0);
+
+            const ctxProveedores = document.getElementById('chartProveedores').getContext('2d');
+            new Chart(ctxProveedores, {
+                type: 'bar',
+                data: {
+                    labels: proveedores,
+                    datasets: [{
+                        label: 'Monto Total',
+                        data: montosProveedores,
+                        backgroundColor: [
+                            isDark ? 'rgba(96, 165, 250, 0.7)' : 'rgba(59, 130, 246, 0.7)',
+                            isDark ? 'rgba(167, 139, 250, 0.7)' : 'rgba(139, 92, 246, 0.7)',
+                            isDark ? 'rgba(52, 211, 153, 0.7)' : 'rgba(16, 185, 129, 0.7)',
+                            isDark ? 'rgba(56, 189, 248, 0.7)' : 'rgba(14, 165, 233, 0.7)',
+                            isDark ? 'rgba(74, 222, 128, 0.7)' : 'rgba(34, 197, 94, 0.7)',
+                        ],
+                        borderColor: [
+                            colors.primary,
+                            colors.secondary,
+                            colors.accent,
+                            colors.info,
+                            colors.success,
+                        ],
+                        borderWidth: 0,
+                        borderRadius: 6,
+                        barThickness: 32,
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            backgroundColor: tooltipBg,
+                            titleColor: textColor,
+                            bodyColor: textColor,
+                            borderColor: tooltipBorder,
+                            borderWidth: 1,
+                            padding: 10,
+                            displayColors: false,
+                            titleFont: { size: 11, weight: '600' },
+                            bodyFont: { size: 11 },
+                            callbacks: {
+                                label: function(context) {
+                                    return 'Monto: $' + context.parsed.x.toLocaleString('es-AR', {minimumFractionDigits: 2});
+                                },
+                                afterLabel: function(context) {
+                                    return 'Órdenes: ' + ordenesProveedores[context.dataIndex];
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            border: { display: false },
+                            ticks: {
+                                color: labelColor,
+                                font: { size: 10 },
+                                callback: function(value) {
+                                    return '$' + (value / 1000).toFixed(0) + 'k';
+                                }
+                            },
+                            grid: {
+                                color: gridColor,
+                                drawTicks: false,
+                            }
+                        },
+                        y: {
+                            border: { display: false },
+                            ticks: {
+                                color: labelColor,
+                                font: { size: 10 }
+                            },
+                            grid: {
+                                display: false
+                            }
+                        }
+                    }
+                }
+            });
+        });
     </script>
 @endsection

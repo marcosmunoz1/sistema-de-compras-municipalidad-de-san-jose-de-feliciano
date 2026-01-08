@@ -15,7 +15,7 @@
     <!-- Vite -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
-    <title>Panel Administrativo</title> 
+    <title>Error 400</title> 
 </head> 
 <body> 
 

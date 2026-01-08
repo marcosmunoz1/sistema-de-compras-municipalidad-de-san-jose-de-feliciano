@@ -123,6 +123,12 @@
 
     <div class="card bg-base-100 shadow-xl">
         <div class="card-body">
+             <div class="flex flex-col gap-3">
+                <!-- TÍTULO-->
+                <div class="flex items-center justify-between">
+                    <h4 class="text-lg font-semibold">Historial de Auditoría</h4> 
+                </div>
+            </div> 
             <div class="overflow-x-auto">
                 <table class="table table-zebra w-full">
                     <thead>

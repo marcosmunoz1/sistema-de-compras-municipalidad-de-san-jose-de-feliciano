@@ -31,10 +31,7 @@ class ProductoController extends Controller
             ->withQueryString(); 
 
         return view('admin.productos.index', compact('productos', 'categorias', 'search'));
-    }
-
-
-
+    } 
     /**
      * Store a newly created resource in storage.
      */

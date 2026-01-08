@@ -97,12 +97,45 @@ class CombustibleController extends Controller
         // TABLA + PAGINACIÓN
         $combustibles = $query->paginate(10)->withQueryString();
 
+        // 📊 Datos para gráficos
+        // Consumo por mes (últimos 6 meses)
+        $consumoPorMes = Combustible::selectRaw('DATE_FORMAT(fecha, "%Y-%m") as mes, SUM(monto) as total_monto, SUM(litros) as total_litros, COUNT(*) as cantidad')
+            ->where('fecha', '>=', now()->subMonths(6))
+            ->groupBy('mes')
+            ->orderBy('mes')
+            ->get();
+
+        // Distribución por tipo de combustible
+        $consumoPorTipo = Combustible::selectRaw('tipo, SUM(litros) as total_litros, SUM(monto) as total_monto, COUNT(*) as cantidad')
+            ->groupBy('tipo')
+            ->orderByDesc('total_litros')
+            ->get();
+
+        // Top 5 destinos (vehículos, equipos, etc.) con mayor consumo
+        $topVehiculos = Combustible::selectRaw('destino_tipo, destino_id, SUM(litros) as total_litros, SUM(monto) as total_monto, COUNT(*) as cantidad_cargas')
+            ->with('destino')
+            ->groupBy('destino_tipo', 'destino_id')
+            ->orderByDesc('total_litros')
+            ->limit(5)
+            ->get();
+
+        // Top 5 estaciones más usadas
+        $topEstaciones = Combustible::selectRaw('estacion, COUNT(*) as cantidad, SUM(litros) as total_litros, SUM(monto) as total_monto')
+            ->groupBy('estacion')
+            ->orderByDesc('cantidad')
+            ->limit(5)
+            ->get();
+
         return view('admin.combustibles.index', compact(
             'combustibles',
             'tipos_combustibles',
             'totalMonto',
             'totalLitros',
-            'totalCargas'
+            'totalCargas',
+            'consumoPorMes',
+            'consumoPorTipo',
+            'topVehiculos',
+            'topEstaciones'
         ));
     }
 
@@ -142,7 +175,7 @@ class CombustibleController extends Controller
          
       
         $lastOrder = Combustible::max('codigo');   
-        $newOrder = $lastOrder ? $lastOrder + 1 : 13000;
+        $newOrder = $lastOrder ? $lastOrder + 1 : 00000; 
 
         $codigo = str_pad($newOrder, 8, '0', STR_PAD_LEFT);
         $monto = $request->litros * $request->precio; 
