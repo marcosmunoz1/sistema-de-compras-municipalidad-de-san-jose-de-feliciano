@@ -60,6 +60,11 @@ class User extends Authenticatable
       return $this->hasMany(combustible::class);
     }
 
+    public function compras()
+    {
+      return $this->hasMany(Compra::class);
+    }
+
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()

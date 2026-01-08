@@ -275,10 +275,12 @@
                     @endif
                 </div>
             </div>
+        </div>
+    </div>
 
-            <!-- Historial de Actividad -->
-            <x-historial-actividad :model="$usuario" :limit="10" />
-        @endsection
+    <!-- Historial de Actividad -->
+    <x-historial-actividad :model="$usuario" :limit="10" />
+@endsection
 
-        @section('js')
-        @endsection
+@section('js')
+@endsection

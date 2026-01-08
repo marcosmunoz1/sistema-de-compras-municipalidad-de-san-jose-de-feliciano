@@ -64,6 +64,8 @@
 
     <form action="{{ route('compras.store') }}" method="POST">
         @csrf
+        
+        <input type="hidden" name="user_id" value="{{ auth()->id() }}">
 
         <div data-slot="card" class="card bg-base-100 shadow-xl p-4">
             <div data-slot="card-header"

@@ -319,11 +319,17 @@
 
                     <div class="form-control">
                         <label class="label"><span class="label-text">Contraseña</span></label>
-                        <input type="password" name="password"
+                        <input type="password" name="password" id="password"
                             class="w-full h-10 rounded-md border border-base-300 
                             bg-base-200 px-3 text-sm focus:outline-none focus:ring-2 
                             focus:ring-primary focus:border-primary transition"
                             required>
+                        <button type="button"
+                            class="mt-2 text-sm text-primary hover:underline"
+                            onclick="togglePassword()">
+                            Mostrar contraseñas
+                        </button>
+
                         @error('password')
                             <small class="text-red-500">{{ $message }}</small>
                         @enderror
@@ -331,7 +337,7 @@
 
                     <div class="form-control">
                         <label class="label"><span class="label-text">Confirmar contraseña</span></label>
-                        <input type="password" name="password_confirmation"
+                        <input type="password" name="password_confirmation" id="password_confirmation"
                             class="w-full h-10 rounded-md border border-base-300 
                             bg-base-200 px-3 text-sm focus:outline-none focus:ring-2 
                             focus:ring-primary focus:border-primary transition"
@@ -445,4 +451,16 @@
             modal_restaurar_usuario.showModal();
         }
     </script>
+    <script>
+        function togglePassword() {
+            const password = document.getElementById('password');
+            const confirm = document.getElementById('password_confirmation');
+
+            const type = password.type === 'password' ? 'text' : 'password';
+
+            password.type = type;
+            confirm.type = type;
+        }
+    </script>
+
 @endsection
