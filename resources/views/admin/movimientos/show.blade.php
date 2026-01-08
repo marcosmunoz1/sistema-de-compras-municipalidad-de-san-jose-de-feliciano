@@ -116,7 +116,7 @@
 
                             {{-- Cantidad original (desde la compra asociada al movimiento) --}}
                             <td class="text-center">
-                                {{ $detalle->producto->detalle_compras()->sum('cantidad') ?? 'N/A' }}
+                                {{ $detalle->detalle_compra->cantidad ?? 'N/A' }}
                             </td>
 
                             {{-- Cantidad movida --}}
