@@ -242,7 +242,7 @@
                 <i class="fas fa-file-alt"></i> Crear Nuevo Usuario
             </h3>
 
-            <form action="{{ url('/admin/usuarios/store') }}" method="POST" class="mt-4">
+            <form action="{{ url('/admin/usuarios/store') }}" method="POST" class="mt-4" enctype="multipart/form-data">
                 @csrf
 
                 <!-- Primera fila -->
@@ -293,6 +293,26 @@
                         <small class="text-red-500">{{ $message }}</small>
                     @enderror
                 </div>
+
+                <!-- Firma -->
+                <div class="form-control mt-4">
+                    <label class="label">
+                        <span class="label-text">Firma</span>
+                    </label>
+
+                    <input type="file" name="firma" accept="image/*"
+                        class="file-input file-input-bordered w-full bg-base-200
+                            focus:outline-none focus:ring-2 focus:ring-primary transition">
+
+                    <small class="text-xs text-gray-500 mt-1">
+                        Formatos permitidos: JPG, PNG. Tamaño recomendado: firma escaneada.
+                    </small>
+
+                    @error('firma')
+                        <small class="text-red-500">{{ $message }}</small>
+                    @enderror
+                </div>
+
 
                 <!-- Contraseñas -->
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use Illuminate\Support\Facades\Storage;
 use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
@@ -36,9 +37,6 @@ class UserController extends Controller
                 // Campos de texto básicos
                 $query->where('name', 'LIKE', "%{$search}%")
                     ->orWhere('email', 'LIKE', "%{$search}%");
-
-                // Si tenés DNI en la tabla, te queda listo:
-                // $query->orWhere('dni', 'LIKE', "%{$search}%");
 
                 // Búsqueda por rol
                 $query->orWhereHas('roles', function ($q) use ($search) {
@@ -79,6 +77,7 @@ class UserController extends Controller
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8|confirmed',
             'role' => 'required|string|exists:roles,name',
+            'firma' => 'nullable|image|mimes:jpg,jpeg,png|max:4096',
         ], [
             'name.required' => 'El nombre es obligatorio.',
             'name.string' => 'El nombre debe ser un texto válido.',
@@ -98,13 +97,24 @@ class UserController extends Controller
             'role.required' => 'Debe seleccionar un rol.',
             'role.string' => 'El rol enviado no es válido.',
             'role.exists' => 'El rol seleccionado no existe en el sistema.',
+
+            'firma.image' => 'La firma debe ser una imagen.',
+            'firma.mimes' => 'La firma debe ser un archivo JPG o PNG.',
+            'firma.max'   => 'La firma no puede superar los 4 MB.',
+
         ]);
 
+        $firmaPath = null;
+
+        if ($request->hasFile('firma')) {
+            $firmaPath = $request->file('firma')->store('firmas', 'public');
+        }
 
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => bcrypt($request->password),
+            'firma' => $firmaPath,
         ]);
 
         $user->assignRole($request->role);
@@ -174,6 +184,7 @@ class UserController extends Controller
             'email' => 'required|string|email|max:255|unique:users,email,' . $request->id,
             'password' => 'nullable|string|min:8|confirmed',
             'role' => 'required|string|exists:roles,name',
+            'firma' => 'nullable|image|mimes:jpg,jpeg,png|max:4096',
         ], [
             'name.required' => 'El nombre es obligatorio.',
             'name.string' => 'El nombre debe ser un texto válido.',
@@ -192,10 +203,29 @@ class UserController extends Controller
             'role.required' => 'Debe seleccionar un rol.',
             'role.string' => 'El rol enviado no es válido.',
             'role.exists' => 'El rol seleccionado no existe en el sistema.',
+
+            'firma.image' => 'La firma debe ser una imagen.',
+            'firma.mimes' => 'La firma debe ser un archivo JPG o PNG.',
+            'firma.max'   => 'La firma no puede superar los 4 MB.',
         ]);
 
 
         $user = User::findOrFail($id);
+
+        /* ======================
+        MANEJO DE FIRMA
+        ====================== */
+        if ($request->hasFile('firma')) {
+
+            // Borrar firma anterior si existe
+            if ($user->firma && Storage::disk('public')->exists($user->firma)) {
+                Storage::disk('public')->delete($user->firma);
+            }
+
+            // Guardar nueva firma
+            $user->firma = $request->file('firma')->store('firmas', 'public');
+        }
+
         $user->name = $request->name;
         $user->email = $request->email;
         if ($request->filled('password')) {

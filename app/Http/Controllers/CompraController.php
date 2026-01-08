@@ -98,8 +98,7 @@ class CompraController extends Controller
         $proveedores = Proveedor::withTrashed()->orderBy('id', 'desc')->get();
         $empleados = Empleado::withTrashed()->orderBy('id', 'desc')->get();
         $search = $request->input('search'); 
-        $productos = Producto::with('categoria')->orderBy('id', 'desc')->get(); 
-        return view('admin.compras.create', compact('proveedores', 'empleados', 'categorias', 'productos'));
+        return view('admin.compras.create', compact('proveedores', 'empleados', 'categorias'));
     }
 
     /**
