@@ -117,7 +117,7 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        $usuario = User::with('roles')->findOrFail($id);
+        $usuario = User::with(['roles', 'permissions'])->findOrFail($id);
         return view('admin.usuarios.show', compact('usuario'));
     }
 
