@@ -68,6 +68,8 @@ Route::put('admin/categorias/{id}/restore', [App\Http\Controllers\CategoriaContr
 // rutas para productos
 Route::get('/admin/productos', [ App\Http\Controllers\ProductoController::class, 'index'])->name('productos.index')->middleware('auth', 'can:productos-index');
 Route::post('/admin/productos/store', [ App\Http\Controllers\ProductoController::class, 'store'])->name('productos.store')->middleware('auth', 'can:productos-store');
+// ruta AJAX para listar productos
+Route::get('/admin/productos/ajax/listar', [App\Http\Controllers\ProductoController::class, 'listarAjax'])->name('productos.ajax.listar');
 
 
 // ESTA VA PRIMERO
