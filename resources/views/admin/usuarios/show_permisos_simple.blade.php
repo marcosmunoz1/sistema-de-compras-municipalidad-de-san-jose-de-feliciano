@@ -70,58 +70,15 @@
         <div class="card-body p-4">
 
             <div class="overflow-x-auto">
-                <div class="max-w-4xl mx-auto p-6">
-
+                <div class="max-w-3xl mx-auto p-6">
                     <h2 class="text-2xl font-bold flex items-center gap-2 mb-6">
                         <i class="fas fa-user"></i> Detalles del Usuario
                     </h2>
 
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="card bg-base-100 shadow-md p-6">
 
-                        <!-- DATOS DEL USUARIO -->
-                        <div class="md:col-span-2">
-                            <div class="card bg-base-100 shadow-md p-6">
-
-                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-
-                                    <div class="form-control">
-                                        <label class="label">
-                                            <span class="label-text font-semibold">Nombre de Usuario</span>
-                                        </label>
-                                        <input type="text" class="input input-bordered w-full"
-                                            value="{{ $usuario->name }}" readonly>
-                                    </div>
-
-                                    <div class="form-control">
-                                        <label class="label">
-                                            <span class="label-text font-semibold">Rol</span>
-                                        </label>
-                                        <input type="text" class="input input-bordered w-full"
-                                            value="{{ $usuario->roles->first()->name ?? 'Sin rol' }}" readonly>
-                                    </div>
-
-                                </div>
-
-                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-
-                                    <div class="form-control">
-                                        <label class="label">
-                                            <span class="label-text font-semibold">Correo</span>
-                                        </label>
-                                        <input type="email" class="input input-bordered w-full"
-                                            value="{{ $usuario->email }}" readonly>
-                                    </div>
-
-                                    <div class="form-control">
-                                        <label class="label">
-                                            <span class="label-text font-semibold">Último inicio de sesión</span>
-                                        </label>
-                                        <input type="text" class="input input-bordered w-full"
-                                            value="{{ $usuario->last_login_at ? \Carbon\Carbon::parse($usuario->last_login_at)->format('d/m/Y H:i') : 'Nunca' }}"
-                                            readonly>
-                                    </div>
-
-                                </div>
+                        <!-- Primera fila -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
 
                             <div class="form-control">
                                 <label class="label"><span class="label-text font-semibold">Nombre de
@@ -141,34 +98,8 @@
 
                         </div>
 
-                        <!-- FIRMA -->
-                        <div>
-                            <div class="card bg-base-100 shadow-md p-6 h-full flex flex-col">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
 
-                                <h3 class="text-lg font-semibold flex items-center gap-2 mb-4">
-                                    <i class="fas fa-pen-nib"></i> Firma
-                                </h3>
-
-                                @if ($usuario->firma)
-                                    <div
-                                        class="flex items-center justify-center border-2 border-dashed 
-                                    border-base-300 rounded-lg p-4 bg-base-200 flex-1">
-
-                                        <img src="{{ asset('storage/' . $usuario->firma) }}" alt="Firma del usuario"
-                                            class="max-h-40 object-contain">
-                                    </div>
-                                @else
-                                    <div
-                                        class="flex items-center justify-center border-2 border-dashed 
-                                    border-base-300 rounded-lg p-4 bg-base-200 text-gray-400 flex-1">
-
-                                        <span>Este usuario no tiene firma cargada</span>
-                                    </div>
-                                @endif
-
-<<<<<<< HEAD
-                            </div>
-=======
                             <!-- Email -->
                             <div class="form-control">
                                 <label class="label"><span class="label-text font-semibold">Correo</span></label>
@@ -189,14 +120,12 @@
                             </div>
 
 
->>>>>>> b39c16ddf5b5126f3d05de2398b807031268ea0d
                         </div>
 
                     </div>
-
                 </div>
-            </div>
 
+            </div>
         </div>
     </div>
 

@@ -149,7 +149,7 @@
                 <tbody>
                     @foreach ($backups as $index => $backup)
                         <tr>
-                            <td class="text-center">{{ $index + 1 }}</td>
+                            <td class="text-center">{{ ($backups->currentPage() - 1) * $backups->perPage() + $index + 1 }}</td>
                             <td class="text-center">
                                 <div class="flex items-center justify-center gap-2">
                                     <x-heroicon-o-archive-box class="w-5 h-5 text-primary"/>
@@ -203,6 +203,10 @@
                     @endforeach
                 </tbody>
             </table>
+        </div>
+        
+        <div class="mt-4">
+            {{ $backups->links() }}
         </div>
         
         @else

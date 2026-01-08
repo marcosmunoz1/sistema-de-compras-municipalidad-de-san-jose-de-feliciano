@@ -13,8 +13,20 @@ class BackupController extends Controller
 {
     public function index()
     {
-        $backups = $this->getBackupsList();
-        $stats = $this->getBackupStats($backups);
+        $allBackups = $this->getBackupsList();
+        $stats = $this->getBackupStats($allBackups);
+        
+        $perPage = 10;
+        $currentPage = request()->get('page', 1);
+        $offset = ($currentPage - 1) * $perPage;
+        
+        $backups = new \Illuminate\Pagination\LengthAwarePaginator(
+            array_slice($allBackups, $offset, $perPage),
+            count($allBackups),
+            $perPage,
+            $currentPage,
+            ['path' => request()->url(), 'query' => request()->query()]
+        );
         
         return view('admin.backups.index', compact('backups', 'stats'));
     }

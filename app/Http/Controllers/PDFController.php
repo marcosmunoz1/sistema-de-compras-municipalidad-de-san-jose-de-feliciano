@@ -51,4 +51,37 @@ class PDFController extends Controller
        $pdf = PDF::loadView('pdf.orden-carga', compact('combustible'));
        return $pdf->download('orden_carga_' . $combustible->codigo . '.pdf');
    }
+
+   public function previewReporteCompras()
+   {
+       $compras = Compra::with(['proveedor', 'empleado', 'destino', 'detalle_compras'])
+           ->orderBy('fecha_orden', 'desc')
+           ->get();
+       
+       $pdf = PDF::loadView('pdf.reporte-compras', compact('compras'))
+           ->setPaper('a4', 'landscape');
+       
+       return $pdf->stream('reporte_compras_' . now()->format('Y-m-d') . '.pdf');
+   }
+
+   public function htmlReporteCompras()
+   {
+       $compras = Compra::with(['proveedor', 'empleado', 'destino', 'detalle_compras'])
+           ->orderBy('fecha_orden', 'desc')
+           ->get();
+       
+       return view('pdf.reporte-compras', compact('compras'));
+   }
+
+   public function downloadReporteCompras()
+   {
+       $compras = Compra::with(['proveedor', 'empleado', 'destino', 'detalle_compras'])
+           ->orderBy('fecha_orden', 'desc')
+           ->get();
+       
+       $pdf = PDF::loadView('pdf.reporte-compras', compact('compras'))
+           ->setPaper('a4', 'landscape');
+       
+       return $pdf->download('reporte_compras_' . now()->format('Y-m-d') . '.pdf');
+   }
 }

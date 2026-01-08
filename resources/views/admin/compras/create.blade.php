@@ -241,8 +241,26 @@
                             @error('destino_id')
                                 <small class="text-red-500">{{ $message }}</small>
                             @enderror
-                        </div>
-                    </div>
+                        </div> 
+                    </div> 
+                     <!-- CARD DATOS DEL DESTINO OCULTO  -->   
+                        <div id="destino_info" class="hidden card bg-gradient-to-br from-base-100 to-base-200 shadow-xl mt-6 border border-base-300">  
+                            <div class="card-body p-6">
+                                <div class="flex items-center gap-3 mb-4 pb-3 border-b border-base-300">
+                                    <div id="destino_info_icono" class="p-2 rounded-lg bg-primary/10">
+                                        <!-- Icono dinámico -->
+                                    </div>
+                                    <div>
+                                        <h3 class="font-semibold text-lg" id="destino_info_titulo">Información del Destino</h3>
+                                        <p class="text-xs text-muted-foreground" id="destino_info_subtitulo">Detalles del destino seleccionado</p>
+                                    </div>
+                                </div>
+
+                                <div id="destino_info_contenido" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                                    <!-- Contenido dinámico generado por JavaScript -->
+                                </div>
+                            </div>
+                        </div> 
                     <div class="grid grid-cols-1 gap-4">
                         <div class="space-y-2">
                             <label for="asunto_obra_automotor" class="text-sm font-medium">Asunto de la compra<span
@@ -1574,6 +1592,13 @@
                                 'Elemento seleccionado');
                         }
 
+                        // Mostrar información del destino seleccionado
+                        const tipoSeleccionado = destinoTipoSelect ? destinoTipoSelect.value : null;
+                        const tipoShort = tipoShortDesdeClase(tipoSeleccionado);
+                        if (tipoShort && typeof mostrarInfoDestino === 'function') {
+                            mostrarInfoDestino(dest, tipoShort);
+                        }
+
                         const modalCheckbox = document.getElementById('modal_elegir_destino');
                         if (modalCheckbox) modalCheckbox.checked = false;
                     });
@@ -1892,6 +1917,291 @@
                 });
             }
         });
+
+        // Función para mostrar información del destino
+        function mostrarInfoDestino(dest, tipo) {
+            const infoCard = document.getElementById('destino_info');
+            const infoTitulo = document.getElementById('destino_info_titulo');
+            const infoSubtitulo = document.getElementById('destino_info_subtitulo');
+            const infoIcono = document.getElementById('destino_info_icono');
+            const infoContenido = document.getElementById('destino_info_contenido');
+
+            if (!dest || !tipo) {
+                infoCard.classList.add('hidden');
+                return;
+            }
+
+            let htmlContent = '';
+            let titulo = '';
+            let subtitulo = '';
+            let icono = '';
+
+            if (tipo === 'vehiculo') {
+                titulo = 'Información del Vehículo';
+                subtitulo = 'Datos del vehículo seleccionado como destino';
+                icono = `
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" 
+                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" 
+                         stroke-linejoin="round" class="text-primary">
+                        <path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2"></path>
+                        <circle cx="7" cy="17" r="2"></circle>
+                        <path d="M9 17h6"></path>
+                        <circle cx="17" cy="17" r="2"></circle>
+                    </svg>
+                `;
+                htmlContent = `
+                    <div class="bg-base-100 p-3 rounded-lg border border-base-300 hover:shadow-md transition-shadow">
+                        <div class="flex items-center gap-2 mb-1">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-primary">
+                                <rect width="18" height="12" x="3" y="4" rx="2" ry="2"></rect>
+                                <line x1="2" x2="22" y1="20" y2="20"></line>
+                            </svg>
+                            <span class="text-xs text-muted-foreground font-medium">Patente</span>
+                        </div>
+                        <p class="font-semibold text-sm">${dest.patente || '-'}</p>
+                    </div>
+                    <div class="bg-base-100 p-3 rounded-lg border border-base-300 hover:shadow-md transition-shadow">
+                        <div class="flex items-center gap-2 mb-1">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-primary">
+                                <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                            </svg>
+                            <span class="text-xs text-muted-foreground font-medium">Marca/Modelo</span>
+                        </div>
+                        <p class="font-semibold text-sm">${dest.marca || '-'} ${dest.modelo || '-'}</p>
+                    </div>
+                    <div class="bg-base-100 p-3 rounded-lg border border-base-300 hover:shadow-md transition-shadow">
+                        <div class="flex items-center gap-2 mb-1">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-primary">
+                                <rect width="18" height="18" x="3" y="4" rx="2" ry="2"></rect>
+                                <line x1="16" x2="16" y1="2" y2="6"></line>
+                                <line x1="8" x2="8" y1="2" y2="6"></line>
+                                <line x1="3" x2="21" y1="10" y2="10"></line>
+                            </svg>
+                            <span class="text-xs text-muted-foreground font-medium">Año</span>
+                        </div>
+                        <p class="font-semibold text-sm">${dest.anio || '-'}</p>
+                    </div>
+                    <div class="bg-base-100 p-3 rounded-lg border border-base-300 hover:shadow-md transition-shadow">
+                        <div class="flex items-center gap-2 mb-1">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-primary">
+                                <path d="M3 3v18h18"></path>
+                                <path d="m19 9-5 5-4-4-3 3"></path>
+                            </svg>
+                            <span class="text-xs text-muted-foreground font-medium">Tipo</span>
+                        </div>
+                        <p class="font-semibold text-sm">${dest.tipo || '-'}</p>
+                    </div>
+                    <div class="bg-base-100 p-3 rounded-lg border border-base-300 hover:shadow-md transition-shadow">
+                        <div class="flex items-center gap-2 mb-1">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-primary">
+                                <path d="M12 2a10 10 0 1 0 10 10 4 4 0 0 1-5-5 4 4 0 0 1-5-5"></path>
+                                <path d="M8.5 8.5v.01"></path>
+                                <path d="M16 15.5v.01"></path>
+                                <path d="M12 12v.01"></path>
+                                <path d="M11 17v.01"></path>
+                                <path d="M7 14v.01"></path>
+                            </svg>
+                            <span class="text-xs text-muted-foreground font-medium">Color</span>
+                        </div>
+                        <p class="font-semibold text-sm">${dest.color || '-'}</p>
+                    </div>
+                    <div class="bg-base-100 p-3 rounded-lg border border-base-300 hover:shadow-md transition-shadow">
+                        <div class="flex items-center gap-2 mb-1">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-primary">
+                                <path d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z"></path>
+                            </svg>
+                            <span class="text-xs text-muted-foreground font-medium">Catalogación</span>
+                        </div>
+                        <p class="font-semibold text-sm">${dest.catalogacion || '-'}</p>
+                    </div>
+                `;
+            } else if (tipo === 'equipo') {
+                titulo = 'Información del Equipo';
+                subtitulo = 'Datos del equipo seleccionado como destino';
+                icono = `
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" 
+                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" 
+                         stroke-linejoin="round" class="text-primary">
+                        <path d="M3 9h18v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9Z"></path>
+                        <path d="m3 9 2.45-4.9A2 2 0 0 1 7.24 3h9.52a2 2 0 0 1 1.8 1.1L21 9"></path>
+                        <path d="M12 3v6"></path>
+                    </svg>
+                `;
+                htmlContent = `
+                    <div class="bg-base-100 p-3 rounded-lg border border-base-300 hover:shadow-md transition-shadow">
+                        <div class="flex items-center gap-2 mb-1">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-primary">
+                                <path d="M3 9h18v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9Z"></path>
+                                <path d="m3 9 2.45-4.9A2 2 0 0 1 7.24 3h9.52a2 2 0 0 1 1.8 1.1L21 9"></path>
+                            </svg>
+                            <span class="text-xs text-muted-foreground font-medium">Equipamiento</span>
+                        </div>
+                        <p class="font-semibold text-sm">${dest.equipamiento || '-'}</p>
+                    </div>
+                    <div class="bg-base-100 p-3 rounded-lg border border-base-300 hover:shadow-md transition-shadow">
+                        <div class="flex items-center gap-2 mb-1">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-primary">
+                                <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                            </svg>
+                            <span class="text-xs text-muted-foreground font-medium">Marca</span>
+                        </div>
+                        <p class="font-semibold text-sm">${dest.marca || '-'}</p>
+                    </div>
+                    <div class="bg-base-100 p-3 rounded-lg border border-base-300 hover:shadow-md transition-shadow">
+                        <div class="flex items-center gap-2 mb-1">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-primary">
+                                <path d="M4 7V4h16v3"></path>
+                                <path d="M5 20h6"></path>
+                                <path d="M13 4 8 20"></path>
+                                <path d="m15 15 5 5"></path>
+                                <path d="m20 15-5 5"></path>
+                            </svg>
+                            <span class="text-xs text-muted-foreground font-medium">Descripción</span>
+                        </div>
+                        <p class="font-semibold text-sm">${dest.descripcion || '-'}</p>
+                    </div>
+                    <div class="bg-base-100 p-3 rounded-lg border border-base-300 hover:shadow-md transition-shadow">
+                        <div class="flex items-center gap-2 mb-1">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-primary">
+                                <path d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z"></path>
+                            </svg>
+                            <span class="text-xs text-muted-foreground font-medium">Catalogación</span>
+                        </div>
+                        <p class="font-semibold text-sm">${dest.catalogacion || '-'}</p>
+                    </div>
+                `;
+            } else if (tipo === 'obra') {
+                titulo = 'Información de la Obra';
+                subtitulo = 'Datos de la obra seleccionada como destino';
+                icono = `
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" 
+                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" 
+                         stroke-linejoin="round" class="text-primary">
+                        <rect width="16" height="20" x="4" y="2" rx="2" ry="2"></rect>
+                        <path d="M9 22v-4h6v4"></path>
+                        <path d="M8 6h.01"></path>
+                        <path d="M16 6h.01"></path>
+                        <path d="M12 6h.01"></path>
+                        <path d="M12 10h.01"></path>
+                        <path d="M12 14h.01"></path>
+                        <path d="M16 10h.01"></path>
+                        <path d="M16 14h.01"></path>
+                        <path d="M8 10h.01"></path>
+                        <path d="M8 14h.01"></path>
+                    </svg>
+                `;
+                htmlContent = `
+                    <div class="bg-base-100 p-3 rounded-lg border border-base-300 hover:shadow-md transition-shadow">
+                        <div class="flex items-center gap-2 mb-1">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-primary">
+                                <path d="M4 7V4h16v3"></path>
+                                <path d="M5 20h6"></path>
+                                <path d="M13 4 8 20"></path>
+                            </svg>
+                            <span class="text-xs text-muted-foreground font-medium">Nombre</span>
+                        </div>
+                        <p class="font-semibold text-sm">${dest.nombre || '-'}</p>
+                    </div>
+                    <div class="bg-base-100 p-3 rounded-lg border border-base-300 hover:shadow-md transition-shadow">
+                        <div class="flex items-center gap-2 mb-1">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-primary">
+                                <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"></path>
+                                <circle cx="12" cy="10" r="3"></circle>
+                            </svg>
+                            <span class="text-xs text-muted-foreground font-medium">Dirección</span>
+                        </div>
+                        <p class="font-semibold text-sm">${dest.direccion || '-'}</p>
+                    </div>
+                    <div class="bg-base-100 p-3 rounded-lg border border-base-300 hover:shadow-md transition-shadow">
+                        <div class="flex items-center gap-2 mb-1">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-primary">
+                                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                                <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                            </svg>
+                            <span class="text-xs text-muted-foreground font-medium">Barrio</span>
+                        </div>
+                        <p class="font-semibold text-sm">${dest.barrio || '-'}</p>
+                    </div>
+                    <div class="bg-base-100 p-3 rounded-lg border border-base-300 hover:shadow-md transition-shadow">
+                        <div class="flex items-center gap-2 mb-1">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-primary">
+                                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="9" cy="7" r="4"></circle>
+                                <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
+                                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                            </svg>
+                            <span class="text-xs text-muted-foreground font-medium">Responsable</span>
+                        </div>
+                        <p class="font-semibold text-sm">${dest.responsable || '-'}</p>
+                    </div>
+                    <div class="bg-base-100 p-3 rounded-lg border border-base-300 hover:shadow-md transition-shadow">
+                        <div class="flex items-center gap-2 mb-1">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-primary">
+                                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="9" cy="7" r="4"></circle>
+                            </svg>
+                            <span class="text-xs text-muted-foreground font-medium">Ejecutado por</span>
+                        </div>
+                        <p class="font-semibold text-sm">${dest.ejecutado_por || '-'}</p>
+                    </div>
+                `;
+            } else if (tipo === 'deposito') {
+                titulo = 'Información del Depósito';
+                subtitulo = 'Datos del depósito seleccionado como destino';
+                icono = `
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" 
+                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" 
+                         stroke-linejoin="round" class="text-primary">
+                        <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                        <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                    </svg>
+                `;
+                htmlContent = `
+                    <div class="bg-base-100 p-3 rounded-lg border border-base-300 hover:shadow-md transition-shadow">
+                        <div class="flex items-center gap-2 mb-1">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-primary">
+                                <path d="M4 7V4h16v3"></path>
+                                <path d="M5 20h6"></path>
+                                <path d="M13 4 8 20"></path>
+                            </svg>
+                            <span class="text-xs text-muted-foreground font-medium">Nombre</span>
+                        </div>
+                        <p class="font-semibold text-sm">${dest.nombre || '-'}</p>
+                    </div>
+                    <div class="bg-base-100 p-3 rounded-lg border border-base-300 hover:shadow-md transition-shadow">
+                        <div class="flex items-center gap-2 mb-1">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-primary">
+                                <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"></path>
+                                <circle cx="12" cy="10" r="3"></circle>
+                            </svg>
+                            <span class="text-xs text-muted-foreground font-medium">Dirección</span>
+                        </div>
+                        <p class="font-semibold text-sm">${dest.direccion || '-'}</p>
+                    </div>
+                    <div class="bg-base-100 p-3 rounded-lg border border-base-300 hover:shadow-md transition-shadow">
+                        <div class="flex items-center gap-2 mb-1">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-primary">
+                                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="9" cy="7" r="4"></circle>
+                                <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
+                                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                            </svg>
+                            <span class="text-xs text-muted-foreground font-medium">Responsable</span>
+                        </div>
+                        <p class="font-semibold text-sm">${dest.responsable || '-'}</p>
+                    </div>
+                `;
+            }
+
+            // Actualizar contenido
+            infoTitulo.textContent = titulo;
+            infoSubtitulo.textContent = subtitulo;
+            infoIcono.innerHTML = icono;
+            infoContenido.innerHTML = htmlContent;
+
+            // Mostrar la card
+            infoCard.classList.remove('hidden');
+        }
     </script>
 
 @endsection

@@ -17,7 +17,7 @@ class RoleController extends Controller
     {
         $contador = 1;
 
-        $roles = Role::query()->orderBy('id', 'desc')
+        $roles = Role::with('permissions')->orderBy('id', 'desc')
             ->when(!auth()->user()->hasRole('Super-Admin'), function ($query) {
                 $query->where('name', '!=', 'Super-Admin');
             })

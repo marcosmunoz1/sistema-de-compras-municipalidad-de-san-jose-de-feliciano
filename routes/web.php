@@ -23,6 +23,9 @@ Route::get('/admin', [App\Http\Controllers\AdminController::class, 'index'])->na
 //Rutas para compras
 Route::get('/admin/compras', [App\Http\Controllers\CompraController::class, 'index'])->name('compras.index')->middleware('auth' , 'can:compras-index'); 
 Route::get('/admin/compras/create', [App\Http\Controllers\CompraController::class, 'create'])->name('compras.create')->middleware('auth','can:compras-create');
+Route::get('/admin/compras/reporte/preview', [App\Http\Controllers\PDFController::class, 'previewReporteCompras'])->name('compras.reporte.preview')->middleware('auth', 'can:compras-index');
+Route::get('/admin/compras/reporte/html', [App\Http\Controllers\PDFController::class, 'htmlReporteCompras'])->name('compras.reporte.html')->middleware('auth', 'can:compras-index');
+Route::get('/admin/compras/reporte/download', [App\Http\Controllers\PDFController::class, 'downloadReporteCompras'])->name('compras.reporte.download')->middleware('auth', 'can:compras-index');
 Route::post('/admin/compras/store', [App\Http\Controllers\CompraController::class, 'store'])->name('compras.store')->middleware('auth', 'can:compras-store'); 
 Route::get('/admin/compras/{id}/edit', [App\Http\Controllers\CompraController::class, 'edit'])->name('compras.edit')->middleware('auth', 'can:compras-edit');
 Route::get('/admin/compras/{id}/report', [App\Http\Controllers\PDFController::class, 'PdfOrdenCompra'])->name('compras.report')->middleware('auth', 'can:compras-report');

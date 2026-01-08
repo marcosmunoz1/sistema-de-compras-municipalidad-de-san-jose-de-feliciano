@@ -32,11 +32,6 @@
                     <!-- Header del card con número -->
                     <div class="flex items-start justify-between mb-4">
                         <div class="flex items-center gap-3">
-                            <div class="avatar placeholder">
-                                <div class="bg-primary text-primary-content rounded-full w-12 h-12">
-                                    <span class="text-xl font-bold">{{ $index + 1 }}</span>
-                                </div>
-                            </div>
                             <div>
                                 <h2 class="card-title text-xl">{{ $deposito->nombre }}</h2>
                                 <div class="badge badge-primary badge-sm mt-1">Depósito</div>
