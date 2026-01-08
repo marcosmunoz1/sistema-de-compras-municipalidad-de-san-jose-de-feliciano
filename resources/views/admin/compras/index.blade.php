@@ -124,18 +124,19 @@
         <div class="card-body p-4">
             <!-- HEADER COMPLETO -->
             <div class="flex flex-col gap-3">
-                <!-- TÍTULO + BUSCADOR -->
+                <!-- TÍTULO + BOTÓN REPORTE -->
                 <div class="flex items-center justify-between">
                     <h4 class="text-lg font-semibold">Historial de Compras</h4>
-                    <!-- BUSCADOR -->
-                    <div class="relative">
-                        <!-- BOTÓN IMPRIMIR -->
-                        {{-- <div class="flex justify-start">
-                            <button onclick="window.print()" class="btn btn-outline btn-sm">
-                                <x-heroicon-o-printer class="w-4 h-4 mr-2" />
-                                Imprimir Historial
-                            </button>
-                        </div> --}}
+                    <!-- BOTÓN REPORTE -->
+                    <div class="flex gap-2">
+                        <x-boton-reporte 
+                            titulo="Generar Reporte"
+                            modalId="modal_reporte_compras"
+                            previewUrl="{{ route('compras.reporte.html') }}"
+                            downloadUrl="{{ route('compras.reporte.download') }}"
+                            descripcion="Reporte completo de todas las compras"
+                            icono="document"
+                        />
                     </div>
                 </div>
             </div>
