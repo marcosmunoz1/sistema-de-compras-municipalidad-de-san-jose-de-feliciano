@@ -183,12 +183,9 @@ class ProductoController extends Controller
     {
         $productos = Producto::with('categoria')
             ->where('estado', true)
-            ->orderBy('nombre')
-            ->get();
+            ->orderBy('id', 'desc')->get(); 
 
         return response()->json($productos);
     }
-
-
 
 }
