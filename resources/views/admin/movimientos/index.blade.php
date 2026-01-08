@@ -29,6 +29,28 @@
         </li>
     </ul>
 </div>
+ <div class="grid grid-cols-1 md:grid-cols-3 pd-6 mb-6">
+
+        <!-- Card 1 -->
+        <div class="bg-base-100 shadow-xl bg-card text-card-foreground flex flex-col gap-6 rounded-xl mr-2">
+            <div class="px-6 pt-6 pb-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-gray-500">Total de Movimientos</p> 
+                        <h3 class="mt-2">{{ $movimientos->count() }}</h3>  
+                    </div>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="lucide lucide-arrow-right-left text-blue-600 w-10 h-10" aria-hidden="true">
+                        <path d="m16 3 4 4-4 4"></path>
+                        <path d="M20 7H4"></path>
+                        <path d="m8 21-4-4 4-4"></path>
+                        <path d="M4 17h16"></path>
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </div>  
 
 <!-- Buscador -->
 <form action="{{ route('movimientos.index') }}" method="GET">

@@ -17,18 +17,18 @@
         </div>
 
         <!-- Botones -->
-        <div class="flex gap-2">
+        <div class="flex gap-3">
             @can('equipos-index')
-            <a href="{{ route('vehiculos.index') }}"
-                class="inline-flex items-center gap-2 h-9 px-4 py-2 rounded-md bg-warning text-sm hover:bg-accent">
-                <x-heroicon-o-arrow-left class="w-4 h-4 inline" />
+            <a href="{{ route('equipos.index') }}"
+                class="btn inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-base-200 hover:bg-base-300 text-sm font-medium transition-colors border border-base-300">
+                <x-heroicon-o-arrow-left class="w-4 h-4" />
                 Volver a Equipos
             </a>
             @endcan
             @can('equipos-edit')
             <a href="{{ route('equipos.edit', $equipo->id) }}"
-                class="inline-flex items-center gap-2 h-9 px-4 py-2 rounded-md text-sm bg-blue-600 hover:bg-blue-700 text-white">
-                <x-heroicon-o-pencil class="w-4 h-4 inline" />
+                class="btn inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-warning hover:bg-yellow-500 text-warning-content text-sm font-medium transition-colors shadow-sm">
+                <x-heroicon-o-pencil class="w-4 h-4" />
                 Editar Equipo
             </a>
             @endcan
@@ -103,8 +103,10 @@
                     </label>
                     <input type="text" name="equipamiento" value="{{ $equipo->equipamiento }}"
                         placeholder="Ej: Computadora de escritorio"
-                        class="input input-bordered w-full @error('equipamiento') input-error @enderror" readonly>
-                </div>
+                        class="w-full h-10 rounded-md border border-base-300 bg-base-200 
+                        px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary
+                        focus:border-primary" readonly>
+                </div> 
 
                 <!-- Marca -->
                 <div class="form-control w-full">
@@ -113,7 +115,9 @@
                     </label>
                     <input type="text" name="marca" value="{{ $equipo->marca }}"
                         placeholder="Ej: HP, Dell, Lenovo, Samsung"
-                        class="input input-bordered w-full @error('marca') input-error @enderror" readonly>
+                        class="w-full h-10 rounded-md border border-base-300 bg-base-200 
+                        px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary
+                        focus:border-primary" readonly>
                 </div>
 
                 <!-- Catalogacion -->
@@ -123,7 +127,9 @@
                     </label>
                     <input type="text" name="catalogacion" value="{{ $equipo->catalogacion }}"
                         placeholder="Ej: HP, Dell, Lenovo, Samsung"
-                        class="input input-bordered w-full @error('catalogacion') input-error @enderror" readonly>
+                        class="w-full h-10 rounded-md border border-base-300 bg-base-200 
+                        px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary
+                        focus:border-primary" readonly>
                 </div>
 
                 <!-- Descripción -->
@@ -133,7 +139,8 @@
                     </label>
                     <textarea name="descripcion" rows="4"
                         placeholder="Detalles adicionales del equipo: modelo, características, número de serie, etc."
-                        class="textarea textarea-bordered w-full @error('descripcion') textarea-error @enderror">{{ $equipo->descripcion }}</textarea>
+                        class="textarea w-full rounded-md border border-base-300 bg-base-200 focus:outline-none focus:ring-2 focus:ring-primary 
+                        focus:border-primary transition">{{ $equipo->descripcion }}</textarea>
                 </div>
 
             </div>
@@ -142,7 +149,9 @@
     <div data-slot="card" class="card bg-base-100 shadow-xl p-4" id="tabla-productos">
         <h1 class="text-2xl font-semibold">Detalles de productos asignados al equipo</h1><br>
         <form method="GET" action="{{ route('equipos.show', $equipo->id) }}#tabla-productos">
-            <input type="text" name="search" value="{{ $search }}" class="input input-bordered"
+            <input type="text" name="search" value="{{ $search }}" class="w-60 h-10 rounded-md border border-base-300 bg-base-200 
+                        px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
+                        focus:border-primary transition"
                 placeholder="Buscar...">
             <!-- BOTÓN -->
             <button class="btn btn-primary">
