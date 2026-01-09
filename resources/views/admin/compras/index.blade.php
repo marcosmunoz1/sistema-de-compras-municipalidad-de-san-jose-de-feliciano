@@ -1,19 +1,16 @@
 @extends('layouts.admin')
 @section('title', 'Compras')
-@section('content')
-
+@section('content') 
     <div class="flex items-center justify-between mb-6">
-        <h1 class="text-2xl font-semibold">Compras</h1>
-
+        <h1 class="text-2xl font-semibold">Compras</h1> 
         {{-- Botón agregar compra --}}
         @can('compras-create')
             <a href="{{ route('compras.create') }}" class="btn btn-primary">
-                <x-heroicon-o-plus class="w-5 h-5"/> Nueva Compra
+                <x-heroicon-o-plus class="w-5 h-5"/> Nueva Compra 
             </a>
-        @endcan
-
+        @endcan 
     </div>
-    <div class="breadcrumbs text-sm mb-6">
+    <div class="breadcrumbs text-sm mb-6"> 
         <ul>
             <li>
                 <a href="{{ route('admin.index') }}">
@@ -79,7 +76,7 @@
                     <div>
                         <p class="text-gray-500">Pendiente/sin facturas</p>
                         <h3 class="mt-2">{{$pendientes}}</h3> 
-                    </div>
+                    </div> 
                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                         class="lucide lucide-shopping-cart text-red-600 w-10 h-10" aria-hidden="true">
@@ -122,27 +119,27 @@
     <!-- Tabla -->
     <div class="card bg-base-100 shadow">
         <div class="card-body p-4">
-            <!-- HEADER COMPLETO -->
+            <!-- HEADER COMPLETO --> 
             <div class="flex flex-col gap-3">
                 <!-- TÍTULO + BOTÓN REPORTE -->
-                <div class="flex items-center justify-between">
-                    <h4 class="text-lg font-semibold">Historial de Compras</h4>
-                    <!-- BOTÓN REPORTE -->
-                    <div class="flex gap-2">
-                        <x-boton-reporte 
-                            titulo="Generar Reporte"
-                            modalId="modal_reporte_compras"
-                            previewUrl="{{ route('compras.reporte.html') }}"
-                            downloadUrl="{{ route('compras.reporte.download') }}"
-                            descripcion="Reporte completo de todas las compras"
-                            icono="document"
-                        />
+                <div class="flex items-center justify-between"> 
+                    <h4 class="text-lg font-semibold">Historial de Compras</h4> 
+                    <!-- BOTÓN REPORTE --> 
+                    <div class="flex gap-2">    
+                        <x-boton-reporte   
+                            titulo="Generar Reporte"   
+                            modalId="modal_reporte_compras"   
+                            previewUrl="{{ route('compras.reporte.html') }}"   
+                            downloadUrl="{{ route('compras.reporte.download') }}"    
+                            descripcion="Reporte completo de todas las compras"    
+                            icono="document" 
+                        /> 
                     </div>
                 </div>
             </div>
-            <!-- TABLA -->
-            <div class="overflow-x-auto mt-4">
-                <table class="table table-zebra w-full">
+            <!-- TABLA --> 
+            <div class="overflow-x-auto mt-4"> 
+                <table class="table table-zebra w-full"> 
                     <thead>
                         <tr>
                             <th class="text-center">Nr orden</th>
@@ -304,9 +301,8 @@
 
                     </div>
                 </div>
-            @endif
-
-        </div>
+            @endif 
+        </div> 
     </div>
 
     <!-- Sección de Gráficos - Estadísticas -->
@@ -361,8 +357,8 @@
         </div>
     </div>
 
-    <!-- Modal para visualizar PDF -->
-    <dialog id="modalPDF" class="modal">
+    <!-- Modal para visualizar PDF --> 
+    <dialog id="modalPDF" class="modal"> 
         <div class="modal-box w-11/12 max-w-5xl h-[90vh] p-0 flex flex-col">
             <!-- Header del Modal -->
             <div class="flex items-center justify-between p-4 border-b">
