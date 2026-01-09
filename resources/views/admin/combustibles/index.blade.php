@@ -15,7 +15,7 @@
             @can('combustibles-create')
                 <a href="{{ route('combustibles.create') }}" class="btn btn-primary tooltip tooltip-primary tooltip-bottom mb-1"
                     data-tip="Crear orden de carga">
-                    + Nueva Carga
+                    <x-heroicon-o-plus class="w-5 h-5"/> Nueva Carga
                 </a>
             @endcan
         </div>

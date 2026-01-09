@@ -7,7 +7,7 @@
         <h1 class="text-2xl font-semibold">Proveedores</h1>
         @can('proveedores-create')
             <a href="{{ route('proveedores.create') }}" class="btn btn-primary">
-                + Nuevo Proveedor
+                <x-heroicon-o-plus class="w-5 h-5"/> Nuevo Proveedor
             </a>
         @endcan
     </div>

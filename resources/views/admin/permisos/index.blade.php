@@ -8,7 +8,7 @@
         @can('permisos-create')
         <button  onclick="abrir_modal('crearPermisoModal', 'Crear Nuevo Permiso', '1', ['name'], {})" 
            class="btn btn-primary tooltip tooltip-primary tooltip-bottom mb-1" data-tip="Crear un nuevo permiso">
-            + Nuevo permiso
+            <x-heroicon-o-plus class="w-5 h-5"/> Nuevo permiso
         </button> 
         @endcan
     </div>

@@ -8,7 +8,7 @@
         {{-- Botón agregar compra --}}
         @can('compras-create')
             <a href="{{ route('compras.create') }}" class="btn btn-primary">
-                + Nueva Compra
+                <x-heroicon-o-plus class="w-5 h-5"/> Nueva Compra
             </a>
         @endcan
 

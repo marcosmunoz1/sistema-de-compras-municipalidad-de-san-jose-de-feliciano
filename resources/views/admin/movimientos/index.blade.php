@@ -7,7 +7,7 @@
     <h1 class="text-2xl font-semibold">Movimientos</h1>
     @can('movimientos-create')
     <a href="{{ route('movimientos.create') }}" class="btn btn-primary">
-        + Nuevo Movimiento
+        <x-heroicon-o-plus class="w-5 h-5"/> Nuevo Movimiento
     </a>
     @endcan
 </div>

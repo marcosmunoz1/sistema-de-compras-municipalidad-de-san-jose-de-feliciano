@@ -8,7 +8,7 @@
     @can('empleados-create')
     <a href="{{ route('empleados.create') }}" 
        class="btn btn-primary">
-        + Nuevo Empleado
+        <x-heroicon-o-plus class="w-5 h-5"/> Nuevo Empleado
     </a>
     @endcan
  </div>
