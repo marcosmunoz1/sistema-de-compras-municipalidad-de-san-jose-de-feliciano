@@ -1,5 +1,5 @@
 @extends('layouts.admin')
-@section('title', 'Editar compra') 
+@section('title', 'Editar compra')
 
 @section('content')
     <!-- Titulo y boton -->
@@ -134,7 +134,7 @@
                         px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
                         focus:border-primary transition @error('destino_id') input-error @enderror"
                             disabled>
-                                <option value="">{{ $compra->destino_nombre }}</option>
+                            <option value="">{{ $compra->destino_nombre }}</option>
 
                         </select>
                     </div>
@@ -152,21 +152,20 @@
                 <div class="grid grid-cols-1 gap-4">
                     <div class="space-y-2">
                         <label for="observacion" class="text-sm font-medium">Observaciones</label>
-                        <textarea type="text" id="observacion" name="observacion"
-                            placeholder="Ingrese una justificacion breve de la compra"
+                        <textarea type="text" id="observacion" name="observacion" placeholder="Ingrese una justificacion breve de la compra"
                             class="textarea w-full rounded-md border border-base-300 bg-base-200 focus:outline-none focus:ring-2 focus:ring-primary 
                         focus:border-primary transition @error('observacion') input-error @enderror"
                             disabled>{{ $compra->observacion }}</textarea>
                     </div>
                 </div>
-                
+
 
             </div>
         </div>
     </div>
 
     <!-- Otra seccion -->
-    
+
     <form action="{{ route('compras.update', $compra->id) }}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('PUT')
@@ -176,7 +175,7 @@
                 <h4 class="text-1xl font-semibold">Datos de la compra</h4>
                 <p class="text-muted-foreground"></p>
             </div>
-            
+
             <div data-slot="card-content" class="px-6 [&:last-child]:pb-6">
                 <div class="grid gap-4">
                     <table class="table table-zebra w-full">
@@ -201,12 +200,9 @@
                                     <td class="text-center">
                                         <div class="flex items-center gap-1 justify-center">
                                             <span class="text-gray-600 select-none">$</span>
-                                            <input
-                                                type="text"
-                                                class="input input-info precio w-28"
+                                            <input type="text" class="input input-info precio w-28"
                                                 name="precios[{{ $detalle->id }}]"
-                                                value="{{ $detalle->precio !== null ? number_format($detalle->precio, 2, ',', '.') : '' }}"
-                                            >
+                                                value="{{ $detalle->precio !== null ? number_format($detalle->precio, 2, ',', '.') : '' }}">
                                         </div>
                                     </td>
 
@@ -250,12 +246,19 @@
                         </span>
                     </label>
 
-                    <input
-                        type="file"
-                        name="foto_factura"
-                        accept="image/*,application/pdf"
-                        class="file-input file-input-bordered file-input-primary w-full"
-                    />
+                    <input type="file" name="foto_factura" accept="image/*,application/pdf"
+                        class="file-input file-input-bordered file-input-primary w-full" />
+                    <div id="previewFactura" class="mt-3 hidden">
+                        <!-- Imagen -->
+                        <img id="previewImg" class="max-h-60 rounded-lg border border-base-300 hidden"
+                            alt="Preview factura">
+
+                        <!-- PDF -->
+                        <div id="previewPdf" class="flex items-center gap-2 p-3 border border-base-300 rounded-lg hidden">
+                            <i class="fas fa-file-pdf text-red-500 text-2xl"></i>
+                            <span id="previewPdfName" class="text-sm"></span>
+                        </div>
+                    </div>
 
                     <label class="label">
                         <span class="label-text-alt text-xs opacity-70">
@@ -286,141 +289,170 @@
     </form>
 @endsection
 @section('js')
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-    const form = document.querySelector('form'); // el form de edición
-    const precioInputs = document.querySelectorAll('input.precio');
-    const filas = document.querySelectorAll('tbody tr');
-    const totalInput = document.getElementById('total_compra');
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.querySelector('form'); // el form de edición
+            const precioInputs = document.querySelectorAll('input.precio');
+            const filas = document.querySelectorAll('tbody tr');
+            const totalInput = document.getElementById('total_compra');
 
-    function normalizarPrecio(valor) {
-        if (!valor) return 0;
-        let raw = valor.toString().replace(/[^0-9,\.]/g, ''); // solo dígitos/coma/punto
-        raw = raw.replace(/\./g, '');  // quita puntos de miles
-        raw = raw.replace(',', '.');   // coma decimal -> punto
-        const num = parseFloat(raw);
-        return isNaN(num) ? 0 : num;
-    }
-
-    function formatearPrecio(num) {
-        if (!num) return '';
-        const partes = Number(num).toFixed(2).split('.');
-        const entero = partes[0].replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-        const decimal = partes[1];
-        return `${entero},${decimal}`;
-    }
-
-    function calcularTotal() {
-        let total = 0;
-
-        filas.forEach(function(row) {
-            const precioInput = row.querySelector('.precio');
-            const cantidadInput = row.querySelector('.cantidad');
-            const subtotalInput = row.querySelector('.subtotal');
-
-            if (!precioInput || !cantidadInput || !subtotalInput) return;
-
-            const precio = normalizarPrecio(precioInput.value);
-            const cantidad = parseFloat(cantidadInput.value) || 0;
-            const subtotal = precio * cantidad;
-
-            subtotalInput.value = subtotal.toFixed(2);
-            total += subtotal;
-        });
-
-        if (totalInput) {
-            totalInput.value = total.toFixed(2);
-        }
-    }
-
-    precioInputs.forEach(input => {
-    // Inicial: formatear lo que viene del servidor
-    if (input.value) {
-        const n = normalizarPrecio(input.value);
-        input.value = formatearPrecio(n);
-    }
-
-    // Mientras escribís: NO formatear, solo recalcular
-   input.addEventListener('input', function () {
-        // quitar todo lo que no sea dígito
-        let digits = input.value.replace(/\D/g, '');
-
-        // eliminar ceros a la izquierda
-        digits = digits.replace(/^0+/, '');
-
-        // si no hay nada, limpiar y recalcular
-        if (!digits) {
-            input.value = '';
-            calcularTotal();
-            return;
-        }
-
-        let entero, centavos;
-
-        if (digits.length === 1) {
-            // 1 dígito → 0,0X
-            entero = '0';
-            centavos = digits.padStart(2, '0'); // '1' -> '01'
-        } else if (digits.length === 2) {
-            // 2 dígitos → 0,XY
-            entero = '0';
-            centavos = digits;
-        } else {
-            // 3+ dígitos: últimos 2 son centavos
-            entero = digits.slice(0, -2);
-            centavos = digits.slice(-2);
-        }
-
-        // formatear parte entera con puntos de miles
-        const enteroFormateado = entero.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-        input.value = `${enteroFormateado},${centavos}`;
-
-        // recalcular total usando el valor numérico
-        calcularTotal(); 
-    });
-
-    // Al salir del campo: ahí sí formateamos lindo
-      input.addEventListener('blur', function () {
-        if (!input.value.trim()) {
-            input.value = '';
-            calcularTotal();
-            return;
-        }
-
-        // normalizamos usando la máscara ya aplicada
-        const n = normalizarPrecio(input.value);  // "1.234,56" -> 1234.56
-        if (!n) {
-            input.value = '';
-        } else {
-            // volvemos a aplicar la máscara de moneda
-            let cents = Math.round(n * 100).toString();
-            while (cents.length < 3) {
-                cents = '0' + cents;
+            function normalizarPrecio(valor) {
+                if (!valor) return 0;
+                let raw = valor.toString().replace(/[^0-9,\.]/g, ''); // solo dígitos/coma/punto
+                raw = raw.replace(/\./g, ''); // quita puntos de miles
+                raw = raw.replace(',', '.'); // coma decimal -> punto
+                const num = parseFloat(raw);
+                return isNaN(num) ? 0 : num;
             }
-            const entero = cents.slice(0, -2);
-            const centavos = cents.slice(-2);
-            const enteroFormateado = entero.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-            input.value = `${enteroFormateado},${centavos}`;
-        }
 
-        calcularTotal();
-    });
-       });
-    });
+            function formatearPrecio(num) {
+                if (!num) return '';
+                const partes = Number(num).toFixed(2).split('.');
+                const entero = partes[0].replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+                const decimal = partes[1];
+                return `${entero},${decimal}`;
+            }
 
-    // Calcular total al cargar
-    calcularTotal();
+            function calcularTotal() {
+                let total = 0;
 
-    // Antes de enviar: pasar todo a "10000.00"
-    if (form) {
-        form.addEventListener('submit', function () {
+                filas.forEach(function(row) {
+                    const precioInput = row.querySelector('.precio');
+                    const cantidadInput = row.querySelector('.cantidad');
+                    const subtotalInput = row.querySelector('.subtotal');
+
+                    if (!precioInput || !cantidadInput || !subtotalInput) return;
+
+                    const precio = normalizarPrecio(precioInput.value);
+                    const cantidad = parseFloat(cantidadInput.value) || 0;
+                    const subtotal = precio * cantidad;
+
+                    subtotalInput.value = subtotal.toFixed(2);
+                    total += subtotal;
+                });
+
+                if (totalInput) {
+                    totalInput.value = total.toFixed(2);
+                }
+            }
+
             precioInputs.forEach(input => {
-                const n = normalizarPrecio(input.value);
-                input.value = n ? n.toFixed(2) : '';
+                // Inicial: formatear lo que viene del servidor
+                if (input.value) {
+                    const n = normalizarPrecio(input.value);
+                    input.value = formatearPrecio(n);
+                }
+
+                // Mientras escribís: NO formatear, solo recalcular
+                input.addEventListener('input', function() {
+                    // quitar todo lo que no sea dígito
+                    let digits = input.value.replace(/\D/g, '');
+
+                    // eliminar ceros a la izquierda
+                    digits = digits.replace(/^0+/, '');
+
+                    // si no hay nada, limpiar y recalcular
+                    if (!digits) {
+                        input.value = '';
+                        calcularTotal();
+                        return;
+                    }
+
+                    let entero, centavos;
+
+                    if (digits.length === 1) {
+                        // 1 dígito → 0,0X
+                        entero = '0';
+                        centavos = digits.padStart(2, '0'); // '1' -> '01'
+                    } else if (digits.length === 2) {
+                        // 2 dígitos → 0,XY
+                        entero = '0';
+                        centavos = digits;
+                    } else {
+                        // 3+ dígitos: últimos 2 son centavos
+                        entero = digits.slice(0, -2);
+                        centavos = digits.slice(-2);
+                    }
+
+                    // formatear parte entera con puntos de miles
+                    const enteroFormateado = entero.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+                    input.value = `${enteroFormateado},${centavos}`;
+
+                    // recalcular total usando el valor numérico
+                    calcularTotal();
+                });
+
+                // Al salir del campo: ahí sí formateamos lindo
+                input.addEventListener('blur', function() {
+                    if (!input.value.trim()) {
+                        input.value = '';
+                        calcularTotal();
+                        return;
+                    }
+
+                    // normalizamos usando la máscara ya aplicada
+                    const n = normalizarPrecio(input.value); // "1.234,56" -> 1234.56
+                    if (!n) {
+                        input.value = '';
+                    } else {
+                        // volvemos a aplicar la máscara de moneda
+                        let cents = Math.round(n * 100).toString();
+                        while (cents.length < 3) {
+                            cents = '0' + cents;
+                        }
+                        const entero = cents.slice(0, -2);
+                        const centavos = cents.slice(-2);
+                        const enteroFormateado = entero.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+                        input.value = `${enteroFormateado},${centavos}`;
+                    }
+
+                    calcularTotal();
+                });
             });
         });
-    }
 
-</script>
+        // Calcular total al cargar
+        calcularTotal();
+
+        // Antes de enviar: pasar todo a "10000.00"
+        if (form) {
+            form.addEventListener('submit', function() {
+                precioInputs.forEach(input => {
+                    const n = normalizarPrecio(input.value);
+                    input.value = n ? n.toFixed(2) : '';
+                });
+            });
+        }
+    </script>
+    <script>
+        document.querySelector('input[name="foto_factura"]').addEventListener('change', function (e) {
+            const file = e.target.files[0];
+            const preview = document.getElementById('previewFactura');
+            const img = document.getElementById('previewImg');
+            const pdf = document.getElementById('previewPdf');
+            const pdfName = document.getElementById('previewPdfName');
+
+            if (!file) {
+                preview.classList.add('hidden');
+                return;
+            }
+
+            preview.classList.remove('hidden');
+            img.classList.add('hidden');
+            pdf.classList.add('hidden');
+
+            if (file.type.startsWith('image/')) {
+                const reader = new FileReader();
+                reader.onload = e => {
+                    img.src = e.target.result;
+                    img.classList.remove('hidden');
+                };
+                reader.readAsDataURL(file);
+            } else if (file.type === 'application/pdf') {
+                pdfName.textContent = file.name;
+                pdf.classList.remove('hidden');
+            }
+        });
+    </script>
+
 @endsection
-
