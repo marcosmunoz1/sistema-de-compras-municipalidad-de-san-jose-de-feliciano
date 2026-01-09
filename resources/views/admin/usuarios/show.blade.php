@@ -69,138 +69,99 @@
     <div class="card bg-base-100 shadow">
         <div class="card-body p-4">
 
-            <div class="overflow-x-auto">
-                <div class="max-w-4xl mx-auto p-6">
+            <div class="max-w-5xl mx-auto p-6">
 
-                    <h2 class="text-2xl font-bold flex items-center gap-2 mb-6">
-                        <i class="fas fa-user"></i> Detalles del Usuario
-                    </h2>
+                <h2 class="text-2xl font-bold flex items-center gap-2 mb-8">
+                    <i class="fas fa-user"></i> Detalles del Usuario
+                </h2>
 
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
 
-                        <!-- DATOS DEL USUARIO -->
-                        <div class="md:col-span-2">
-                            <div class="card bg-base-100 shadow-md p-6">
+                    {{-- DATOS DEL USUARIO --}}
+                    <div class="md:col-span-2 space-y-6 bg-base-100 border border-base-300 rounded-xl p-6">
 
-                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-
-                                    <div class="form-control">
-                                        <label class="label">
-                                            <span class="label-text font-semibold">Nombre de Usuario</span>
-                                        </label>
-                                        <input type="text" class="input input-bordered w-full"
-                                            value="{{ $usuario->name }}" readonly>
-                                    </div>
-
-                                    <div class="form-control">
-                                        <label class="label">
-                                            <span class="label-text font-semibold">Rol</span>
-                                        </label>
-                                        <input type="text" class="input input-bordered w-full"
-                                            value="{{ $usuario->roles->first()->name ?? 'Sin rol' }}" readonly>
-                                    </div>
-
-                                </div>
-
-                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-
-                                    <div class="form-control">
-                                        <label class="label">
-                                            <span class="label-text font-semibold">Correo</span>
-                                        </label>
-                                        <input type="email" class="input input-bordered w-full"
-                                            value="{{ $usuario->email }}" readonly>
-                                    </div>
-
-                                    <div class="form-control">
-                                        <label class="label">
-                                            <span class="label-text font-semibold">Último inicio de sesión</span>
-                                        </label>
-                                        <input type="text" class="input input-bordered w-full"
-                                            value="{{ $usuario->last_login_at ? \Carbon\Carbon::parse($usuario->last_login_at)->format('d/m/Y H:i') : 'Nunca' }}"
-                                            readonly>
-                                    </div>
-
-                                </div>
-
-                                <div class="form-control">
-                                    <label class="label"><span class="label-text font-semibold">Nombre de
-                                            Usuario</span></label>
-                                    <input type="text"
-                                        class="w-full h-10 rounded-md border border-base-300 bg-base-200 
-                                    px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary
-                                    focus:border-primary"
-                                        value="{{ $usuario->name }}" readonly>
-                                </div>
-
-                                <div class="form-control">
-                                    <label class="label"><span class="label-text font-semibold">Rol</span></label>
-                                    <input type="text"
-                                        class="w-full h-10 rounded-md border border-base-300 bg-base-200 
-                                    px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary
-                                    focus:border-primary"
-                                        value="{{ $usuario->roles->first()->name ?? 'Sin rol' }}" readonly>
-                                </div>
-
+                        <!-- Nombre + Rol -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="form-control">
+                                <label class="label font-semibold">Nombre de Usuario</label>
+                                <input type="text" class="input input-bordered bg-base-200" value="{{ $usuario->name }}"
+                                    readonly>
                             </div>
 
-                            <!-- FIRMA -->
-                            <div>
-                                <div class="card bg-base-100 shadow-md p-6 h-full flex flex-col">
-
-                                    <h3 class="text-lg font-semibold flex items-center gap-2 mb-4">
-                                        <i class="fas fa-pen-nib"></i> Firma
-                                    </h3>
-
-                                    @if ($usuario->firma)
-                                        <div
-                                            class="flex items-center justify-center border-2 border-dashed 
-                                    border-base-300 rounded-lg p-4 bg-base-200 flex-1">
-
-                                            <img src="{{ asset('storage/' . $usuario->firma) }}" alt="Firma del usuario"
-                                                class="max-h-40 object-contain">
-                                        </div>
-                                    @else
-                                        <div
-                                            class="flex items-center justify-center border-2 border-dashed 
-                                    border-base-300 rounded-lg p-4 bg-base-200 text-gray-400 flex-1">
-
-                                            <span>Este usuario no tiene firma cargada</span>
-                                        </div>
-                                    @endif
-
-                                    <!-- Email -->
-                                    <div class="form-control">
-                                        <label class="label"><span class="label-text font-semibold">Correo</span></label>
-                                        <input type="email"
-                                            class="w-full h-10 rounded-md border border-base-300 bg-base-200 
-                                    px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary
-                                    focus:border-primary"
-                                            value="{{ $usuario->email }}" readonly>
-                                    </div>
-
-                                    <!-- Ultimo inicio de sesión  -->
-                                    <div class="form-control">
-                                        <label class="label"><span class="label-text font-semibold">Último inicio de
-                                                sesion</span></label>
-                                        <input type="text"
-                                            class="w-full h-10 rounded-md border border-base-300 bg-base-200 
-                                    px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary
-                                    focus:border-primary"
-                                            value="{{ $usuario->last_login_at ? \Carbon\Carbon::parse($usuario->last_login_at)->format('d/m/Y H:i') : 'Nunca' }}"
-                                            readonly>
-                                    </div>
-
-
-                                </div>
-
+                            <div class="form-control">
+                                <label class="label font-semibold">Rol</label>
+                                <input type="text" class="input input-bordered bg-base-200"
+                                    value="{{ $usuario->roles->first()->name ?? 'Sin rol' }}" readonly>
                             </div>
-
                         </div>
+
+                        <!-- Email + Estado -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="form-control">
+                                <label class="label font-semibold">Correo</label>
+                                <input type="email" class="input input-bordered bg-base-200" value="{{ $usuario->email }}"
+                                    readonly>
+                            </div>
+
+                            <div class="form-control">
+                                <label class="label font-semibold">Estado</label>
+                                <input type="text" class="input input-bordered bg-base-200"
+                                    value="{{ $usuario->estado ? 'Activo' : 'Inactivo' }}" readonly>
+                            </div>
+                        </div>
+
+                        <!-- Último login -->
+                        <div class="form-control md:col-span-2">
+                            <label class="label block">
+                                <span class="label-text font-semibold">Último inicio de sesión</span>
+                            </label>
+
+                            <input type="text" class="input input-bordered bg-base-200 w-full"
+                                value="{{ $usuario->last_login_at ? \Carbon\Carbon::parse($usuario->last_login_at)->format('d/m/Y H:i') : 'Nunca' }}"
+                                readonly>
+                        </div>
+
+
+
                     </div>
 
+                    {{-- FIRMA --}}
+                    <div class="bg-base-100 border border-base-300 rounded-xl p-6 flex flex-col">
+                        <h3 class="text-lg font-semibold flex items-center gap-2 mb-4">
+                            <i class="fas fa-pen-nib"></i> Firma
+                        </h3>
+
+                        @if ($usuario->firma)
+                            <div
+                                class="flex-1 border-2 border-dashed rounded-lg p-4 
+                   bg-white text-black
+                   flex justify-center items-center">
+                                <img src="{{ asset('storage/' . $usuario->firma) }}"
+                                    class="max-h-32 object-contain bg-white">
+                            </div>
+                        @else
+                            <div
+                                class="flex-1 border-2 border-dashed rounded-lg p-4
+                   bg-white text-gray-600
+                   flex items-center justify-center text-center">
+                                No hay firma cargada
+                            </div>
+                        @endif
+                    </div>
+
+
                 </div>
+
+                <!-- BOTONES -->
+                <div class="mt-8 flex justify-end">
+                    <a href="{{ url('admin/usuarios') }}" class="btn btn-neutral">
+                        <x-heroicon-m-arrow-left class="w-4 h-4 inline" /> Volver
+                    </a>
+                </div>
+
             </div>
+
+
 
             <!-- Sección de Permisos -->
             <div class="card bg-base-100 shadow mt-6">
@@ -213,8 +174,7 @@
                             <path d="M9 3v18"></path>
                         </svg>
                         Permisos Asignados
-                        <span
-                            class="badge badge-primary badge-sm ml-2">{{ $usuario->getAllPermissions()->count() }}</span>
+                        <span class="badge badge-primary badge-sm ml-2">{{ $usuario->getAllPermissions()->count() }}</span>
                     </h2>
 
                     @php

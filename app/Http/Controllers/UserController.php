@@ -72,6 +72,7 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {      
+        //return response()->json($request->all());
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
@@ -146,6 +147,8 @@ class UserController extends Controller
      */
     public function update(Request $request, $id )
     {
+        //dd($request->all());
+        //return response()->json($request->all());
         $authUser = auth()->user();
         $user = User::findOrFail($id);
 
