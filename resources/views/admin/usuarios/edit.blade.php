@@ -152,18 +152,6 @@
 
                                 </div>
 
-                                <!-- Botones -->
-                                <div class="mt-6 flex justify-end gap-4">
-                                    <a href="{{ url('admin/usuarios') }}" class="btn btn-neutral">
-                                        <x-heroicon-m-arrow-left class="w-4 h-4 inline" /> Volver
-                                    </a>
-
-                                    <button type="submit" class="btn btn-success">
-                                        <x-heroicon-m-arrow-down-tray class="w-4 h-4 inline" /> Guardar cambios
-                                    </button>
-                                </div>
-
-                            </form>
                         </div>
                     </div>
 
@@ -202,6 +190,19 @@
                     </div>
 
                 </div>
+
+                <!-- Botones -->
+                <div class="mt-6 flex justify-end gap-4">
+                    <a href="{{ url('admin/usuarios') }}" class="btn btn-neutral">
+                        <x-heroicon-m-arrow-left class="w-4 h-4 inline" /> Volver
+                    </a>
+
+                    <button type="submit" class="btn btn-success">
+                        <x-heroicon-m-arrow-down-tray class="w-4 h-4 inline" /> Guardar cambios
+                    </button>
+                </div>
+
+            </form>
 
             </div>
 

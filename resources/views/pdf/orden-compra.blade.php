@@ -387,9 +387,11 @@
         </div>
 
         <div class="footer-area">
-             <img src="{{ public_path('logo/firmadamian.png') }}" alt="Firma" style="max-width: 200px; height: 130px; margin: 0 auto 8px auto; display: block;">
+            @if($compra->usuario && $compra->usuario->firma)
+                <img src="{{ public_path('storage/' . $compra->usuario->firma) }}" alt="Firma" style="max-width: 200px; height: 130px; margin: 0 auto 8px auto; display: block;">
+            @endif
             <div class="signature-box"> 
-                <span class="signature-label">Autorizado por</span>
+                <span class="signature-label">Autorizado por{{ $compra->usuario ? ': ' . $compra->usuario->name : '' }}</span>
                 <p style="font-size: 9px; color: #94a3b8; margin-top: 2px; text-transform: uppercase; letter-spacing: -0.05em;">Firma y Sello de Autoridad Responsable</p>
             </div>
         </div>

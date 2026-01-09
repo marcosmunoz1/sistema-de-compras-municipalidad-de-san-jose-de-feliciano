@@ -7,6 +7,7 @@ use App\Models\Combustible;
 use App\Models\Compra;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Log;
 
 class PDFController extends Controller
 {
@@ -19,21 +20,30 @@ class PDFController extends Controller
    }
    public function PdfOrdenCompra($id) 
    {
-       $compra = Compra::findOrFail($id); 
+       $compra = Compra::with(['usuario'])->findOrFail($id);
        $pdf = PDF::loadView('pdf.orden-compra', compact('compra')); 
        return $pdf->stream('orden_compra_' . $id . '.pdf');  
    }
 
    public function previewOrdenCompra($id)
    {
-       $compra = Compra::with(['proveedor', 'empleado', 'detalle_compras.producto'])->findOrFail($id);
+       $compra = Compra::with(['proveedor', 'empleado', 'detalle_compras.producto', 'usuario'])->findOrFail($id);
+       
+       Log::info('Usuario creador de compra en PDF', [
+           'compra_id' => $compra->id,
+           'usuario_id' => $compra->usuario ? $compra->usuario->id : null,
+           'usuario_nombre' => $compra->usuario ? $compra->usuario->name : null,
+           'tiene_firma' => $compra->usuario && $compra->usuario->firma ? true : false,
+           'ruta_firma' => $compra->usuario ? $compra->usuario->firma : null
+       ]);
+       
        $pdf = PDF::loadView('pdf.orden-compra', compact('compra'));
        return $pdf->stream('orden_compra_' . $compra->nr_orden . '.pdf');
    }
 
    public function downloadOrdenCompra($id)
    {
-       $compra = Compra::with(['proveedor', 'empleado', 'detalle_compras.producto'])->findOrFail($id);
+       $compra = Compra::with(['proveedor', 'empleado', 'detalle_compras.producto', 'usuario'])->findOrFail($id);
        $pdf = PDF::loadView('pdf.orden-compra', compact('compra'));
        return $pdf->download('orden_compra_' . $compra->nr_orden . '.pdf');
    }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Log;
 use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
@@ -215,6 +216,12 @@ class UserController extends Controller
         /* ======================
         MANEJO DE FIRMA
         ====================== */
+        \Log::info('Verificando archivo firma', [
+            'hasFile' => $request->hasFile('firma'),
+            'allFiles' => $request->allFiles(),
+            'allInputs' => $request->except(['password', 'password_confirmation'])
+        ]);
+
         if ($request->hasFile('firma')) {
 
             // Borrar firma anterior si existe
@@ -223,7 +230,10 @@ class UserController extends Controller
             }
 
             // Guardar nueva firma
-            $user->firma = $request->file('firma')->store('firmas', 'public');
+            $firmaPath = $request->file('firma')->store('firmas', 'public');
+            $user->firma = $firmaPath;
+            
+            \Log::info('Firma guardada', ['path' => $firmaPath]);
         }
 
         $user->name = $request->name;

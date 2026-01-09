@@ -102,16 +102,18 @@
         .logo-placeholder {
             width: 70px;
             height: 70px;
-            background: #b91c1c;
+            background: white;
             border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: white;
-            font-weight: 800;
-            text-align: center;
-            font-size: 10px;
-            line-height: 1.2;
+            overflow: hidden;
+        }
+        
+        .logo-placeholder img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
         }
 
         .title-badge {
@@ -264,16 +266,14 @@
         <div class="watermark-container">
             <div class="watermark-text">CARGA</div>
             <div class="watermark-text">CARGA</div>
-            <div class="watermark-text">CARGA</div>
-            <div class="watermark-text">CARGA</div>
-            <div class="watermark-text">CARGA</div>
-            <div class="watermark-text">CARGA</div>
         </div>
 
         <!-- Encabezado Principal -->
         <div class="header-section">
             <div class="logo-container">
-                <div class="logo-placeholder">ESCUDO<br>OFICIAL</div>
+                <div class="logo-placeholder">
+                    <img src="{{ public_path('logo/logo-pdf.png') }}" alt="Logo"> 
+                </div>
                 <div>
                     <h1 class="text-xl font-black text-slate-900 tracking-tight">MUNICIPALIDAD DE</h1>
                     <h2 class="text-xl font-black text-red-700 tracking-tight">SAN JOSÉ DE FELICIANO</h2>
