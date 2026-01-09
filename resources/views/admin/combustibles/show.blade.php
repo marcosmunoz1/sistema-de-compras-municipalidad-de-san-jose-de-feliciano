@@ -46,7 +46,7 @@
             <li>
                 <span class="inline-flex items-center gap-2">
                     <x-heroicon-o-eye class="w-4 h-4 inline" />
-                    Ver Combustible
+                    Ver orden de combustible
                 </span>
             </li>
         </ul>

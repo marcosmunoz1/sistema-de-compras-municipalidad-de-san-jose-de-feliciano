@@ -447,7 +447,7 @@
                     </label>
 
                     <textarea name="descripcion" id="descripcion" rows="3"
-                        placeholder="Ingrese una descripción breve de la actulizacion del combustible..."
+                        placeholder="Ingrese una descripción breve de la actualización del combustible..."
                         class="textarea w-full rounded-md border border-base-300 bg-base-200 
                  focus:outline-none focus:ring-2 focus:ring-primary 
                  focus:border-primary transition @error('descripcion') input-error @enderror">{{ old('descripcion') }}</textarea>
