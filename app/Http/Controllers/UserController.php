@@ -256,6 +256,14 @@ class UserController extends Controller
     {
         $usuario = User::findOrFail($id);
 
+        // 🚫 No permitir eliminar Super-Admin
+        if ($usuario->hasRole('Super-Admin')) {
+            return redirect()
+                ->back()
+                ->with('mensaje', 'No se puede eliminar un usuario con rol Super-Admin.')
+                ->with('icono', 'error');
+        }
+
         // Marca como inactivo
         $usuario->estado = false;
         $usuario->save();
@@ -263,8 +271,10 @@ class UserController extends Controller
         // Soft delete
         $usuario->delete();
 
-        return redirect()->back()->with('success', 'Usuario eliminado y marcado como inactivo.');
+        return back()->with('mensaje', 'Usuario eliminado correctamente.')
+                    ->with('icono', 'success');
     }
+
 
 
     public function restore($id)
@@ -275,7 +285,8 @@ class UserController extends Controller
         $usuario->estado = true;
         $usuario->save();
 
-        return back()->with('success', 'Usuario restaurado correctamente.');
+        return back()->with('mensaje', 'Usuario restaurado correctamente.')
+                    ->with('icono', 'success');
     }
 
 }
