@@ -198,29 +198,51 @@ class BackupController extends Controller
     protected function getBackupsList(): array
     {
         $backups = [];
-        $disk = Storage::disk('backups');
         
-        $appName = config('backup.backup.name');
-        $backupPath = $appName;
-        
-        if (!$disk->exists($backupPath)) {
-            return $backups;
-        }
-        
-        $files = $disk->files($backupPath);
-        
-        foreach ($files as $file) {
-            if (str_ends_with($file, '.zip')) {
-                $backups[] = [
-                    'name' => basename($file),
-                    'size' => $disk->size($file),
-                    'modified' => $disk->lastModified($file),
-                    'path' => $disk->path($file),
-                ];
+        try {
+            $disk = Storage::disk('backups');
+            
+            $appName = config('backup.backup.name');
+            $backupPath = $appName;
+            
+            if (!$disk->exists($backupPath)) {
+                return $backups;
             }
+            
+            $files = $disk->files($backupPath);
+            
+            foreach ($files as $file) {
+                if (str_ends_with($file, '.zip')) {
+                    try {
+                        $backups[] = [
+                            'name' => basename($file),
+                            'size' => $disk->size($file),
+                            'modified' => $disk->lastModified($file),
+                            'path' => $disk->path($file),
+                        ];
+                    } catch (\Exception $e) {
+                        Log::warning('Error al obtener información del backup', [
+                            'file' => $file,
+                            'error' => $e->getMessage(),
+                        ]);
+                        
+                        $backups[] = [
+                            'name' => basename($file),
+                            'size' => 0,
+                            'modified' => time(),
+                            'path' => $disk->path($file),
+                        ];
+                    }
+                }
+            }
+            
+            usort($backups, fn($a, $b) => $b['modified'] <=> $a['modified']);
+            
+        } catch (\Exception $e) {
+            Log::error('Error al listar backups', [
+                'error' => $e->getMessage(),
+            ]);
         }
-        
-        usort($backups, fn($a, $b) => $b['modified'] <=> $a['modified']);
         
         return $backups;
     }

@@ -1,24 +1,29 @@
 @extends('layouts.admin')
 @section('title', 'Combustibles')
-@section('content')
-    <!-- Titulo y boton -->
+@section('content') 
+    <!-- Titulo y boton --> 
     <div class="flex items-center justify-between mb-6">
         <h1 class="text-2xl font-semibold">Combustibles</h1>
         <div class="flex  gap-2">
+            <button onclick="modalPreciosActuales.showModal()" class="btn btn-info tooltip tooltip-info mb-1"
+                data-tip="Ver precios actuales de combustibles">
+                <x-heroicon-o-currency-dollar class="w-4 h-4 inline" />
+                Ver Precios
+            </button>
             @can('combustibles-update-prices')
                 <button onclick="crearCombustible.showModal()" class="btn btn-warning tooltip tooltip-warning mb-1"
                     data-tip="Actualizar los precios de los combustibles">
                     <x-heroicon-s-cloud-arrow-up class="w-4 h-4 inline" />
                     Actualizar Precios
-                </button>
-            @endcan
-            @can('combustibles-create')
+                </button> 
+            @endcan 
+            @can('combustibles-create') 
                 <a href="{{ route('combustibles.create') }}" class="btn btn-primary tooltip tooltip-primary tooltip-bottom mb-1"
                     data-tip="Crear orden de carga">
                     <x-heroicon-o-plus class="w-5 h-5"/> Nueva Carga
                 </a>
-            @endcan
-        </div>
+            @endcan 
+        </div> 
     </div>
     <div class="breadcrumbs text-sm mb-6">
         <ul>
@@ -442,12 +447,12 @@
 
                 <!-- Descripción -->
                 <div class="form-control">
-                    <label class="label">
+                    <label class="text-sm font-medium"> 
                         <span class="label-text font-medium">Descripción (Opcional) </span>
                     </label>
 
                     <textarea name="descripcion" id="descripcion" rows="3"
-                        placeholder="Ingrese una descripción breve de la actulizacion del combustible..."
+                        placeholder="Ingrese una descripción breve de la actualización del combustible..."
                         class="textarea w-full rounded-md border border-base-300 bg-base-200 
                  focus:outline-none focus:ring-2 focus:ring-primary 
                  focus:border-primary transition @error('descripcion') input-error @enderror">{{ old('descripcion') }}</textarea>
@@ -461,24 +466,111 @@
                 <div class="modal-action">
 
                     <!-- Guardar -->
-                    <button class="btn btn-primary">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                            stroke="currentColor" class="w-5 h-5 mr-1">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
-                        </svg>
+                    <button class="btn btn-primary btn-sm">
+                        <x-heroicon-m-arrow-down-tray class="w-4 h-4 inline" />
                         Guardar precio
                     </button>
 
                     <!-- Cancelar -->
-                    <button type="button" onclick="crearCombustible.close()" class="btn btn-neutral">
+                    <button type="button" onclick="crearCombustible.close()" class="btn btn-neutral btn-sm">
                         Cancelar
                     </button>
                 </div>
 
             </form>
         </div>
-
     </dialog>
+    <!-- Modal para ver precios actuales -->
+    <dialog id="modalPreciosActuales" class="modal">
+        <div class="modal-box max-w-2xl rounded-xl">
+            <form method="dialog">
+                <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+            </form>
+
+            <h3 class="font-bold text-xl flex items-center gap-3 mb-6">
+                <div class="p-2 rounded-lg bg-info/10">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="text-info">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"></path>
+                        <path d="M12 18V6"></path>
+                    </svg>
+                </div>
+                Precios Actuales de Combustibles
+            </h3>
+
+            <div class="overflow-x-auto">
+                <table class="table table-zebra w-full">
+                    <thead>
+                        <tr class="bg-base-200">
+                            <th class="text-left">Tipo de Combustible</th>
+                            <th class="text-right">Precio por Litro</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse ($tipos_combustibles as $tipo)
+                            <tr class="hover">
+                                <td>
+                                    <div class="flex items-center gap-3">
+                                        <div class="p-2 rounded-lg bg-warning/10">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                class="text-warning">
+                                                <path d="M14 13h2a2 2 0 0 1 2 2v2a2 2 0 0 0 4 0v-6.998a2 2 0 0 0-.59-1.42L18 5"></path>
+                                                <path d="M14 21V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v16"></path>
+                                                <path d="M2 21h13"></path>
+                                                <path d="M3 9h11"></path>
+                                            </svg>
+                                        </div>
+                                        <div>
+                                            <p class="font-semibold">{{ $tipo->nombre }}</p>
+                                            @if($tipo->descripcion)
+                                                <p class="text-xs text-gray-500">{{ $tipo->descripcion }}</p>
+                                            @endif
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="text-right">
+                                    <span class="text-lg font-bold text-success">${{ number_format($tipo->valor, 2, ',', '.') }}</span>
+                                    <span class="text-xs text-gray-500">/L</span>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="2" class="text-center py-8 text-gray-500">
+                                    No hay tipos de combustibles registrados
+                                </td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="mt-4 p-3 bg-base-200 rounded-lg">
+                <p class="text-xs text-gray-500 flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" class="text-info">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <path d="M12 16v-4"></path>
+                        <path d="M12 8h.01"></path>
+                    </svg>
+                    Los precios mostrados son los valores actuales registrados en el sistema.
+                </p>
+            </div>
+
+            <div class="modal-action">
+                <form method="dialog">
+                    <button class="btn btn-sm btn-neutral">Cerrar</button>
+                </form>
+            </div>
+        </div>
+
+        <form method="dialog" class="modal-backdrop">
+            <button></button>
+        </form>
+    </dialog>
+
     <!-- Modal para eliminar -->
     <dialog id="modal_eliminar_combustible" class="modal">
         <div class="modal-box">

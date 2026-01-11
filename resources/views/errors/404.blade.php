@@ -15,7 +15,7 @@
     <!-- Vite -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
-    <title>Error 400</title> 
+    <title>Error 404</title> 
 </head> 
 <body> 
 

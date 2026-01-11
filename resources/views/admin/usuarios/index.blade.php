@@ -62,13 +62,13 @@
 
     <!-- Tabla -->
     <div class="card bg-base-100 shadow">
-        <div class="card-body p-4"> 
-             <div class="flex flex-col gap-3">
+        <div class="card-body p-4">
+            <div class="flex flex-col gap-3">
                 <!-- TÍTULO-->
                 <div class="flex items-center justify-between">
-                    <h4 class="text-lg font-semibold">Historial de usuarios</h4> 
+                    <h4 class="text-lg font-semibold">Historial de usuarios</h4>
                 </div>
-            </div> 
+            </div>
 
             <div class="overflow-x-auto">
                 <table class="table table-zebra w-full">
@@ -300,9 +300,17 @@
                         <span class="label-text">Firma</span>
                     </label>
 
-                    <input type="file" name="firma" accept="image/*"
+                    <input type="file" name="firma" accept="image/*" onchange="previewFirma(event)"
                         class="file-input file-input-bordered w-full bg-base-200
                             focus:outline-none focus:ring-2 focus:ring-primary transition">
+                    {{-- Preview de firma --}}
+                    <div id="firmaPreviewContainer"
+                        class="mt-3 hidden border-2 border-dashed rounded-lg p-4
+                                bg-white flex justify-center items-center">
+                        <img id="firmaPreview"
+                            class="max-h-32 object-contain"
+                            alt="Vista previa de la firma">
+                    </div>
 
                     <small class="text-xs text-gray-500 mt-1">
                         Formatos permitidos: JPG, PNG. Tamaño recomendado: firma escaneada.
@@ -324,15 +332,15 @@
                             bg-base-200 px-3 text-sm focus:outline-none focus:ring-2 
                             focus:ring-primary focus:border-primary transition"
                             required>
-                        <button type="button"
-                            class="mt-2 text-sm text-primary hover:underline"
+                        @error('password')
+                            <small class="text-red-500">{{ $message }}</small>
+                        @enderror
+                        <button type="button" class="mt-2 text-sm text-primary hover:underline"
                             onclick="togglePassword()">
                             Mostrar contraseñas
                         </button>
 
-                        @error('password')
-                            <small class="text-red-500">{{ $message }}</small>
-                        @enderror
+
                     </div>
 
                     <div class="form-control">
@@ -462,5 +470,23 @@
             confirm.type = type;
         }
     </script>
+    <script>
+    function previewFirma(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+
+        const previewContainer = document.getElementById('firmaPreviewContainer');
+        const previewImage = document.getElementById('firmaPreview');
+
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            previewImage.src = e.target.result;
+            previewContainer.classList.remove('hidden');
+        };
+
+        reader.readAsDataURL(file);
+    }
+</script>
+
 
 @endsection

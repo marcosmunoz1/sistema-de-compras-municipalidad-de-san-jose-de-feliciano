@@ -6,7 +6,8 @@ use App\Models\Empleado;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Activitylog\Traits\LogsActivity;
-use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\LogOptions; 
+use App\Models\Detalle_compra; 
 
 class Compra extends Model
 {   
@@ -53,7 +54,7 @@ class Compra extends Model
 
     public function detalle_compras()
     {
-        return $this->hasMany(Detalle_Compra::class, 'compra_id'); 
+        return $this->hasMany(Detalle_compra::class, 'compra_id'); 
     }
     public function getDestinoNombreAttribute()
     {
