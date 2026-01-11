@@ -2,25 +2,26 @@
 @section('title', 'Combustibles')
 @section('content') 
     <!-- Titulo y boton --> 
-    <div class="flex items-center justify-between mb-6">
-        <h1 class="text-2xl font-semibold">Combustibles</h1>
-        <div class="flex  gap-2">
-            <button onclick="modalPreciosActuales.showModal()" class="btn btn-info tooltip tooltip-info mb-1"
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+        <h1 class="text-xl sm:text-2xl font-semibold">Combustibles</h1>
+        <div class="flex flex-wrap gap-2">
+            <button onclick="modalPreciosActuales.showModal()" class="btn btn-sm sm:btn-md btn-info tooltip tooltip-info"
                 data-tip="Ver precios actuales de combustibles">
                 <x-heroicon-o-currency-dollar class="w-4 h-4 inline" />
-                Ver Precios
+                Ver Precios 
             </button>
             @can('combustibles-update-prices')
-                <button onclick="crearCombustible.showModal()" class="btn btn-warning tooltip tooltip-warning mb-1"
+                <button onclick="crearCombustible.showModal()" class="btn btn-sm sm:btn-md btn-warning tooltip tooltip-warning" 
                     data-tip="Actualizar los precios de los combustibles">
                     <x-heroicon-s-cloud-arrow-up class="w-4 h-4 inline" />
                     Actualizar Precios
                 </button> 
             @endcan 
             @can('combustibles-create') 
-                <a href="{{ route('combustibles.create') }}" class="btn btn-primary tooltip tooltip-primary tooltip-bottom mb-1"
+                <a href="{{ route('combustibles.create') }}" class="btn btn-sm sm:btn-md btn-primary tooltip tooltip-primary tooltip-bottom"
                     data-tip="Crear orden de carga">
-                    <x-heroicon-o-plus class="w-5 h-5"/> Nueva Carga
+                    <x-heroicon-o-plus class="w-5 h-5"/> 
+                    Nueva Carga
                 </a>
             @endcan 
         </div> 
@@ -74,10 +75,10 @@
         </form>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-3 pd-6 mb-6">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6"> 
 
         <!-- Card 1 -->
-        <div class="bg-base-100 shadow-xl bg-card text-card-foreground flex flex-col gap-6 rounded-xl mr-2">
+        <div class="bg-base-100 shadow-xl bg-card text-card-foreground flex flex-col gap-6 rounded-xl">
             <div class="px-6 pt-6 pb-6">
                 <div class="flex items-center justify-between">
                     <div>
@@ -97,7 +98,7 @@
         </div>
 
         <!-- Card 2 -->
-        <div class="bg-base-100 shadow-xl bg-card text-card-foreground flex flex-col gap-6 rounded-xl mr-2">
+        <div class="bg-base-100 shadow-xl bg-card text-card-foreground flex flex-col gap-6 rounded-xl">
             <div class="px-6 pt-6 pb-6">
                 <div class="flex items-center justify-between">
                     <div>
@@ -117,7 +118,7 @@
         </div>
 
         <!-- Card 3 -->
-        <div class="bg-base-100 shadow-xl bg-card text-card-foreground flex flex-col gap-6 rounded-xl mr-2">
+        <div class="bg-base-100 shadow-xl bg-card text-card-foreground flex flex-col gap-6 rounded-xl">
             <div class="px-6 pt-6 pb-6">
                 <div class="flex items-center justify-between">
                     <div>

@@ -3,7 +3,7 @@
 @section('content')
     <!-- Header del Dashboard -->
     <div class="mb-8">
-        <h1 class="text-3xl font-bold mb-2">¡Bienvenido, {{ Auth::user()->name }}! 👋</h1>
+        <h1 class="text-3xl font-bold mb-2">¡Bienvenido, {{ Auth::user()->name }}! 👋</h1> 
         <p class="text-muted-foreground">Aquí tienes un resumen de tu sistema de gestión municipal</p>
     </div>
 
@@ -381,15 +381,22 @@
      <!-- Sección de Compras Pendientes de Factura -->
     @if($comprasPendientesFactura->count() > 0)
     <div class="mt-8">
-        <div class="flex items-center justify-between mb-4">
-            <h2 class="text-2xl font-bold">⚠️ Compras Pendientes de Factura</h2>
-            <span class="badge badge-error badge-sm">{{ $comprasPendientesFactura->count() }} pendientes</span>
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
+            <h2 class="text-xl sm:text-2xl font-bold flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-error">
+                    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                    <line x1="12" x2="12" y1="9" y2="13"></line>
+                    <line x1="12" x2="12.01" y1="17" y2="17"></line>
+                </svg>
+                Compras Pendientes de Factura
+            </h2>
+            <span class="badge badge-error badge-sm w-fit">{{ $comprasPendientesFactura->count() }} pendientes</span>
         </div>
         
         <div class="card bg-base-100 shadow-xl border-2 border-error/20">
             <div class="card-body p-0">
                 <div class="overflow-x-auto">
-                    <table class="table table-zebra">
+                    <table class="table table-zebra min-w-full">
                         <thead class="bg-error/10">
                             <tr>
                                 <th class="text-center">
@@ -399,13 +406,13 @@
                                         <line x1="12" x2="12.01" y1="16" y2="16"></line>
                                     </svg>
                                 </th>
-                                <th>N° Orden</th>
-                                <th>Fecha</th>
-                                <th>Proveedor</th>
-                                <th>Solicitante</th>
-                                <th>Monto</th>
-                                <th>Estado</th>
-                                <th class="text-center">Acciones</th>
+                                <th class="whitespace-nowrap">N° Orden</th>
+                                <th class="whitespace-nowrap">Fecha</th>
+                                <th class="whitespace-nowrap">Proveedor</th>
+                                <th class="whitespace-nowrap">Solicitante</th>
+                                <th class="whitespace-nowrap">Monto</th>
+                                <th class="whitespace-nowrap">Estado</th>
+                                <th class="text-center whitespace-nowrap">Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -420,27 +427,24 @@
                                         </svg>
                                     </div>
                                 </td>
-                                <td>
+                                <td class="whitespace-nowrap">
                                     <span class="font-semibold text-sm">{{ $compra->nr_orden }}</span>
                                 </td>
-                                <td>
+                                <td class="whitespace-nowrap">
                                     <span class="text-sm">{{ \Carbon\Carbon::parse($compra->fecha_orden)->format('d/m/Y') }}</span>
                                     <br>
                                     <span class="text-xs text-muted-foreground">{{ \Carbon\Carbon::parse($compra->fecha_orden)->diffForHumans() }}</span>
                                 </td>
-                                <td>
-                                        <div>
-                                            <div class="font-medium text-sm">{{ Str::limit($compra->proveedor->nombre ?? 'N/A', 25) }}</div>
-                                        </div>
-                                    </div>
+                                <td class="max-w-[200px]">
+                                    <div class="font-medium text-sm truncate">{{ $compra->proveedor->nombre ?? 'N/A' }}</div>
                                 </td>
-                                <td>
-                                    <span class="text-sm">{{ Str::limit($compra->empleado->nombre ?? 'N/A', 20) }}</span>
+                                <td class="max-w-[150px]">
+                                    <span class="text-sm truncate block">{{ $compra->empleado->nombre ?? 'N/A' }}</span>
                                 </td>
-                                <td>
+                                <td class="whitespace-nowrap">
                                     <span class="font-bold text-sm">${{ number_format($compra->total ?? 0, 2, ',', '.') }}</span>
                                 </td>
-                                <td>
+                                <td class="whitespace-nowrap">
                                     <div class="badge badge-error badge-sm gap-1">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                             <rect width="18" height="18" x="3" y="3" rx="2" ry="2"></rect>

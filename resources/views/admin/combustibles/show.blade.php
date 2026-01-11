@@ -11,11 +11,6 @@
                 <x-heroicon-o-arrow-left class="w-4 h-4 inline" />
                 Volver a Combustibles
             </a>
-            <a href="{{ route('combustibles.edit', $combustible->id) }}"
-                class="inline-flex items-center gap-2 h-9 px-4 py-2 rounded-md text-sm bg-warning hover:bg-warning-700 text-white">
-                <x-heroicon-o-pencil class="w-4 h-4 inline" />
-                Editar Combustible
-            </a>
         </div>
     </div>
     <div class="breadcrumbs text-sm mb-6">
@@ -40,7 +35,7 @@
                         <path d="M2 21h13"></path>
                         <path d="M3 9h11"></path>
                     </svg>
-                    Combustibles
+                    Combustibles 
                 </a>
             </li>
             <li>
@@ -52,8 +47,8 @@
         </ul>
 
     </div>
-    <div class="card bg-base-100 shadow-md rounded-xl p-6">
-        <div class="flex items-start justify-between">
+    <div class="card bg-base-100 shadow-md rounded-xl p-4 sm:p-6">
+        <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
             <div class="flex gap-4">
                 <div class="bg-orange-500 p-4 rounded-lg">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
@@ -67,8 +62,8 @@
                     </svg>
                 </div>
                 <div>
-                    <div class="flex items-center gap-3 mb-2">
-                        <h1 class="text-3xl">Carga de Combustible</h1><span data-slot="badge"
+                    <div class="flex flex-wrap items-center gap-2 sm:gap-3 mb-2">
+                        <h1 class="text-xl sm:text-3xl">Carga de Combustible</h1><span data-slot="badge"
                             class="inline-flex items-center justify-center rounded-md border px-2 py-0.5 text-xs font-medium w-fit whitespace-nowrap shrink-0 [&amp;&gt;svg]:size-3 gap-1 [&amp;&gt;svg]:pointer-events-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive transition-[color,box-shadow] overflow-hidden border-transparent bg-primary text-primary-foreground [a&amp;]:hover:bg-primary/90">Activo</span>
                     </div>
                     <p class="text-gray-500 mb-1">Factura N° FACT-{{ $combustible->codigo }}</p>
@@ -85,9 +80,9 @@
                     </div>
                 </div>
             </div>
-            <div class="text-right">
+            <div class="text-left sm:text-right">
                 <p class="text-sm text-gray-500">Monto Total</p>
-                <p class="text-3xl font-medium text-orange-600">$ {{ number_format($combustible->monto, 2, ',', '.') }}</p>
+                <p class="text-2xl sm:text-3xl font-medium text-orange-600">$ {{ number_format($combustible->monto, 2, ',', '.') }}</p>
             </div>
         </div>
     </div>
@@ -237,45 +232,49 @@
                 </div>
 
                 <!-- Contenido -->
-                <div data-slot="card-content" class="px-6 py-5 space-y-4">
+                <div data-slot="card-content" class="px-6 py-5 space-y-2">
 
-                    <!-- Nombre -->
-                    <div class="flex justify-between items-center p-3 rounded-lg">
-                        <span class="text-sm">Nombre:</span>
-                        <span class="text-sm font-medium">
-                            {{ $destino->nombre ?? 'Sin destino' }}
-                        </span>
-                    </div>
-
-                    <!-- Tipo de equipo -->
-                    <div class="flex justify-between items-center p-3 rounded-lg">
-                        <span class="text-sm">Tipo:</span>
-                        <span class="text-sm font-medium">
-                            {{ $destino->tipo_equipo ?? '—' }}
-                        </span>
-                    </div>
-
-                    <!-- Modelo -->
-                    <div class="flex justify-between items-center p-3 rounded-lg">
-                        <span class="text-sm">Modelo:</span>
-                        <span class="text-sm font-medium">
-                            {{ $destino->modelo ?? '—' }}
+                    <!-- Equipamiento -->
+                    <div class="grid grid-cols-2 gap-2 p-3 rounded-lg">
+                        <span class="text-sm text-gray-500">Equipamiento:</span>
+                        <span class="text-sm font-medium text-right">
+                            {{ $destino->equipamiento ?? 'Sin equipamiento' }}
                         </span>
                     </div>
 
                     <!-- Marca -->
-                    <div class="flex justify-between items-center p-3 rounded-lg">
-                        <span class="text-sm">Marca:</span>
-                        <span class="text-sm font-medium">
+                    <div class="grid grid-cols-2 gap-2 p-3 rounded-lg">
+                        <span class="text-sm text-gray-500">Marca:</span>
+                        <span class="text-sm font-medium text-right">
                             {{ $destino->marca ?? '—' }}
                         </span>
                     </div>
 
-                    <!-- Número de serie -->
-                    <div class="flex justify-between items-center p-3 rounded-lg">
-                        <span class="text-sm">Nr. Serie:</span>
-                        <span class="text-sm font-medium">
-                            {{ $destino->numero_serie ?? '—' }}
+                    <!-- Descripción -->
+                    <div class="grid grid-cols-2 gap-2 p-3 rounded-lg">
+                        <span class="text-sm text-gray-500">Descripción:</span>
+                        <span class="text-sm font-medium text-right">
+                            {{ $destino->descripcion ?? '—' }}
+                        </span>
+                    </div>
+
+                    <!-- Área -->
+                    <div class="grid grid-cols-2 gap-2 p-3 rounded-lg">
+                        <span class="text-sm text-gray-500">Área:</span>
+                        <span class="text-sm font-medium text-right">
+                            {{ $destino->area->nombre ?? '—' }}
+                        </span>
+                    </div>
+
+                    <!-- Estado -->
+                    <div class="grid grid-cols-2 gap-2 p-3 rounded-lg">
+                        <span class="text-sm text-gray-500">Estado:</span>
+                        <span class="text-sm font-medium text-right">
+                            @if($destino->estado)
+                                <span class="badge badge-success">Activo</span>
+                            @else
+                                <span class="badge badge-error">Inactivo</span>
+                            @endif
                         </span>
                     </div>
 

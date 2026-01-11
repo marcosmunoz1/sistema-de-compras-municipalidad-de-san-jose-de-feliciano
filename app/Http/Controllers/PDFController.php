@@ -15,7 +15,10 @@ class PDFController extends Controller
    {   
        $id = Crypt::decrypt($id); 
        $combustible = Combustible::findOrFail($id);
-       $pdf = PDF::loadView('pdf.orden-carga', compact('combustible')); 
+       $pdf = PDF::loadView('pdf.orden-carga', compact('combustible'))
+           ->setOption('isHtml5ParserEnabled', true)
+           ->setOption('isRemoteEnabled', true)
+           ->setOption('defaultFont', 'DejaVu Sans'); 
        return $pdf->stream('orden_carga_' . $id . '.pdf');  
    }
    public function PdfOrdenCompra($id) 
@@ -51,14 +54,20 @@ class PDFController extends Controller
    public function previewOrdenCarga($id)
    {
        $combustible = Combustible::with(['empleado', 'destino'])->findOrFail($id);
-       $pdf = PDF::loadView('pdf.orden-carga', compact('combustible'));
+       $pdf = PDF::loadView('pdf.orden-carga', compact('combustible'))
+           ->setOption('isHtml5ParserEnabled', true)
+           ->setOption('isRemoteEnabled', true)
+           ->setOption('defaultFont', 'DejaVu Sans');
        return $pdf->stream('orden_carga_' . $combustible->codigo . '.pdf');
    }
 
    public function downloadOrdenCarga($id)
    {
        $combustible = Combustible::with(['empleado', 'destino'])->findOrFail($id);
-       $pdf = PDF::loadView('pdf.orden-carga', compact('combustible'));
+       $pdf = PDF::loadView('pdf.orden-carga', compact('combustible'))
+           ->setOption('isHtml5ParserEnabled', true)
+           ->setOption('isRemoteEnabled', true)
+           ->setOption('defaultFont', 'DejaVu Sans');
        return $pdf->download('orden_carga_' . $combustible->codigo . '.pdf');
    }
 

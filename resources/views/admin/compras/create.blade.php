@@ -4,7 +4,7 @@
 @section('content')
     <!-- Titulo y boton -->
     <div class="flex items-center justify-between mb-6">
-        <h1 class="text-2xl font-semibold">Creación de la Orden de compra</h1>
+        <h1 class="text-xl sm:text-2xl font-semibold">Creación de la Orden de compra</h1>
     </div>
 
     <div class="breadcrumbs text-sm mb-6">
@@ -77,7 +77,7 @@
             <div data-slot="card-content" class="px-6 [&:last-child]:pb-6">
                 <div class="grid gap-4">
 
-                    <div class="grid grid-cols-3 gap-4">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                         <!-- País -->
                         <div class="space-y-2">
                             <label for="fecha_orden" class="text-sm font-medium">Fecha de Emisión<span
@@ -178,7 +178,7 @@
             <div data-slot="card-content" class="px-6 [&:last-child]:pb-6">
                 <div class="grid gap-4">
 
-                    <div class="grid grid-cols-3 gap-4">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                         <div class="space-y-2">
                             <div class="flex items-center justify-between gap-4">
                                 <label class="text-sm font-medium mb-0">Proveedor <span
@@ -222,7 +222,7 @@
 
                         <!-- DESTINO ID -->
                         <div class="space-y-2 -mt-4">
-                            <div class="flex items-center justify-between gap-4">
+                            <div class="flex flex-wrap items-center justify-between gap-2">
                                 <label class="text-sm font-medium mb-0">Elemento <span
                                         class="text-red-600">*</span></label>
                                 <button type="button" id="btn_elegir_destino" class="btn btn-sm btn-warning">
@@ -294,12 +294,12 @@
         </div>
         <div class="bg-base-100 shadow-xl rounded-xl  mt-6">
             <!-- Header -->
-            <div class="px-6 pt-6 pb-4">
-                <div class="flex items-center justify-between">
+            <div class="px-4 sm:px-6 pt-6 pb-4">
+                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                     <h4 class="text-lg font-semibold">Insumos</h4>
-                    <div class="flex gap-2">
+                    <div class="flex flex-wrap gap-2">
                         <button type="button" onclick="crearProductoModal.showModal()"
-                            class="btn flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white text-sm px-4 py-2 rounded-md transition">
+                            class="btn btn-sm flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white text-sm px-3 py-2 rounded-md transition">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                 stroke-linejoin="round" class="lucide lucide-package-plus w-4 h-4">
@@ -316,7 +316,7 @@
                         </button>
 
                         <button type="button" onclick="modalAgregarItem.showModal()"
-                            class="btn flex items-center gap-2 bg-info-content hover:bg-info-content/50 text-white text-sm font-medium px-4 py-2 rounded-md transition">
+                            class="btn btn-sm flex items-center gap-2 bg-info-content hover:bg-info-content/50 text-white text-sm font-medium px-3 py-2 rounded-md transition">
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24"
                                 stroke="currentColor" stroke-width="2">
                                 <path d="M5 12h14"></path>
@@ -376,8 +376,8 @@
         <!-- ========================= -->
         <!-- BOTONES DEL FORMULARIO -->
         <!-- ========================= -->
-        <div class="flex justify-end pt-4">
-            <a href="{{ route('compras.index') }}" class="btn btn-warning mr-2">
+        <div class="flex flex-wrap justify-end gap-2 pt-4">
+            <a href="{{ route('compras.index') }}" class="btn btn-warning">
                 <x-heroicon-m-arrow-left class="w-4 h-4 inline" />
                 Volver
             </a>
@@ -389,7 +389,7 @@
     </form>
     <!-- Modal para agregar producto -->
     <dialog id="modalAgregarItem" class="modal">
-        <div class="modal-box w-11/12 max-w-5xl">
+        <div class="modal-box w-11/12 max-w-5xl max-h-[85vh] overflow-y-auto">
             <form method="dialog">
                 <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
             </form>
@@ -428,7 +428,7 @@
                 </table>
 
                 <!-- Paginación -->
-                <div class="flex justify-between items-center mt-3 text-xs">
+                <div class="flex flex-wrap justify-center sm:justify-between items-center mt-3 gap-2 text-xs">
                     <button type="button" class="btn btn-xs" id="producto_prev_page">
                         « Anterior
                     </button>
@@ -451,7 +451,7 @@
     <!-- Modal para crear producto -->
     <dialog id="crearProductoModal" class="modal">
 
-        <div class="modal-box max-w-xl rounded-xl">
+        <div class="modal-box max-w-xl rounded-xl max-h-[85vh] overflow-y-auto">
 
             <!-- Título -->
             <h3 class="font-bold text-xl flex items-center gap-3 mb-4">
@@ -576,7 +576,7 @@
 
     <!-- Modal para ver detalle del producto -->
     <dialog id="modalDetalleProducto" class="modal">
-        <div class="modal-box max-w-lg rounded-xl">
+        <div class="modal-box max-w-lg rounded-xl max-h-[85vh] overflow-y-auto">
             <form method="dialog">
                 <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
             </form>
@@ -687,7 +687,7 @@
     <!-- Modal para seleccionar proveedor -->
     <input type="checkbox" id="modal_elegir_proveedor" class="modal-toggle" />
     <div class="modal">
-        <div class="modal-box max-w-4xl">
+        <div class="modal-box max-w-4xl max-h-[85vh] overflow-y-auto">
             <h3 class="font-bold text-lg mb-4" id="titulo_modal_proveedor">
                 Seleccionar proveedor
             </h3>
@@ -712,7 +712,7 @@
                         {{-- filas generadas por JS --}}
                     </tbody>
                 </table>
-                <div class="flex justify-between items-center mt-3 text-xs">
+                <div class="flex flex-wrap justify-center sm:justify-between items-center mt-3 gap-2 text-xs">
                     <button type="button" class="btn btn-xs" id="proveedor_prev_page">
                         « Anterior
                     </button>
@@ -737,7 +737,7 @@
     <!-- Modal para seleccionar empleado -->
     <input type="checkbox" id="modal_elegir_empleado" class="modal-toggle" />
     <div class="modal">
-        <div class="modal-box max-w-4xl">
+        <div class="modal-box max-w-4xl max-h-[85vh] overflow-y-auto">
             <h3 class="font-bold text-lg mb-4" id="titulo_modal_empleado">
                 Seleccionar empleado
             </h3>
@@ -763,7 +763,7 @@
                         {{-- filas generadas por JS --}}
                     </tbody>
                 </table>
-                <div class="flex justify-between items-center mt-3 text-xs">
+                <div class="flex flex-wrap justify-center sm:justify-between items-center mt-3 gap-2 text-xs">
                     <button type="button" class="btn btn-xs" id="empleado_prev_page">
                         « Anterior
                     </button>
@@ -798,7 +798,7 @@
 
     <!-- Modal para crear empleado -->
     <dialog id="crearEmpleadoModal" class="modal">
-        <div class="modal-box max-w-2xl">
+        <div class="modal-box max-w-2xl max-h-[85vh] overflow-y-auto">
             <form method="dialog">
                 <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
             </form>
@@ -963,7 +963,7 @@
                         {{-- filas generadas por JS --}}
                     </tbody>
                 </table>
-                <div class="flex justify-between items-center mt-3 text-xs">
+                <div class="flex flex-wrap justify-center sm:justify-between items-center mt-3 gap-2 text-xs">
                     <button type="button" class="btn btn-xs" id="destino_prev_page">
                         « Anterior
                     </button>

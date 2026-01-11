@@ -2,7 +2,7 @@
 @section('title', 'Compras')
 @section('content') 
     <div class="flex items-center justify-between mb-6">
-        <h1 class="text-2xl font-semibold">Compras</h1> 
+        <h1 class="text-3xl font-bold text-base-content">Compras</h1> 
         {{-- Botón agregar compra --}}
         @can('compras-create')
             <a href="{{ route('compras.create') }}" class="btn btn-primary">
@@ -29,10 +29,10 @@
             </li>
         </ul>
     </div>
-    <div class="grid grid-cols-1 md:grid-cols-3 pd-6 mb-6">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
 
         <!-- Card 1 -->
-        <div class="bg-base-100 shadow-xl bg-card text-card-foreground flex flex-col gap-6 rounded-xl mr-2">
+        <div class="bg-base-100 shadow-xl bg-card text-card-foreground flex flex-col gap-6 rounded-xl w-full">
             <div class="px-6 pt-6 pb-6">
                 <div class="flex items-center justify-between">
                     <div>
@@ -51,7 +51,7 @@
         </div>
 
         <!-- Card 2 -->
-        <div class="bg-base-100 shadow-xl bg-card text-card-foreground flex flex-col gap-6 rounded-xl mr-2">
+        <div class="bg-base-100 shadow-xl bg-card text-card-foreground flex flex-col gap-6 rounded-xl w-full">
             <div class="px-6 pt-6 pb-6">
                 <div class="flex items-center justify-between">
                     <div>
@@ -70,7 +70,7 @@
         </div>
 
         <!-- Card 3 -->
-        <div class="bg-base-100 shadow-xl bg-card text-card-foreground flex flex-col gap-6 rounded-xl mr-2">
+        <div class="bg-base-100 shadow-xl bg-card text-card-foreground flex flex-col gap-6 rounded-xl w-full">
             <div class="px-6 pt-6 pb-6">
                 <div class="flex items-center justify-between">
                     <div>
@@ -176,7 +176,7 @@
                                             default => 'badge-ghost',
                                         };
                                     @endphp
-                                    <span class="badge {{ $badgeClass }} badge-sm">
+                                    <span class="badge {{ $badgeClass }} badge-sm whitespace-nowrap overflow-hidden text-ellipsis max-w-[120px]" title="{{ $compra->estado_compra }}">
                                         {{ $compra->estado_compra }}
                                     </span>
                                 </td>

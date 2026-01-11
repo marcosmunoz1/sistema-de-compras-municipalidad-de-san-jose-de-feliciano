@@ -4,7 +4,7 @@
 @section('content')
     <!-- Titulo y boton -->
     <div class="flex items-center justify-between mb-6">
-        <h1 class="text-2xl font-semibold">Edición de la Orden de compra</h1>
+        <h1 class="text-xl sm:text-2xl font-semibold">Edición de la Orden de compra</h1>
     </div>
 
     <div class="breadcrumbs text-sm mb-6">
@@ -46,7 +46,7 @@
         <div data-slot="card-content" class="px-6 [&:last-child]:pb-6">
             <div class="grid gap-4">
 
-                <div class="grid grid-cols-3 gap-4">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <!-- País -->
                     <div class="space-y-2">
                         <label for="fecha_orden" class="text-sm font-medium">Fecha de Emisión</label>
@@ -101,7 +101,7 @@
         <div data-slot="card-content" class="px-6 [&:last-child]:pb-6">
             <div class="grid gap-4">
 
-                <div class="grid grid-cols-3 gap-4">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div class="space-y-2">
                         <label for="proveedor_id" class="text-sm font-medium">Proveedor</label>
                         <select id="proveedor_id" name="proveedor_id"
@@ -178,6 +178,7 @@
 
             <div data-slot="card-content" class="px-6 [&:last-child]:pb-6">
                 <div class="grid gap-4">
+                    <div class="overflow-x-auto">
                     <table class="table table-zebra w-full">
                         <thead>
                             <tr>
@@ -238,6 +239,7 @@
                             </tr>
                         </tfoot>
                     </table>
+                    </div>
                 </div>
                 <div class="form-control w-full">
                     <label class="label">
@@ -276,12 +278,12 @@
         <!-- ========================= -->
         <!-- BOTONES DEL FORMULARIO -->
         <!-- ========================= -->
-        <div class="flex justify-end pt-4">
-            <a href="{{ route('compras.index') }}" class="btn btn-warning mr-2">
+        <div class="flex flex-wrap gap-2 justify-end pt-4">
+            <a href="{{ route('compras.index') }}" class="btn btn-sm sm:btn-md btn-warning">
                 <x-heroicon-m-arrow-left class="w-4 h-4 inline" />
                 Volver
             </a>
-            <button type="submit" class="btn btn-primary">
+            <button type="submit" class="btn btn-sm sm:btn-md btn-primary">
                 <x-heroicon-m-arrow-down-tray class="w-4 h-4 inline" />
                 Guardar compra
             </button>

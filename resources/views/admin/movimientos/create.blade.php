@@ -184,32 +184,34 @@
 
         </div>
         <div class="card bg-base-100 shadow-xl p-4">
-            <h1 class="text-2xl font-semibold">Productos</h1>
-            <br>
-            <table class="table table-bordered" id="tablaProductos">
-                <thead>
-                    <tr>
-                        <th class="text-center">Nr</th>
-                        <th class="text-center">Producto</th>
-                        <th class="text-center">Cantidad asignada</th>
-                        <th class="text-center">Stock</th>
-                        <th class="text-center">Cantidad a mover/consumir</th>
-                        <th class="text-center">Acción</th>
-                    </tr>
-                </thead>
-                <tbody id="tbodyProductos"></tbody>
-            </table>
+            <h1 class="text-xl sm:text-2xl font-semibold mb-4">Productos</h1>
+            
+            <div class="overflow-x-auto">
+                <table class="table table-bordered text-sm" id="tablaProductos">
+                    <thead>
+                        <tr>
+                            <th class="text-center">Nr</th>
+                            <th class="text-center">Producto</th>
+                            <th class="text-center hidden sm:table-cell">Cantidad asignada</th>
+                            <th class="text-center hidden md:table-cell">Stock</th>
+                            <th class="text-center">Cantidad a mover</th>
+                            <th class="text-center">Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbodyProductos"></tbody>
+                </table>
+            </div>
 
         </div>
         
         <!-- Botones -->
-        <div class="flex justify-end mt-4">
-            <a href="{{ route('movimientos.index') }}" class="btn btn-warning mr-2">
+        <div class="flex flex-wrap gap-2 justify-end mt-4">
+            <a href="{{ route('movimientos.index') }}" class="btn btn-sm sm:btn-md btn-warning">
                 <x-heroicon-o-arrow-left class="w-4 h-4 inline" />
                 Volver
             </a>
 
-            <button type="submit" class="btn btn-primary">
+            <button type="submit" class="btn btn-sm sm:btn-md btn-primary">
                 <x-heroicon-o-check class="w-4 h-4 inline" />
                 Guardar Movimiento
             </button>
@@ -929,12 +931,12 @@
                                     </td>
 
                                     <!-- CANTIDAD ASIGNADA -->
-                                    <td class="text-center">
+                                    <td class="text-center hidden sm:table-cell">
                                         <span class="badge badge-secondary">${cantidadAsignada}</span>
                                     </td>
 
                                     <!-- STOCK DISPONIBLE -->
-                                    <td class="text-center">
+                                    <td class="text-center hidden md:table-cell">
                                         <span class="badge badge-info">${stock}</span>
                                     </td>
 

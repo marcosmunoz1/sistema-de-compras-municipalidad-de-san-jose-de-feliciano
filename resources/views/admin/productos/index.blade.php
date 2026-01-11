@@ -166,14 +166,14 @@
 
                                     {{-- Ver --}}
                                     @can('productos-show')
-                                    <button onclick="abrir_modal('crearProductoModal', 'Detalles del Producto', 3, ['categoria_id', 'nombre', 'descripcion', 'unidad'], {{ $producto }}, true)" class="btn btn-info btn-sm">
+                                    <button onclick="abrir_modal('crearProductoModal', 'Detalles del Producto', 3, ['categoria_id', 'nombre', 'descripcion', 'unidad'], {{ $producto }}, true)" class="btn btn-info btn-sm" title="Ver producto">
                                         <x-heroicon-s-eye class="w-4 h-4"/>
                                     </button>
                                     @endcan
 
                                     {{-- Editar --}}
                                     @can('productos-update')
-                                    <button class="btn btn-warning btn-sm" onclick="abrir_modal('crearProductoModal', 'Editar Producto', 2, ['categoria_id', 'nombre', 'descripcion', 'unidad'], {{ $producto }})">
+                                    <button class="btn btn-warning btn-sm" title="Editar producto" onclick="abrir_modal('crearProductoModal', 'Editar Producto', 2, ['categoria_id', 'nombre', 'descripcion', 'unidad'], {{ $producto }})">
                                         <x-heroicon-o-pencil-square class="w-4 h-4"/>
                                     </button> 
                                     @endcan
@@ -183,7 +183,7 @@
                                     @if ($producto->trashed()) 
                                         {{-- Restaurar --}}
                                             @can('productos-restore')
-                                            <button class="btn btn-sm btn-success"
+                                            <button class="btn btn-sm btn-success" title="Restaurar producto"
                                               onclick="abrirModalRestaurar('{{ url('/admin/productos/'. $producto->id.'/restore') }}')">
                                                 <x-heroicon-s-arrow-uturn-left class="w-4 h-4"/>
                                             </button>
@@ -192,7 +192,7 @@
                                     @else
                                         {{-- Eliminar --}}
                                        @can('productos-destroy')
-                                      <button class="btn btn-error btn-sm" onclick="confirmarEliminacion({{ $producto->id }})">
+                                      <button class="btn btn-error btn-sm" title="Eliminar producto" onclick="confirmarEliminacion({{ $producto->id }})">
                                           <x-heroicon-s-trash class="w-4 h-4"/>
                                       </button>
                                       @endcan
