@@ -442,9 +442,9 @@
                                 <label class="text-sm font-bold text-emerald-900 dark:text-emerald-400 block mb-2">Cantidad
                                     de Litros *</label>
                                 <div class="relative">
-                                    <input type="number" id="cantidad_litros" name="cantidad_litros"
+                                    <input type="number" id="cantidad_litros" name="litros"
                                         class="w-full text-3xl md:text-4xl font-bold h-16 md:h-20 text-center border-b-4 border-emerald-500 bg-transparent focus:outline-none text-white"
-                                        value="{{ $combustible->cantidad_litros }}" step="0.01" min="0">
+                                        value="{{ $combustible->litros }}" step="0.01" min="0">
                                     <span
                                         class="absolute right-0 top-1/2 -translate-y-1/2 text-xl font-bold text-emerald-500/50">L</span>
                                 </div>

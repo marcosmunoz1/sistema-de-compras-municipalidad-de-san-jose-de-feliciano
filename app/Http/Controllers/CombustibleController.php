@@ -246,36 +246,27 @@ class CombustibleController extends Controller
     public function update(Request $request,$id) 
     { 
         
-           // return response()->json($request->all());
-           $request->validate([ 
-            'codigo' => 'required|unique:combustibles,codigo,' . $id,      
-            'fecha' => 'required', 
-            'user_id' => 'required', 
-            'vehiculo_id' => 'required', 
-            'empleado_id' => 'required',
-            'combustible' => 'required', 
+        //return response()->json($request->all());
+        $request->validate([ 
             'litros' => 'required|numeric',
             'precio' => 'required|numeric',
-            'estacion' => 'required',
-            'tipo_de_pago' => 'required', 
-            'observaciones' => 'nullable|string|max:500'  
+            'imagen_factura' => 'required|nullable|file|mimes:jpg,jpeg,png,webp|max:5120', // 5MB
         ]); 
         
         $monto = $request->litros * $request->precio;  
         $combustible = Combustible::withTrashed()->findOrFail($id); 
 
-        $combustible->vehiculo_id = $request->vehiculo_id; 
-        $combustible->empleado_id = $request->empleado_id;
-        $combustible->user_id = $request->user_id;
-        $combustible->codigo = $request->codigo;
+        // Manejo de la foto o PDF de la factura
+        if ($request->hasFile('imagen_factura')) {
+            $path = $request->file('imagen_factura')
+                ->store('facturas_combustible', 'public');
+
+            $combustible->imagen_factura = $path;
+        }
+
         $combustible->litros = $request->litros;
-        $combustible->tipo = $request->combustible; 
         $combustible->precio = $request->precio;
-        $combustible->estacion = $request->estacion;
-        $combustible->fecha = $request->fecha;
         $combustible->monto = $monto;
-        $combustible->tipo_de_pago = $request->tipo_de_pago;
-        $combustible->observaciones = $request->observaciones;
         $combustible->save();
             
         
