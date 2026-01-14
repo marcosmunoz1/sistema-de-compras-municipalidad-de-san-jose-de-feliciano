@@ -88,6 +88,21 @@ class ProductoController extends Controller
         if ($request->input('accion') == "2") {
 
             $producto = Producto::findOrFail($request->id);
+
+            // 🚫 Si el producto ya fue usado en una compra, no se edita
+            if ($producto->detalle_compras()->exists()) {
+                return redirect()->back()
+                    ->with('mensaje', 'Este producto ya está asociado a una compra y no puede ser editado.')
+                    ->with('icono', 'warning');
+            }
+
+            $request->validate([
+                'categoria_id' => 'required', 
+                'nombre' => 'required',
+                'descripcion' => 'required',
+                'unidad' => 'required'
+            ]);
+
             $producto->categoria_id = $request->categoria_id;
             $producto->nombre = $request->nombre;
             $producto->descripcion = $request->descripcion;
@@ -132,6 +147,15 @@ class ProductoController extends Controller
      */
     public function update(Request $request,$id) 
     { 
+        $producto = Producto::findOrFail($id);
+
+        // 🚫 Si el producto ya fue usado en una compra, no se edita
+        if ($producto->detalle_compras()->exists()) {
+            return redirect()->back()
+                ->with('mensaje', 'Este producto ya está asociado a una compra y no puede ser editado.')
+                ->with('icono', 'warning');
+        }
+
         $request->validate([
             'categoria_id' => 'required', 
             'nombre' => 'required',
@@ -139,7 +163,6 @@ class ProductoController extends Controller
             'unidad' => 'required'
         ]);
 
-        $producto = Producto::findOrFail($id); 
         $producto->categoria_id = $request->categoria_id; 
         $producto->nombre = $request->nombre;
         $producto->descripcion = $request->descripcion;

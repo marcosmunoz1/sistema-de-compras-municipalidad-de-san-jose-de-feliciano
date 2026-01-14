@@ -22,7 +22,7 @@ class Detalle_compra extends Model
 
     public function producto()
     {
-        return $this->belongsTo(Producto::class);
+        return $this->belongsTo(Producto::class)->withTrashed();
     }
     public function vehiculosAsignados()
     {

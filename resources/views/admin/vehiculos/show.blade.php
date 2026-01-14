@@ -81,14 +81,14 @@
         <div data-slot="card-content" class="px-6 [&:last-child]:pb-6">
 
             <!-- GRID GENERAL: CAMPOS IZQUIERDA — IMAGEN DERECHA -->
-            <div class="grid grid-cols-3 gap-6">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
 
                 <!-- ======================= -->
                 <!-- COLUMNA IZQUIERDA -->
                 <!-- ======================= -->
-                <div class="col-span-2 space-y-4">
+                <div class="col-span-1 lg:col-span-2 space-y-4">
 
-                    <div class="grid grid-cols-3 gap-4">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                         <!-- Tipo -->
                         <div class="space-y-2">
                             <label for="tipo" class="text-sm font-medium">Tipo</label>
@@ -145,7 +145,7 @@
                         </div>
                     </div>
 
-                    <div class="grid grid-cols-3 gap-4">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                         <!-- Marca -->
                         <div class="space-y-2">
                             <label for="marca" class="text-sm font-medium">Marca</label>
@@ -281,7 +281,7 @@
         </form>
 
         <br>
-        <table class="table table-zebra w-full">
+        <table class="table table-zebra w-full table-responsive">
             <thead>
                 <tr>
                     <th class="text-center">Nr</th>

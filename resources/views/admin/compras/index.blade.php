@@ -28,6 +28,63 @@
                 </a>
             </li>
         </ul>
+        <form method="GET"
+            action="{{ route('compras.index') }}"
+            class="grid grid-cols-1 md:grid-cols-5 gap-4 items-end mb-6 mt-3">
+
+            <!-- Desde -->
+            <div>
+                <label class="text-sm text-gray-500">Desde</label>
+                <input type="date"
+                    name="desde"
+                    value="{{ request('desde') }}"
+                    class="input input-bordered w-full">
+            </div>
+
+            <!-- Hasta -->
+            <div>
+                <label class="text-sm text-gray-500">Hasta</label>
+                <input type="date"
+                    name="hasta"
+                    value="{{ request('hasta') }}"
+                    class="input input-bordered w-full">
+            </div>
+
+            <!-- Proveedor -->
+            <div>
+                <label class="text-sm text-gray-500">Proveedor</label>
+                <input type="text"
+                    name="proveedor"
+                    value="{{ request('proveedor') }}"
+                    placeholder="Nombre proveedor"
+                    class="input input-bordered w-full">
+            </div>
+
+            <!-- Estado -->
+            <div>
+                <label class="text-sm text-gray-500">Estado</label>
+                <select name="estado"
+                        class="select select-bordered w-full">
+                    <option value="">Todos</option>
+                    <option value="Pendiente de factura" @selected(request('estado') == 'Pendiente de factura')>
+                        Pendiente de factura
+                    </option>
+                    <option value="Finalizada" @selected(request('estado') == 'Finalizada')>
+                        Finalizada
+                    </option>
+                </select>
+            </div>
+
+            <!-- Botones -->
+            <div class="flex gap-2">
+                <button type="submit" class="btn btn-primary w-full md:w-auto">
+                    Filtrar
+                </button>
+                <a href="{{ route('compras.index') }}" class="btn btn-outline w-full md:w-auto">
+                    Limpiar
+                </a>
+            </div>
+        </form>
     </div>
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
 

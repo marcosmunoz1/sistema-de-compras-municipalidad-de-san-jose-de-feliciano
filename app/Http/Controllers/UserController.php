@@ -17,13 +17,12 @@ class UserController extends Controller
     {
         $contador = 1;
         $search = $request->input('search');
+        $usuarioLogueado = auth()->user();
 
         // Convertir búsqueda a estado (booleano)
         $estadoBuscado = null;
-
         if ($search !== null) {
             $s = strtolower($search);
-
             if ($s === 'activo') {
                 $estadoBuscado = 1;
             } elseif ($s === 'inactivo') {
@@ -32,31 +31,48 @@ class UserController extends Controller
         }
 
         $usuarios = User::with(['roles'])
-            ->withTrashed()->orderBy('id', 'desc')
+            ->withTrashed()
+            ->orderBy('id', 'desc')
+
+            // 🔐 FILTRO POR ROL SUPER-ADMIN
+            ->when(
+                ! $usuarioLogueado->hasAnyRole(['Super-Admin', 'Administrador']),
+                function ($query) {
+                    $query->whereDoesntHave('roles', function ($q) {
+                        $q->where('name', 'Super-Admin');
+                    });
+                }
+            )
+
             ->where(function ($query) use ($search, $estadoBuscado) {
 
-                // Campos de texto básicos
-                $query->where('name', 'LIKE', "%{$search}%")
-                    ->orWhere('email', 'LIKE', "%{$search}%");
+                if ($search) {
+                    // Campos básicos
+                    $query->where('name', 'LIKE', "%{$search}%")
+                        ->orWhere('email', 'LIKE', "%{$search}%");
 
-                // Búsqueda por rol
-                $query->orWhereHas('roles', function ($q) use ($search) {
-                    $q->where('name', 'LIKE', "%{$search}%");
-                });
+                    // Rol
+                    $query->orWhereHas('roles', function ($q) use ($search) {
+                        $q->where('name', 'LIKE', "%{$search}%");
+                    });
 
-                // Búsqueda por estado (activo/inactivo)
-                if (!is_null($estadoBuscado)) {
-                    $query->orWhere('estado', $estadoBuscado);
+                    // Estado
+                    if (!is_null($estadoBuscado)) {
+                        $query->orWhere('estado', $estadoBuscado);
+                    }
                 }
             })
-            ->paginate(10)->withQueryString();
+            ->paginate(10)
+            ->withQueryString();
 
         $roles = Role::all();
-        $usuarioLogueado = auth()->user();
 
-
-        return view('admin.usuarios.index', compact('usuarios', 'roles', 'contador', 'usuarioLogueado'));
+        return view(
+            'admin.usuarios.index',
+            compact('usuarios', 'roles', 'contador', 'usuarioLogueado')
+        );
     }
+
 
 
     /**

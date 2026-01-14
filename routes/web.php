@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+
 
 
 /* Route::get('/', function () {
@@ -17,7 +19,13 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 }); */ 
+Route::get('/', function () {
+    if (Auth::check()) {
+        return redirect('/admin');
+    }
 
+    return redirect('/login');
+});
 Route::get('/admin', [App\Http\Controllers\AdminController::class, 'index'])->name('admin.index')->middleware('auth','can:admin-index'); 
 
 //Rutas para compras
@@ -220,18 +228,18 @@ Route::get('origen/listar/{tipo}', [App\Http\Controllers\OrigenController::class
 Route::get('origen/{tipo}/{id}/productos', [App\Http\Controllers\OrigenController::class, 'productos'])->name('origen.productos');
 
 //Rutas para equipos
-Route::get('/admin/equipos', [App\Http\Controllers\EquipoController::class, 'index'])->name('equipos.index')->middleware('auth');
-Route::get('/admin/equipos/create', [App\Http\Controllers\EquipoController::class, 'create'])->name('equipos.create')->middleware('auth');
-Route::post('/admin/equipos/store', [App\Http\Controllers\EquipoController::class, 'store'])->name('equipos.store')->middleware('auth');
-Route::get('/admin/equipos/{id}/edit', [App\Http\Controllers\EquipoController::class, 'edit'])->name('equipos.edit')->middleware('auth');
-Route::put('/admin/equipos/{id}', [App\Http\Controllers\EquipoController::class, 'update'])->name('equipos.update')->middleware('auth');
-Route::get('/admin/equipos/{id}', [App\Http\Controllers\EquipoController::class, 'show'])->name('equipos.show')->middleware('auth');
-Route::delete('/admin/equipos/{id}', [App\Http\Controllers\EquipoController::class, 'destroy'])->name('equipos.destroy')->middleware('auth');
-Route::put('admin/equipos/{id}/restore', [App\Http\Controllers\EquipoController::class, 'restore'])->name('equipos.restore')->middleware('auth');
+Route::get('/admin/equipos', [App\Http\Controllers\EquipoController::class, 'index'])->name('equipos.index')->middleware('auth', 'can:equipos-index');
+Route::get('/admin/equipos/create', [App\Http\Controllers\EquipoController::class, 'create'])->name('equipos.create')->middleware('auth', 'can:equipos-create');
+Route::post('/admin/equipos/store', [App\Http\Controllers\EquipoController::class, 'store'])->name('equipos.store')->middleware('auth', 'can:equipos-store');
+Route::get('/admin/equipos/{id}/edit', [App\Http\Controllers\EquipoController::class, 'edit'])->name('equipos.edit')->middleware('auth', 'can:equipos-edit');
+Route::put('/admin/equipos/{id}', [App\Http\Controllers\EquipoController::class, 'update'])->name('equipos.update')->middleware('auth', 'can:equipos-update');
+Route::get('/admin/equipos/{id}', [App\Http\Controllers\EquipoController::class, 'show'])->name('equipos.show')->middleware('auth', 'can:equipos-show');
+Route::delete('/admin/equipos/{id}', [App\Http\Controllers\EquipoController::class, 'destroy'])->name('equipos.destroy')->middleware('auth', 'can:equipos-destroy');
+Route::put('admin/equipos/{id}/restore', [App\Http\Controllers\EquipoController::class, 'restore'])->name('equipos.restore')->middleware('auth', 'can:equipos-restore');
 
 //Rutas para auditoría
-Route::get('/admin/auditoria', [App\Http\Controllers\AuditoriaController::class, 'index'])->name('auditoria.index')->middleware('auth');
-Route::get('/admin/auditoria/{id}', [App\Http\Controllers\AuditoriaController::class, 'show'])->name('auditoria.show')->middleware('auth');
+Route::get('/admin/auditoria', [App\Http\Controllers\AuditoriaController::class, 'index'])->name('auditoria.index')->middleware('auth', 'can:auditoria-index');
+Route::get('/admin/auditoria/{id}', [App\Http\Controllers\AuditoriaController::class, 'show'])->name('auditoria.show')->middleware('auth', 'can:auditoria-show');
 
 //Rutas para backups
 Route::get('/admin/backups', [App\Http\Controllers\BackupController::class, 'index'])->name('backups.index')->middleware('auth', 'can:backups-index');

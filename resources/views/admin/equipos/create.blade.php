@@ -55,7 +55,10 @@
                         <span class="label-text font-medium">Área <span class="text-error">*</span></span>
                     </label>
                     <select name="area_id" 
-                            class="select select-bordered w-full @error('area_id') select-error @enderror"
+                            class="select w-full h-10 rounded-md border-base-300 bg-base-200
+                            px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
+                            focus:border-primary transition
+                            @error('area_id') select-error @enderror"
                             required>
                         <option disabled selected value="">Seleccionar área</option>
                         @foreach($areas as $area)
@@ -80,7 +83,9 @@
                            name="equipamiento" 
                            value="{{ old('equipamiento') }}"
                            placeholder="Ej: Computadora de escritorio"
-                           class="input input-bordered w-full @error('equipamiento') input-error @enderror"
+                           class="w-full h-10 rounded-md border border-base-300 bg-base-200 
+                        px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary
+                        focus:border-primary @error('equipamiento') input-error @enderror"
                            required>
                     @error('equipamiento')
                         <label class="label">
@@ -98,7 +103,9 @@
                            name="marca" 
                            value="{{ old('marca') }}"
                            placeholder="Ej: HP, Dell, Lenovo, Samsung"
-                           class="input input-bordered w-full @error('marca') input-error @enderror"
+                           class="w-full h-10 rounded-md border border-base-300 bg-base-200 
+                        px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary
+                        focus:border-primary @error('marca') input-error @enderror"
                            required>
                     @error('marca')
                         <label class="label">
@@ -116,7 +123,9 @@
                     <textarea name="descripcion" 
                               rows="4"
                               placeholder="Detalles adicionales del equipo: modelo, características, número de serie, etc."
-                              class="textarea textarea-bordered w-full @error('descripcion') textarea-error @enderror">{{ old('descripcion') }}</textarea>
+                              class="w-full rounded-md border border-base-300 bg-base-200
+                    px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary
+                    focus:border-primary transition resize-none @error('descripcion') textarea-error @enderror">{{ old('descripcion') }}</textarea>
                     @error('descripcion')
                         <label class="label">
                             <span class="label-text-alt text-error">{{ $message }}</span>

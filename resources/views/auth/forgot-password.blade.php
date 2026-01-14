@@ -1,5 +1,5 @@
-<x-guest-layout>
-
+<x-guest-layout title="Recuperar contraseña">
+    
     <div class="max-w-md w-full mx-auto mt-10 bg-white dark:bg-gray-900 shadow-lg rounded-xl p-8">
 
         <!-- Título -->
