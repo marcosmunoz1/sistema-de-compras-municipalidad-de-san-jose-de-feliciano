@@ -264,6 +264,12 @@ class CompraController extends Controller
     {
         $id = Crypt::decryptString($id); 
         $compra = Compra::with('detalle_compras','proveedor')->findOrFail($id);
+
+        if ($compra->estado_compra === 'Finalizada') {
+            return redirect()->route('compras.index')->with('mensaje', 'No se puede editar esta compra porque ya está finalizada.')
+                                    ->with('icono', 'warning');
+        }
+
         $categorias = Categoria::all();  
         $proveedores = Proveedor::all();
         $empleados = Empleado::all();
