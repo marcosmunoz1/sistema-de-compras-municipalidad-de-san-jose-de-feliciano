@@ -60,10 +60,10 @@
                     </svg>
                 </div>
                 <div>
-                    <h1 class="text-2xl md:text-3xl font-black tracking-tight text-base-content">
+                    <h1 class="text-2xl text-white md:text-3xl font-black tracking-tight text-base-content">
                         Editar Carga
                     </h1>
-                    <p class="text-xs md:text-sm font-medium opacity-70 uppercase tracking-wider mt-1">
+                    <p class="text-xs md:text-sm font-medium text-white opacity-70 uppercase tracking-wider mt-1">
                         Registro de Combustible #4421
                     </p>
                 </div>
@@ -77,8 +77,8 @@
                     </svg>
                 </div>
                 <div>
-                    <p class="text-[10px] md:text-xs uppercase font-bold opacity-50">Última actualización</p>
-                    <p class="font-bold text-xs md:text-sm text-base-content">15/01/2024 • 10:30 AM</p>
+                    <p class="text-[10px] md:text-xs uppercase font-bold text-white opacity-50">Última actualización</p>
+                    <p class="font-bold text-xs md:text-sm text-white">15/01/2024 • 10:30 AM</p>
                 </div>
             </div>
 
@@ -335,7 +335,7 @@
                             <input type="number" 
                                 id="cantidad_litros"
                                 name="cantidad_litros"
-                                class="w-full text-3xl md:text-4xl font-bold h-16 md:h-20 text-center border-b-4 border-emerald-500 bg-transparent focus:outline-none text-base-content" 
+                                class="w-full text-3xl md:text-4xl font-bold h-16 md:h-20 text-center border-b-4 border-emerald-500 bg-transparent focus:outline-none text-white" 
                                 value="{{ $combustible->cantidad_litros }}" 
                                 step="0.01"
                                 min="0">

@@ -246,7 +246,7 @@ class CombustibleController extends Controller
     public function update(Request $request,$id) 
     { 
         
-           return response()->json($request->all());
+           // return response()->json($request->all());
            $request->validate([ 
             'codigo' => 'required|unique:combustibles,codigo,' . $id,      
             'fecha' => 'required', 
