@@ -2,11 +2,11 @@
 @section('title', 'Productos') 
 @section('content')
 <!-- Titulo y boton --> 
- <div class="flex items-center justify-between mb-6">
-    <h1 class="text-2xl font-semibold">Productos</h1>
-    <div class="flex gap-2">
-      @can('productos-store') 
-        <button onclick="abrirModalOcr()" class="btn bg-green-500"> 
+ <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6"> 
+    <h1 class="text-2xl font-semibold">Productos</h1> 
+    <div class="flex gap-2"> 
+      @can('productos-store')   
+        <button onclick="abrirModalOcr()" class="btn btn-sm sm:btn-md bg-green-500"> 
           <x-heroicon-o-camera class="w-5 h-5"/>Cargar desde Factura
         </button>
         <button onclick="abrir_modal('crearProductoModal', 'Crear Nuevo Producto', 1, [], [])" class="btn btn-primary"> 
@@ -14,9 +14,8 @@
         </button>
       @endcan  
     </div>
- </div> 
-
- <div class="breadcrumbs text-sm mb-6">
+ </div>  
+ <div class="breadcrumbs text-sm mb-6"> 
   <ul>
     <li>
       <a href="{{ route('admin.index') }}">

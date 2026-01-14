@@ -219,12 +219,12 @@
                                         <x-heroicon-s-eye class="w-4 h-4"/>
                                     </a>
                                     @endcan 
-                                    {{--  @can('combustibles-edit')
-                                    <a href="{{ route('combustibles.edit', $combustible->id) }}" 
+                                    @can('combustibles-edit')
+                                    <a href="{{ route('combustibles.edit', Crypt::encrypt($combustible->id)) }}"  
                                        class="btn btn-warning btn-sm">
                                         <x-heroicon-s-pencil class="w-4 h-4"/>
                                     </a>
-                                    @endcan --}}  
+                                    @endcan   
                                     @can('combustibles-report')
                                     <button onclick="abrirModalPDFCarga({{ $combustible->id }})"  
                                        class="btn bg-primary btn-sm" title="Imprimir orden"> 

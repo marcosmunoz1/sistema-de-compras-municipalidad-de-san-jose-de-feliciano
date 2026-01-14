@@ -1190,10 +1190,24 @@
                 .replaceAll("'", '&#39;');
         }
 
-        // Función para ver detalle del producto
+        // Función para ver detalle del producto (desde la tabla de insumos agregados)
         function verDetalleProducto(id) {
             const producto = productosAgregadosCache[id];
             
+            if (!producto) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Sin información',
+                    text: 'No se encontró información detallada del producto.'
+                });
+                return;
+            }
+
+            verDetalleProductoModal(producto);
+        }
+
+        // Función para ver detalle del producto (recibe el objeto producto directamente)
+        function verDetalleProductoModal(producto) {
             if (!producto) {
                 Swal.fire({
                     icon: 'warning',
@@ -1978,19 +1992,37 @@
                 <td class="text-center">${formatearCelda(producto.descripcion)}</td>
                 <td class="text-center">${formatearCelda(producto.unidad)}</td>
                 <td class="text-center">
-                    <button type="button" class="btn btn-primary btn-sm" 
-                        data-producto-id="${producto.id}"
-                        data-producto-json="${productoJSON}">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
-                        </svg>
-                        Agregar
-                    </button>
+                    <div class="flex items-center justify-center gap-1">
+                        <button type="button" class="btn btn-ghost btn-sm text-info btn-ver-detalle" 
+                            title="Ver detalle"
+                            data-producto-json="${productoJSON}">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"></path>
+                                <circle cx="12" cy="12" r="3"></circle>
+                            </svg>
+                        </button>
+                        <button type="button" class="btn btn-primary btn-sm btn-agregar-producto" 
+                            data-producto-id="${producto.id}"
+                            data-producto-json="${productoJSON}">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+                            </svg>
+                            Agregar
+                        </button>
+                    </div>
                 </td>
             `;
                     
-                    // Agregar evento click al botón
-                    const btnAgregar = tr.querySelector('button[data-producto-id]');
+                    // Agregar evento click al botón de ver detalle
+                    const btnVerDetalle = tr.querySelector('.btn-ver-detalle');
+                    btnVerDetalle.addEventListener('click', function() {
+                        const productoData = JSON.parse(this.dataset.productoJson.replace(/&quot;/g, '"'));
+                        verDetalleProductoModal(productoData);
+                    });
+
+                    // Agregar evento click al botón de agregar
+                    const btnAgregar = tr.querySelector('.btn-agregar-producto');
                     btnAgregar.addEventListener('click', function() {
                         const productoData = JSON.parse(this.dataset.productoJson.replace(/&quot;/g, '"'));
                         agregarProducto(producto.id, producto.nombre, productoData);

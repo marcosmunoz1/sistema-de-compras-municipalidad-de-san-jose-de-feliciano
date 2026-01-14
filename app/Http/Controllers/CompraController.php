@@ -254,14 +254,14 @@ class CompraController extends Controller
         // 1. Validación mínima
         $request->validate([
             'precios' => 'required|array',
-            'precios.*' => 'nullable',
-            'foto_factura' => 'nullable|file|mimes:jpg,jpeg,png,webp,pdf|max:5120', // 5MB
+            'precios.*' => 'nullable', 
+            'foto_factura' => 'required|nullable|file|mimes:jpg,jpeg,png,webp,pdf|max:5120', // 5MB
         ],
         [
             'foto_factura.file'  => 'El archivo de la factura no es válido.',
             'foto_factura.mimes' => 'La factura debe ser una imagen (JPG, PNG, WEBP) o un archivo PDF.',
             'foto_factura.max'   => 'La factura no puede superar los 5 MB.',
-        ]);
+        ]); 
 
         // 2. Buscar la compra
         $compra = Compra::with('detalle_compras')->findOrFail($id);

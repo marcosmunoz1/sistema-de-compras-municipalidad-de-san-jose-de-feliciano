@@ -5,11 +5,11 @@
     <!-- Titulo y boton -->
     <div class="flex items-center justify-between mb-6">
         <h1 class="text-2xl font-semibold">Ver Orden de Combustible</h1>
-        <div class="flex gap-2">
+        <div class="flex gap-2"> 
             <a href="{{ route('combustibles.index') }}"
                 class="inline-flex items-center gap-2 h-9 px-4 py-2 rounded-md bg-blue-600 text-sm hover:bg-blue-700 text-white">
                 <x-heroicon-o-arrow-left class="w-4 h-4 inline" />
-                Volver a Combustibles
+                Volver a Combustibles  
             </a>
         </div>
     </div>
@@ -47,9 +47,9 @@
         </ul>
 
     </div>
-    <div class="card bg-base-100 shadow-md rounded-xl p-4 sm:p-6">
+    <div class="card bg-base-100 shadow-md rounded-xl p-4 sm:p-6"> 
         <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
-            <div class="flex gap-4">
+            <div class="flex gap-4"> 
                 <div class="bg-orange-500 p-4 rounded-lg">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
@@ -62,9 +62,16 @@
                     </svg>
                 </div>
                 <div>
-                    <div class="flex flex-wrap items-center gap-2 sm:gap-3 mb-2">
-                        <h1 class="text-xl sm:text-3xl">Carga de Combustible</h1><span data-slot="badge"
-                            class="inline-flex items-center justify-center rounded-md border px-2 py-0.5 text-xs font-medium w-fit whitespace-nowrap shrink-0 [&amp;&gt;svg]:size-3 gap-1 [&amp;&gt;svg]:pointer-events-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive transition-[color,box-shadow] overflow-hidden border-transparent bg-primary text-primary-foreground [a&amp;]:hover:bg-primary/90">Activo</span>
+                    <div class="flex flex-wrap items-center gap-2 sm:gap-3 mb-2"> 
+                        <h1 class="text-xl sm:text-3xl">Carga de Combustible</h1>
+                        <span data-slot="badge"
+                            class="inline-flex items-center justify-center rounded-md border px-2 
+                            py-0.5 text-xs font-medium w-fit whitespace-nowrap shrink-0 [&amp;&gt;svg]:size-3 gap-1 [&amp;&gt;svg]:pointer-events-none 
+                            focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 
+                            aria-invalid:border-destructive transition-[color,box-shadow] overflow-hidden border-transparent 
+                            bg-primary text-primary-foreground [a&amp;]:hover:bg-primary/90">
+                            Activo
+                        </span> 
                     </div>
                     <p class="text-gray-500 mb-1">Factura N° FACT-{{ $combustible->codigo }}</p>
                     <div class="flex items-center gap-2 mt-2"><span data-slot="badge"

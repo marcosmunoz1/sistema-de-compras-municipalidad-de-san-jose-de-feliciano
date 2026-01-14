@@ -234,6 +234,7 @@
         <!-- Fila 1: Gráficos de gastos -->
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
             <!-- Gráfico: Gastos en Compras Mensuales -->
+            @can('compras-index')
             <div class="card bg-base-100 shadow-xl border border-base-300">
                 <div class="card-body">
                     <h3 class="card-title text-lg mb-4">
@@ -245,9 +246,11 @@
                     </h3>
                     <canvas id="gastosComprasChart" height="80"></canvas>
                 </div>
-            </div>
+            </div> 
+            @endcan 
 
             <!-- Gráfico: Cargas de Combustible Mensuales -->
+            @can('combustibles-index')
             <div class="card bg-base-100 shadow-xl border border-base-300">
                 <div class="card-body">
                     <h3 class="card-title text-lg mb-4">
@@ -262,11 +265,13 @@
                     <canvas id="cargasCombustibleChart" height="80"></canvas>
                 </div>
             </div>
+            @endcan 
         </div>
 
         <!-- Fila 2: Gráficos de rankings -->
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <!-- Gráfico: Productos Más Comprados -->
+            @can('productos-index')
             <div class="card bg-base-100 shadow-xl border border-base-300">
                 <div class="card-body">
                     <h3 class="card-title text-lg mb-4">
@@ -280,26 +285,29 @@
                     <canvas id="productosTopChart" height="100"></canvas>
                 </div>
             </div>
-
+            @endcan 
             <!-- Gráfico: Vehículos con Más Cargas -->
-            <div class="card bg-base-100 shadow-xl border border-base-300">
-                <div class="card-body">
-                    <h3 class="card-title text-lg mb-4">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-cyan-500">
-                            <path d="M14 16H9m10 0h3v-3.15a1 1 0 0 0-.84-.99L16 11l-2.7-3.6a1 1 0 0 0-.8-.4H5.24a2 2 0 0 0-1.8 1.1l-.8 1.63A6 6 0 0 0 2 12.42V16h2"></path>
-                            <circle cx="6.5" cy="16.5" r="2.5"></circle>
-                            <circle cx="16.5" cy="16.5" r="2.5"></circle>
-                        </svg>
-                        Vehículos con Más Cargas
-                    </h3>
-                    <canvas id="vehiculosCargasChart" height="100"></canvas>
-                </div>
+            @can('vehiculos-index')
+                <div class="card bg-base-100 shadow-xl border border-base-300">
+                    <div class="card-body">
+                        <h3 class="card-title text-lg mb-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-cyan-500">
+                                <path d="M14 16H9m10 0h3v-3.15a1 1 0 0 0-.84-.99L16 11l-2.7-3.6a1 1 0 0 0-.8-.4H5.24a2 2 0 0 0-1.8 1.1l-.8 1.63A6 6 0 0 0 2 12.42V16h2"></path>
+                                <circle cx="6.5" cy="16.5" r="2.5"></circle>
+                                <circle cx="16.5" cy="16.5" r="2.5"></circle>
+                            </svg>
+                            Vehículos con Más Cargas
+                        </h3>
+                        <canvas id="vehiculosCargasChart" height="100"></canvas>
+                    </div>
+                </div> 
+            @endcan   
             </div>
-        </div>
 
         <!-- Fila 3: Más estadísticas -->
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
             <!-- Gráfico: Top Proveedores -->
+            @can('proveedores-index')
             <div class="card bg-base-100 shadow-xl border border-base-300">
                 <div class="card-body">
                     <h3 class="card-title text-lg mb-4">
@@ -313,8 +321,9 @@
                     <canvas id="topProveedoresChart" height="100"></canvas>
                 </div>
             </div>
-
+            @endcan 
             <!-- Gráfico: Empleados que Más Solicitan -->
+            @can('empleados-index')
             <div class="card bg-base-100 shadow-xl border border-base-300">
                 <div class="card-body">
                     <h3 class="card-title text-lg mb-4">
@@ -329,11 +338,13 @@
                     <canvas id="empleadosSolicitudesChart" height="100"></canvas>
                 </div>
             </div>
+            @endcan 
         </div>
 
         <!-- Fila 4: Obras, Movimientos y Depósitos -->
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-6">
             <!-- Gráfico: Obras con Más Movimientos -->
+            @can('obras-index')
             <div class="card bg-base-100 shadow-xl border border-base-300">
                 <div class="card-body">
                     <h3 class="card-title text-lg mb-4">
@@ -347,8 +358,10 @@
                     <canvas id="obrasMovimientosChart" height="120"></canvas>
                 </div>
             </div>
+            @endcan 
 
             <!-- Gráfico: Distribución de Movimientos -->
+            @can('movimientos-index')
             <div class="card bg-base-100 shadow-xl border border-base-300">
                 <div class="card-body">
                     <h3 class="card-title text-lg mb-4">
@@ -362,8 +375,10 @@
                     <canvas id="movimientosTipoChart" height="120"></canvas>
                 </div>
             </div>
+            @endcan 
 
             <!-- Gráfico: Depósitos con Más Movimientos -->
+            @can('depositos-index')
             <div class="card bg-base-100 shadow-xl border border-base-300">
                 <div class="card-body">
                     <h3 class="card-title text-lg mb-4">
@@ -376,10 +391,12 @@
                     <canvas id="depositosMovimientosChart" height="120"></canvas>
                 </div>
             </div>
+            @endcan 
         </div>
     </div> 
      <!-- Sección de Compras Pendientes de Factura -->
-    @if($comprasPendientesFactura->count() > 0)
+     @if($comprasPendientesFactura->count() > 0)
+     @can('compras-index')
     <div class="mt-8">
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
             <h2 class="text-xl sm:text-2xl font-bold flex items-center gap-2">
@@ -470,6 +487,7 @@
             </div>
         </div>
     </div>
+    @endcan 
     @endif
 
     <!-- Scripts para Chart.js -->

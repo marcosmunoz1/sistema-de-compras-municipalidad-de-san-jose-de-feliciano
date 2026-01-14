@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 @section('title', 'Compras')
-@section('content') 
+@section('content')  
     <div class="flex items-center justify-between mb-6">
         <h1 class="text-3xl font-bold text-base-content">Compras</h1> 
         {{-- Botón agregar compra --}}
@@ -205,11 +205,16 @@
 
                                         @can('compras-report')
                                             <button onclick="abrirModalPDF({{ $compra->id }})"
-                                                class="btn bg-primary btn-sm" title="Imprimir orden de compra">
-                                                <x-heroicon-o-printer class="w-4 h-4" />
+                                                class="btn bg-primary btn-sm {{ $compra->estado_compra == 'Finalizada' ? 'btn-disabled opacity-50 cursor-not-allowed' : '' }}" 
+                                                title="{{ $compra->estado_compra == 'Finalizada' ? 'Compra ya finalizada' : 'Imprimir orden de compra' }}"
+                                                @if ($compra->estado_compra == 'Finalizada') disabled @endif>
+                                                @if ($compra->estado_compra == 'Finalizada')
+                                                    <x-heroicon-o-printer class="w-4 h-4" />
+                                                @else
+                                                    <x-heroicon-o-printer class="w-4 h-4" />
+                                                @endif
                                             </button>
                                         @endcan
-
                                         {{--  @if ($compra->trashed())
                                         <button class="btn btn-success btn-sm"
                                                 onclick="abrirModalRestaurar('{{ url('/admin/compras/'. $compra->id.'/restore') }}')">

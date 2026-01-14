@@ -1,12 +1,10 @@
 @extends('layouts.admin')
 @section('title', 'Crear Proveedor') 
-
 @section('content')
 <!-- Titulo y boton --> 
- <div class="flex items-center justify-between mb-6">
-    <h1 class="text-2xl font-semibold">Crear Proveedor</h1> 
- </div>
- 
+ <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+    <h1 class="text-xl sm:text-2xl font-semibold">Crear Proveedor</h1> 
+ </div> 
  <div class="breadcrumbs text-sm mb-6">
   <ul>
     <li>
@@ -67,7 +65,7 @@
         <div data-slot="card-content" class="px-6 [&:last-child]:pb-6">
             <div class="grid gap-4">
 
-                <div class="grid grid-cols-2 gap-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <!-- Empresa -->
                     <div class="space-y-2">
                         <label for="empresa" class="text-sm font-medium">Nombre de la Empresa <span class="text-red-600">*</span></label>
@@ -77,7 +75,8 @@
                             value="{{ old('empresa') }}"
                             type="text"
                             placeholder="Nombre de la empresa..."
-                            class="w-full h-10 rounded-md border border-base-300 bg-base-200 px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition"
+                            class="w-full h-10 rounded-md border border-base-300 bg-base-200 px-3 text-sm focus:outline-none 
+                            focus:ring-2 focus:ring-primary focus:border-primary transition" 
                         />
                     </div>
 
@@ -92,7 +91,7 @@
                     </div>
                 </div>
 
-                <div class="grid grid-cols-3 gap-4">
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
                     <div class="space-y-2">
                         <label for="cuit" class="text-sm font-medium">CUIT / RUC</label>
                         <input id="cuit" name="cuit" value="{{ old('cuit') }}" 
@@ -124,7 +123,7 @@
                 <div class="pt-4 mt-2">
                     <h4 class="mb-4 ">Datos de Contacto</h4>
 
-                    <div class="grid grid-cols-3 gap-4">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
                         <div class="space-y-2">
                             <label for="nombre" class="text-sm font-medium">Nombre del Contacto <span class="text-red-600">*</span></label>
                             <input id="nombre" name="nombre" value="{{ old('nombre') }}" 
@@ -171,7 +170,7 @@
         <div data-slot="card-content" class="px-6 [&:last-child]:pb-6">
             <div class="grid gap-4">
 
-                <div class="grid grid-cols-3 gap-4">
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
                     <!-- País -->
                     <div class="space-y-2">
                         <label for="pais" class="text-sm font-medium">País <span class="text-red-600">*</span></label>
@@ -247,12 +246,12 @@
     <!-- ========================= -->
     <!-- BOTONES DEL FORMULARIO -->
     <!-- ========================= -->
-    <div class="flex justify-end pt-4">
-        <a href="{{ route('proveedores.index') }}" class="btn btn-warning mr-2"> 
+    <div class="flex flex-wrap gap-2 justify-end pt-4">
+        <a href="{{ route('proveedores.index') }}" class="btn btn-sm sm:btn-md btn-warning"> 
             <x-heroicon-m-arrow-left class="w-4 h-4 inline" /> 
             Volver 
         </a>  
-        <button type="submit" class="btn btn-primary">
+        <button type="submit" class="btn btn-sm sm:btn-md btn-primary">
             <x-heroicon-m-arrow-down-tray class="w-4 h-4 inline" /> 
             Guardar Proveedor 
         </button>

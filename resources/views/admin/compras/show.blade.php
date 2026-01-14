@@ -3,28 +3,30 @@
 
 @section('content')
     <!-- Titulo y boton -->
-    <div class="flex items-center justify-between mb-6">
-        <h1 class="text-2xl font-semibold">Ver datos de la compra</h1>
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+        <h1 class="text-xl sm:text-2xl font-semibold">Ver datos de la compra</h1>
+        <a href="{{ route('compras.index') }}" class="btn btn-sm sm:btn-md btn-primary w-fit">
+            <x-heroicon-m-arrow-left class="w-4 h-4 inline" />
+            Volver
+        </a> 
         @if ($from === 'vehiculo' && $vehiculoId)
-            <a href="{{ route('vehiculos.show', $vehiculoId) }}" class="btn btn-secondary mb-3">
+            <a href="{{ route('vehiculos.show', $vehiculoId) }}" class="btn btn-sm sm:btn-md btn-primary w-fit">
                 ← Volver al vehículo
             </a>
         @elseif($from === 'obra' && $obraId)
-            <a href="{{ route('obras.show', $obraId) }}" class="btn btn-secondary mb-3">
+            <a href="{{ route('obras.show', $obraId) }}" class="btn btn-sm sm:btn-md btn-primary w-fit">
                 ← Volver a obra
             </a>
         @elseif($from === 'deposito' && $depositoId)
-            <a href="{{ route('depositos.show', $depositoId) }}" class="btn btn-secondary mb-3">
+            <a href="{{ route('depositos.show', $depositoId) }}" class="btn btn-sm sm:btn-md btn-primary w-fit">
                 ← Volver a depósito
             </a>
         @elseif($from === 'equipo' && $equipoId)
-            <a href="{{ route('equipos.show', $equipoId) }}" class="btn btn-secondary mb-3">
+            <a href="{{ route('equipos.show', $equipoId) }}" class="btn btn-sm sm:btn-md btn-primary w-fit">
                 ← Volver al equipo
             </a>
-        @endif
-
-    </div>
-
+        @endif 
+    </div> 
     <div class="breadcrumbs text-sm mb-6">
         <ul>
             <li>
@@ -65,7 +67,7 @@
         <div data-slot="card-content" class="px-6 [&:last-child]:pb-6">
             <div class="grid gap-4">
 
-                <div class="grid grid-cols-3 gap-4">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <!-- País -->
                     <div class="space-y-2">
                         <label for="fecha_orden" class="text-sm font-medium">Fecha de Emisión</label>
@@ -120,7 +122,7 @@
         <div data-slot="card-content" class="px-6 [&:last-child]:pb-6">
             <div class="grid gap-4">
 
-                <div class="grid grid-cols-3 gap-4">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div class="space-y-2">
                         <label for="proveedor_id" class="text-sm font-medium">Proveedor</label>
                         <select id="proveedor_id" name="proveedor_id"
@@ -190,7 +192,8 @@
 
         <div data-slot="card-content" class="px-6 [&:last-child]:pb-6">
             <div class="grid gap-4">
-                <table class="table table-zebra w-full">
+                <div class="overflow-x-auto">
+                <table class="table table-zebra w-full text-sm">
                     <thead>
                         <tr>
                             <th class="text-center">Nr</th>
@@ -238,6 +241,7 @@
                     </tfoot>
 
                 </table>
+                </div>
             </div>
             @if ($compra->foto_factura)
                 @php
@@ -291,16 +295,6 @@
     <!-- HISTORIAL DE ACTIVIDAD -->
     <!-- ========================= -->
     <x-historial-actividad :model="$compra" :limit="10" />
-
-    <!-- ========================= -->
-    <!-- BOTONES DEL FORMULARIO -->
-    <!-- ========================= -->
-    <div class="flex justify-end pt-4">
-        <a href="{{ route('compras.index') }}" class="btn btn-warning mr-2">
-            <x-heroicon-m-arrow-left class="w-4 h-4 inline" />
-            Volver
-        </a>
-    </div>
 @endsection
 @section('js')
     <script>

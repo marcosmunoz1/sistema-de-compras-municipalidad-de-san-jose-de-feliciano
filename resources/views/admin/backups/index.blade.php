@@ -2,27 +2,26 @@
 @section('title', 'Backups')  
 @section('content')
 
-<div class="flex items-center justify-between mb-6">
+<div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
     <h1 class="text-2xl font-semibold">Gestión de Backups</h1>
     @can('backups-create') 
     <div class="flex gap-2"> 
         <form id="formBackupDB" action="{{ route('backups.create') }}" method="POST" class="inline">
             @csrf
             <input type="hidden" name="only_db" value="1">
-            <button type="button" class="btn btn-info" onclick="confirmarBackupDB()">
+            <button type="button" class="btn btn-sm sm:btn-md btn-info" onclick="confirmarBackupDB()">
                 <x-heroicon-o-circle-stack class="w-5 h-5"/>Solo Base de Datos
             </button>
         </form>
         <form id="formBackupCompleto" action="{{ route('backups.create') }}" method="POST" class="inline">
             @csrf
-            <button type="button" class="btn btn-primary" onclick="confirmarBackupCompleto()">
+            <button type="button" class="btn btn-sm sm:btn-md btn-primary" onclick="confirmarBackupCompleto()">
                 <x-heroicon-o-server-stack class="w-5 h-5"/>Backup Completo
             </button>
         </form>
     </div>
     @endcan
-</div>
-
+</div> 
 <div class="breadcrumbs text-sm mb-6">
     <ul>
         <li>
