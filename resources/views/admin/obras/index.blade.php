@@ -7,7 +7,7 @@
         <h1 class="text-2xl font-semibold">Obras</h1>
         @can('obras-create')
         <a href="{{ route('obras.create') }}" class="btn btn-primary">
-            + Nueva Obra
+            <x-heroicon-o-plus class="w-5 h-5"/> Nueva Obra
         </a>
         @endcan
     </div>

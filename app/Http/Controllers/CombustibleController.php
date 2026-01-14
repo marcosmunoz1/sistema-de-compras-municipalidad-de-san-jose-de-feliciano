@@ -179,7 +179,7 @@ class CombustibleController extends Controller
 
         $codigo = str_pad($newOrder, 8, '0', STR_PAD_LEFT);
         $monto = $request->litros * $request->precio; 
-        $user_id = Auth::id();
+        $user_id = Auth::id(); 
 
         DB::beginTransaction();
         try{ 
@@ -230,7 +230,8 @@ class CombustibleController extends Controller
      * Show the form for editing the specified resource.
      */
     public function edit($id)
-    {
+    {    
+        $id = Crypt::decrypt($id); 
         $tipo_combustible = Tipo_combustibles::all();   
         $vehiculos = Vehiculo::all(); 
         $empleados = Empleado::all();  
@@ -244,7 +245,8 @@ class CombustibleController extends Controller
      */
     public function update(Request $request,$id) 
     { 
-           
+        
+           // return response()->json($request->all());
            $request->validate([ 
             'codigo' => 'required|unique:combustibles,codigo,' . $id,      
             'fecha' => 'required', 

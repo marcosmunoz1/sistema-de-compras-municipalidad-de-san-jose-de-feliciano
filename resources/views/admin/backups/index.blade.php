@@ -2,27 +2,26 @@
 @section('title', 'Backups')  
 @section('content')
 
-<div class="flex items-center justify-between mb-6">
+<div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
     <h1 class="text-2xl font-semibold">Gestión de Backups</h1>
     @can('backups-create') 
     <div class="flex gap-2"> 
-        <form action="{{ route('backups.create') }}" method="POST" class="inline">
+        <form id="formBackupDB" action="{{ route('backups.create') }}" method="POST" class="inline">
             @csrf
             <input type="hidden" name="only_db" value="1">
-            <button type="submit" class="btn btn-info" onclick="return confirm('¿Ejecutar backup de base de datos?')">
+            <button type="button" class="btn btn-sm sm:btn-md btn-info" onclick="confirmarBackupDB()">
                 <x-heroicon-o-circle-stack class="w-5 h-5"/>Solo Base de Datos
             </button>
         </form>
-        <form action="{{ route('backups.create') }}" method="POST" class="inline">
+        <form id="formBackupCompleto" action="{{ route('backups.create') }}" method="POST" class="inline">
             @csrf
-            <button type="submit" class="btn btn-primary" onclick="return confirm('¿Ejecutar backup completo (DB + archivos)?')">
+            <button type="button" class="btn btn-sm sm:btn-md btn-primary" onclick="confirmarBackupCompleto()">
                 <x-heroicon-o-server-stack class="w-5 h-5"/>Backup Completo
             </button>
         </form>
     </div>
     @endcan
-</div>
-
+</div> 
 <div class="breadcrumbs text-sm mb-6">
     <ul>
         <li>
@@ -252,14 +251,52 @@
 @endsection 
 @section('js')
 <script>
+    function confirmarBackupDB() {
+        Swal.fire({
+            title: '¿Ejecutar backup de base de datos?',
+            text: 'Se creará un respaldo solo de la base de datos',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#3b82f6',
+            cancelButtonColor: '#6b7280',
+            confirmButtonText: '<i class="fas fa-database"></i> Sí, ejecutar',
+            cancelButtonText: 'Cancelar',
+            showLoaderOnConfirm: true,
+            allowOutsideClick: () => !Swal.isLoading()
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.getElementById('formBackupDB').submit();
+            }
+        });
+    }
+
+    function confirmarBackupCompleto() {
+        Swal.fire({
+            title: '¿Ejecutar backup completo?',
+            html: 'Se creará un respaldo de:<br><strong>• Base de datos</strong><br><strong>• Archivos del sistema</strong><br><br><small class="text-warning">Este proceso puede tardar varios minutos</small>',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#3b82f6',
+            cancelButtonColor: '#6b7280',
+            confirmButtonText: '<i class="fas fa-server"></i> Sí, ejecutar',
+            cancelButtonText: 'Cancelar',
+            showLoaderOnConfirm: true,
+            allowOutsideClick: () => !Swal.isLoading()
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.getElementById('formBackupCompleto').submit();
+            }
+        });
+    }
+
     function confirmarEliminacion(name) { 
-            const form = document.getElementById('formEliminarBackup'); 
-            form.action = routeEliminarBackup(name); 
-            document.getElementById('modal_eliminar_backup').showModal();
-        }
-      // Genera la URL usando el helper de Laravel
-      function routeEliminarBackup(name) { 
-          return "{{ url('/admin/backups/delete') }}/" + name;  
-      } 
-  </script>
+        const form = document.getElementById('formEliminarBackup'); 
+        form.action = routeEliminarBackup(name); 
+        document.getElementById('modal_eliminar_backup').showModal();
+    }
+    
+    function routeEliminarBackup(name) { 
+        return "{{ url('/admin/backups/delete') }}/" + name;  
+    } 
+</script>
 @endsection

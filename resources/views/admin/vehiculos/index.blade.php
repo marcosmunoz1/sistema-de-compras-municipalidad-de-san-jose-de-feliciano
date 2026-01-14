@@ -8,7 +8,7 @@
     @can('vehiculos-create')
     <a href="{{ route('vehiculos.create') }}" 
        class="btn btn-primary">
-        + Nuevo Vehiculo
+        <x-heroicon-o-plus class="w-5 h-5"/> Nuevo Vehiculo
     </a>
     @endcan
  </div>

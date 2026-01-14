@@ -1,19 +1,16 @@
 @extends('layouts.admin')
 @section('title', 'Compras')
-@section('content')
-
+@section('content')  
     <div class="flex items-center justify-between mb-6">
-        <h1 class="text-2xl font-semibold">Compras</h1>
-
+        <h1 class="text-3xl font-bold text-base-content">Compras</h1> 
         {{-- Botón agregar compra --}}
         @can('compras-create')
             <a href="{{ route('compras.create') }}" class="btn btn-primary">
-                + Nueva Compra
+                <x-heroicon-o-plus class="w-5 h-5"/> Nueva Compra 
             </a>
-        @endcan
-
+        @endcan 
     </div>
-    <div class="breadcrumbs text-sm mb-6">
+    <div class="breadcrumbs text-sm mb-6"> 
         <ul>
             <li>
                 <a href="{{ route('admin.index') }}">
@@ -89,10 +86,10 @@
             </div>
         </form>
     </div>
-    <div class="grid grid-cols-1 md:grid-cols-3 pd-6 mb-6">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
 
         <!-- Card 1 -->
-        <div class="bg-base-100 shadow-xl bg-card text-card-foreground flex flex-col gap-6 rounded-xl mr-2">
+        <div class="bg-base-100 shadow-xl bg-card text-card-foreground flex flex-col gap-6 rounded-xl w-full">
             <div class="px-6 pt-6 pb-6">
                 <div class="flex items-center justify-between">
                     <div>
@@ -111,7 +108,7 @@
         </div>
 
         <!-- Card 2 -->
-        <div class="bg-base-100 shadow-xl bg-card text-card-foreground flex flex-col gap-6 rounded-xl mr-2">
+        <div class="bg-base-100 shadow-xl bg-card text-card-foreground flex flex-col gap-6 rounded-xl w-full">
             <div class="px-6 pt-6 pb-6">
                 <div class="flex items-center justify-between">
                     <div>
@@ -130,13 +127,13 @@
         </div>
 
         <!-- Card 3 -->
-        <div class="bg-base-100 shadow-xl bg-card text-card-foreground flex flex-col gap-6 rounded-xl mr-2">
+        <div class="bg-base-100 shadow-xl bg-card text-card-foreground flex flex-col gap-6 rounded-xl w-full">
             <div class="px-6 pt-6 pb-6">
                 <div class="flex items-center justify-between">
                     <div>
                         <p class="text-gray-500">Pendiente/sin facturas</p>
                         <h3 class="mt-2">{{$pendientes}}</h3> 
-                    </div>
+                    </div> 
                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                         class="lucide lucide-shopping-cart text-red-600 w-10 h-10" aria-hidden="true">
@@ -179,27 +176,27 @@
     <!-- Tabla -->
     <div class="card bg-base-100 shadow">
         <div class="card-body p-4">
-            <!-- HEADER COMPLETO -->
+            <!-- HEADER COMPLETO --> 
             <div class="flex flex-col gap-3">
                 <!-- TÍTULO + BOTÓN REPORTE -->
-                <div class="flex items-center justify-between">
-                    <h4 class="text-lg font-semibold">Historial de Compras</h4>
-                    <!-- BOTÓN REPORTE -->
-                    <div class="flex gap-2">
-                        <x-boton-reporte 
-                            titulo="Generar Reporte"
-                            modalId="modal_reporte_compras"
-                            previewUrl="{{ route('compras.reporte.html') }}"
-                            downloadUrl="{{ route('compras.reporte.download') }}"
-                            descripcion="Reporte completo de todas las compras"
-                            icono="document"
-                        />
+                <div class="flex items-center justify-between"> 
+                    <h4 class="text-lg font-semibold">Historial de Compras</h4> 
+                    <!-- BOTÓN REPORTE --> 
+                    <div class="flex gap-2">    
+                        <x-boton-reporte   
+                            titulo="Generar Reporte"   
+                            modalId="modal_reporte_compras"   
+                            previewUrl="{{ route('compras.reporte.html') }}"   
+                            downloadUrl="{{ route('compras.reporte.download') }}"    
+                            descripcion="Reporte completo de todas las compras"    
+                            icono="document" 
+                        /> 
                     </div>
                 </div>
             </div>
-            <!-- TABLA -->
-            <div class="overflow-x-auto mt-4">
-                <table class="table table-zebra w-full">
+            <!-- TABLA --> 
+            <div class="overflow-x-auto mt-4"> 
+                <table class="table table-zebra w-full"> 
                     <thead>
                         <tr>
                             <th class="text-center">Nr orden</th>
@@ -236,7 +233,7 @@
                                             default => 'badge-ghost',
                                         };
                                     @endphp
-                                    <span class="badge {{ $badgeClass }} badge-sm">
+                                    <span class="badge {{ $badgeClass }} badge-sm whitespace-nowrap overflow-hidden text-ellipsis max-w-[120px]" title="{{ $compra->estado_compra }}">
                                         {{ $compra->estado_compra }}
                                     </span>
                                 </td>
@@ -265,11 +262,16 @@
 
                                         @can('compras-report')
                                             <button onclick="abrirModalPDF({{ $compra->id }})"
-                                                class="btn bg-primary btn-sm" title="Imprimir orden de compra">
-                                                <x-heroicon-o-printer class="w-4 h-4" />
+                                                class="btn bg-primary btn-sm {{ $compra->estado_compra == 'Finalizada' ? 'btn-disabled opacity-50 cursor-not-allowed' : '' }}" 
+                                                title="{{ $compra->estado_compra == 'Finalizada' ? 'Compra ya finalizada' : 'Imprimir orden de compra' }}"
+                                                @if ($compra->estado_compra == 'Finalizada') disabled @endif>
+                                                @if ($compra->estado_compra == 'Finalizada')
+                                                    <x-heroicon-o-printer class="w-4 h-4" />
+                                                @else
+                                                    <x-heroicon-o-printer class="w-4 h-4" />
+                                                @endif
                                             </button>
                                         @endcan
-
                                         {{--  @if ($compra->trashed())
                                         <button class="btn btn-success btn-sm"
                                                 onclick="abrirModalRestaurar('{{ url('/admin/compras/'. $compra->id.'/restore') }}')">
@@ -361,9 +363,8 @@
 
                     </div>
                 </div>
-            @endif
-
-        </div>
+            @endif 
+        </div> 
     </div>
 
     <!-- Sección de Gráficos - Estadísticas -->
@@ -418,8 +419,8 @@
         </div>
     </div>
 
-    <!-- Modal para visualizar PDF -->
-    <dialog id="modalPDF" class="modal">
+    <!-- Modal para visualizar PDF --> 
+    <dialog id="modalPDF" class="modal"> 
         <div class="modal-box w-11/12 max-w-5xl h-[90vh] p-0 flex flex-col">
             <!-- Header del Modal -->
             <div class="flex items-center justify-between p-4 border-b">

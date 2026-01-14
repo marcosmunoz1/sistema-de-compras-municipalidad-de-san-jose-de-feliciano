@@ -16,17 +16,31 @@ class ProductoController extends Controller
     {   
         $categorias = Categoria::all();
         $search = $request->input('search');
+        $estado = $request->input('estado');
 
-        $productos = Producto::where(function ($query) use ($search) {
-                $query->where('nombre', 'LIKE', "%{$search}%")
+        // Por defecto solo activos, con opción de ver todos o inactivos
+        if ($estado === 'todos') {
+            $query = Producto::withTrashed();
+        } elseif ($estado === 'inactivo') {
+            $query = Producto::withTrashed()->where('estado', false);
+        } else {
+            // Por defecto: solo activos
+            $query = Producto::where('estado', true);
+        }
+
+        // Búsqueda
+        if ($search) {
+            $query->where(function ($q) use ($search) {
+                $q->where('nombre', 'LIKE', "%{$search}%")
                     ->orWhere('descripcion', 'LIKE', "%{$search}%")
                     ->orWhere('unidad', 'LIKE', "%{$search}%")
-                    ->orWhere('estado', 'LIKE', "%{$search}%")
-                    ->orWhereHas('categoria', function ($q) use ($search) {
-                        $q->where('nombre', 'LIKE', "%{$search}%");
+                    ->orWhereHas('categoria', function ($subQ) use ($search) {
+                        $subQ->where('nombre', 'LIKE', "%{$search}%");
                     });
-            })
-            ->orderBy('id', 'desc')
+            });
+        }
+
+        $productos = $query->orderBy('id', 'desc')
             ->paginate(10)
             ->withQueryString(); 
 

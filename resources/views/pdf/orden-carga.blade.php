@@ -1,22 +1,20 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es"> 
 <head>
-    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta charset="UTF-8"> 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Orden de Carga de Combustible - San José de Feliciano</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Orden de Carga de Combustible - San Jose de Feliciano</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
-
         @page {
-            size: A4;
-            margin: 10mm; 
+            size: 215.9mm 200.8mm; /* Media carta (half letter) */
+            margin: 6mm;
         }
         
         body {
             margin: 0;
             padding: 15px;
-            font-family: 'Inter', sans-serif;
+            font-family: 'DejaVu Sans', Arial, sans-serif;
             color: #1e293b;
             background-color: white;
         }
@@ -55,30 +53,23 @@
             position: relative;
         }
 
-        /* Marca de agua repetitiva */
+        /* Marca de agua centrada */
         .watermark-container {
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-25deg);
             pointer-events: none;
             z-index: 0;
             opacity: 0.04;
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-around;
-            align-content: space-around;
-            transform: rotate(-25deg) scale(1.2);
         }
 
         .watermark-text {
-            font-size: 60px;
+            font-size: 80px;
             font-weight: 900;
             text-transform: uppercase;
             white-space: nowrap;
-            margin: 40px;
-            letter-spacing: 10px;
+            letter-spacing: 15px;
         }
 
         .header-section {
@@ -102,16 +93,18 @@
         .logo-placeholder {
             width: 70px;
             height: 70px;
-            background: #b91c1c;
+            background: white;
             border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: white;
-            font-weight: 800;
-            text-align: center;
-            font-size: 10px;
-            line-height: 1.2;
+            overflow: hidden;
+        }
+        
+        .logo-placeholder img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
         }
 
         .title-badge {
@@ -140,6 +133,7 @@
             border: 1px solid #e2e8f0;
             border-radius: 6px;
             padding: 5px 12px;
+            margin-bottom: 3px;
         }
 
         .field-label {
@@ -202,44 +196,43 @@
         }
 
         .footer-area {
-            margin-top: 20px;
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr; /* 🔑 3 columnas reales */
-            column-gap: 16px;
+            margin-top: 15px;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            gap: 10px;
             width: 100%;
-            align-items: end;
-
-            /* 🔒 reset de interferencias */
-            flex: none;
         }
 
         .signature-box {
-            width: 100%;
+            flex: 1;
             text-align: center;
-            display: block; /* 🔑 no flex */
+            max-width: 32%;
         }
 
         .signature-space {
             width: 100%;
-            height: 38px;
+            height: 30px;
             border-bottom: 1.5px solid #000;
-            margin-bottom: 6px;
+            margin-bottom: 4px;
         }
 
         .signature-label {
-                font-size: 7px;
-                font-weight: 700;
-                color: #1e293b;
-                text-transform: uppercase;
-                line-height: 1.2;
-            }
+            font-size: 6px;
+            font-weight: 700;
+            color: #1e293b;
+            text-transform: uppercase;
+            line-height: 1.2;
+            display: block;
+        }
 
-            .signature-sub {
-                font-size: 6px;
-                color: #64748b;
-                text-transform: uppercase;
-                line-height: 1.1;
-            }
+        .signature-sub {
+            font-size: 5px;
+            color: #64748b;
+            text-transform: uppercase;
+            line-height: 1.1;
+            display: block;
+        }
 
 
         .copy-indicator {
@@ -260,40 +253,83 @@
 <body>
 
     <div class="page">
-        <!-- Marca de agua adaptativa -->
+        <!-- Marca de agua centrada -->
         <div class="watermark-container">
-            <div class="watermark-text">CARGA</div>
-            <div class="watermark-text">CARGA</div>
-            <div class="watermark-text">CARGA</div>
-            <div class="watermark-text">CARGA</div>
-            <div class="watermark-text">CARGA</div>
             <div class="watermark-text">CARGA</div>
         </div>
 
         <!-- Encabezado Principal -->
-        <div class="header-section">
-            <div class="logo-container">
-                <div class="logo-placeholder">ESCUDO<br>OFICIAL</div>
-                <div>
-                    <h1 class="text-xl font-black text-slate-900 tracking-tight">MUNICIPALIDAD DE</h1>
-                    <h2 class="text-xl font-black text-red-700 tracking-tight">SAN JOSÉ DE FELICIANO</h2>
-                    <p class="text-[11px] font-bold text-slate-500 uppercase tracking-widest mt-0.5">Gestión Corralón Municipal</p>
-                </div>
-            </div>
-            <div class="text-right">
-                <div class="title-badge mb-1.5">ORDEN DE CARGA</div>
-                <div class="text-lg font-mono font-bold text-slate-800">N° <span class="text-red-600">{{ str_pad($combustible->codigo, 12, '0', STR_PAD_LEFT) }}</span></div>
-                <div class="text-[12px] text-slate-500 font-semibold mt-0.5 uppercase">Fecha: <span class="border-b border-slate-300 inline-block w-28">{{ $combustible->fecha ? \Carbon\Carbon::parse($combustible->fecha)->format('d/m/Y') : '—' }}</span></div>
-            </div>
-        </div>
+        <table style="width: 100%; border: none; border-collapse: collapse; border-bottom: 3px solid #b91c1c; padding-bottom: 10px; margin-bottom: 8px;"> 
+            <tr>
+                <td style="width: 70px; vertical-align: middle; border: none; padding: 0;">
+                    <div class="logo-placeholder">
+                        <img src="{{ public_path('logo/logo-pdf.png') }}" alt="Logo"> 
+                    </div>
+                </td>
+                <td style="vertical-align: middle; border: none; padding-left: 15px;">
+                    <div style="font-size: 16px; font-weight: 900; color: #1e293b; letter-spacing: -0.5px;">MUNICIPALIDAD DE</div>
+                    <div style="font-size: 16px; font-weight: 900; color: #b91c1c; letter-spacing: -0.5px;">SAN JOSE DE FELICIANO</div>
+                    <div style="font-size: 9px; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 1px; margin-top: 2px;">Gestion Corralon Municipal - Combustibles</div>
+                    <div style="font-size: 8px; font-weight: 600; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.5px;">Solicitud Provisoria de Insumos</div>
+                </td>
+                <td style="text-align: right; vertical-align: middle; border: none; padding-bottom: 20px;">
+                    <div class="title-badge" style="margin-bottom: 6px;">ORDEN DE CARGA</div>
+                    <div style="font-size: 14px; font-family: monospace; font-weight: 700; color: #1e293b;">N° <span style="color: #b91c1c;">{{ str_pad($combustible->codigo, 12, '0', STR_PAD_LEFT) }}</span></div>
+                    <div style="font-size: 10px; color: #64748b; font-weight: 600; text-transform: uppercase; margin-top: 4px;">Fecha: <span style="border-bottom: 1px solid #cbd5e1; display: inline-block; min-width: 80px;">{{ $combustible->fecha ? \Carbon\Carbon::parse($combustible->fecha)->format('d/m/Y') : '—' }}</span></div>
+                </td>
+            </tr>
+        </table>
 
         <!-- Campos de Datos -->
         <div class="field-group">
-            <div class="modern-field">
-                <span class="field-label">Dominio</span>
-                <div class="field-value">{{ $combustible->destino->patente ?? 'N/A' }}</div>
-                <span class="ml-4 text-[9px] text-slate-400 font-bold uppercase">(Patente)</span>
-            </div>
+            @if($combustible->destino instanceof \App\Models\Vehiculo)
+                {{-- VEHICULO: Mostrar patente y detalles del vehiculo --}}
+                <div class="modern-field">
+                    <span class="field-label">Dominio</span>
+                    <div class="field-value">{{ $combustible->destino->patente ?? 'N/A' }}</div>
+                </div>
+                <div class="modern-field">
+                    <span class="field-label">Vehiculo</span>
+                    <div class="field-value">
+                        {{ $combustible->destino->tipo ?? '' }} 
+                        {{ $combustible->destino->marca ?? '' }} 
+                        {{ $combustible->destino->modelo ?? '' }}
+                        @if($combustible->destino->anio) ({{ $combustible->destino->anio }}) @endif
+                        @if($combustible->destino->color) - {{ $combustible->destino->color }} @endif
+                    </div>
+                </div>
+            @elseif($combustible->destino instanceof \App\Models\Equipo)
+                {{-- EQUIPO: Mostrar equipamiento y detalles --}}
+                <div class="modern-field">
+                    <span class="field-label">Equipo</span>
+                    <div class="field-value">{{ $combustible->destino->equipamiento ?? 'N/A' }}</div>
+                </div>
+                <div class="modern-field">
+                    <span class="field-label">Detalle</span>
+                    <div class="field-value">
+                        {{ $combustible->destino->marca ?? '' }}
+                        @if($combustible->destino->descripcion) - {{ $combustible->destino->descripcion }} @endif
+                    </div>
+                </div>
+            @elseif($combustible->destino instanceof \App\Models\Destino)
+                {{-- OTRO (Acuerdo policial, etc): Mostrar nombre y detalles --}}
+                <div class="modern-field">
+                    <span class="field-label">Destino</span>
+                    <div class="field-value">{{ $combustible->destino->nombre ?? 'N/A' }}</div>
+                </div>
+                @if($combustible->destino->descripcion)
+                <div class="modern-field">
+                    <span class="field-label">Detalle</span>
+                    <div class="field-value">{{ $combustible->destino->descripcion }}</div>
+                </div>
+                @endif
+            @else
+                {{-- FALLBACK --}}
+                <div class="modern-field">
+                    <span class="field-label">Dominio</span>
+                    <div class="field-value">{{ $combustible->destino->patente ?? $combustible->destino->nombre ?? 'N/A' }}</div>
+                </div>
+            @endif
             <div class="modern-field">
                 <span class="field-label">Entregar a</span>
                 <div class="field-value">{{ $combustible->empleado->nombre ?? 'N/A' }}</div>
@@ -303,7 +339,7 @@
                 <div class="field-value">{{ $combustible->sub_cuenta ?? 'N/A' }}</div>
             </div>
             <div class="modern-field">
-                <span class="field-label">Estación</span>
+                <span class="field-label">Estacion</span>
                 <div class="field-value">{{ $combustible->estacion ?? 'N/A' }}</div>
             </div>
         </div>
@@ -311,19 +347,19 @@
         <!-- Tabla de Detalle -->
         <div class="table-container">
             <div style="margin-bottom: 4px;">
-                <h3 class="text-[9px] font-black text-slate-700 uppercase tracking-wider">Detalle / Observaciones de Carga</h3>
+                <h3 class="text-[9px] font-black text-slate-700 uppercase tracking-wider">Detalle</h3>
             </div>
             <table>
                 <thead>
                     <tr>
-                        <th width="100%">DESCRIPCIÓN DE LA CARGA</th>
+                        <th width="100%">DESCRIPCION DE LA CARGA</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td style="font-weight: 600;">{{ $combustible->litros }} Litros - {{ $combustible->tipo }} - ${{ number_format($combustible->monto, 2, '.', ',') }}</td>
+                        <td style="font-weight: 600;">{{ $combustible->litros }} Litros - {{ $combustible->tipo }}</td>
                     </tr>
-                    @if($combustible->observaciones)
+                    {{-- @if($combustible->observaciones)
                     <tr>
                         <td>Observaciones: {{ $combustible->observaciones }}</td>
                     </tr>
@@ -332,35 +368,37 @@
                     <tr>
                         <td></td>
                     </tr>
-                    @endfor
+                    @endfor --}} 
                 </tbody>
             </table>
         </div>
 
-        <!-- Área de Firmas (Triple validación) -->
-        <div class="footer-area">
-            <div class="signature-box">
-                <div class="signature-space"></div>
-                <span class="signature-label">Firma Portador</span>
-                <span class="signature-sub">Aclaración y DNI</span>
-            </div>
-            <div class="signature-box">
-                <div class="signature-space"></div>
-                <span class="signature-label">Firma Empleado YPF</span>
-                <span class="signature-sub">Estación de Servicio</span>
-            </div>
-            <div class="signature-box">
-                <div class="signature-space"></div>
-                <span class="signature-label">Autorizado por Funcionario</span>
-                <span class="signature-sub">Sello y Firma Municipal</span>
-            </div>
-        </div>
+        <!-- Area de Firmas (Triple validacion) -->
+        <table style="width: 100%; margin-top: 15px; border: none; border-collapse: collapse;">
+            <tr>
+                <td style="width: 33%; text-align: center; vertical-align: bottom; border: none; padding: 0 8px;">
+                    <div style="border-bottom: 1.5px solid #000; height: 30px; margin-bottom: 4px;"></div>
+                    <div style="font-size: 7px; font-weight: 700; text-transform: uppercase;">Firma Portador</div>
+                    <div style="font-size: 6px; color: #64748b; text-transform: uppercase;">Aclaracion</div>
+                </td>
+                <td style="width: 33%; text-align: center; vertical-align: bottom; border: none; padding: 0 8px;">
+                    <div style="border-bottom: 1.5px solid #000; height: 30px; margin-bottom: 4px;"></div>
+                    <div style="font-size: 7px; font-weight: 700; text-transform: uppercase;">Firma Empleado YPF</div>
+                    <div style="font-size: 6px; color: #64748b; text-transform: uppercase;">Estacion de Servicio</div>
+                </td>
+                <td style="width: 33%; text-align: center; vertical-align: bottom; border: none; padding: 0 8px;">
+                    <div style="border-bottom: 1.5px solid #000; height: 30px; margin-bottom: 4px;"></div>
+                    <div style="font-size: 7px; font-weight: 700; text-transform: uppercase;">Autorizado por Funcionario</div>
+                    <div style="font-size: 6px; color: #64748b; text-transform: uppercase;">Sello y Firma Municipal</div>
+                </td>
+            </tr>
+        </table>
 
-        <!-- Pie de página -->
+        <!-- Pie de pagina -->
         <div class="copy-indicator uppercase">
-            <span>Original: Contaduría</span>
-            <span>Comprobante Estación de Servicio</span>
-            <span>Copia: Archivo Corralón</span>
+            <span>Original: Contaduria</span>
+            <span>Comprobante Estacion de Servicio</span>
+            <span>Copia: Archivo Corralon</span>
         </div>
     </div>
 

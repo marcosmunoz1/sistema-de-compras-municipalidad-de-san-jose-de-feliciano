@@ -2,21 +2,20 @@
 @section('title', 'Productos') 
 @section('content')
 <!-- Titulo y boton --> 
- <div class="flex items-center justify-between mb-6">
-    <h1 class="text-2xl font-semibold">Productos</h1>
-    <div class="flex gap-2">
-      @can('productos-store') 
-        <button onclick="abrirModalOcr()" class="btn bg-green-500"> 
+ <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6"> 
+    <h1 class="text-2xl font-semibold">Productos</h1> 
+    <div class="flex gap-2"> 
+      @can('productos-store')   
+        <button onclick="abrirModalOcr()" class="btn btn-sm sm:btn-md bg-green-500"> 
           <x-heroicon-o-camera class="w-5 h-5"/>Cargar desde Factura
         </button>
         <button onclick="abrir_modal('crearProductoModal', 'Crear Nuevo Producto', 1, [], [])" class="btn btn-primary"> 
-          <x-heroicon-o-plus class="w-5 h-5"/>Nuevo Producto
+          <x-heroicon-o-plus class="w-5 h-5"/>Nuevo Producto 
         </button>
       @endcan  
     </div>
- </div> 
-
- <div class="breadcrumbs text-sm mb-6">
+ </div>  
+ <div class="breadcrumbs text-sm mb-6"> 
   <ul>
     <li>
       <a href="{{ route('admin.index') }}">
@@ -76,10 +75,62 @@
         <div class="flex flex-col gap-3">
                 <!-- TÍTULO-->
                 <div class="flex items-center justify-between">
-                    <h4 class="text-lg font-semibold">Historial de productos</h4> 
+                    <h4 class="text-lg font-semibold">Historial de productos</h4>
+                    
+                    <!-- Filtro por estado -->
+                    <div class="dropdown dropdown-end">
+                        <label tabindex="0" class="btn btn-sm btn-ghost gap-2 {{ request('estado') == 'inactivo' || request('estado') == 'todos' ? 'text-primary' : '' }}">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" 
+                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
+                            </svg>
+                            @if(request('estado') == 'inactivo')
+                                <span class="badge badge-error badge-sm">Inactivos</span>
+                            @elseif(request('estado') == 'todos')
+                                <span class="badge badge-neutral badge-sm">Todos</span>
+                            @endif
+                        </label>
+                        <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow-lg bg-base-100 rounded-box w-52 border border-base-300">
+                            <li class="menu-title">
+                                <span>Filtrar por estado</span>
+                            </li>
+                            <li>
+                                <a href="{{ route('productos.index', array_merge(request()->except('estado', 'page'), [])) }}" 
+                                   class="{{ !request('estado') || request('estado') == 'activo' ? 'active' : '' }}">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" 
+                                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-success">
+                                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                        <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                                    </svg>
+                                    Solo Activos
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('productos.index', array_merge(request()->except('page'), ['estado' => 'inactivo'])) }}"
+                                   class="{{ request('estado') == 'inactivo' ? 'active' : '' }}">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" 
+                                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-error">
+                                        <circle cx="12" cy="12" r="10"></circle>
+                                        <line x1="15" y1="9" x2="9" y2="15"></line>
+                                        <line x1="9" y1="9" x2="15" y2="15"></line>
+                                    </svg>
+                                    Solo Inactivos
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('productos.index', array_merge(request()->except('page'), ['estado' => 'todos'])) }}"
+                                   class="{{ request('estado') == 'todos' ? 'active' : '' }}">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" 
+                                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                                    </svg>
+                                    Todos
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </div> 
-
         <div class="overflow-x-auto">
             <table class="table table-zebra w-full">
                 <thead>
@@ -114,14 +165,14 @@
 
                                     {{-- Ver --}}
                                     @can('productos-show')
-                                    <button onclick="abrir_modal('crearProductoModal', 'Detalles del Producto', 3, ['categoria_id', 'nombre', 'descripcion', 'unidad'], {{ $producto }}, true)" class="btn btn-info btn-sm">
+                                    <button onclick="abrir_modal('crearProductoModal', 'Detalles del Producto', 3, ['categoria_id', 'nombre', 'descripcion', 'unidad'], {{ $producto }}, true)" class="btn btn-info btn-sm" title="Ver producto">
                                         <x-heroicon-s-eye class="w-4 h-4"/>
                                     </button>
                                     @endcan
 
                                     {{-- Editar --}}
                                     @can('productos-update')
-                                    <button class="btn btn-warning btn-sm" onclick="abrir_modal('crearProductoModal', 'Editar Producto', 2, ['categoria_id', 'nombre', 'descripcion', 'unidad'], {{ $producto }})">
+                                    <button class="btn btn-warning btn-sm" title="Editar producto" onclick="abrir_modal('crearProductoModal', 'Editar Producto', 2, ['categoria_id', 'nombre', 'descripcion', 'unidad'], {{ $producto }})">
                                         <x-heroicon-o-pencil-square class="w-4 h-4"/>
                                     </button> 
                                     @endcan
@@ -131,7 +182,7 @@
                                     @if ($producto->trashed()) 
                                         {{-- Restaurar --}}
                                             @can('productos-restore')
-                                            <button class="btn btn-sm btn-success"
+                                            <button class="btn btn-sm btn-success" title="Restaurar producto"
                                               onclick="abrirModalRestaurar('{{ url('/admin/productos/'. $producto->id.'/restore') }}')">
                                                 <x-heroicon-s-arrow-uturn-left class="w-4 h-4"/>
                                             </button>
@@ -140,7 +191,7 @@
                                     @else
                                         {{-- Eliminar --}}
                                        @can('productos-destroy')
-                                      <button class="btn btn-error btn-sm" onclick="confirmarEliminacion({{ $producto->id }})">
+                                      <button class="btn btn-error btn-sm" title="Eliminar producto" onclick="confirmarEliminacion({{ $producto->id }})">
                                           <x-heroicon-s-trash class="w-4 h-4"/>
                                       </button>
                                       @endcan

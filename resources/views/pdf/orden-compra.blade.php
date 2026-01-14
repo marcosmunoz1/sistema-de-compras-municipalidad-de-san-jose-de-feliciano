@@ -89,16 +89,18 @@
         .logo-placeholder {
             width: 70px;
             height: 70px;
-            background: #1e40af;
+            background: white;
             border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: white;
-            font-weight: 800;
-            text-align: center;
-            font-size: 10px;
-            line-height: 1.2;
+            overflow: hidden;
+        }
+        
+        .logo-placeholder img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
         }
 
         .title-badge {
@@ -320,7 +322,9 @@
 
         <div class="header-section">
             <div class="logo-container">
-                <div class="logo-placeholder">ESCUDO<br>OFICIAL</div>
+                <div class="logo-placeholder">
+                    <img src="{{ public_path('logo/logo-pdf.png') }}" alt="Logo">   
+                </div> 
                 <div>
                     <h1 class="text-xl font-black text-slate-900 tracking-tight">MUNICIPALIDAD DE</h1>
                     <h2 class="text-xl font-black text-blue-700 tracking-tight">SAN JOSÉ DE FELICIANO</h2>
@@ -383,8 +387,11 @@
         </div>
 
         <div class="footer-area">
-            <div class="signature-box">
-                <span class="signature-label">Autorizado por</span>
+            @if($compra->usuario && $compra->usuario->firma)
+                <img src="{{ public_path('storage/' . $compra->usuario->firma) }}" alt="Firma" style="max-width: 200px; height: 130px; margin: 0 auto 8px auto; display: block;">
+            @endif
+            <div class="signature-box"> 
+                <span class="signature-label">Autorizado por{{ $compra->usuario ? ': ' . $compra->usuario->name : '' }}</span>
                 <p style="font-size: 9px; color: #94a3b8; margin-top: 2px; text-transform: uppercase; letter-spacing: -0.05em;">Firma y Sello de Autoridad Responsable</p>
             </div>
         </div>

@@ -6,8 +6,8 @@
 <div class="flex items-center justify-between mb-6">
     <h1 class="text-2xl font-semibold">Movimientos</h1>
     @can('movimientos-create')
-    <a href="{{ route('movimientos.create') }}" class="btn btn-primary">
-        + Nuevo Movimiento
+    <a href="{{ route('movimientos.create') }}" class="btn btn-sm sm:btn-md btn-primary">
+        <x-heroicon-o-plus class="w-5 h-5"/> Nuevo Movimiento
     </a>
     @endcan
 </div>
