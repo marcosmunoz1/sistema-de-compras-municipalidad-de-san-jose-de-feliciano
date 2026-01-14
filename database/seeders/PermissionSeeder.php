@@ -36,7 +36,7 @@ class PermissionSeeder extends Seeder
             ['name' => 'permisos-index'],
             ['name' => 'permisos-show'],
             ['name' => 'permisos-edit'],
-            ['name' => 'permisos-store'],
+            ['name' => 'permisos-store'], 
             ['name' => 'permisos-destroy'],
 
             // ===============================
