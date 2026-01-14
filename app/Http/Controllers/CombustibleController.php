@@ -22,6 +22,7 @@ class CombustibleController extends Controller
     {
         $tipos_combustibles = Tipo_combustibles::all();
         $search = $request->get('search');
+        $estado = $request->get('estado');
 
         $desde = $request->desde;
         $hasta = $request->hasta;
@@ -43,11 +44,17 @@ class CombustibleController extends Controller
             }
         }
 
+        // QUERY BASE - Filtro por estado (activos/eliminados/todos)
+        if ($estado === 'eliminados') {
+            $query = Combustible::onlyTrashed()->with(['destino', 'empleado']);
+        } elseif ($estado === 'todos') {
+            $query = Combustible::withTrashed()->with(['destino', 'empleado']);
+        } else {
+            // Por defecto: solo activos (no eliminados)
+            $query = Combustible::with(['destino', 'empleado']);
+        }
 
-        // QUERY BASE (UNO SOLO)
-        $query = Combustible::with(['destino', 'empleado'])
-            ->withTrashed()
-            ->orderBy('id', 'desc');
+        $query->orderBy('id', 'desc');
 
         // Filtro por fechas
         if ($desde && $hasta && !$search) {
@@ -166,7 +173,6 @@ class CombustibleController extends Controller
             'destino_tipo' => 'required',
             'destino_id' => 'required', 
             'combustible' => 'required',
-            'litros' => 'required|numeric',
             'precio' => 'required|numeric',
             'estacion' => 'required',
             'tipo_de_pago' => 'required',
@@ -174,11 +180,13 @@ class CombustibleController extends Controller
         ]); 
          
       
-        $lastOrder = Combustible::max('codigo');   
-        $newOrder = $lastOrder ? $lastOrder + 1 : 00000; 
+        $lastOrder = Combustible::withTrashed()->max('codigo');   
+        $newOrder = $lastOrder ? $lastOrder + 1 : 1; 
 
         $codigo = str_pad($newOrder, 8, '0', STR_PAD_LEFT);
-        $monto = $request->litros * $request->precio; 
+        $litros = $request->filled('litros') ? $request->input('litros') : null;
+        $monto = $litros === null ? null : ($litros * $request->precio);
+        $estado_carga = $litros === null ? 'Pendiente' : 'Pendiente de factura';
         $user_id = Auth::id(); 
 
         DB::beginTransaction();
@@ -187,7 +195,7 @@ class CombustibleController extends Controller
             'empleado_id' => $request->empleado_id ?? null, 
             'user_id' => $user_id,  
             'codigo' =>  $codigo,
-            'litros' => $request->litros, 
+            'litros' => $litros, 
             'tipo' => $request->combustible,  
             'sub_cuenta' => $request->sub_cuenta, 
             'precio' => $request->precio,
@@ -198,6 +206,7 @@ class CombustibleController extends Controller
             'monto' => $monto, 
             'tipo_de_pago' => $request->tipo_de_pago,
             'observaciones' => $request->observaciones,
+            'estado_carga' => $estado_carga,
             'estado' => true, 
             ]); 
 
@@ -250,11 +259,12 @@ class CombustibleController extends Controller
         $request->validate([ 
             'litros' => 'required|numeric',
             'precio' => 'required|numeric',
-            'imagen_factura' => 'required|nullable|file|mimes:jpg,jpeg,png,webp|max:5120', // 5MB
+            'imagen_factura' => 'required|file|mimes:jpg,jpeg,png,webp|max:5120', // 5MB
         ]); 
         
         $monto = $request->litros * $request->precio;  
-        $combustible = Combustible::withTrashed()->findOrFail($id); 
+        $combustible = Combustible::withTrashed()->findOrFail($id);
+        $estado_carga = "Finalizada";
 
         // Manejo de la foto o PDF de la factura
         if ($request->hasFile('imagen_factura')) {
@@ -267,6 +277,7 @@ class CombustibleController extends Controller
         $combustible->litros = $request->litros;
         $combustible->precio = $request->precio;
         $combustible->monto = $monto;
+        $combustible->estado_carga = $estado_carga;
         $combustible->save();
             
         

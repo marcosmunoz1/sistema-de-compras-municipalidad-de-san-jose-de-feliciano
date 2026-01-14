@@ -8,7 +8,7 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::table('combustibles', function (Blueprint $table) {
-            $table->string('estado_carga')->after('id');
+            $table->string('estado_carga')->after('imagen_factura');
         });
     }
 

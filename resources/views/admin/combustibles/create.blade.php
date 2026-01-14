@@ -350,13 +350,13 @@
 
                 <!-- Litros Estimados -->
                 <div class="space-y-2">
-                    <label for="litros" class="text-sm font-medium">Litros Estimados <span class="text-red-600">*</span></label>
+                    <label for="litros" class="text-sm font-medium">Litros Estimados</label>
                     <input type="number" id="litros" min="0" max="1000" name="litros" placeholder="0"
                         step="0.01"
                         class="w-full h-10 rounded-md border border-base-300 bg-base-200 
                         px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary
-                        focus:border-primary @error('litros') input-error @enderror transition" required>
-                   {{--  <p class="text-xs text-gray-500">Dejar vacío para carga completa</p> --}} 
+                        focus:border-primary @error('litros') input-error @enderror transition">
+                        <p class="text-xs text-gray-500">Dejar vacío para carga completa</p>
                      @error('litros')
                         <small class="text-red-500 error-message">{{ $message }}</small>
                     @enderror 

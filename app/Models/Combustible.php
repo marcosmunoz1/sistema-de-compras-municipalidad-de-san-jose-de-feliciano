@@ -31,6 +31,7 @@ class  Combustible extends Model
         'tipo_de_pago',
         'observaciones',
         'imagen_factura',
+        'estado_carga',
         'estado',
     ];
     public function empleado()
@@ -63,6 +64,7 @@ class  Combustible extends Model
             'monto',
             'tipo_de_pago',
             'observaciones',
+            'estado_carga',
             'imagen_factura',
             'estado'])
             ->logOnlyDirty()

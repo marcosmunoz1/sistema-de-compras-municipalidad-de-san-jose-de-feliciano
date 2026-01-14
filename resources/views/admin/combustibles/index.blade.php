@@ -169,21 +169,64 @@
         <div class="card-body p-4">
             <!-- HEADER COMPLETO -->
             <div class="flex flex-col gap-3">
-                <!-- TÍTULO + BUSCADOR -->
+                <!-- TÍTULO + FILTRO -->
                 <div class="flex items-center justify-between">
                     <h4 class="text-lg font-semibold">Historial de Cargas</h4>
-                    <!-- BUSCADOR -->
-                    <div class="relative">
-                       {{--  <!-- BOTÓN IMPRIMIR -->
-                        <div class="flex justify-start">
-                            <button onclick="window.print()" class="btn btn-outline btn-sm">
-                                <x-heroicon-o-printer class="w-4 h-4 mr-2" />
-                                Imprimir Historial
-                            </button>
-                        </div> --}} 
+                    
+                    <!-- Filtro por estado -->
+                    <div class="dropdown dropdown-end">
+                        <label tabindex="0" class="btn btn-sm btn-ghost gap-2 {{ request('estado') == 'eliminados' || request('estado') == 'todos' ? 'text-primary' : '' }}">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" 
+                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
+                            </svg>
+                            @if(request('estado') == 'eliminados')
+                                <span class="badge badge-error badge-sm">Eliminados</span>
+                            @elseif(request('estado') == 'todos')
+                                <span class="badge badge-neutral badge-sm">Todos</span>
+                            @endif
+                        </label>
+                        <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow-lg bg-base-100 rounded-box w-52 border border-base-300">
+                            <li class="menu-title">
+                                <span>Filtrar por estado</span>
+                            </li>
+                            <li>
+                                <a href="{{ route('combustibles.index', array_merge(request()->except('estado', 'page'), [])) }}" 
+                                   class="{{ !request('estado') || request('estado') == 'activo' ? 'active' : '' }}">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" 
+                                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-success">
+                                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                        <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                                    </svg>
+                                    Solo Activos
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('combustibles.index', array_merge(request()->except('page'), ['estado' => 'eliminados'])) }}"
+                                   class="{{ request('estado') == 'eliminados' ? 'active' : '' }}">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" 
+                                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-error">
+                                        <circle cx="12" cy="12" r="10"></circle>
+                                        <line x1="15" y1="9" x2="9" y2="15"></line>
+                                        <line x1="9" y1="9" x2="15" y2="15"></line>
+                                    </svg>
+                                    Solo Eliminados
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('combustibles.index', array_merge(request()->except('page'), ['estado' => 'todos'])) }}"
+                                   class="{{ request('estado') == 'todos' ? 'active' : '' }}">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" 
+                                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                                    </svg>
+                                    Todos
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
-        </div>
         <!-- TABLA -->
         <div class="overflow-x-auto mt-4">
             <table class="table table-zebra w-full">
@@ -196,7 +239,7 @@
                         <th class="text-center">Tipo</th>
                         <th class="text-center">Litros</th>
                         <th class="text-center">Importe</th>
-                        <th class="text-center">Estación</th> 
+                        <th class="text-center">Estado</th> 
                         <th class="text-center">Acciones</th> 
                     </tr>
                 </thead>
@@ -208,9 +251,23 @@
                             <td class="text-center">{{ $combustible->destino->marca ?? 'N/A' }}</td> 
                             <td class="text-center">{{ $combustible->empleado->nombre ?? 'N/A' }}</td> 
                             <td class="text-center">{{ $combustible->tipo }}</td> 
-                            <td class="text-center">{{ $combustible->litros }}</td>
+                            <td class="text-center">{{ $combustible->litros ?? 'N/A' }}</td>
                             <td class="text-center">${{ number_format($combustible->monto,2,'.',',') }}</td>
-                            <td class="text-center">{{ $combustible->estacion }}</td>
+                            <td class="text-center">
+                                    @php
+                                        $badgeClass = match ($combustible->estado_carga) { 
+                                            'Pendiente' => 'badge badge-outline badge-warning', 
+                                            'Pendiente de factura' => 'badge badge-outline badge-error',
+                                            'Finalizada' => 'badge badge-outline badge-success',
+                                            'Cancelada' => 'badge badge-outline badge-error',
+                                            'Aprobada' => 'badge badge-outline badge-primary',
+                                            default => 'badge-ghost', 
+                                        }; 
+                                    @endphp
+                                    <span class="badge {{ $badgeClass }} badge-sm whitespace-nowrap overflow-hidden text-ellipsis max-w-[120px]" title="{{ $combustible->estado_carga }}">
+                                        {{ $combustible->estado_carga }}
+                                    </span>
+                            </td> 
                             <td class="text-center">
                                 <div class="flex items-center justify-center gap-2"> 
                                     @can('combustibles-show') 

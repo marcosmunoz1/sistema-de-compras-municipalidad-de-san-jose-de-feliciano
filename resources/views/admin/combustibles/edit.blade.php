@@ -348,7 +348,7 @@
         </div>
     </div>
     <form action="{{ route('combustibles.update', $combustible->id) }}" method="POST" class="space-y-6"
-        enctype="multipart/form-data">
+        enctype="multipart/form-data"> 
         @csrf
         @method('PUT')
         <div data-slot="card"
