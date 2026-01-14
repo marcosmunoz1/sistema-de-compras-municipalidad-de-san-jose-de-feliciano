@@ -3,6 +3,8 @@
 namespace App\Models;
 use App\Models\Proveedor;
 use App\Models\Empleado;
+use App\Models\Detalle_compra;
+
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Activitylog\Traits\LogsActivity;

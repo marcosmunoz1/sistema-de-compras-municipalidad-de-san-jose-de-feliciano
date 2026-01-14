@@ -44,12 +44,12 @@ class ProveedorController extends Controller
             'pais' => 'required|string|max:255',
             'empresa' => 'required|string|max:255',
             'nombre' => 'required|string|max:255',
-            'razon_social' => 'required|nullable|string|max:255',
-            'cuit' => 'required|nullable|string|max:255',
-            'telefono' => 'required|nullable|string|max:255',
+            'razon_social' => 'nullable|string|max:255',
+            'cuit' => 'required|string|max:255',
+            'telefono' => 'nullable|string|max:255',
             'celular' => 'required|string|max:255',
-            'email' => 'required|nullable|email|max:255',
-            'codigo_postal' => 'required|nullable|string|max:255',
+            'email' => 'nullable|email|max:255',
+            'codigo_postal' => 'nullable|string|max:255',
             'direccion' => 'required|string|max:255'
         ]); 
 
@@ -129,22 +129,28 @@ class ProveedorController extends Controller
      * Update the specified resource in storage.
      */
     public function update(Request $request, $id) 
-    {  
-      $request->validate([
+    {
+        $proveedor = Proveedor::findOrFail($id);
+        if ($proveedor->compras()->exists()) {
+            return redirect()->back()
+                ->with('mensaje', 'Este proveedor ya esta asociado a una compra y no puede ser editado.')
+                ->with('icono', 'warning');
+        }
+    
+        $request->validate([
             'localidad' => 'required|string|max:255', 
             'provincia' => 'required|string|max:255',
             'pais' => 'required|string|max:255',
             'empresa' => 'required|string|max:255',
             'nombre' => 'required|string|max:255',
-            'razon_social' => 'required|nullable|string|max:255',
-            'cuit' => 'required|nullable|string|max:255',
-            'telefono' => 'required|nullable|string|max:255',
+            'razon_social' => 'nullable|string|max:255',
+            'cuit' => 'required|string|max:255',
+            'telefono' => 'nullable|string|max:255',
             'celular' => 'required|string|max:255',
-            'email' => 'required|nullable|email|max:255',
-            'codigo_postal' => 'required|nullable|string|max:255',
+            'email' => 'nullable|email|max:255',
+            'codigo_postal' => 'nullable|string|max:255',
             'direccion' => 'required|string|max:255'
         ]); 
-        $proveedor = Proveedor::findOrFail($id);
         $proveedor->localidad = $request->localidad;
         $proveedor->provincia = $request->provincia;
         $proveedor->pais = $request->pais;

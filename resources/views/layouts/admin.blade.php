@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es" data-theme="light">
+<html lang="es" data-theme="dark">
 
 <head>
     <meta charset="UTF-8">
@@ -229,6 +229,7 @@
                         </a>
                     </li> 
                     @endcan
+                    @can('equipos-index')
                     <li class="w-full mr-15">
                         <a href="{{ url('/admin/equipos') }}"
                            class="hover:bg-base-300 hover:text-primary transition-colors {{ request()->is('admin/equipos*') ? 'active bg-primary text-primary-content' : '' }}">
@@ -236,6 +237,7 @@
                             Equipos
                         </a>
                     </li> 
+                    @endcan
                     {{-- SECCIÓN: PERSONAL --}}
                     <li class="menu-title mt-4">
                         <span class="text-xs uppercase tracking-wider text-base-content/50">Personal</span>
@@ -281,13 +283,16 @@
                         </a>
                     </li>
                     @endcan
-                    <li class="mr-15">
-                        <a href="{{ url('/admin/auditoria') }}"
-                           class="hover:bg-base-300 hover:text-primary transition-colors {{ request()->is('admin/auditoria*') ? 'active bg-primary text-primary-content' : '' }}">
-                            <x-heroicon-o-document-text class="w-5 h-5" />
-                            Auditoría
-                        </a>
-                    </li>
+                    @can('auditoria-index')
+                        <li class="mr-15">
+                            <a href="{{ url('/admin/auditoria') }}"
+                            class="hover:bg-base-300 hover:text-primary transition-colors {{ request()->is('admin/auditoria*') ? 'active bg-primary text-primary-content' : '' }}">
+                                <x-heroicon-o-document-text class="w-5 h-5" />
+                                Auditoría
+                            </a>
+                        </li>
+                    @endcan
+                    @can('backups-index')
                       {{-- SECCIÓN: RespaldosDB --}}
                     <li class="menu-title mt-4">
                         <span class="text-xs uppercase tracking-wider text-base-content/50">Respaldos</span>
@@ -307,6 +312,7 @@
                             Backups
                         </a>
                     </li>
+                    @endcan
                 </ul>
 
                 {{-- FOOTER DEL SIDEBAR --}}

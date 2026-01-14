@@ -98,6 +98,6 @@ class PermisoController extends Controller
 
         return redirect()->back()
         ->with('mensaje', 'El permiso se ha eliminado.') 
-        ->with('icono', 'success');  
+        ->with('icono', 'success');
     }
 }

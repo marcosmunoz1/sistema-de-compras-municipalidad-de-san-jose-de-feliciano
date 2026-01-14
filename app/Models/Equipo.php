@@ -6,11 +6,12 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Traits\Catalogable;
-
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class Equipo extends Model
 {
-  use SoftDeletes, Catalogable;
+  use SoftDeletes, Catalogable, LogsActivity;
    protected $table = 'equipos';
     protected $fillable = [
     'equipamiento', 
@@ -49,5 +50,14 @@ class Equipo extends Model
     public function area(): BelongsTo
     {
         return $this->belongsTo(Area::class);
+    }
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logOnly(['equipamiento', 'marca', 'descripcion', 'area_id', 'estado', 'catalogacion'])
+            ->logOnlyDirty()
+            ->dontSubmitEmptyLogs()
+            ->setDescriptionForEvent(fn(string $eventName) => "Equipo {$eventName}");
     }
 }

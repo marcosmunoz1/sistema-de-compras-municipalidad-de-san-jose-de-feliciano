@@ -21,10 +21,36 @@ class CompraController extends Controller
     public function index(Request $request)
     {
         $search = $request->get('search');
-        $totalMonto = Compra::sum('total'); 
-        $totalCompras = Compra::count();
-        $pendientes = Compra::where('estado_compra','Pendiente de factura')->count(); 
+        
+
         $query = Compra::withTrashed()->orderBy('id', 'desc');
+        // 📅 Filtro por fecha
+        if ($request->filled('desde')) {
+            $query->whereDate('fecha_orden', '>=', $request->desde);
+        }
+
+        if ($request->filled('hasta')) {
+            $query->whereDate('fecha_orden', '<=', $request->hasta);
+        }
+
+        // 🧑‍💼 Filtro por proveedor
+        if ($request->filled('proveedor')) {
+            $query->whereHas('proveedor', function ($q) use ($request) {
+                $q->where('nombre', 'LIKE', '%' . $request->proveedor . '%');
+            });
+        }
+
+        // 🏷 Filtro por estado
+        if ($request->filled('estado')) {
+            $query->where('estado_compra', $request->estado);
+        }
+
+        $totalMonto = (clone $query)->sum('total');
+        $totalCompras = (clone $query)->count();
+        $pendientes = (clone $query)
+            ->where('estado_compra', 'Pendiente de factura')
+            ->count();
+
 
         if ($search) { 
 
@@ -241,7 +267,7 @@ class CompraController extends Controller
         $categorias = Categoria::all();  
         $proveedores = Proveedor::all();
         $empleados = Empleado::all();
-        $productos = Producto::all();
+        $productos = Producto::withTrashed()->get();
         return view('admin.compras.edit', compact('empleados', 'categorias', 'productos','compra'));
     }
 
