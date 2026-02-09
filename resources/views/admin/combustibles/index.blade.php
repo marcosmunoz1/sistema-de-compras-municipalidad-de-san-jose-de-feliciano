@@ -276,32 +276,41 @@
                                         <x-heroicon-s-eye class="w-4 h-4"/>
                                     </a>
                                     @endcan 
+
                                     @can('combustibles-edit')
-                                    <a href="{{ route('combustibles.edit', Crypt::encrypt($combustible->id)) }}"  
-                                       class="btn btn-warning btn-sm">
-                                        <x-heroicon-s-pencil class="w-4 h-4"/>
-                                    </a>
-                                    @endcan   
+                                        @if ($combustible->estado_carga !== 'Finalizada')
+                                            <a href="{{ route('combustibles.edit', Crypt::encrypt($combustible->id)) }}"
+                                            class="btn btn-warning btn-sm">
+                                                <x-heroicon-s-pencil class="w-4 h-4"/>
+                                            </a>
+                                        @endif
+                                    @endcan
+
                                     @can('combustibles-report')
                                     <button onclick="abrirModalPDFCarga({{ $combustible->id }})"  
                                        class="btn bg-primary btn-sm" title="Imprimir orden"> 
                                         <x-heroicon-o-printer class="w-4 h-4"/>
                                     </button>
                                     @endcan
+
                                     @if ($combustible->trashed())
+                                    
                                         @can('combustibles-restore')
                                         <button class="btn btn-success btn-sm"
                                                 onclick="abrirModalRestaurar('{{ url('/admin/combustibles/'. $combustible->id.'/restore') }}')">
                                             <x-heroicon-s-arrow-uturn-left class="w-4 h-4"/>
                                         </button>
                                         @endcan 
+
                                     @else 
+
                                         @can('combustibles-destroy') 
                                         <button class="btn btn-error btn-sm"
                                                 onclick="confirmarEliminacion({{ $combustible->id }})">
                                             <x-heroicon-s-trash class="w-4 h-4"/>
                                         </button>
                                         @endcan 
+
                                     @endif
 
                                     </div>
