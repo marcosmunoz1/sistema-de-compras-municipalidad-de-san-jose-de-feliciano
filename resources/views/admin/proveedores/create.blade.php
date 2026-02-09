@@ -61,10 +61,8 @@
             <h4 data-slot="card-title" class="text-1xl font-semibold">Datos de la Empresa</h4>
             <p data-slot="card-description" class="text-muted-foreground">Información básica del proveedor</p>
         </div>
-
         <div data-slot="card-content" class="px-6 [&:last-child]:pb-6">
             <div class="grid gap-4">
-
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <!-- Empresa -->
                     <div class="space-y-2">
@@ -90,7 +88,6 @@
                         placeholder="Razón Social..."/> 
                     </div>
                 </div>
-
                 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
                     <div class="space-y-2">
                         <label for="cuit" class="text-sm font-medium">CUIT / RUC</label>
@@ -156,7 +153,6 @@
             </div>
         </div>
     </div>
-
     <!-- ========================= -->
     <!-- CARD 2 — UBICACIÓN -->
     <!-- ========================= -->
@@ -166,7 +162,6 @@
             <h4 class="text-1xl font-semibold">Ubicación</h4>
             <p class="text-muted-foreground">Dirección y ubicación del proveedor</p>
         </div>
-
         <div data-slot="card-content" class="px-6 [&:last-child]:pb-6">
             <div class="grid gap-4">
 
@@ -178,8 +173,6 @@
                         px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
                         focus:border-primary transition @error('pais') input-error @enderror">
                             <option>Argentina</option>
-                            <option>Uruguay</option>
-                            <option>Chile</option>
                         </select>
                     </div>
 
@@ -189,12 +182,30 @@
                         <select id="provincia" name="provincia" class="select w-full h-10 rounded-md border-base-300 bg-base-200
                         px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
                         focus:border-primary transition @error('provincia') input-error @enderror">
-                            <option>Entre Ríos</option>
-                            <option>Corrientes</option>
                             <option>Buenos Aires</option>
-                        </select>
+                            <option>Catamarca</option>
+                            <option>Chaco</option>
+                            <option>Chubut</option>
+                            <option>Córdoba</option>
+                            <option>Corrientes</option>
+                            <option>Entre Ríos</option>
+                            <option>Jujuy</option>
+                            <option>La Pampa</option>
+                            <option>La Rioja</option>
+                            <option>Mendoza</option>
+                            <option>Misiones</option>
+                            <option>Neuquén</option>
+                            <option>Río Negro</option>
+                            <option>Salta</option>
+                            <option>San Juan</option>
+                            <option>San Luis</option>
+                            <option>Santa Cruz</option>
+                            <option>Santa Fe</option>
+                            <option>Santiago del Estero</option>
+                            <option>Tierra del Fuego</option>
+                            <option>Tucumán</option>
+                        </select> 
                     </div>
-
                     <!-- Localidad -->
                     <div class="space-y-2">
                         <label for="localidad" class="text-sm font-medium">Localidad <span class="text-red-600">*</span></label>
@@ -205,7 +216,6 @@
                         placeholder="Localidad..." />
                     </div>
                 </div>
-
                 <!-- Dirección -->
                 <div class="space-y-2">
                     <label for="direccion" class="text-sm font-medium">Dirección</label>
@@ -227,7 +237,6 @@
             <p class="">
                 Información adicional del proveedor
             </p>
-
             <div class="space-y-2"> 
                 <label for="observaciones" class="block text-sm font-medium text-gray-700 mb-1">
                     Observaciones / Notas
@@ -242,7 +251,6 @@
             </div>
         </div>
     </div>
-
     <!-- ========================= -->
     <!-- BOTONES DEL FORMULARIO -->
     <!-- ========================= -->
@@ -256,8 +264,5 @@
             Guardar Proveedor 
         </button>
     </div>
-
 </form>
-
-
-@endsection
+@endsection  

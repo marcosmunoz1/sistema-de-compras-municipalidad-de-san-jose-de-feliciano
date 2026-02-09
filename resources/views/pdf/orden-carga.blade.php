@@ -357,7 +357,13 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td style="font-weight: 600;">{{ $combustible->litros }} Litros - {{ $combustible->tipo }}</td>
+                        <td style="font-weight: 600;">
+                            @if($combustible->litros !== null)
+                            {{ $combustible->litros }} Litros - {{ $combustible->tipo }}
+                            @else
+                             Carga completa - {{ $combustible->tipo }} 
+                            @endif
+                        </td>
                     </tr>
                     {{-- @if($combustible->observaciones)
                     <tr>

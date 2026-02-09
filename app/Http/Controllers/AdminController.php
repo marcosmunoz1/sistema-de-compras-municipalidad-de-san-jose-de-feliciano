@@ -22,6 +22,7 @@ class AdminController extends Controller
 {
     public function index()
     {
+        // Contadores - Los modelos con SoftDeletes automáticamente excluyen registros eliminados
         $cantidadProveedores = Proveedor::count();
         $cantidadRoles = Role::count();
         $cantidadUsuarios = User::count();
@@ -37,77 +38,86 @@ class AdminController extends Controller
         $cantidadPermisos = Permission::count();
 
         // Datos para gráficos (sin caché para ver cambios instantáneos)
-        
-        // Gastos mensuales en compras (año actual)
+
+        // Gastos mensuales en compras (año actual) - excluye registros eliminados
         $gastosComprasMensuales = Compra::selectRaw('MONTH(fecha_orden) as mes, SUM(total) as monto_total, COUNT(*) as cantidad')
             ->whereYear('fecha_orden', date('Y'))
             ->groupBy('mes')
             ->orderBy('mes')
             ->get();
 
-        // Cargas de combustible mensuales (año actual)
+        // Cargas de combustible mensuales (año actual) - excluye registros eliminados
         $cargasCombustibleMensuales = Combustible::selectRaw('MONTH(fecha) as mes, SUM(monto) as monto_total, SUM(litros) as litros_total, COUNT(*) as cantidad')
             ->whereYear('fecha', date('Y'))
             ->groupBy('mes')
             ->orderBy('mes')
             ->get();
 
-        // Top 10 productos más comprados
+        // Top 10 productos más comprados - excluye productos eliminados
         $productosMasComprados = DB::table('detalle_compras')
             ->join('productos', 'detalle_compras.producto_id', '=', 'productos.id')
+            ->whereNull('productos.deleted_at')
             ->select('productos.nombre', DB::raw('SUM(detalle_compras.cantidad) as total_cantidad'))
             ->groupBy('productos.id', 'productos.nombre')
             ->orderBy('total_cantidad', 'desc')
             ->limit(10)
             ->get();
 
-        // Vehículos con más cargas de combustible
+        // Vehículos con más cargas de combustible - excluye vehículos y combustibles eliminados
         $vehiculosMasCargas = DB::table('combustibles')
-            ->join('vehiculos', function($join) {
+            ->join('vehiculos', function ($join) {
                 $join->on('combustibles.destino_id', '=', 'vehiculos.id')
-                     ->where('combustibles.destino_tipo', 'LIKE', '%Vehiculo');
+                    ->where('combustibles.destino_tipo', 'LIKE', '%Vehiculo');
             })
+            ->whereNull('combustibles.deleted_at')
+            ->whereNull('vehiculos.deleted_at')
             ->select('vehiculos.patente', DB::raw('COUNT(*) as total_cargas'), DB::raw('SUM(combustibles.litros) as litros_total'))
             ->groupBy('vehiculos.id', 'vehiculos.patente')
             ->orderBy('total_cargas', 'desc')
             ->limit(8)
             ->get();
 
-        // Top 6 proveedores con más compras
+        // Top 6 proveedores con más compras - excluye proveedores y compras eliminados
         $topProveedoresCompras = DB::table('compras')
             ->join('proveedores', 'compras.proveedor_id', '=', 'proveedores.id')
+            ->whereNull('compras.deleted_at')
+            ->whereNull('proveedores.deleted_at')
             ->select('proveedores.nombre', DB::raw('COUNT(*) as total_compras'), DB::raw('SUM(compras.total) as monto_total'))
             ->groupBy('proveedores.id', 'proveedores.nombre')
             ->orderBy('total_compras', 'desc')
             ->limit(6)
             ->get();
 
-        // Empleados que más solicitan compras
+        // Empleados que más solicitan compras - excluye empleados y compras eliminados
         $empleadosMasSolicitudes = DB::table('compras')
             ->join('empleados', 'compras.empleado_id', '=', 'empleados.id')
+            ->whereNull('compras.deleted_at')
+            ->whereNull('empleados.deleted_at')
             ->select('empleados.nombre', DB::raw('COUNT(*) as total_solicitudes'), DB::raw('SUM(compras.total) as monto_total'))
             ->groupBy('empleados.id', 'empleados.nombre')
             ->orderBy('total_solicitudes', 'desc')
             ->limit(8)
             ->get();
 
-        // Obras con más movimientos
+        // Obras con más movimientos - excluye obras y movimientos eliminados
         $obrasMasMovimientos = DB::table('movimientos')
-            ->join('obras', function($join) {
+            ->join('obras', function ($join) {
                 $join->on('movimientos.destino_id', '=', 'obras.id')
-                     ->where('movimientos.destino_tipo', 'LIKE', '%Obra');
+                    ->where('movimientos.destino_tipo', 'LIKE', '%Obra');
             })
+            ->whereNull('movimientos.deleted_at')
+            ->whereNull('obras.deleted_at')
             ->select('obras.nombre', DB::raw('COUNT(*) as total_movimientos'))
             ->groupBy('obras.id', 'obras.nombre')
             ->orderBy('total_movimientos', 'desc')
             ->limit(6)
             ->get();
 
-        // Distribución de movimientos por tipo de destino
+        // Distribución de movimientos por tipo de destino - excluye movimientos eliminados
         $movimientosPorTipo = Movimiento::selectRaw('destino_tipo, COUNT(*) as total')
             ->groupBy('destino_tipo')
             ->get()
-            ->map(function($item) {
+            ->map(function ($item) {
                 $tipo = $item->destino_tipo;
                 $nombre = class_basename($tipo);
                 return [
@@ -116,19 +126,21 @@ class AdminController extends Controller
                 ];
             });
 
-        // Depósitos con más movimientos
+        // Depósitos con más movimientos - excluye movimientos eliminados
+        // Nota: Deposito usa SoftDeletes, pero verificamos por si acaso
         $depositosMasMovimientos = DB::table('movimientos')
-            ->join('depositos', function($join) {
+            ->join('depositos', function ($join) {
                 $join->on('movimientos.origen_id', '=', 'depositos.id')
-                     ->where('movimientos.origen_tipo', 'LIKE', '%Deposito');
+                    ->where('movimientos.origen_tipo', 'LIKE', '%Deposito');
             })
+            ->whereNull('movimientos.deleted_at')
             ->select('depositos.nombre', DB::raw('COUNT(*) as total_movimientos'))
             ->groupBy('depositos.id', 'depositos.nombre')
             ->orderBy('total_movimientos', 'desc')
             ->limit(6)
             ->get();
 
-        // Compras pendientes de factura (últimas 10)
+        // Compras pendientes de factura (últimas 10) - excluye compras eliminadas
         $comprasPendientesFactura = Compra::with(['proveedor', 'empleado'])
             ->where('estado_compra', 'Pendiente de factura')
             ->orderBy('fecha_orden', 'desc')

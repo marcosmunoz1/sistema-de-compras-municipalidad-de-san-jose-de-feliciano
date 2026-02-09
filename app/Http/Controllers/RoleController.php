@@ -125,6 +125,8 @@ class RoleController extends Controller
                 return 'Equipos';
             }elseif (stripos($permiso->name, 'aud') !== false) {
                 return 'Auditoría';
+            }elseif (stripos($permiso->name, 'des') !== false) {
+                return 'Destinos';
             }
 
         })->map(function ($grupo) {

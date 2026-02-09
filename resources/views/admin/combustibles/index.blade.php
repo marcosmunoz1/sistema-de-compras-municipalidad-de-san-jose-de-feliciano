@@ -904,7 +904,7 @@
 
             const ctxConsumo = document.getElementById('chartConsumoMensual').getContext('2d');
             new Chart(ctxConsumo, {
-                type: 'line',
+                type: 'line', 
                 data: {
                     labels: meses,
                     datasets: [{

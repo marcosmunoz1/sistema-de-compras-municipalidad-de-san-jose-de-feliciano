@@ -9,7 +9,7 @@
 
     <!-- Grid de Cards -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-        @can('proveedores-index')
+        @can('proveedores-index') 
         <a href="{{ url('/admin/proveedores') }}" class="group">
             <div class="card bg-base-100 border-2 border-base-300 hover:border-blue-500 shadow-md hover:shadow-xl transition-all duration-300">
                 <div class="card-body p-5">
