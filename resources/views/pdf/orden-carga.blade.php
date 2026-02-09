@@ -196,12 +196,12 @@
         }
 
         .footer-area {
-            margin-top: 15px;
+            margin-top: 12px;
             display: flex;
-            flex-direction: row;
-            justify-content: space-between;
-            gap: 10px;
-            width: 100%;
+            justify-content: center;
+            padding-bottom: 8px;
+            position: relative;
+            z-index: 10;
         }
 
         .signature-box {
@@ -380,8 +380,8 @@
         </div>
 
         <!-- Area de Firmas (Triple validacion) -->
-        <table style="width: 100%; margin-top: 15px; border: none; border-collapse: collapse;">
-            <tr>
+        <table style="width: 100%; margin-top: 15px; border: none; border-collapse: collapse; page-break-inside: avoid;">
+            <tr style="page-break-inside: avoid;">
                 <td style="width: 33%; text-align: center; vertical-align: bottom; border: none; padding: 0 8px;">
                     <div style="border-bottom: 1.5px solid #000; height: 30px; margin-bottom: 4px;"></div>
                     <div style="font-size: 7px; font-weight: 700; text-transform: uppercase;">Firma Portador</div>
@@ -393,19 +393,15 @@
                     <div style="font-size: 6px; color: #64748b; text-transform: uppercase;">Estacion de Servicio</div>
                 </td>
                 <td style="width: 33%; text-align: center; vertical-align: bottom; border: none; padding: 0 8px;">
-                    <div style="border-bottom: 1.5px solid #000; height: 30px; margin-bottom: 4px;"></div>
-                    <div style="font-size: 7px; font-weight: 700; text-transform: uppercase;">Autorizado por Funcionario</div>
-                    <div style="font-size: 6px; color: #64748b; text-transform: uppercase;">Sello y Firma Municipal</div>
+                    <div style="font-size: 6px; color: #64748b; text-transform: uppercase;">Sello y Firma Municipal:</div>
+                    @if($combustible->user && $combustible->user->firma)
+                        <img src="{{ public_path('storage/' . $combustible->user->firma) }}"
+                            style="max-width: 100px; height: auto; max-height: 100px;">
+                    @endif
+                    <div style="font-size: 7px; font-weight: 700; text-transform: uppercase;">Autorizado por Funcionario{{ $combustible->user ? ': ' . $combustible->user->name : '' }}</div>
                 </td>
             </tr>
         </table>
-
-        <!-- Pie de pagina -->
-        <div class="copy-indicator uppercase">
-            <span>Original: Contaduria</span>
-            <span>Comprobante Estacion de Servicio</span>
-            <span>Copia: Archivo Corralon</span>
-        </div>
     </div>
 
 </body>

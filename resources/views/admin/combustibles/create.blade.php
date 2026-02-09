@@ -529,6 +529,7 @@
                         <th>Celular</th>
                         <th>Email</th>
                         <th>Área</th>
+                        <th>Puesto</th>
                     </tr>
                 </thead>
                 <tbody id="tabla_empleado_body">
@@ -1129,7 +1130,9 @@ document.addEventListener("DOMContentLoaded", function() {
                 <td>${formatearCelda(empleado.dni)}</td>
                 <td>${formatearCelda(empleado.celular)}</td>
                 <td>${formatearCelda(empleado.email)}</td>
-                <td>${formatearCelda(empleado.area)}</td>
+                <td>${formatearCelda(empleado.area)}</td>                
+                <td>${formatearCelda(empleado.puesto)}</td>
+
             `;
 
             tr.addEventListener('click', function (e) {
@@ -1177,7 +1180,7 @@ document.addEventListener("DOMContentLoaded", function() {
         buscadorEmpleado.addEventListener('input', function () {
             const term = this.value.toLowerCase();
             const filtrados = empleadosData.filter(empleado => {
-                const texto = `${empleado.nombre || ''} ${empleado.dni || ''} ${empleado.celular || ''} ${empleado.email || ''} ${empleado.area || ''}`.toLowerCase();
+                const texto = `${empleado.nombre || ''} ${empleado.dni || ''} ${empleado.celular || ''} ${empleado.email || ''} ${empleado.area || ''}${empleado.puesto || ''}`.toLowerCase();
                 return texto.includes(term);
             });
             paginaEmpleado = 1;
@@ -1191,7 +1194,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 paginaEmpleado--;
                 const term = buscadorEmpleado ? buscadorEmpleado.value.toLowerCase() : '';
                 const filtrados = term ? empleadosData.filter(e => {
-                    const texto = `${e.nombre || ''} ${e.dni || ''} ${e.celular || ''} ${e.email || ''} ${e.area || ''}`.toLowerCase();
+                    const texto = `${e.nombre || ''} ${e.dni || ''} ${e.celular || ''} ${e.email || ''} ${e.area || ''} ${e.puesto || ''}`.toLowerCase();
                     return texto.includes(term);
                 }) : empleadosCache;
                 renderTablaEmpleado(filtrados);
@@ -1203,7 +1206,7 @@ document.addEventListener("DOMContentLoaded", function() {
         empleadoNext.addEventListener('click', function () {
             const term = buscadorEmpleado ? buscadorEmpleado.value.toLowerCase() : '';
             const filtrados = term ? empleadosData.filter(e => {
-                const texto = `${e.nombre || ''} ${e.dni || ''} ${e.celular || ''} ${e.email || ''} ${e.area || ''}`.toLowerCase();
+                const texto = `${e.nombre || ''} ${e.dni || ''} ${e.celular || ''} ${e.email || ''} ${e.area || ''} ${e.puesto || ''}`.toLowerCase();
                 return texto.includes(term);
             }) : empleadosCache;
             const totalPaginas = Math.ceil(filtrados.length / itemsPorPaginaEmpleado);

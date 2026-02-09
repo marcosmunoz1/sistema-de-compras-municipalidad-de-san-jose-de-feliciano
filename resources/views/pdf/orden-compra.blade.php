@@ -372,7 +372,7 @@
                 <tbody>
                     @foreach($compra->detalle_compras as $detalle)
                     <tr>
-                        <td style="font-weight: 600;">{{ $detalle->cantidad }} {{ $detalle->producto->unidad_medida ?? 'UND' }}</td>
+                        <td style="font-weight: 600;">{{ $detalle->cantidad }} {{ $detalle->producto->unidad ?? 'UND' }}</td>
                         <td>{{ $detalle->producto->nombre ?? 'N/A' }}</td>
                     </tr>
                     @endforeach
