@@ -12,7 +12,30 @@ class DestinoController extends Controller
      */
     public function index()
     {
-        //
+        $search = request('search');
+        $estado = request('estado', 'activo');
+
+        $query = Destino::query();
+
+        // Aplicar búsqueda
+        if ($search) {
+            $query->where(function ($q) use ($search) {
+                $q->where('nombre', 'like', "%{$search}%")
+                    ->orWhere('tipo', 'like', "%{$search}%")
+                    ->orWhere('descripcion', 'like', "%{$search}%");
+            });
+        }
+
+        // Filtrar por estado
+        if ($estado === 'inactivo') {
+            $query->onlyTrashed();
+        } elseif ($estado === 'todos') {
+            $query->withTrashed();
+        }
+
+        $destinos = $query->orderBy('created_at', 'desc')->paginate(10);
+
+        return view('admin.destinos.index', compact('destinos', 'search'));
     }
 
     /**
@@ -32,15 +55,15 @@ class DestinoController extends Controller
         $request->validate([
             'nombre' => 'required|string|max:255',
             'tipo' => 'required|string|in:persona,policia,empresa,institucion,organismo_publico',
-            'descripcion' => 'nullable|string|max:5000',  
+            'descripcion' => 'nullable|string|max:5000',
         ]);
 
         // Crear el destino
-        Destino::create($request->all()); 
+        Destino::create($request->all());
 
-         return redirect()->route('combustibles.create')
-        ->with('mensaje', 'Destino creado exitosamente.')
-        ->with('icono', 'success'); 
+        return redirect()->route('destinos.index')
+            ->with('mensaje', 'Destino creado exitosamente.')
+            ->with('icono', 'success');
     }
 
     /**
@@ -48,7 +71,7 @@ class DestinoController extends Controller
      */
     public function show(Destino $destino)
     {
-        //
+        return response()->json($destino);
     }
 
     /**
@@ -64,7 +87,17 @@ class DestinoController extends Controller
      */
     public function update(Request $request, Destino $destino)
     {
-        //
+        $request->validate([
+            'nombre' => 'required|string|max:255',
+            'tipo' => 'required|string|in:persona,policia,empresa,institucion,organismo_publico',
+            'descripcion' => 'nullable|string|max:5000',
+        ]);
+
+        $destino->update($request->all());
+
+        return redirect()->route('destinos.index')
+            ->with('mensaje', 'Destino actualizado exitosamente.')
+            ->with('icono', 'success');
     }
 
     /**
@@ -72,6 +105,23 @@ class DestinoController extends Controller
      */
     public function destroy(Destino $destino)
     {
-        //
+        $destino->delete();
+
+        return redirect()->route('destinos.index')
+            ->with('mensaje', 'Destino eliminado exitosamente.')
+            ->with('icono', 'success');
+    }
+
+    /**
+     * Restore a soft-deleted destino.
+     */
+    public function restore($id)
+    {
+        $destino = Destino::withTrashed()->findOrFail($id);
+        $destino->restore();
+
+        return redirect()->route('destinos.index')
+            ->with('mensaje', 'Destino restaurado exitosamente.')
+            ->with('icono', 'success');
     }
 }

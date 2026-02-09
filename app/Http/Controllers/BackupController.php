@@ -82,7 +82,7 @@ class BackupController extends Controller
     {
         try {
             $disk = Storage::disk('backups');
-            $appName = config('backup.backup.name');
+            $appName = config('backup.backup.name', 'Laravel');
             $filePath = $appName . '/' . $filename;
             
             if (!$disk->exists($filePath)) {
@@ -96,7 +96,28 @@ class BackupController extends Controller
                     ->log('Backup descargado');
             }
             
-            return $disk->download($filePath);
+            // Obtener información del archivo
+            $fullPath = $disk->path($filePath);
+            $fileSize = $disk->size($filePath);
+            
+            // Si el archivo es muy grande, usar streamed response
+            if ($fileSize > 50 * 1024 * 1024) { // 50MB
+                return response()->stream(function() use ($fullPath) {
+                    readfile($fullPath);
+                }, 200, [
+                    'Content-Type' => 'application/zip',
+                    'Content-Disposition' => 'attachment; filename="' . $filename . '"',
+                    'Content-Length' => $fileSize,
+                ]);
+            }
+            
+            return $disk->download($filePath, $filename, [
+                'Content-Type' => 'application/zip',
+                'Content-Disposition' => 'attachment; filename="' . $filename . '"',
+                'Cache-Control' => 'no-cache, no-store, must-revalidate',
+                'Pragma' => 'no-cache',
+                'Expires' => '0',
+            ]);
             
         } catch (\Exception $e) {
             Log::error('Error al descargar backup', [
@@ -115,7 +136,7 @@ class BackupController extends Controller
     {
         try {
             $disk = Storage::disk('backups');
-            $appName = config('backup.backup.name');
+            $appName = config('backup.backup.name', 'Laravel');
             $filePath = $appName . '/' . $filename;
             
             if (!$disk->exists($filePath)) {
@@ -152,7 +173,7 @@ class BackupController extends Controller
     {
         try {
             $disk = Storage::disk('backups');
-            $appName = config('backup.backup.name');
+            $appName = config('backup.backup.name', 'Laravel');
             $filePath = $appName . '/' . $filename;
             
             if (!$disk->exists($filePath)) {
@@ -202,7 +223,7 @@ class BackupController extends Controller
         try {
             $disk = Storage::disk('backups');
             
-            $appName = config('backup.backup.name');
+            $appName = config('backup.backup.name', 'Laravel');
             $backupPath = $appName;
             
             if (!$disk->exists($backupPath)) {
