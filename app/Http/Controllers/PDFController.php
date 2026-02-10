@@ -14,7 +14,7 @@ class PDFController extends Controller
    public function PdfOrdenCarga($id) 
    {   
        $id = Crypt::decrypt($id); 
-       $combustible = Combustible::findOrFail($id);
+       $combustible = Combustible::with(['user'])->findOrFail($id);
        $pdf = PDF::loadView('pdf.orden-carga', compact('combustible'))
            ->setOption('isHtml5ParserEnabled', true)
            ->setOption('isRemoteEnabled', true)
@@ -53,7 +53,7 @@ class PDFController extends Controller
 
    public function previewOrdenCarga($id)
    {
-       $combustible = Combustible::with(['empleado', 'destino'])->findOrFail($id);
+       $combustible = Combustible::with(['empleado', 'destino', 'user'])->findOrFail($id);
        $pdf = PDF::loadView('pdf.orden-carga', compact('combustible'))
            ->setOption('isHtml5ParserEnabled', true)
            ->setOption('isRemoteEnabled', true)

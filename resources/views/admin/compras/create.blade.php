@@ -536,12 +536,27 @@
                         <span class="label-text font-medium">Unidad</span>
                     </label>
 
-                    <input type="text" name="unidad" value="{{ old('unidad') }}"
-                        placeholder="Ej: Unidad, Caja, Litro, Par..."
+                    <select id="unidad" name="unidad"
                         class="w-full h-10 rounded-md border border-base-300 bg-base-200 px-3 
-          text-sm focus:outline-none focus:ring-2 focus:ring-primary 
-          focus:border-primary transition"
+                            text-sm focus:outline-none focus:ring-2 focus:ring-primary 
+                            focus:border-primary transition"
                         required>
+
+                        <option value="" disabled {{ old('unidad') ? '' : 'selected' }}>
+                            Seleccioná una unidad
+                        </option>
+
+                        <option value="Unidad" {{ old('unidad') == 'Unidad' ? 'selected' : '' }}>Unidad</option>
+                        <option value="Caja" {{ old('unidad') == 'Caja' ? 'selected' : '' }}>Caja</option>
+                        <option value="Paquete" {{ old('unidad') == 'Paquete' ? 'selected' : '' }}>Paquete</option>
+                        <option value="Litro" {{ old('unidad') == 'Litro' ? 'selected' : '' }}>Litro</option>
+                        <option value="Kilogramo" {{ old('unidad') == 'Kilogramo' ? 'selected' : '' }}>Kilogramo</option>
+                        <option value="Gramo" {{ old('unidad') == 'Gramo' ? 'selected' : '' }}>Gramo</option>
+                        <option value="Metro" {{ old('unidad') == 'Metro' ? 'selected' : '' }}>Metro</option>
+                        <option value="Par" {{ old('unidad') == 'Par' ? 'selected' : '' }}>Par</option>
+                        <option value="Docena" {{ old('unidad') == 'Docena' ? 'selected' : '' }}>Docena</option>
+
+                    </select>
 
                     @error('unidad')
                         <small class="text-red-500">{{ $message }}</small>
@@ -623,7 +638,7 @@
                         </div>
                         <p class="font-semibold" id="detalle_producto_categoria">-</p>
                     </div>
-
+                    
                     <!-- Unidad -->
                     <div class="bg-base-200 p-4 rounded-lg">
                         <div class="flex items-center gap-2 mb-1">

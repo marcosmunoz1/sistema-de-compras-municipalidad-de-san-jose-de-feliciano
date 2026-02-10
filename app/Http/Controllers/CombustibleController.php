@@ -246,6 +246,12 @@ class CombustibleController extends Controller
         $empleados = Empleado::all();  
         $users = User::all();  
         $combustible = Combustible::findOrFail($id);
+
+        if ($combustible->estado_carga === 'Finalizada') {
+            return redirect()->route('combustibles.index')->with('mensaje', 'No se puede editar esta orden de combustible porque ya está finalizada.')
+                                    ->with('icono', 'warning');
+        }
+
         return view('admin.combustibles.edit', compact('combustible', 'tipo_combustible', 'vehiculos', 'empleados', 'users')); 
     }
 
