@@ -1,7 +1,6 @@
-@extends('layouts.admin')
-@section('title', 'Nueva compra')
+<?php $__env->startSection('title', 'Nueva compra'); ?>
 
-@section('content')
+<?php $__env->startSection('content'); ?>
     <!-- Titulo y boton -->
     <div class="flex items-center justify-between mb-6">
         <h1 class="text-xl sm:text-2xl font-semibold">Creación de la Orden de compra</h1>
@@ -10,7 +9,7 @@
     <div class="breadcrumbs text-sm mb-6">
         <ul>
             <li>
-                <a href="{{ route('admin.index') }}">
+                <a href="<?php echo e(route('admin.index')); ?>">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="h-4 w-4 stroke-current">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"></path>
@@ -19,8 +18,27 @@
                 </a>
             </li>
             <li>
-                <a href="{{ route('compras.index') }}">
-                    <x-heroicon-o-shopping-bag class="w-4 h-4 inline" />
+                <a href="<?php echo e(route('compras.index')); ?>">
+                    <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c = $attributes; } ?>
+<?php $component = BladeUI\Icons\Components\Svg::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('heroicon-o-shopping-bag'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\BladeUI\Icons\Components\Svg::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['class' => 'w-4 h-4 inline']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $attributes = $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $component = $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
                     Compras
                 </a>
             </li>
@@ -62,10 +80,10 @@
         </div>
     </div>
 
-    <form action="{{ route('compras.store') }}" method="POST">
-        @csrf
+    <form action="<?php echo e(route('compras.store')); ?>" method="POST">
+        <?php echo csrf_field(); ?>
         
-        <input type="hidden" name="user_id" value="{{ auth()->id() }}">
+        <input type="hidden" name="user_id" value="<?php echo e(auth()->id()); ?>">
 
         <div data-slot="card" class="card bg-base-100 shadow-xl p-4">
             <div data-slot="card-header"
@@ -83,14 +101,28 @@
                             <label for="fecha_orden" class="text-sm font-medium">Fecha de Emisión<span
                                     class="text-red-600">*</span></label>
                             <input type="date" id="fecha_orden" name="fecha_orden"
-                                value="{{ old('fecha_orden', date('Y-m-d')) }}"
+                                value="<?php echo e(old('fecha_orden', date('Y-m-d'))); ?>"
                                 class="w-full h-10 rounded-md border border-base-300 bg-base-200
                                 px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
-                                focus:border-primary transition @error('fecha_orden') input-error @enderror"
+                                focus:border-primary transition <?php $__errorArgs = ['fecha_orden'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> input-error <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>"
                                 required>
-                            @error('fecha_orden')
-                                <small class="text-red-500 error-message">{{ $message }}</small>
-                            @enderror
+                            <?php $__errorArgs = ['fecha_orden'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                <small class="text-red-500 error-message"><?php echo e($message); ?></small>
+                            <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                         </div>
 
                         <!-- entregar a -->
@@ -99,18 +131,32 @@
                                     class="text-red-600">*</span></label>
 
                             <!-- ID oculto que se envía en el request -->
-                            <input type="hidden" id="empleado_id" name="empleado_id" value="{{ old('empleado_id') }}">
+                            <input type="hidden" id="empleado_id" name="empleado_id" value="<?php echo e(old('empleado_id')); ?>">
 
                             <!-- Campo solo lectura mostrando el nombre elegido -->
                             <input type="text" id="empleado_nombre_visible"
                                 class="w-full h-10 rounded-md border border-base-300 bg-base-200
                                 px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
-                                focus:border-primary cursor-pointer transition @error('empleado_id') input-error @enderror"
+                                focus:border-primary cursor-pointer transition <?php $__errorArgs = ['empleado_id'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> input-error <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>"
                                 placeholder="Seleccione un empleado" value="" readonly>
 
-                            @error('empleado_id')
-                                <small class="text-red-500 error-message">{{ $message }}</small>
-                            @enderror
+                            <?php $__errorArgs = ['empleado_id'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                <small class="text-red-500 error-message"><?php echo e($message); ?></small>
+                            <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                         </div>
 
                         <!-- Provincia -->
@@ -118,12 +164,19 @@
                             <label for="sub_cuenta" class="text-sm font-medium">Sub cuenta<span
                                     class="text-red-600">*</span></label>
                             <div x-data="selectSearch({
-                                options: @js([['value' => 'Secretaria de obras publicas', 'label' => 'Secretaria de Obras Publicas'], ['value' => 'Secretaria de desarrollos humanos', 'label' => 'Secretaria de Desarrollo Humano'], ['value' => 'Secretaria de gobierno', 'label' => 'Secretaria de Gobierno'], ['value' => 'Departamento ejecutivo municipal', 'label' => 'Departamento Ejecutivo Municipal']]),
+                                options: <?php echo \Illuminate\Support\Js::from([['value' => 'Secretaria de obras publicas', 'label' => 'Secretaria de Obras Publicas'], ['value' => 'Secretaria de desarrollos humanos', 'label' => 'Secretaria de Desarrollo Humano'], ['value' => 'Secretaria de gobierno', 'label' => 'Secretaria de Gobierno'], ['value' => 'Departamento ejecutivo municipal', 'label' => 'Departamento Ejecutivo Municipal']])->toHtml() ?>,
                                 placeholder: 'Seleccione la sub cuenta',
-                                value: @js(old('sub_cuenta'))
+                                value: <?php echo \Illuminate\Support\Js::from(old('sub_cuenta'))->toHtml() ?>
                             })" x-init="init()" class="relative w-full">
                                 <button type="button" @click="open = !open"
-                                    class="select w-full h-10 rounded-md border-base-300 bg-base-200 px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition flex items-center justify-between @error('sub_cuenta') input-error @enderror">
+                                    class="select w-full h-10 rounded-md border-base-300 bg-base-200 px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition flex items-center justify-between <?php $__errorArgs = ['sub_cuenta'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> input-error <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>">
                                     <span x-text="selected?.label ?? placeholder" class="truncate"></span>
                                 </button>
 
@@ -149,19 +202,26 @@
                                 <select id="sub_cuenta" name="sub_cuenta" class="hidden" x-model="selectedValue"
                                     required>
                                     <option value="">Seleccione la sub cuenta</option>
-                                    <option value="Secretaria de obras publicas" @selected(old('sub_cuenta') == 'Secretaria de obras publicas')>Secretaria de
+                                    <option value="Secretaria de obras publicas" <?php if(old('sub_cuenta') == 'Secretaria de obras publicas'): echo 'selected'; endif; ?>>Secretaria de
                                         Obras Publicas</option>
-                                    <option value="Secretaria de desarrollos humanos" @selected(old('sub_cuenta') == 'Secretaria de desarrollos humanos')>
+                                    <option value="Secretaria de desarrollos humanos" <?php if(old('sub_cuenta') == 'Secretaria de desarrollos humanos'): echo 'selected'; endif; ?>>
                                         Secretaria de Desarrollo Humano</option>
-                                    <option value="Secretaria de gobierno" @selected(old('sub_cuenta') == 'Secretaria de gobierno')>Secretaria de
+                                    <option value="Secretaria de gobierno" <?php if(old('sub_cuenta') == 'Secretaria de gobierno'): echo 'selected'; endif; ?>>Secretaria de
                                         Gobierno</option>
-                                    <option value="Departamento ejecutivo municipal" @selected(old('sub_cuenta') == 'Departamento ejecutivo municipal')>
+                                    <option value="Departamento ejecutivo municipal" <?php if(old('sub_cuenta') == 'Departamento ejecutivo municipal'): echo 'selected'; endif; ?>>
                                         Departamento Ejecutivo Municipal</option>
                                 </select>
                             </div>
-                            @error('sub_cuenta')
-                                <small class="text-red-500 error-message">{{ $message }}</small>
-                            @enderror
+                            <?php $__errorArgs = ['sub_cuenta'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                <small class="text-red-500 error-message"><?php echo e($message); ?></small>
+                            <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                         </div>
                     </div>
                 </div>
@@ -187,18 +247,32 @@
 
                             <!-- ID oculto que se envía en el request -->
                             <input type="hidden" id="proveedor_id" name="proveedor_id"
-                                value="{{ old('proveedor_id') }}">
+                                value="<?php echo e(old('proveedor_id')); ?>">
 
                             <!-- Campo solo lectura mostrando el nombre elegido -->
                             <input type="text" id="proveedor_nombre_visible"
                                 class="w-full h-10 rounded-md border border-base-300 bg-base-200
                                 px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
-                                focus:border-primary cursor-pointer transition @error('proveedor_id') input-error @enderror"
+                                focus:border-primary cursor-pointer transition <?php $__errorArgs = ['proveedor_id'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> input-error <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>"
                                 placeholder="Seleccione un proveedor desde el buscador" value="" readonly>
 
-                            @error('proveedor_id')
-                                <small class="text-red-500 error-message">{{ $message }}</small>
-                            @enderror
+                            <?php $__errorArgs = ['proveedor_id'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                <small class="text-red-500 error-message"><?php echo e($message); ?></small>
+                            <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                         </div>
 
                         <!-- DESTINO TIPO -->
@@ -207,7 +281,14 @@
                             <select id="destino_tipo" name="destino_tipo"
                                 class="w-full h-10 rounded-md border border-base-300 bg-base-200 
                                 px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
-                                focus:border-primary @error('destino_tipo') input-error @enderror transition"
+                                focus:border-primary <?php $__errorArgs = ['destino_tipo'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> input-error <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?> transition"
                                 required>
                                 <option value="">Seleccione destino...</option>
                                 <option value="App\Models\Deposito">Depósito</option>
@@ -215,9 +296,16 @@
                                 <option value="App\Models\Vehiculo">Vehículo</option>
                                 <option value="App\Models\Equipo">Equipo</option>
                             </select>
-                            @error('destino_tipo')
-                                <small class="text-red-500">{{ $message }}</small>
-                            @enderror
+                            <?php $__errorArgs = ['destino_tipo'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                <small class="text-red-500"><?php echo e($message); ?></small>
+                            <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                         </div>
 
                         <!-- DESTINO ID -->
@@ -231,18 +319,32 @@
                             </div>
 
                             <!-- ID oculto que se envía en el request -->
-                            <input type="hidden" id="destino_id" name="destino_id" value="{{ old('destino_id') }}">
+                            <input type="hidden" id="destino_id" name="destino_id" value="<?php echo e(old('destino_id')); ?>">
 
                             <!-- Campo solo lectura mostrando el nombre elegido -->
                             <input type="text" id="destino_nombre_visible"
                                 class="w-full h-10 rounded-md border border-base-300 bg-base-200
                                 px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
-                                focus:border-primary cursor-pointer transition @error('destino_id') input-error @enderror"
+                                focus:border-primary cursor-pointer transition <?php $__errorArgs = ['destino_id'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> input-error <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>"
                                 placeholder="Seleccione un elemento desde el buscador" value="" readonly>
 
-                            @error('destino_id')
-                                <small class="text-red-500">{{ $message }}</small>
-                            @enderror
+                            <?php $__errorArgs = ['destino_id'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                <small class="text-red-500"><?php echo e($message); ?></small>
+                            <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                         </div> 
                     </div> 
                      <!-- CARD DATOS DEL DESTINO OCULTO  -->   
@@ -267,14 +369,28 @@
                         <div class="space-y-2">
                             <label for="asunto_obra_automotor" class="text-sm font-medium">Asunto de la compra<span
                                     class="text-red-600">*</span></label>
-                            <textarea value="{{ old('asunto_obra_automotor') }}" type="text" id="asunto_obra_automotor"
+                            <textarea value="<?php echo e(old('asunto_obra_automotor')); ?>" type="text" id="asunto_obra_automotor"
                                 name="asunto_obra_automotor" placeholder="Ingrese una justificacion breve de la compra"
                                 class="textarea w-full rounded-md border border-base-300 bg-base-200 focus:outline-none focus:ring-2 focus:ring-primary 
-                        focus:border-primary transition @error('asunto_obra_automotor') input-error @enderror"
+                        focus:border-primary transition <?php $__errorArgs = ['asunto_obra_automotor'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> input-error <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>"
                                 required></textarea>
-                            @error('asunto_obra_automotor')
-                                <small class="text-red-500 error-message">{{ $message }}</small>
-                            @enderror
+                            <?php $__errorArgs = ['asunto_obra_automotor'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                <small class="text-red-500 error-message"><?php echo e($message); ?></small>
+                            <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                         </div>
                     </div>
                     <div class="grid grid-cols-1 gap-4">
@@ -283,10 +399,24 @@
                             <textarea type="text" id="observacion" name="observacion"
                                 placeholder="Ingrese una justificacion breve de la compra"
                                 class="textarea w-full rounded-md border border-base-300 bg-base-200 focus:outline-none focus:ring-2 focus:ring-primary 
-                        focus:border-primary transition @error('observacion') input-error @enderror"></textarea>
-                            @error('observacion')
-                                <small class="text-red-500 error-message">{{ $message }}</small>
-                            @enderror
+                        focus:border-primary transition <?php $__errorArgs = ['observacion'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> input-error <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>"></textarea>
+                            <?php $__errorArgs = ['observacion'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                <small class="text-red-500 error-message"><?php echo e($message); ?></small>
+                            <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                         </div>
                     </div>
                 </div>
@@ -377,12 +507,50 @@
         <!-- BOTONES DEL FORMULARIO -->
         <!-- ========================= -->
         <div class="flex flex-wrap justify-end gap-2 pt-4">
-            <a href="{{ route('compras.index') }}" class="btn btn-warning">
-                <x-heroicon-m-arrow-left class="w-4 h-4 inline" />
+            <a href="<?php echo e(route('compras.index')); ?>" class="btn btn-warning">
+                <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c = $attributes; } ?>
+<?php $component = BladeUI\Icons\Components\Svg::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('heroicon-m-arrow-left'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\BladeUI\Icons\Components\Svg::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['class' => 'w-4 h-4 inline']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $attributes = $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $component = $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
                 Volver
             </a>
             <button type="submit" class="btn btn-primary">
-                <x-heroicon-m-arrow-down-tray class="w-4 h-4 inline" />
+                <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c = $attributes; } ?>
+<?php $component = BladeUI\Icons\Components\Svg::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('heroicon-m-arrow-down-tray'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\BladeUI\Icons\Components\Svg::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['class' => 'w-4 h-4 inline']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $attributes = $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $component = $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
                 Guardar compra
             </button>
         </div>
@@ -423,7 +591,7 @@
                         </tr>
                     </thead>
                     <tbody id="tabla_productos_body">
-                        {{-- filas generadas por JS --}}
+                        
                     </tbody>
                 </table>
 
@@ -434,7 +602,7 @@
                     </button>
 
                     <span id="producto_pagination_info" class="mx-2">
-                        {{-- se completa por JS --}}
+                        
                     </span>
 
                     <button type="button" class="btn btn-xs" id="producto_next_page">
@@ -471,7 +639,7 @@
             </h3>
 
             <form id="crearProductoForm" method="POST" class="space-y-5">
-                @csrf
+                <?php echo csrf_field(); ?>
                 <input type="hidden" name="accion" value="1">
                 <input type="hidden" name="redirect_to" value="compras.create">
 
@@ -486,14 +654,21 @@
           focus:border-primary transition"
                         required>
                         <option value="">Seleccione una categoría</option>
-                        @foreach ($categorias as $categoria)
-                            <option value="{{ $categoria->id }}">{{ $categoria->nombre }}</option>
-                        @endforeach
+                        <?php $__currentLoopData = $categorias; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $categoria): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                            <option value="<?php echo e($categoria->id); ?>"><?php echo e($categoria->nombre); ?></option>
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                     </select>
 
-                    @error('categoria_id')
-                        <small class="text-red-500">{{ $message }}</small>
-                    @enderror
+                    <?php $__errorArgs = ['categoria_id'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                        <small class="text-red-500"><?php echo e($message); ?></small>
+                    <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                 </div>
 
                 <!-- Nombre -->
@@ -502,16 +677,23 @@
                         <span class="label-text font-medium">Nombre del Producto</span>
                     </label>
 
-                    <input type="text" name="nombre" value="{{ old('nombre') }}"
+                    <input type="text" name="nombre" value="<?php echo e(old('nombre')); ?>"
                         placeholder="Ej: Aceite Motor 5W-30"
                         class="w-full h-10 rounded-md border border-base-300 bg-base-200 px-3 
           text-sm focus:outline-none focus:ring-2 focus:ring-primary 
           focus:border-primary transition"
                         required>
 
-                    @error('nombre')
-                        <small class="text-red-500">{{ $message }}</small>
-                    @enderror
+                    <?php $__errorArgs = ['nombre'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                        <small class="text-red-500"><?php echo e($message); ?></small>
+                    <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                 </div>
 
                 <!-- Descripción -->
@@ -523,11 +705,18 @@
                     <textarea name="descripcion" rows="3" placeholder="Ingrese una descripción breve del producto..."
                         class="textarea w-full rounded-md border border-base-300 bg-base-200 focus:outline-none focus:ring-2 focus:ring-primary 
           focus:border-primary transition"
-                        required>{{ old('descripcion') }}</textarea>
+                        required><?php echo e(old('descripcion')); ?></textarea>
 
-                    @error('descripcion')
-                        <small class="text-red-500">{{ $message }}</small>
-                    @enderror
+                    <?php $__errorArgs = ['descripcion'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                        <small class="text-red-500"><?php echo e($message); ?></small>
+                    <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                 </div>
 
                 <!-- Unidad -->
@@ -542,25 +731,32 @@
                             focus:border-primary transition"
                         required>
 
-                        <option value="" disabled {{ old('unidad') ? '' : 'selected' }}>
+                        <option value="" disabled <?php echo e(old('unidad') ? '' : 'selected'); ?>>
                             Seleccioná una unidad
                         </option>
 
-                        <option value="Unidad" {{ old('unidad') == 'Unidad' ? 'selected' : '' }}>Unidad</option>
-                        <option value="Caja" {{ old('unidad') == 'Caja' ? 'selected' : '' }}>Caja</option>
-                        <option value="Paquete" {{ old('unidad') == 'Paquete' ? 'selected' : '' }}>Paquete</option>
-                        <option value="Litro" {{ old('unidad') == 'Litro' ? 'selected' : '' }}>Litro</option>
-                        <option value="Kilogramo" {{ old('unidad') == 'Kilogramo' ? 'selected' : '' }}>Kilogramo</option>
-                        <option value="Gramo" {{ old('unidad') == 'Gramo' ? 'selected' : '' }}>Gramo</option>
-                        <option value="Metro" {{ old('unidad') == 'Metro' ? 'selected' : '' }}>Metro</option>
-                        <option value="Par" {{ old('unidad') == 'Par' ? 'selected' : '' }}>Par</option>
-                        <option value="Docena" {{ old('unidad') == 'Docena' ? 'selected' : '' }}>Docena</option>
+                        <option value="Unidad" <?php echo e(old('unidad') == 'Unidad' ? 'selected' : ''); ?>>Unidad</option>
+                        <option value="Caja" <?php echo e(old('unidad') == 'Caja' ? 'selected' : ''); ?>>Caja</option>
+                        <option value="Paquete" <?php echo e(old('unidad') == 'Paquete' ? 'selected' : ''); ?>>Paquete</option>
+                        <option value="Litro" <?php echo e(old('unidad') == 'Litro' ? 'selected' : ''); ?>>Litro</option>
+                        <option value="Kilogramo" <?php echo e(old('unidad') == 'Kilogramo' ? 'selected' : ''); ?>>Kilogramo</option>
+                        <option value="Gramo" <?php echo e(old('unidad') == 'Gramo' ? 'selected' : ''); ?>>Gramo</option>
+                        <option value="Metro" <?php echo e(old('unidad') == 'Metro' ? 'selected' : ''); ?>>Metro</option>
+                        <option value="Par" <?php echo e(old('unidad') == 'Par' ? 'selected' : ''); ?>>Par</option>
+                        <option value="Docena" <?php echo e(old('unidad') == 'Docena' ? 'selected' : ''); ?>>Docena</option>
 
                     </select>
 
-                    @error('unidad')
-                        <small class="text-red-500">{{ $message }}</small>
-                    @enderror
+                    <?php $__errorArgs = ['unidad'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                        <small class="text-red-500"><?php echo e($message); ?></small>
+                    <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                 </div>
 
                 <!-- Botones -->
@@ -724,7 +920,7 @@
                         </tr>
                     </thead>
                     <tbody id="tabla_proveedor_body">
-                        {{-- filas generadas por JS --}}
+                        
                     </tbody>
                 </table>
                 <div class="flex flex-wrap justify-center sm:justify-between items-center mt-3 gap-2 text-xs">
@@ -733,7 +929,7 @@
                     </button>
 
                     <span id="proveedor_pagination_info" class="mx-2">
-                        {{-- se completa por JS --}}
+                        
                     </span>
 
                     <button type="button" class="btn btn-xs" id="proveedor_next_page">
@@ -775,7 +971,7 @@
                         </tr>
                     </thead>
                     <tbody id="tabla_empleado_body">
-                        {{-- filas generadas por JS --}}
+                        
                     </tbody>
                 </table>
                 <div class="flex flex-wrap justify-center sm:justify-between items-center mt-3 gap-2 text-xs">
@@ -784,7 +980,7 @@
                     </button>
 
                     <span id="empleado_pagination_info" class="mx-2">
-                        {{-- se completa por JS --}}
+                        
                     </span>
 
                     <button type="button" class="btn btn-xs" id="empleado_next_page">
@@ -830,8 +1026,8 @@
                 Crear Nuevo Empleado
             </h3>
 
-            <form action="{{ route('empleados.store') }}" method="POST" class="space-y-4">
-                @csrf
+            <form action="<?php echo e(route('empleados.store')); ?>" method="POST" class="space-y-4">
+                <?php echo csrf_field(); ?>
                 <input type="hidden" name="redirect_to" value="compras.create">
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -971,11 +1167,11 @@
                 <table class="table table-zebra w-full text-sm">
                     <thead>
                         <tr id="tabla_destino_head">
-                            {{-- cabeceras generadas por JS --}}
+                            
                         </tr>
                     </thead>
                     <tbody id="tabla_destino_body">
-                        {{-- filas generadas por JS --}}
+                        
                     </tbody>
                 </table>
                 <div class="flex flex-wrap justify-center sm:justify-between items-center mt-3 gap-2 text-xs">
@@ -984,7 +1180,7 @@
                     </button>
 
                     <span id="destino_pagination_info" class="mx-2">
-                        {{-- se completa por JS --}}
+                        
                     </span>
 
                     <button type="button" class="btn btn-xs" id="destino_next_page">
@@ -1000,8 +1196,8 @@
         <label class="modal-backdrop" for="modal_elegir_destino">Close</label>
     </div>
 
-@endsection
-@section('js')
+<?php $__env->stopSection(); ?>
+<?php $__env->startSection('js'); ?>
     <!-- Script para crear producto vía AJAX -->
     <script>
         document.getElementById('crearProductoForm').addEventListener('submit', function(e) {
@@ -1010,10 +1206,10 @@
             const form = this;
             const formData = new FormData(form);
 
-            fetch("{{ url('/admin/productos/store') }}", {
+            fetch("<?php echo e(url('/admin/productos/store')); ?>", {
                     method: "POST",
                     headers: {
-                        'X-CSRF-TOKEN': "{{ csrf_token() }}",
+                        'X-CSRF-TOKEN': "<?php echo e(csrf_token()); ?>",
                         'Accept': 'application/json'
                     },
                     body: formData
@@ -1255,7 +1451,7 @@
         //  MODAL DE SELECCIÓN DE PROVEEDOR
         // ==============================
         document.addEventListener("DOMContentLoaded", function() {
-            const proveedoresData = @json($proveedores);
+            const proveedoresData = <?php echo json_encode($proveedores, 15, 512) ?>;
             let proveedoresCache = proveedoresData;
             let paginaProveedor = 1;
             const itemsPorPaginaProveedor = 5;
@@ -1409,7 +1605,7 @@
         //  MODAL DE SELECCIÓN DE EMPLEADO
         // ==============================
         document.addEventListener("DOMContentLoaded", function() {
-            const empleadosData = @json($empleados);
+            const empleadosData = <?php echo json_encode($empleados, 15, 512) ?>;
             let empleadosCache = empleadosData;
             let paginaEmpleado = 1;
             const itemsPorPaginaEmpleado = 5;
@@ -1557,7 +1753,7 @@
         // ==============================
         document.addEventListener("DOMContentLoaded", function() {
 
-            const baseUrlListar = "{{ url('origen/listar') }}";
+            const baseUrlListar = "<?php echo e(url('origen/listar')); ?>";
 
             const destinoTipoSelect = document.getElementById("destino_tipo");
             const destinoInput = document.getElementById("destino_id");
@@ -1943,7 +2139,7 @@
             const buscadorProducto = document.getElementById('buscador_producto');
 
             function cargarProductosAjax() {
-                fetch("{{ route('productos.ajax.listar') }}", {
+                fetch("<?php echo e(route('productos.ajax.listar')); ?>", {
                         headers: {
                             'Accept': 'application/json'
                         }
@@ -2422,4 +2618,6 @@
         }
     </script>
 
-@endsection
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.admin', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\xampp\htdocs\sistema-municipal\resources\views/admin/compras/create.blade.php ENDPATH**/ ?>

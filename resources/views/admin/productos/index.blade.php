@@ -443,8 +443,8 @@
 
                     <select id="unidad" name="unidad"
                         class="w-full h-10 rounded-md border border-base-300 bg-base-200 px-3 
-           text-sm focus:outline-none focus:ring-2 focus:ring-primary 
-           focus:border-primary transition"
+                            text-sm focus:outline-none focus:ring-2 focus:ring-primary 
+                            focus:border-primary transition"
                         required>
 
                         <option value="" disabled {{ old('unidad') ? '' : 'selected' }}>
