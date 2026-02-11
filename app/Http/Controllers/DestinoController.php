@@ -54,7 +54,7 @@ class DestinoController extends Controller
         // Validar los datos del formulario
         $request->validate([
             'nombre' => 'required|string|max:255',
-            'tipo' => 'required|string|in:persona,policia,empresa,institucion,organismo_publico',
+            'tipo' => 'required|string|in:persona,policia,empresa,institucion,organismo_publico,varios',
             'descripcion' => 'nullable|string|max:5000',
         ]);
 
@@ -89,7 +89,7 @@ class DestinoController extends Controller
     {
         $request->validate([
             'nombre' => 'required|string|max:255',
-            'tipo' => 'required|string|in:persona,policia,empresa,institucion,organismo_publico',
+            'tipo' => 'required|string|in:persona,policia,empresa,institucion,organismo_publico,varios',
             'descripcion' => 'nullable|string|max:5000',
         ]);
 
