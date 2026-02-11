@@ -329,7 +329,7 @@
         <div class="header-section">
             <div class="logo-container">
                 <div class="logo-placeholder">
-                    <img src="{{ public_path('logo/logo-pdf.png') }}" alt="Logo">
+                    <img src="<?php echo e(public_path('logo/logo-pdf.png')); ?>" alt="Logo">
                 </div>
                 <div>
                     <h1 class="text-xl font-black text-slate-900 tracking-tight">MUNICIPALIDAD DE</h1>
@@ -342,11 +342,11 @@
             <div class="text-right">
                 <div class="title-badge mb-1.5">Solicitud provisonaria de insumos</div>
                 <div class="text-lg font-mono font-bold text-slate-800">N° <span
-                        class="text-red-600">{{ str_pad($compra->nr_orden, 12, '0', STR_PAD_LEFT) }}</span></div>
+                        class="text-red-600"><?php echo e(str_pad($compra->nr_orden, 12, '0', STR_PAD_LEFT)); ?></span></div>
                 <div
                     style="font-size: 12px; color: #64748b; font-weight: 600; margin-top: 2px; text-transform: uppercase;">
                     Fecha: <span
-                        style="border-bottom: 1px solid #cbd5e1; display: inline-block; width: 112px;">{{ \Carbon\Carbon::parse($compra->fecha_orden)->format('d/m/Y') }}</span>
+                        style="border-bottom: 1px solid #cbd5e1; display: inline-block; width: 112px;"><?php echo e(\Carbon\Carbon::parse($compra->fecha_orden)->format('d/m/Y')); ?></span>
                 </div>
             </div>
         </div>
@@ -354,19 +354,19 @@
         <div class="field-group">
             <div class="modern-field">
                 <span class="field-label">Proveedor</span>
-                <div class="field-value">{{ $compra->proveedor->nombre ?? 'N/A' }}</div>
+                <div class="field-value"><?php echo e($compra->proveedor->nombre ?? 'N/A'); ?></div>
             </div>
             <div class="modern-field">
                 <span class="field-label">Entregar a</span>
-                <div class="field-value">{{ $compra->empleado->nombre ?? 'N/A' }}</div>
+                <div class="field-value"><?php echo e($compra->empleado->nombre ?? 'N/A'); ?></div>
             </div>
             <div class="modern-field">
                 <span class="field-label">Sub Cuenta</span>
-                <div class="field-value">{{ $compra->sub_cuenta ?? 'N/A' }}</div>
+                <div class="field-value"><?php echo e($compra->sub_cuenta ?? 'N/A'); ?></div>
             </div>
             <div class="modern-field">
                 <span class="field-label">Asunto</span>
-                <div class="field-value">{{ $compra->asunto_obra_automotor ?? 'N/A' }}</div>
+                <div class="field-value"><?php echo e($compra->asunto_obra_automotor ?? 'N/A'); ?></div>
                 <span class="ml-4"
                     style="font-size: 9px; color: #94a3b8; font-weight: bold; text-transform: uppercase;">(Vehículo /
                     Obra / Equipo)</span>
@@ -387,19 +387,20 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($compra->detalle_compras as $detalle)
+                    <?php $__currentLoopData = $compra->detalle_compras; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $detalle): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                         <tr>
-                            <td style="font-weight: 600;">{{ $detalle->cantidad }} {{ $detalle->producto->unidad ?? 'UND' }}
+                            <td style="font-weight: 600;"><?php echo e($detalle->cantidad); ?> <?php echo e($detalle->producto->unidad ?? 'UND'); ?>
+
                             </td>
-                            <td>{{ $detalle->producto->nombre ?? 'N/A' }}</td>
+                            <td><?php echo e($detalle->producto->nombre ?? 'N/A'); ?></td>
                         </tr>
-                    @endforeach
-                    @for($i = count($compra->detalle_compras); $i < 3; $i++)
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                    <?php for($i = count($compra->detalle_compras); $i < 3; $i++): ?>
                         <tr>
                             <td></td>
                             <td></td>
                         </tr>
-                    @endfor
+                    <?php endfor; ?>
                 </tbody>
             </table>
         </div>
@@ -408,12 +409,12 @@
             style="width: 100%; margin-top: 15px; border: none; border-collapse: collapse; page-break-inside: avoid;">
             <tr style="page-break-inside: avoid;">
                 <td style="width: 33%; text-align: center; vertical-align: bottom; border: none; padding: 0 8px;">
-                    @if($compra->usuario && $compra->usuario->firma)
-                    <img src="{{ public_path('storage/' . $compra->usuario->firma) }}"
+                    <?php if($compra->usuario && $compra->usuario->firma): ?>
+                    <img src="<?php echo e(public_path('storage/' . $compra->usuario->firma)); ?>"
                     style="max-width: 100px; height: auto; max-height: 100px;">
-                    @endif
+                    <?php endif; ?>
                     <div style="font-size: 7px; font-weight: 700; text-transform: uppercase;">Autorizado por
-                        Funcionario{{ $compra->usuario ? ': ' . $compra->usuario->name : '' }}</div>
+                        Funcionario<?php echo e($compra->usuario ? ': ' . $compra->usuario->name : ''); ?></div>
                         <div style="font-size: 6px; color: #64748b; text-transform: uppercase;">Sello y Firma Municipal:
                         </div>
                     </td>
@@ -440,4 +441,4 @@
 
 </body>
 
-</html>
+</html><?php /**PATH C:\laragon\www\Sistema-talwind\resources\views/pdf/orden-compra.blade.php ENDPATH**/ ?>

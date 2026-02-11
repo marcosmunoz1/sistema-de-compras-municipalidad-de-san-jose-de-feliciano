@@ -1,7 +1,6 @@
-@extends('layouts.admin')
-@section('title', 'Editar compra')
+<?php $__env->startSection('title', 'Editar compra'); ?>
 
-@section('content')
+<?php $__env->startSection('content'); ?>
     <!-- Titulo y boton -->
     <div class="flex items-center justify-between mb-6">
         <h1 class="text-xl sm:text-2xl font-semibold">Edición de la Orden de compra</h1>
@@ -10,7 +9,7 @@
     <div class="breadcrumbs text-sm mb-6">
         <ul>
             <li>
-                <a href="{{ route('admin.index') }}">
+                <a href="<?php echo e(route('admin.index')); ?>">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="h-4 w-4 stroke-current">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"></path>
@@ -19,14 +18,52 @@
                 </a>
             </li>
             <li>
-                <a href="{{ route('compras.index') }}">
-                    <x-heroicon-o-shopping-bag class="w-4 h-4 inline" />
+                <a href="<?php echo e(route('compras.index')); ?>">
+                    <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c = $attributes; } ?>
+<?php $component = BladeUI\Icons\Components\Svg::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('heroicon-o-shopping-bag'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\BladeUI\Icons\Components\Svg::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['class' => 'w-4 h-4 inline']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $attributes = $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $component = $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
                     Compras
                 </a>
             </li>
             <li>
                 <span class="inline-flex items-center gap-2">
-                    <x-heroicon-o-pencil class="w-4 h-4 inline" />
+                    <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c = $attributes; } ?>
+<?php $component = BladeUI\Icons\Components\Svg::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('heroicon-o-pencil'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\BladeUI\Icons\Components\Svg::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['class' => 'w-4 h-4 inline']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $attributes = $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $component = $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
                     Editar Orden de compra
                 </span>
             </li>
@@ -46,9 +83,16 @@
                     <!-- País -->
                     <div class="space-y-2">
                         <label for="fecha_orden" class="text-sm font-medium">Fecha de Emisión</label>
-                        <input type="date" id="fecha_orden" name="fecha_orden" value="{{ $compra->fecha_orden }}" class="w-full h-10 rounded-md border border-base-300 bg-base-200
+                        <input type="date" id="fecha_orden" name="fecha_orden" value="<?php echo e($compra->fecha_orden); ?>" class="w-full h-10 rounded-md border border-base-300 bg-base-200
                             px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
-                            focus:border-primary transition @error('fecha_orden') input-error @enderror" disabled>
+                            focus:border-primary transition <?php $__errorArgs = ['fecha_orden'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> input-error <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>" disabled>
                     </div>
 
                     <!-- entregar a -->
@@ -56,24 +100,52 @@
                         <label for="empleado_id" class="text-sm font-medium">Entregar a</label>
                         <select id="empleado_id" name="empleado_id" class="select w-full h-10 rounded-md border-base-300 bg-base-200
                             px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
-                            focus:border-primary transition @error('empleado_id') input-error @enderror" disabled>
-                            <option value="">{{ $compra->empleado->nombre }}</option>
+                            focus:border-primary transition <?php $__errorArgs = ['empleado_id'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> input-error <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>" disabled>
+                            <option value=""><?php echo e($compra->empleado->nombre); ?></option>
                         </select>
-                        @error('empleado_id')
-                            <small class="text-red-500 error-message">{{ $message }}</small>
-                        @enderror
+                        <?php $__errorArgs = ['empleado_id'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                            <small class="text-red-500 error-message"><?php echo e($message); ?></small>
+                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                     </div>
 
                     <div class="space-y-2">
                         <label for="sub_cuenta" class="text-sm font-medium">Sub cuenta</label>
                         <select id="sub_cuenta" name="sub_cuenta" class="select w-full h-10 rounded-md border-base-300 bg-base-200
                             px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
-                            focus:border-primary transition @error('sub_cuenta') input-error @enderror" disabled>
-                            <option value="">{{ $compra->sub_cuenta }}</option>
+                            focus:border-primary transition <?php $__errorArgs = ['sub_cuenta'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> input-error <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>" disabled>
+                            <option value=""><?php echo e($compra->sub_cuenta); ?></option>
                         </select>
-                        @error('sub_cuenta')
-                            <small class="text-red-500 error-message">{{ $message }}</small>
-                        @enderror
+                        <?php $__errorArgs = ['sub_cuenta'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                            <small class="text-red-500 error-message"><?php echo e($message); ?></small>
+                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                     </div>
                 </div>
             </div>
@@ -96,12 +168,26 @@
                         <label for="proveedor_id" class="text-sm font-medium">Proveedor</label>
                         <select id="proveedor_id" name="proveedor_id" class="select w-full h-10 rounded-md border-base-300 bg-base-200
                             px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
-                            focus:border-primary transition @error('proveedor_id') input-error @enderror" disabled>
-                            <option value="">{{ $compra->proveedor->nombre }}</option>
+                            focus:border-primary transition <?php $__errorArgs = ['proveedor_id'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> input-error <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>" disabled>
+                            <option value=""><?php echo e($compra->proveedor->nombre); ?></option>
                         </select>
-                        @error('proveedor_id')
-                            <small class="text-red-500 error-message">{{ $message }}</small>
-                        @enderror
+                        <?php $__errorArgs = ['proveedor_id'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                            <small class="text-red-500 error-message"><?php echo e($message); ?></small>
+                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                     </div>
 
                     <!-- entregar a -->
@@ -109,16 +195,30 @@
                         <label for="destino_tipo" class="text-sm font-medium">Destino de la compra</label>
                         <select id="destino_tipo" name="destino_tipo" class="select w-full h-10 rounded-md border-base-300 bg-base-200
                             px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
-                            focus:border-primary transition @error('destino_tipo') input-error @enderror" disabled>
-                            <option value="">{{ class_basename($compra->destino_tipo) }}</option>
+                            focus:border-primary transition <?php $__errorArgs = ['destino_tipo'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> input-error <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>" disabled>
+                            <option value=""><?php echo e(class_basename($compra->destino_tipo)); ?></option>
                         </select>
                     </div>
                     <div class="space-y-2">
                         <label for="destino_id" class="text-sm font-medium">Enviar a:</label>
                         <select id="destino_id" name="destino_id" class="select w-full h-10 rounded-md border-base-300 bg-base-200
                             px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
-                            focus:border-primary transition @error('destino_id') input-error @enderror" disabled>
-                            <option value="">{{ $compra->destino_nombre }}</option>
+                            focus:border-primary transition <?php $__errorArgs = ['destino_id'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> input-error <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>" disabled>
+                            <option value=""><?php echo e($compra->destino_nombre); ?></option>
 
                         </select>
                     </div>
@@ -128,8 +228,15 @@
                         <label for="asunto_obra_automotor" class="text-sm font-medium">Asunto de la compra</label>
                         <textarea value="" type="text" id="asunto_obra_automotor" name="asunto_obra_automotor"
                             placeholder="Ingrese una justificacion breve de la compra" class="textarea w-full rounded-md border border-base-300 bg-base-200 focus:outline-none focus:ring-2 focus:ring-primary 
-                            focus:border-primary transition @error('asunto_obra_automotor') input-error @enderror"
-                            disabled>{{ $compra->asunto_obra_automotor }}</textarea>
+                            focus:border-primary transition <?php $__errorArgs = ['asunto_obra_automotor'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> input-error <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>"
+                            disabled><?php echo e($compra->asunto_obra_automotor); ?></textarea>
                     </div>
                 </div>
                 <div class="grid grid-cols-1 gap-4">
@@ -137,8 +244,15 @@
                         <label for="observacion" class="text-sm font-medium">Observaciones</label>
                         <textarea type="text" id="observacion" name="observacion"
                             placeholder="Ingrese una justificacion breve de la compra" class="textarea w-full rounded-md border border-base-300 bg-base-200 focus:outline-none focus:ring-2 focus:ring-primary 
-                            focus:border-primary transition @error('observacion') input-error @enderror"
-                            disabled>{{ $compra->observacion }}</textarea>
+                            focus:border-primary transition <?php $__errorArgs = ['observacion'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> input-error <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>"
+                            disabled><?php echo e($compra->observacion); ?></textarea>
                     </div>
                 </div>
 
@@ -149,9 +263,9 @@
 
     <!-- Otra seccion -->
 
-    <form action="{{ route('compras.update', $compra->id) }}" method="POST" enctype="multipart/form-data">
-        @csrf
-        @method('PUT')
+    <form action="<?php echo e(route('compras.update', $compra->id)); ?>" method="POST" enctype="multipart/form-data">
+        <?php echo csrf_field(); ?>
+        <?php echo method_field('PUT'); ?>
         <div data-slot="card" class="card bg-base-100 shadow-xl p-4 mt-4">
             <div data-slot="card-header"
                 class="@container/card-header grid auto-rows-min grid-rows-[auto_auto] items-start gap-1.5 px-6 pt-6">
@@ -173,15 +287,15 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @php $nr = 1; @endphp
+                                <?php $nr = 1; ?>
 
-                                @foreach ($compra->detalle_compras as $detalle)
+                                <?php $__currentLoopData = $compra->detalle_compras; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $detalle): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                     <tr>
-                                        <td class="text-center">{{ $nr++ }}</td>
+                                        <td class="text-center"><?php echo e($nr++); ?></td>
                                         <td class="text-center">
                                             <div class="flex items-center gap-1 justify-center">
                                                 <button type="button" class="btn btn-ghost btn-sm text-info" title="Ver detalle"
-                                                    onclick="verDetalleProducto({{ $detalle->producto->id }}, '{{ addslashes($detalle->producto->nombre) }}', '{{ $detalle->producto->categoria->nombre ?? '-' }}', '{{ addslashes($detalle->producto->descripcion ?? '-') }}', '{{ $detalle->producto->unidad ?? '-' }}', '{{ $detalle->producto->created_at ? $detalle->producto->created_at->format('d/m/Y') : '-' }}')">
+                                                    onclick="verDetalleProducto(<?php echo e($detalle->producto->id); ?>, '<?php echo e(addslashes($detalle->producto->nombre)); ?>', '<?php echo e($detalle->producto->categoria->nombre ?? '-'); ?>', '<?php echo e(addslashes($detalle->producto->descripcion ?? '-')); ?>', '<?php echo e($detalle->producto->unidad ?? '-'); ?>', '<?php echo e($detalle->producto->created_at ? $detalle->producto->created_at->format('d/m/Y') : '-'); ?>')">
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"
                                                         viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
                                                         stroke-linecap="round" stroke-linejoin="round">
@@ -189,11 +303,11 @@
                                                         <circle cx="12" cy="12" r="3"></circle>
                                                     </svg>
                                                 </button>
-                                                <span>{{ $detalle->producto->nombre }}</span>
+                                                <span><?php echo e($detalle->producto->nombre); ?></span>
                                             </div>
                                         </td>
 
-                                        {{-- PRECIO con $ a la izquierda --}}
+                                        
                                         <td class="text-center">
                                             <div class="flex items-center gap-1 justify-center">
                                                 <span class="text-gray-600 select-none">$</span>
@@ -201,21 +315,21 @@
                                                     class="precio input rounded-md border border-base-300 bg-base-200
                                                                                 px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
                                                                                 focus:border-primary cursor-pointer transition w-28"
-                                                    name="precios[{{ $detalle->id }}]"
-                                                    value="{{ $detalle->precio !== null ? number_format($detalle->precio, 2, ',', '.') : '' }}">
+                                                    name="precios[<?php echo e($detalle->id); ?>]"
+                                                    value="<?php echo e($detalle->precio !== null ? number_format($detalle->precio, 2, ',', '.') : ''); ?>">
                                             </div>
                                         </td>
 
-                                        {{-- CANTIDAD --}}
+                                        
                                         <td class="text-center">
                                             <input type="number"
                                                 class="cantidad input rounded-md border border-base-300 bg-base-200
                                                                                 px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
                                                                                 focus:border-primary transition w-20 text-center" readonly
-                                                value="{{ (float) $detalle->cantidad }}">
+                                                value="<?php echo e((float) $detalle->cantidad); ?>">
                                         </td>
 
-                                        {{-- SUBTOTAL --}}
+                                        
                                         <td class="text-center">
                                             <div class="flex items-center gap-1 justify-center">
                                                 <span class="text-gray-600 select-none">$</span>
@@ -226,10 +340,10 @@
                                             </div>
                                         </td>
                                     </tr>
-                                @endforeach
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                             </tbody>
 
-                            {{-- TOTAL --}}
+                            
                             <tfoot>
                                 <tr>
                                     <td colspan="4" class="text-right font-bold text-lg">Total:</td>
@@ -273,9 +387,16 @@
                         </span>
                     </label>
                 </div>
-                @error('foto_factura')
-                    <small class="text-red-500 error-message">{{ $message }}</small>
-                @enderror
+                <?php $__errorArgs = ['foto_factura'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                    <small class="text-red-500 error-message"><?php echo e($message); ?></small>
+                <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
             </div>
         </div>
 
@@ -284,12 +405,50 @@
         <!-- BOTONES DEL FORMULARIO -->
         <!-- ========================= -->
         <div class="flex flex-wrap gap-2 justify-end pt-4">
-            <a href="{{ route('compras.index') }}" class="btn btn-sm sm:btn-md btn-warning">
-                <x-heroicon-m-arrow-left class="w-4 h-4 inline" />
+            <a href="<?php echo e(route('compras.index')); ?>" class="btn btn-sm sm:btn-md btn-warning">
+                <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c = $attributes; } ?>
+<?php $component = BladeUI\Icons\Components\Svg::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('heroicon-m-arrow-left'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\BladeUI\Icons\Components\Svg::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['class' => 'w-4 h-4 inline']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $attributes = $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $component = $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
                 Volver
             </a>
             <button type="submit" class="btn btn-sm sm:btn-md btn-primary">
-                <x-heroicon-m-arrow-down-tray class="w-4 h-4 inline" />
+                <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c = $attributes; } ?>
+<?php $component = BladeUI\Icons\Components\Svg::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('heroicon-m-arrow-down-tray'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\BladeUI\Icons\Components\Svg::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['class' => 'w-4 h-4 inline']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $attributes = $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $component = $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
                 Guardar compra
             </button>
         </div>
@@ -407,8 +566,8 @@
             <button></button>
         </form>
     </dialog>
-@endsection
-@section('js')
+<?php $__env->stopSection(); ?>
+<?php $__env->startSection('js'); ?>
     <script>
         // Función para ver detalle del producto
         function verDetalleProducto(id, nombre, categoria, descripcion, unidad, fecha) {
@@ -587,4 +746,5 @@
         });
     </script>
 
-@endsection
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('layouts.admin', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\laragon\www\Sistema-talwind\resources\views/admin/compras/edit.blade.php ENDPATH**/ ?>
