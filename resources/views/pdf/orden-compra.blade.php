@@ -92,7 +92,7 @@
         }
 
         .logo-placeholder {
-            width: 70px;
+            width: 100px;
             height: 70px;
             background: white;
             border-radius: 12px;
@@ -340,7 +340,7 @@
                 </div>
             </div>
             <div class="text-right">
-                <div class="title-badge mb-1.5">Solicitud provisonaria de insumos</div>
+                <div class="title-badge mb-1.5">Solicitud provisoria de insumos</div>
                 <div class="text-lg font-mono font-bold text-slate-800">N° <span
                         class="text-red-600">{{ str_pad($compra->nr_orden, 12, '0', STR_PAD_LEFT) }}</span></div>
                 <div
@@ -354,19 +354,19 @@
         <div class="field-group">
             <div class="modern-field">
                 <span class="field-label">Proveedor</span>
-                <div class="field-value">{{ $compra->proveedor->nombre ?? 'N/A' }}</div>
+                <div class="field-value" style="font-size: 14px">{{ $compra->proveedor->nombre ?? 'N/A' }}</div>
             </div>
             <div class="modern-field">
                 <span class="field-label">Entregar a</span>
-                <div class="field-value">{{ $compra->empleado->nombre ?? 'N/A' }}</div>
+                <div class="field-value" style="font-size: 14px">{{ $compra->empleado->nombre ?? 'N/A' }}</div>
             </div>
             <div class="modern-field">
                 <span class="field-label">Sub Cuenta</span>
-                <div class="field-value">{{ $compra->sub_cuenta ?? 'N/A' }}</div>
+                <div class="field-value" style="font-size: 14px">{{ $compra->sub_cuenta ?? 'N/A' }}</div>
             </div>
             <div class="modern-field">
                 <span class="field-label">Asunto</span>
-                <div class="field-value">{{ $compra->asunto_obra_automotor ?? 'N/A' }}</div>
+                <div class="field-value" style="font-size: 14px">{{ $compra->asunto_obra_automotor ?? 'N/A' }}</div>
                 <span class="ml-4"
                     style="font-size: 9px; color: #94a3b8; font-weight: bold; text-transform: uppercase;">(Vehículo /
                     Obra / Equipo)</span>
@@ -376,7 +376,7 @@
         <div class="table-container">
             <div style="margin-bottom: 4px;">
                 <h3
-                    style="font-size: 9px; font-weight: 900; color: #334155; text-transform: uppercase; letter-spacing: 0.05em;">
+                    style="font-size: 13px; font-weight: 900; color: #334155; text-transform: uppercase; letter-spacing: 0.05em;">
                     Detalle de Insumos y Suministros</h3>
             </div>
             <table>
@@ -389,9 +389,9 @@
                 <tbody>
                     @foreach($compra->detalle_compras as $detalle)
                         <tr>
-                            <td style="font-weight: 600;">{{ $detalle->cantidad }} {{ $detalle->producto->unidad ?? 'UND' }}
+                            <td style="font-weight: 600; font-size: 14px">{{ $detalle->cantidad }} {{ $detalle->producto->unidad ?? 'UND' }}
                             </td>
-                            <td>{{ $detalle->producto->nombre ?? 'N/A' }}</td>
+                            <td style="font-size: 14px">{{ $detalle->producto->nombre ?? 'N/A' }}</td>
                         </tr>
                     @endforeach
                     @for($i = count($compra->detalle_compras); $i < 3; $i++)
@@ -407,10 +407,10 @@
         <table
             style="width: 100%; margin-top: 15px; border: none; border-collapse: collapse; page-break-inside: avoid;">
             <tr style="page-break-inside: avoid;">
-                <td style="width: 33%; text-align: center; vertical-align: bottom; border: none; padding: 0 8px;">
+                <td style="width: 80%; text-align: center; vertical-align: bottom; border: none; padding: 0 8px;">
                     @if($compra->usuario && $compra->usuario->firma)
                     <img src="{{ public_path('storage/' . $compra->usuario->firma) }}"
-                    style="max-width: 100px; height: auto; max-height: 100px;">
+                    style="max-width: 150px; height: auto; max-height: 150px;">
                     @endif
                     <div style="font-size: 7px; font-weight: 700; text-transform: uppercase;">Autorizado por
                         Funcionario{{ $compra->usuario ? ': ' . $compra->usuario->name : '' }}</div>
