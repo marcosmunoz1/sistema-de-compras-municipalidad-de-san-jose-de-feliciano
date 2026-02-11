@@ -478,6 +478,7 @@
                     <option value="empresa">Empresa</option>
                     <option value="institucion">Institución</option>
                     <option value="policia">Policía</option>
+                    <option value="varios">Varios</option>
                 </select>
             </div>
 
