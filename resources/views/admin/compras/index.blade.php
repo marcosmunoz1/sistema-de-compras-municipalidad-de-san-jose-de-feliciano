@@ -265,10 +265,12 @@
                                                 <x-heroicon-s-arrow-uturn-left class="w-4 h-4" />
                                             </button>
                                         @else
-                                            <button class="btn btn-error btn-sm"
-                                                onclick="confirmarEliminacion({{ $compra->id }})">
-                                                <x-heroicon-s-trash class="w-4 h-4" />
-                                            </button>
+                                            @if($compra->estado_compra != 'Finalizada')
+                                                <button class="btn btn-error btn-sm"
+                                                    onclick="confirmarEliminacion({{ $compra->id }})">
+                                                    <x-heroicon-s-trash class="w-4 h-4" />
+                                                </button>
+                                            @endif
                                         @endif
 
                                     </div>

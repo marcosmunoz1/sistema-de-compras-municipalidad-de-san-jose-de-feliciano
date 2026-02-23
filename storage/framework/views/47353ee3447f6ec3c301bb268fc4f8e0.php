@@ -449,9 +449,10 @@
 <?php endif; ?>
                                             </button>
                                         <?php else: ?>
-                                            <button class="btn btn-error btn-sm"
-                                                onclick="confirmarEliminacion(<?php echo e($compra->id); ?>)">
-                                                <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
+                                            <?php if($compra->estado_compra != 'Finalizada'): ?>
+                                                <button class="btn btn-error btn-sm"
+                                                    onclick="confirmarEliminacion(<?php echo e($compra->id); ?>)">
+                                                    <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c = $attributes; } ?>
 <?php $component = BladeUI\Icons\Components\Svg::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
 <?php $component->withName('heroicon-s-trash'); ?>
@@ -471,7 +472,8 @@
 <?php $component = $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
 <?php unset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
 <?php endif; ?>
-                                            </button>
+                                                </button>
+                                            <?php endif; ?>
                                         <?php endif; ?>
 
                                     </div>
