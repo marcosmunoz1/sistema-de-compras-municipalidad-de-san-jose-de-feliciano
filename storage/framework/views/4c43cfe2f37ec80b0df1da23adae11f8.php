@@ -3,7 +3,7 @@
 <?php $__env->startSection('content'); ?>
     <!-- Titulo y boton -->
     <div class="flex items-center justify-between mb-6">
-        <h1 class="text-2xl font-semibold">Creación de la Orden de compra</h1>
+        <h1 class="text-xl sm:text-2xl font-semibold">Creación de la Orden de compra</h1>
     </div>
 
     <div class="breadcrumbs text-sm mb-6">
@@ -95,7 +95,7 @@
             <div data-slot="card-content" class="px-6 [&:last-child]:pb-6">
                 <div class="grid gap-4">
 
-                    <div class="grid grid-cols-3 gap-4">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                         <!-- País -->
                         <div class="space-y-2">
                             <label for="fecha_orden" class="text-sm font-medium">Fecha de Emisión<span
@@ -238,7 +238,7 @@ unset($__errorArgs, $__bag); ?>
             <div data-slot="card-content" class="px-6 [&:last-child]:pb-6">
                 <div class="grid gap-4">
 
-                    <div class="grid grid-cols-3 gap-4">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                         <div class="space-y-2">
                             <div class="flex items-center justify-between gap-4">
                                 <label class="text-sm font-medium mb-0">Proveedor <span
@@ -310,7 +310,7 @@ unset($__errorArgs, $__bag); ?>
 
                         <!-- DESTINO ID -->
                         <div class="space-y-2 -mt-4">
-                            <div class="flex items-center justify-between gap-4">
+                            <div class="flex flex-wrap items-center justify-between gap-2">
                                 <label class="text-sm font-medium mb-0">Elemento <span
                                         class="text-red-600">*</span></label>
                                 <button type="button" id="btn_elegir_destino" class="btn btn-sm btn-warning">
@@ -424,12 +424,12 @@ unset($__errorArgs, $__bag); ?>
         </div>
         <div class="bg-base-100 shadow-xl rounded-xl  mt-6">
             <!-- Header -->
-            <div class="px-6 pt-6 pb-4">
-                <div class="flex items-center justify-between">
+            <div class="px-4 sm:px-6 pt-6 pb-4">
+                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                     <h4 class="text-lg font-semibold">Insumos</h4>
-                    <div class="flex gap-2">
+                    <div class="flex flex-wrap gap-2">
                         <button type="button" onclick="crearProductoModal.showModal()"
-                            class="btn flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white text-sm px-4 py-2 rounded-md transition">
+                            class="btn btn-sm flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white text-sm px-3 py-2 rounded-md transition">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                 stroke-linejoin="round" class="lucide lucide-package-plus w-4 h-4">
@@ -446,7 +446,7 @@ unset($__errorArgs, $__bag); ?>
                         </button>
 
                         <button type="button" onclick="modalAgregarItem.showModal()"
-                            class="btn flex items-center gap-2 bg-info-content hover:bg-info-content/50 text-white text-sm font-medium px-4 py-2 rounded-md transition">
+                            class="btn btn-sm flex items-center gap-2 bg-info-content hover:bg-info-content/50 text-white text-sm font-medium px-3 py-2 rounded-md transition">
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24"
                                 stroke="currentColor" stroke-width="2">
                                 <path d="M5 12h14"></path>
@@ -506,8 +506,8 @@ unset($__errorArgs, $__bag); ?>
         <!-- ========================= -->
         <!-- BOTONES DEL FORMULARIO -->
         <!-- ========================= -->
-        <div class="flex justify-end pt-4">
-            <a href="<?php echo e(route('compras.index')); ?>" class="btn btn-warning mr-2">
+        <div class="flex flex-wrap justify-end gap-2 pt-4">
+            <a href="<?php echo e(route('compras.index')); ?>" class="btn btn-warning">
                 <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c = $attributes; } ?>
 <?php $component = BladeUI\Icons\Components\Svg::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
@@ -557,7 +557,7 @@ unset($__errorArgs, $__bag); ?>
     </form>
     <!-- Modal para agregar producto -->
     <dialog id="modalAgregarItem" class="modal">
-        <div class="modal-box w-11/12 max-w-5xl">
+        <div class="modal-box w-11/12 max-w-5xl max-h-[85vh] overflow-y-auto">
             <form method="dialog">
                 <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
             </form>
@@ -596,7 +596,7 @@ unset($__errorArgs, $__bag); ?>
                 </table>
 
                 <!-- Paginación -->
-                <div class="flex justify-between items-center mt-3 text-xs">
+                <div class="flex flex-wrap justify-center sm:justify-between items-center mt-3 gap-2 text-xs">
                     <button type="button" class="btn btn-xs" id="producto_prev_page">
                         « Anterior
                     </button>
@@ -619,7 +619,7 @@ unset($__errorArgs, $__bag); ?>
     <!-- Modal para crear producto -->
     <dialog id="crearProductoModal" class="modal">
 
-        <div class="modal-box max-w-xl rounded-xl">
+        <div class="modal-box max-w-xl rounded-xl max-h-[85vh] overflow-y-auto">
 
             <!-- Título -->
             <h3 class="font-bold text-xl flex items-center gap-3 mb-4">
@@ -725,12 +725,27 @@ unset($__errorArgs, $__bag); ?>
                         <span class="label-text font-medium">Unidad</span>
                     </label>
 
-                    <input type="text" name="unidad" value="<?php echo e(old('unidad')); ?>"
-                        placeholder="Ej: Unidad, Caja, Litro, Par..."
+                    <select id="unidad" name="unidad"
                         class="w-full h-10 rounded-md border border-base-300 bg-base-200 px-3 
-          text-sm focus:outline-none focus:ring-2 focus:ring-primary 
-          focus:border-primary transition"
+                            text-sm focus:outline-none focus:ring-2 focus:ring-primary 
+                            focus:border-primary transition"
                         required>
+
+                        <option value="" disabled <?php echo e(old('unidad') ? '' : 'selected'); ?>>
+                            Seleccioná una unidad
+                        </option>
+
+                        <option value="Unidad" <?php echo e(old('unidad') == 'Unidad' ? 'selected' : ''); ?>>Unidad</option>
+                        <option value="Caja" <?php echo e(old('unidad') == 'Caja' ? 'selected' : ''); ?>>Caja</option>
+                        <option value="Paquete" <?php echo e(old('unidad') == 'Paquete' ? 'selected' : ''); ?>>Paquete</option>
+                        <option value="Litro" <?php echo e(old('unidad') == 'Litro' ? 'selected' : ''); ?>>Litro</option>
+                        <option value="Kilogramo" <?php echo e(old('unidad') == 'Kilogramo' ? 'selected' : ''); ?>>Kilogramo</option>
+                        <option value="Gramo" <?php echo e(old('unidad') == 'Gramo' ? 'selected' : ''); ?>>Gramo</option>
+                        <option value="Metro" <?php echo e(old('unidad') == 'Metro' ? 'selected' : ''); ?>>Metro</option>
+                        <option value="Par" <?php echo e(old('unidad') == 'Par' ? 'selected' : ''); ?>>Par</option>
+                        <option value="Docena" <?php echo e(old('unidad') == 'Docena' ? 'selected' : ''); ?>>Docena</option>
+
+                    </select>
 
                     <?php $__errorArgs = ['unidad'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
@@ -770,10 +785,120 @@ unset($__errorArgs, $__bag); ?>
 
     </dialog>
 
+    <!-- Modal para ver detalle del producto -->
+    <dialog id="modalDetalleProducto" class="modal">
+        <div class="modal-box max-w-lg rounded-xl max-h-[85vh] overflow-y-auto">
+            <form method="dialog">
+                <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+            </form>
+
+            <h3 class="font-bold text-xl flex items-center gap-3 mb-6">
+                <div class="p-2 rounded-lg bg-info/10">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="text-info">
+                        <path d="m7.5 4.27 9 5.15"></path>
+                        <path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"></path>
+                        <polyline points="3.29 7 12 12 20.71 7"></polyline>
+                        <line x1="12" x2="12" y1="22" y2="12"></line>
+                    </svg>
+                </div>
+                Detalle del Producto
+            </h3>
+
+            <div class="space-y-4">
+                <!-- Nombre -->
+                <div class="bg-base-200 p-4 rounded-lg">
+                    <div class="flex items-center gap-2 mb-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" class="text-primary">
+                            <path d="M4 7V4h16v3"></path>
+                            <path d="M5 20h6"></path>
+                            <path d="M13 4 8 20"></path>
+                        </svg>
+                        <span class="text-xs text-muted-foreground font-medium uppercase tracking-wide">Nombre</span>
+                    </div>
+                    <p class="font-semibold text-lg" id="detalle_producto_nombre">-</p>
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <!-- Categoría -->
+                    <div class="bg-base-200 p-4 rounded-lg">
+                        <div class="flex items-center gap-2 mb-1">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2" class="text-primary">
+                                <path d="M12 2H2v10l9.29 9.29c.94.94 2.48.94 3.42 0l6.58-6.58c.94-.94.94-2.48 0-3.42L12 2Z"></path>
+                                <path d="M7 7h.01"></path>
+                            </svg>
+                            <span class="text-xs text-muted-foreground font-medium uppercase tracking-wide">Categoría</span>
+                        </div>
+                        <p class="font-semibold" id="detalle_producto_categoria">-</p>
+                    </div>
+                    
+                    <!-- Unidad -->
+                    <div class="bg-base-200 p-4 rounded-lg">
+                        <div class="flex items-center gap-2 mb-1">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2" class="text-primary">
+                                <path d="M3 3v18h18"></path>
+                                <rect width="4" height="7" x="7" y="10" rx="1"></rect>
+                                <rect width="4" height="12" x="15" y="5" rx="1"></rect>
+                            </svg>
+                            <span class="text-xs text-muted-foreground font-medium uppercase tracking-wide">Unidad</span>
+                        </div>
+                        <p class="font-semibold" id="detalle_producto_unidad">-</p>
+                    </div>
+                </div>
+
+                <!-- Descripción -->
+                <div class="bg-base-200 p-4 rounded-lg">
+                    <div class="flex items-center gap-2 mb-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" class="text-primary">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                            <polyline points="14 2 14 8 20 8"></polyline>
+                            <line x1="16" x2="8" y1="13" y2="13"></line>
+                            <line x1="16" x2="8" y1="17" y2="17"></line>
+                            <polyline points="10 9 9 9 8 9"></polyline>
+                        </svg>
+                        <span class="text-xs text-muted-foreground font-medium uppercase tracking-wide">Descripción</span>
+                    </div>
+                    <p class="text-sm" id="detalle_producto_descripcion">-</p>
+                </div>
+
+                <!-- Fecha de creación -->
+                <div class="bg-base-200 p-4 rounded-lg">
+                    <div class="flex items-center gap-2 mb-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" class="text-primary">
+                            <rect width="18" height="18" x="3" y="4" rx="2" ry="2"></rect>
+                            <line x1="16" x2="16" y1="2" y2="6"></line>
+                            <line x1="8" x2="8" y1="2" y2="6"></line>
+                            <line x1="3" x2="21" y1="10" y2="10"></line>
+                        </svg>
+                        <span class="text-xs text-muted-foreground font-medium uppercase tracking-wide">Fecha registro</span>
+                    </div>
+                    <p class="text-sm" id="detalle_producto_fecha">-</p>
+                </div>
+                <p class="hidden" id="detalle_producto_id">-</p>
+            </div>
+
+            <div class="modal-action">
+                <form method="dialog">
+                    <button class="btn btn-sm btn-neutral">Cerrar</button>
+                </form>
+            </div>
+        </div>
+
+        <form method="dialog" class="modal-backdrop">
+            <button></button>
+        </form>
+    </dialog>
+
     <!-- Modal para seleccionar proveedor -->
     <input type="checkbox" id="modal_elegir_proveedor" class="modal-toggle" />
     <div class="modal">
-        <div class="modal-box max-w-4xl">
+        <div class="modal-box max-w-4xl max-h-[85vh] overflow-y-auto">
             <h3 class="font-bold text-lg mb-4" id="titulo_modal_proveedor">
                 Seleccionar proveedor
             </h3>
@@ -798,7 +923,7 @@ unset($__errorArgs, $__bag); ?>
                         
                     </tbody>
                 </table>
-                <div class="flex justify-between items-center mt-3 text-xs">
+                <div class="flex flex-wrap justify-center sm:justify-between items-center mt-3 gap-2 text-xs">
                     <button type="button" class="btn btn-xs" id="proveedor_prev_page">
                         « Anterior
                     </button>
@@ -823,7 +948,7 @@ unset($__errorArgs, $__bag); ?>
     <!-- Modal para seleccionar empleado -->
     <input type="checkbox" id="modal_elegir_empleado" class="modal-toggle" />
     <div class="modal">
-        <div class="modal-box max-w-4xl">
+        <div class="modal-box max-w-4xl max-h-[85vh] overflow-y-auto">
             <h3 class="font-bold text-lg mb-4" id="titulo_modal_empleado">
                 Seleccionar empleado
             </h3>
@@ -849,7 +974,7 @@ unset($__errorArgs, $__bag); ?>
                         
                     </tbody>
                 </table>
-                <div class="flex justify-between items-center mt-3 text-xs">
+                <div class="flex flex-wrap justify-center sm:justify-between items-center mt-3 gap-2 text-xs">
                     <button type="button" class="btn btn-xs" id="empleado_prev_page">
                         « Anterior
                     </button>
@@ -884,7 +1009,7 @@ unset($__errorArgs, $__bag); ?>
 
     <!-- Modal para crear empleado -->
     <dialog id="crearEmpleadoModal" class="modal">
-        <div class="modal-box max-w-2xl">
+        <div class="modal-box max-w-2xl max-h-[85vh] overflow-y-auto">
             <form method="dialog">
                 <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
             </form>
@@ -1049,7 +1174,7 @@ unset($__errorArgs, $__bag); ?>
                         
                     </tbody>
                 </table>
-                <div class="flex justify-between items-center mt-3 text-xs">
+                <div class="flex flex-wrap justify-center sm:justify-between items-center mt-3 gap-2 text-xs">
                     <button type="button" class="btn btn-xs" id="destino_prev_page">
                         « Anterior
                     </button>
@@ -1147,8 +1272,17 @@ unset($__errorArgs, $__bag); ?>
                 .replaceAll("'", '&#39;');
         }
 
-        function agregarProducto(id, nombre) {
+        // Cache de productos agregados para el modal de detalle
+        let productosAgregadosCache = {};
+
+        function agregarProducto(id, nombre, productoData = null) {
             const tabla = document.getElementById('tablaProductos');
+            
+            // Guardar datos del producto en cache para el modal
+            if (productoData) {
+                productosAgregadosCache[id] = productoData;
+            }
+            
             // ✅ Buscar si ya existe el producto
             const filaExistente = [...tabla.querySelectorAll('tr')].find(fila => {
                 const inputHidden = fila.querySelector('input[type="hidden"][name="productos[]"]');
@@ -1175,13 +1309,21 @@ unset($__errorArgs, $__bag); ?>
 
             fila.innerHTML = `
                 <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap">
-                <div class="flex flex-col">
-                    <span class="font-medium text-sm truncate">${escapeHtml(nombre)}</span>
-                    <small class="text-xs text-gray-500">ID: ${id}</small>
-                    <input type="hidden" name="productos[]" value="${id}">
-                </div>
+                 <div class="flex items-center gap-1">
+                    <button type="button" class="btn btn-ghost btn-sm text-info" title="Ver detalle"
+                            onclick="verDetalleProducto(${id})">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-eye">
+                            <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"></path>
+                            <circle cx="12" cy="12" r="3"></circle>
+                            </svg>
+                        </button>
+                    <div class="flex flex-col">
+                        <span class="font-medium text-sm truncate">${escapeHtml(nombre)}</span>
+                        <input type="hidden" name="productos[]" value="${id}">
+                    </div> 
+                 </div>
                 </td>
-
                 <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap"> 
                 <input type="number" name="cantidades[]" min="1" value="1" required
                     class="w-full h-10 rounded-md border border-base-300 bg-base-200
@@ -1189,19 +1331,20 @@ unset($__errorArgs, $__bag); ?>
                                 focus:border-primary transition"
                     oninput="actualizarTotales()">
                 </td>
-
                 <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap">
-                <button type="button" class="btn inline-flex items-center justify-center text-sm font-medium h-8 rounded-md gap-1.5 px-3 text-red-600"
-                    onclick="eliminarFila(this)">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trash-2">
-                    <path d="M10 11v6"></path>
-                    <path d="M14 11v6"></path>
-                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"></path>
-                    <path d="M3 6h18"></path>
-                    <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-                    </svg>
-                </button>
+                <div class="flex items-center gap-1">
+                    <button type="button" class="btn btn-ghost btn-sm text-red-600" title="Eliminar"
+                        onclick="eliminarFila(this)">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trash-2">
+                        <path d="M10 11v6"></path>
+                        <path d="M14 11v6"></path>
+                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"></path>
+                        <path d="M3 6h18"></path>
+                        <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                        </svg>
+                    </button>
+                </div>
                 </td>
             `;
 
@@ -1256,6 +1399,50 @@ unset($__errorArgs, $__bag); ?>
             if (!text) return '';
             return text.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;')
                 .replaceAll("'", '&#39;');
+        }
+
+        // Función para ver detalle del producto (desde la tabla de insumos agregados)
+        function verDetalleProducto(id) {
+            const producto = productosAgregadosCache[id];
+            
+            if (!producto) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Sin información',
+                    text: 'No se encontró información detallada del producto.'
+                });
+                return;
+            }
+
+            verDetalleProductoModal(producto);
+        }
+
+        // Función para ver detalle del producto (recibe el objeto producto directamente)
+        function verDetalleProductoModal(producto) {
+            if (!producto) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Sin información',
+                    text: 'No se encontró información detallada del producto.'
+                });
+                return;
+            }
+
+            const categoriaNombre = producto.categoria ? producto.categoria.nombre : '-';
+            
+            // Actualizar contenido del modal
+            document.getElementById('detalle_producto_nombre').textContent = producto.nombre || '-';
+            document.getElementById('detalle_producto_categoria').textContent = categoriaNombre;
+            document.getElementById('detalle_producto_descripcion').textContent = producto.descripcion || '-';
+            document.getElementById('detalle_producto_unidad').textContent = producto.unidad || '-';
+            document.getElementById('detalle_producto_id').textContent = producto.id || '-';
+            
+            // Mostrar fecha de creación si existe
+            const fechaCreacion = producto.created_at ? new Date(producto.created_at).toLocaleDateString('es-AR') : '-';
+            document.getElementById('detalle_producto_fecha').textContent = fechaCreacion;
+            
+            // Abrir modal
+            document.getElementById('modalDetalleProducto').showModal();
         }
     </script>
 
@@ -2006,6 +2193,9 @@ unset($__errorArgs, $__bag); ?>
                     tr.classList.add('hover:bg-base-300');
 
                     const categoriaNombre = producto.categoria ? producto.categoria.nombre : '-';
+                    
+                    // Serializar producto para pasarlo a la función
+                    const productoJSON = JSON.stringify(producto).replace(/'/g, "\\'").replace(/"/g, '&quot;');
 
                     tr.innerHTML = `
                 <td class="text-center">${formatearCelda(categoriaNombre)}</td>
@@ -2013,15 +2203,41 @@ unset($__errorArgs, $__bag); ?>
                 <td class="text-center">${formatearCelda(producto.descripcion)}</td>
                 <td class="text-center">${formatearCelda(producto.unidad)}</td>
                 <td class="text-center">
-                    <button type="button" class="btn btn-primary btn-sm" onclick="agregarProducto(${producto.id}, '${producto.nombre.replace(/'/g, "\\'")}')"
-                        data-producto-id="${producto.id}">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
-                        </svg>
-                        Agregar
-                    </button>
+                    <div class="flex items-center justify-center gap-1">
+                        <button type="button" class="btn btn-ghost btn-sm text-info btn-ver-detalle" 
+                            title="Ver detalle"
+                            data-producto-json="${productoJSON}">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"></path>
+                                <circle cx="12" cy="12" r="3"></circle>
+                            </svg>
+                        </button>
+                        <button type="button" class="btn btn-primary btn-sm btn-agregar-producto" 
+                            data-producto-id="${producto.id}"
+                            data-producto-json="${productoJSON}">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+                            </svg>
+                            Agregar
+                        </button>
+                    </div>
                 </td>
             `;
+                    
+                    // Agregar evento click al botón de ver detalle
+                    const btnVerDetalle = tr.querySelector('.btn-ver-detalle');
+                    btnVerDetalle.addEventListener('click', function() {
+                        const productoData = JSON.parse(this.dataset.productoJson.replace(/&quot;/g, '"'));
+                        verDetalleProductoModal(productoData);
+                    });
+
+                    // Agregar evento click al botón de agregar
+                    const btnAgregar = tr.querySelector('.btn-agregar-producto');
+                    btnAgregar.addEventListener('click', function() {
+                        const productoData = JSON.parse(this.dataset.productoJson.replace(/&quot;/g, '"'));
+                        agregarProducto(producto.id, producto.nombre, productoData);
+                    });
 
                     tablaProductosBody.appendChild(tr);
                 });

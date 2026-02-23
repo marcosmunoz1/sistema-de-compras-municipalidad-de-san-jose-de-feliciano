@@ -2,8 +2,8 @@
 
 <?php $__env->startSection('content'); ?>
 <!-- Titulo y boton --> 
- <div class="flex items-center justify-between mb-6">
-    <h1 class="text-2xl font-semibold">Editar Proveedor: <?php echo e($proveedor->empresa); ?></h1> 
+ <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+    <h1 class="text-xl sm:text-2xl font-semibold">Editar Proveedor: <?php echo e($proveedor->empresa); ?></h1> 
  </div>
  
  <div class="breadcrumbs text-sm mb-6">
@@ -93,7 +93,7 @@
         <div data-slot="card-content" class="px-6 [&:last-child]:pb-6">
             <div class="grid gap-4">
 
-                <div class="grid grid-cols-2 gap-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <!-- Empresa -->
                     <div class="space-y-2">
                         <label for="empresa" class="text-sm font-medium">Nombre de la Empresa <span class="text-red-600">*</span></label>
@@ -113,7 +113,7 @@
                     </div>
                 </div>
 
-                <div class="grid grid-cols-3 gap-4">
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
                     <div class="space-y-2">
                         <label for="cuit" class="text-sm font-medium">CUIT / RUC</label>
                         <input id="cuit" name="cuit" value="<?php echo e($proveedor->cuit, old('cuit')); ?>" 
@@ -142,7 +142,7 @@
                 <div class="pt-4 mt-2">
                     <h4 class="mb-4 ">Datos de Contacto</h4>
 
-                    <div class="grid grid-cols-3 gap-4">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
                         <div class="space-y-2">
                             <label for="nombre" class="text-sm font-medium">Nombre del Contacto <span class="text-red-600">*</span></label>
                             <input id="nombre" name="nombre" value="<?php echo e($proveedor->nombre, old('nombre')); ?>" 
@@ -186,7 +186,7 @@
         <div data-slot="card-content" class="px-6 [&:last-child]:pb-6">
             <div class="grid gap-4">
 
-                <div class="grid grid-cols-3 gap-4">
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
                     <!-- País -->
                     <div class="space-y-2">
                         <label for="pais" class="text-sm font-medium">País <span class="text-red-600">*</span></label>
@@ -280,8 +280,8 @@ unset($__errorArgs, $__bag); ?>"><?php echo e(old('observaciones', $proveedor->o
     <!-- ========================= -->
     <!-- BOTONES DEL FORMULARIO -->
     <!-- ========================= -->
-    <div class="flex justify-end pt-4">
-        <a href="<?php echo e(route('proveedores.index')); ?>" class="btn btn-warning mr-2"> 
+    <div class="flex flex-wrap gap-2 justify-end pt-4">
+        <a href="<?php echo e(route('proveedores.index')); ?>" class="btn btn-sm sm:btn-md btn-warning"> 
             <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c = $attributes; } ?>
 <?php $component = BladeUI\Icons\Components\Svg::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
@@ -304,7 +304,7 @@ unset($__errorArgs, $__bag); ?>"><?php echo e(old('observaciones', $proveedor->o
 <?php endif; ?> 
             Volver 
         </a>  
-        <button type="submit" class="btn btn-primary">
+        <button type="submit" class="btn btn-sm sm:btn-md btn-primary">
             <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c = $attributes; } ?>
 <?php $component = BladeUI\Icons\Components\Svg::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>

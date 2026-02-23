@@ -1,18 +1,34 @@
 <?php $__env->startSection('title', 'Compras'); ?>
-<?php $__env->startSection('content'); ?>
-
+<?php $__env->startSection('content'); ?>  
     <div class="flex items-center justify-between mb-6">
-        <h1 class="text-2xl font-semibold">Compras</h1>
-
+        <h1 class="text-3xl font-bold text-base-content">Compras</h1> 
         
         <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('compras-create')): ?>
             <a href="<?php echo e(route('compras.create')); ?>" class="btn btn-primary">
-                + Nueva Compra
+                <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c = $attributes; } ?>
+<?php $component = BladeUI\Icons\Components\Svg::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('heroicon-o-plus'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\BladeUI\Icons\Components\Svg::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['class' => 'w-5 h-5']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $attributes = $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $component = $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?> Nueva Compra 
             </a>
-        <?php endif; ?>
-
+        <?php endif; ?> 
     </div>
-    <div class="breadcrumbs text-sm mb-6">
+    <div class="breadcrumbs text-sm mb-6"> 
         <ul>
             <li>
                 <a href="<?php echo e(route('admin.index')); ?>">
@@ -107,10 +123,10 @@
             </div>
         </form>
     </div>
-    <div class="grid grid-cols-1 md:grid-cols-3 pd-6 mb-6">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
 
         <!-- Card 1 -->
-        <div class="bg-base-100 shadow-xl bg-card text-card-foreground flex flex-col gap-6 rounded-xl mr-2">
+        <div class="bg-base-100 shadow-xl bg-card text-card-foreground flex flex-col gap-6 rounded-xl w-full">
             <div class="px-6 pt-6 pb-6">
                 <div class="flex items-center justify-between">
                     <div>
@@ -129,7 +145,7 @@
         </div>
 
         <!-- Card 2 -->
-        <div class="bg-base-100 shadow-xl bg-card text-card-foreground flex flex-col gap-6 rounded-xl mr-2">
+        <div class="bg-base-100 shadow-xl bg-card text-card-foreground flex flex-col gap-6 rounded-xl w-full">
             <div class="px-6 pt-6 pb-6">
                 <div class="flex items-center justify-between">
                     <div>
@@ -148,13 +164,13 @@
         </div>
 
         <!-- Card 3 -->
-        <div class="bg-base-100 shadow-xl bg-card text-card-foreground flex flex-col gap-6 rounded-xl mr-2">
+        <div class="bg-base-100 shadow-xl bg-card text-card-foreground flex flex-col gap-6 rounded-xl w-full">
             <div class="px-6 pt-6 pb-6">
                 <div class="flex items-center justify-between">
                     <div>
                         <p class="text-gray-500">Pendiente/sin facturas</p>
                         <h3 class="mt-2"><?php echo e($pendientes); ?></h3> 
-                    </div>
+                    </div> 
                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                         class="lucide lucide-shopping-cart text-red-600 w-10 h-10" aria-hidden="true">
@@ -235,13 +251,13 @@
     <!-- Tabla -->
     <div class="card bg-base-100 shadow">
         <div class="card-body p-4">
-            <!-- HEADER COMPLETO -->
+            <!-- HEADER COMPLETO --> 
             <div class="flex flex-col gap-3">
                 <!-- TÍTULO + BOTÓN REPORTE -->
-                <div class="flex items-center justify-between">
-                    <h4 class="text-lg font-semibold">Historial de Compras</h4>
-                    <!-- BOTÓN REPORTE -->
-                    <div class="flex gap-2">
+                <div class="flex items-center justify-between"> 
+                    <h4 class="text-lg font-semibold">Historial de Compras</h4> 
+                    <!-- BOTÓN REPORTE --> 
+                    <div class="flex gap-2">    
                         <?php if (isset($component)) { $__componentOriginal64134405d1cef365195ea78d7e35c24e = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal64134405d1cef365195ea78d7e35c24e = $attributes; } ?>
 <?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.boton-reporte','data' => ['titulo' => 'Generar Reporte','modalId' => 'modal_reporte_compras','previewUrl' => ''.e(route('compras.reporte.html')).'','downloadUrl' => ''.e(route('compras.reporte.download')).'','descripcion' => 'Reporte completo de todas las compras','icono' => 'document']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
@@ -261,13 +277,13 @@
 <?php if (isset($__componentOriginal64134405d1cef365195ea78d7e35c24e)): ?>
 <?php $component = $__componentOriginal64134405d1cef365195ea78d7e35c24e; ?>
 <?php unset($__componentOriginal64134405d1cef365195ea78d7e35c24e); ?>
-<?php endif; ?>
+<?php endif; ?> 
                     </div>
                 </div>
             </div>
-            <!-- TABLA -->
-            <div class="overflow-x-auto mt-4">
-                <table class="table table-zebra w-full">
+            <!-- TABLA --> 
+            <div class="overflow-x-auto mt-4"> 
+                <table class="table table-zebra w-full"> 
                     <thead>
                         <tr>
                             <th class="text-center">Nr orden</th>
@@ -305,7 +321,7 @@
                                             default => 'badge-ghost',
                                         };
                                     ?>
-                                    <span class="badge <?php echo e($badgeClass); ?> badge-sm">
+                                    <span class="badge <?php echo e($badgeClass); ?> badge-sm whitespace-nowrap overflow-hidden text-ellipsis max-w-[120px]" title="<?php echo e($compra->estado_compra); ?>">
                                         <?php echo e($compra->estado_compra); ?>
 
                                     </span>
@@ -369,8 +385,11 @@
 
                                         <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('compras-report')): ?>
                                             <button onclick="abrirModalPDF(<?php echo e($compra->id); ?>)"
-                                                class="btn bg-primary btn-sm" title="Imprimir orden de compra">
-                                                <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
+                                                class="btn bg-primary btn-sm <?php echo e($compra->estado_compra == 'Finalizada' ? 'btn-disabled opacity-50 cursor-not-allowed' : ''); ?>" 
+                                                title="<?php echo e($compra->estado_compra == 'Finalizada' ? 'Compra ya finalizada' : 'Imprimir orden de compra'); ?>"
+                                                <?php if($compra->estado_compra == 'Finalizada'): ?> disabled <?php endif; ?>>
+                                                <?php if($compra->estado_compra == 'Finalizada'): ?>
+                                                    <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c = $attributes; } ?>
 <?php $component = BladeUI\Icons\Components\Svg::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
 <?php $component->withName('heroicon-o-printer'); ?>
@@ -390,10 +409,79 @@
 <?php $component = $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
 <?php unset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
 <?php endif; ?>
+                                                <?php else: ?>
+                                                    <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c = $attributes; } ?>
+<?php $component = BladeUI\Icons\Components\Svg::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('heroicon-o-printer'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\BladeUI\Icons\Components\Svg::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['class' => 'w-4 h-4']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $attributes = $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $component = $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
+                                                <?php endif; ?>
                                             </button>
                                         <?php endif; ?>
-
-                                        
+                                          <?php if($compra->trashed()): ?>
+                                        <button class="btn btn-success btn-sm"
+                                                onclick="abrirModalRestaurar('<?php echo e(url('/admin/compras/'. $compra->id.'/restore')); ?>')">
+                                            <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c = $attributes; } ?>
+<?php $component = BladeUI\Icons\Components\Svg::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('heroicon-s-arrow-uturn-left'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\BladeUI\Icons\Components\Svg::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['class' => 'w-4 h-4']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $attributes = $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $component = $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
+                                        </button>
+                                    <?php else: ?>
+                                        <button class="btn btn-error btn-sm"
+                                                onclick="confirmarEliminacion(<?php echo e($compra->id); ?>)">
+                                            <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c = $attributes; } ?>
+<?php $component = BladeUI\Icons\Components\Svg::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('heroicon-s-trash'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\BladeUI\Icons\Components\Svg::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['class' => 'w-4 h-4']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $attributes = $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $component = $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
+                                        </button>
+                                    <?php endif; ?>
 
                                     </div>
                                 </td>
@@ -475,9 +563,8 @@
 
                     </div>
                 </div>
-            <?php endif; ?>
-
-        </div>
+            <?php endif; ?> 
+        </div> 
     </div>
 
     <!-- Sección de Gráficos - Estadísticas -->
@@ -532,8 +619,8 @@
         </div>
     </div>
 
-    <!-- Modal para visualizar PDF -->
-    <dialog id="modalPDF" class="modal">
+    <!-- Modal para visualizar PDF --> 
+    <dialog id="modalPDF" class="modal"> 
         <div class="modal-box w-11/12 max-w-5xl h-[90vh] p-0 flex flex-col">
             <!-- Header del Modal -->
             <div class="flex items-center justify-between p-4 border-b">

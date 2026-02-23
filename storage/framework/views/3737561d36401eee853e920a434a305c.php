@@ -47,7 +47,7 @@ unset($__defined_vars, $__key, $__value); ?>
     <?php if($icono === 'document'): ?>
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path>
-            <polyline points="14 2 14 8 20 8"></polyline>
+            <polyline points="14 2 14 8 20 8"></polyline> 
             <line x1="16" x2="8" y1="13" y2="13"></line>
             <line x1="16" x2="8" y1="17" y2="17"></line>
             <line x1="10" x2="8" y1="9" y2="9"></line>
@@ -71,12 +71,12 @@ unset($__defined_vars, $__key, $__value); ?>
 
 <!-- Modal del reporte -->
 <input type="checkbox" id="<?php echo e($modalId); ?>" class="modal-toggle" />
-<div class="modal modal-bottom sm:modal-middle">
+<div class="modal modal-bottom sm:modal-middle"> 
     <div class="modal-box max-w-4xl">
         <!-- Header del modal -->
-        <div class="flex items-center justify-between mb-4 pb-3 border-b border-base-300">
-            <div class="flex items-center gap-3">
-                <div class="p-2 rounded-lg bg-primary/10">
+        <div class="flex items-center justify-between mb-4 pb-3 border-b border-base-300"> 
+            <div class="flex items-center gap-3"> 
+                <div class="p-2 rounded-lg bg-primary/10"> 
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-primary">
                         <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path>
                         <polyline points="14 2 14 8 20 8"></polyline>

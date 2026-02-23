@@ -49,16 +49,18 @@
         }
 
         .logo-placeholder {
-            width: 50px;
-            height: 50px;
-            background-color: #1e40af;
-            color: white;
-            font-weight: bold;
-            font-size: 18px;
-            text-align: center;
-            line-height: 50px;
+            width: 60px;
+            height: 60px;
+            background-color: white;
             float: left;
             margin-right: 12px;
+            display: block;
+        }
+        
+        .logo-placeholder img {
+            width: 60px;
+            height: 60px;
+            display: block;
         }
 
         .org-info h1 {
@@ -298,7 +300,9 @@
         <table class="header-table">
             <tr>
                 <td style="width: 60%;">
-                    <div class="logo-placeholder">SJF</div>
+                    <div class="logo-placeholder">
+                        <img src="data:image/png;base64,<?php echo e(base64_encode(file_get_contents(public_path('logo/logo-pdf.png')))); ?>" alt="Logo" style="width: 60px; height: 60px; display: block;">
+                    </div>
                     <div class="org-info" style="display: inline-block;">
                         <h1>Municipalidad de San José de Feliciano</h1>
                         <p>Sistema de Gestión Municipal</p>

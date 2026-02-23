@@ -1,7 +1,7 @@
 <?php $__env->startSection('title', 'Compras'); ?>
-<?php $__env->startSection('content'); ?>  
+<?php $__env->startSection('content'); ?>
     <div class="flex items-center justify-between mb-6">
-        <h1 class="text-3xl font-bold text-base-content">Compras</h1> 
+        <h1 class="text-3xl font-bold text-base-content">Compras</h1>
         
         <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('compras-create')): ?>
             <a href="<?php echo e(route('compras.create')); ?>" class="btn btn-primary">
@@ -24,11 +24,11 @@
 <?php if (isset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
 <?php $component = $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
 <?php unset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
-<?php endif; ?> Nueva Compra 
+<?php endif; ?> Nueva Compra
             </a>
-        <?php endif; ?> 
+        <?php endif; ?>
     </div>
-    <div class="breadcrumbs text-sm mb-6"> 
+    <div class="breadcrumbs text-sm mb-6">
         <ul>
             <li>
                 <a href="<?php echo e(route('admin.index')); ?>">
@@ -65,43 +65,32 @@
                 </a>
             </li>
         </ul>
-        <form method="GET"
-            action="<?php echo e(route('compras.index')); ?>"
+        <form method="GET" action="<?php echo e(route('compras.index')); ?>"
             class="grid grid-cols-1 md:grid-cols-5 gap-4 items-end mb-6 mt-3">
 
             <!-- Desde -->
             <div>
                 <label class="text-sm text-gray-500">Desde</label>
-                <input type="date"
-                    name="desde"
-                    value="<?php echo e(request('desde')); ?>"
-                    class="input input-bordered w-full">
+                <input type="date" name="desde" value="<?php echo e(request('desde')); ?>" class="input input-bordered w-full">
             </div>
 
             <!-- Hasta -->
             <div>
                 <label class="text-sm text-gray-500">Hasta</label>
-                <input type="date"
-                    name="hasta"
-                    value="<?php echo e(request('hasta')); ?>"
-                    class="input input-bordered w-full">
+                <input type="date" name="hasta" value="<?php echo e(request('hasta')); ?>" class="input input-bordered w-full">
             </div>
 
             <!-- Proveedor -->
             <div>
                 <label class="text-sm text-gray-500">Proveedor</label>
-                <input type="text"
-                    name="proveedor"
-                    value="<?php echo e(request('proveedor')); ?>"
-                    placeholder="Nombre proveedor"
+                <input type="text" name="proveedor" value="<?php echo e(request('proveedor')); ?>" placeholder="Nombre proveedor"
                     class="input input-bordered w-full">
             </div>
 
             <!-- Estado -->
             <div>
                 <label class="text-sm text-gray-500">Estado</label>
-                <select name="estado"
-                        class="select select-bordered w-full">
+                <select name="estado" class="select select-bordered w-full">
                     <option value="">Todos</option>
                     <option value="Pendiente de factura" <?php if(request('estado') == 'Pendiente de factura'): echo 'selected'; endif; ?>>
                         Pendiente de factura
@@ -131,7 +120,7 @@
                 <div class="flex items-center justify-between">
                     <div>
                         <p class="text-gray-500">Monto Total</p>
-                        <h3 class="mt-2">$<?php echo e(number_format($totalMonto, 2)); ?></h3> 
+                        <h3 class="mt-2">$<?php echo e(number_format($totalMonto, 2)); ?></h3>
                     </div>
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
@@ -169,13 +158,13 @@
                 <div class="flex items-center justify-between">
                     <div>
                         <p class="text-gray-500">Pendiente/sin facturas</p>
-                        <h3 class="mt-2"><?php echo e($pendientes); ?></h3> 
-                    </div> 
-                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        <h3 class="mt-2"><?php echo e($pendientes); ?></h3>
+                    </div>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                         class="lucide lucide-shopping-cart text-red-600 w-10 h-10" aria-hidden="true">
                         <circle cx="8" cy="21" r="1"></circle>
-                        <circle cx="19" cy="21" r="1"></circle> 
+                        <circle cx="19" cy="21" r="1"></circle>
                         <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"></path>
                     </svg>
                 </div>
@@ -251,13 +240,13 @@
     <!-- Tabla -->
     <div class="card bg-base-100 shadow">
         <div class="card-body p-4">
-            <!-- HEADER COMPLETO --> 
+            <!-- HEADER COMPLETO -->
             <div class="flex flex-col gap-3">
                 <!-- TÍTULO + BOTÓN REPORTE -->
-                <div class="flex items-center justify-between"> 
-                    <h4 class="text-lg font-semibold">Historial de Compras</h4> 
-                    <!-- BOTÓN REPORTE --> 
-                    <div class="flex gap-2">    
+                <div class="flex items-center justify-between">
+                    <h4 class="text-lg font-semibold">Historial de Compras</h4>
+                    <!-- BOTÓN REPORTE -->
+                    <div class="flex gap-2">
                         <?php if (isset($component)) { $__componentOriginal64134405d1cef365195ea78d7e35c24e = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal64134405d1cef365195ea78d7e35c24e = $attributes; } ?>
 <?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.boton-reporte','data' => ['titulo' => 'Generar Reporte','modalId' => 'modal_reporte_compras','previewUrl' => ''.e(route('compras.reporte.html')).'','downloadUrl' => ''.e(route('compras.reporte.download')).'','descripcion' => 'Reporte completo de todas las compras','icono' => 'document']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
@@ -277,13 +266,13 @@
 <?php if (isset($__componentOriginal64134405d1cef365195ea78d7e35c24e)): ?>
 <?php $component = $__componentOriginal64134405d1cef365195ea78d7e35c24e; ?>
 <?php unset($__componentOriginal64134405d1cef365195ea78d7e35c24e); ?>
-<?php endif; ?> 
+<?php endif; ?>
                     </div>
                 </div>
             </div>
-            <!-- TABLA --> 
-            <div class="overflow-x-auto mt-4"> 
-                <table class="table table-zebra w-full"> 
+            <!-- TABLA -->
+            <div class="overflow-x-auto mt-4">
+                <table class="table table-zebra w-full">
                     <thead>
                         <tr>
                             <th class="text-center">Nr orden</th>
@@ -321,7 +310,9 @@
                                             default => 'badge-ghost',
                                         };
                                     ?>
-                                    <span class="badge <?php echo e($badgeClass); ?> badge-sm whitespace-nowrap overflow-hidden text-ellipsis max-w-[120px]" title="<?php echo e($compra->estado_compra); ?>">
+                                    <span
+                                        class="badge <?php echo e($badgeClass); ?> badge-sm whitespace-nowrap overflow-hidden text-ellipsis max-w-[120px]"
+                                        title="<?php echo e($compra->estado_compra); ?>">
                                         <?php echo e($compra->estado_compra); ?>
 
                                     </span>
@@ -385,7 +376,7 @@
 
                                         <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('compras-report')): ?>
                                             <button onclick="abrirModalPDF(<?php echo e($compra->id); ?>)"
-                                                class="btn bg-primary btn-sm <?php echo e($compra->estado_compra == 'Finalizada' ? 'btn-disabled opacity-50 cursor-not-allowed' : ''); ?>" 
+                                                class="btn bg-primary btn-sm <?php echo e($compra->estado_compra == 'Finalizada' ? 'btn-disabled opacity-50 cursor-not-allowed' : ''); ?>"
                                                 title="<?php echo e($compra->estado_compra == 'Finalizada' ? 'Compra ya finalizada' : 'Imprimir orden de compra'); ?>"
                                                 <?php if($compra->estado_compra == 'Finalizada'): ?> disabled <?php endif; ?>>
                                                 <?php if($compra->estado_compra == 'Finalizada'): ?>
@@ -433,7 +424,55 @@
                                                 <?php endif; ?>
                                             </button>
                                         <?php endif; ?>
-                                        
+                                        <?php if($compra->trashed()): ?>
+                                            <button class="btn btn-success btn-sm"
+                                                onclick="abrirModalRestaurar('<?php echo e(url('/admin/compras/' . $compra->id . '/restore')); ?>')">
+                                                <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c = $attributes; } ?>
+<?php $component = BladeUI\Icons\Components\Svg::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('heroicon-s-arrow-uturn-left'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\BladeUI\Icons\Components\Svg::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['class' => 'w-4 h-4']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $attributes = $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $component = $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
+                                            </button>
+                                        <?php else: ?>
+                                            <button class="btn btn-error btn-sm"
+                                                onclick="confirmarEliminacion(<?php echo e($compra->id); ?>)">
+                                                <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c = $attributes; } ?>
+<?php $component = BladeUI\Icons\Components\Svg::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('heroicon-s-trash'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\BladeUI\Icons\Components\Svg::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['class' => 'w-4 h-4']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $attributes = $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $component = $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
+                                            </button>
+                                        <?php endif; ?>
 
                                     </div>
                                 </td>
@@ -515,18 +554,20 @@
 
                     </div>
                 </div>
-            <?php endif; ?> 
-        </div> 
+            <?php endif; ?>
+        </div>
     </div>
 
     <!-- Sección de Gráficos - Estadísticas -->
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-8 mb-6">
-        
+
         <!-- Gráfico: Tendencia de Compras (Últimos 6 meses) -->
         <div class="card bg-base-100 shadow">
             <div class="card-body p-5">
                 <h2 class="text-sm font-semibold text-base-content/70 mb-3 flex items-center gap-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
                         <path d="M3 3v18h18"></path>
                         <path d="m19 9-5 5-4-4-3 3"></path>
                     </svg>
@@ -542,7 +583,9 @@
         <div class="card bg-base-100 shadow">
             <div class="card-body p-5">
                 <h2 class="text-sm font-semibold text-base-content/70 mb-3 flex items-center gap-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
                         <path d="M21.21 15.89A10 10 0 1 1 8 2.83"></path>
                         <path d="M22 12A10 10 0 0 0 12 2v10z"></path>
                     </svg>
@@ -560,7 +603,9 @@
     <div class="card bg-base-100 shadow mb-6">
         <div class="card-body p-5">
             <h2 class="text-sm font-semibold text-base-content/70 mb-3 flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round">
                     <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
                 </svg>
                 Top 5 Proveedores por Monto Total
@@ -571,8 +616,8 @@
         </div>
     </div>
 
-    <!-- Modal para visualizar PDF --> 
-    <dialog id="modalPDF" class="modal"> 
+    <!-- Modal para visualizar PDF -->
+    <dialog id="modalPDF" class="modal">
         <div class="modal-box w-11/12 max-w-5xl h-[90vh] p-0 flex flex-col">
             <!-- Header del Modal -->
             <div class="flex items-center justify-between p-4 border-b">
@@ -660,6 +705,164 @@
         </form>
     </dialog>
 
+    <!-- Modal para eliminar -->
+    <dialog id="modal_eliminar_compra" class="modal">
+        <div class="modal-box">
+
+            <h3 class="font-bold text-lg flex items-center gap-2 text-red-600">
+                <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c = $attributes; } ?>
+<?php $component = BladeUI\Icons\Components\Svg::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('heroicon-o-trash'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\BladeUI\Icons\Components\Svg::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['class' => 'w-5 h-5']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $attributes = $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $component = $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
+                Confirmar eliminación
+            </h3>
+
+            <p class="py-4">
+                ¿Seguro que querés eliminar este orden de compra?
+            </p>
+
+            <div class="modal-action">
+                <form method="dialog">
+                    <button class="btn">Cancelar</button>
+                </form>
+
+                <!-- Formulario eliminar -->
+                <form id="formEliminarCompra" method="POST">
+                    <?php echo csrf_field(); ?>
+                    <?php echo method_field('DELETE'); ?>
+
+                    <button type="submit" class="btn btn-error">
+                        <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c = $attributes; } ?>
+<?php $component = BladeUI\Icons\Components\Svg::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('heroicon-o-trash'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\BladeUI\Icons\Components\Svg::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['class' => 'w-4 h-4']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $attributes = $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $component = $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
+                        Eliminar
+                    </button>
+                </form>
+            </div>
+        </div>
+    </dialog>
+    <!-- Modal para restaurar -->
+    <dialog id="modal_restaurar_compra" class="modal">
+        <div class="modal-box">
+
+            <h3 class="font-bold text-lg flex items-center gap-2 text-green-600">
+                <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c = $attributes; } ?>
+<?php $component = BladeUI\Icons\Components\Svg::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('heroicon-o-arrow-path'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\BladeUI\Icons\Components\Svg::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['class' => 'w-5 h-5']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $attributes = $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $component = $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
+                Confirmar restauración
+            </h3>
+
+            <p class="py-4">
+                ¿Seguro que querés restaurar esta orden de compra?
+            </p>
+
+            <div class="modal-action">
+
+                <!-- Botón cancelar -->
+                <form method="dialog">
+                    <button class="btn">Cancelar</button>
+                </form>
+
+                <!-- Formulario restaurar -->
+                <form id="formRestaurarCompra" method="POST">
+                    <?php echo csrf_field(); ?>
+                    <?php echo method_field('PUT'); ?>
+
+                    <button type="submit" class="btn btn-success">
+                        <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c = $attributes; } ?>
+<?php $component = BladeUI\Icons\Components\Svg::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('heroicon-o-arrow-path'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\BladeUI\Icons\Components\Svg::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['class' => 'w-4 h-4']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $attributes = $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $component = $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
+                        Restaurar
+                    </button>
+                </form>
+
+            </div>
+
+        </div>
+    </dialog>
+    <script>
+        function confirmarEliminacion(id) {
+            const form = document.getElementById('formEliminarCompra');
+            form.action = routeEliminarCompra(id);
+            document.getElementById('modal_eliminar_compra').showModal();
+        }
+        // Genera la URL usando el helper de Laravel
+        function routeEliminarCompra(id) { 
+            return "<?php echo e(url('/admin/compras')); ?>/" + id; 
+        }
+        function abrirModalRestaurar(url) {
+            const form = document.getElementById('formRestaurarCompra');
+            form.action = url;
+            document.getElementById('modal_restaurar_compra').showModal();
+        }
+    </script>
     <script>
         function abrirModalPDF(compraId) {
             const modal = document.getElementById('modalPDF');
@@ -711,14 +914,14 @@
             const savedTheme = localStorage.getItem('theme');
             const currentTheme = document.documentElement.getAttribute('data-theme');
             const isDark = savedTheme === 'dark' || currentTheme === 'dark' || currentTheme === 'synthwave';
-            
+
             // Colores según el tema
             const gridColor = isDark ? '#374151' : '#e5e7eb';
             const textColor = isDark ? '#f9fafb' : '#111827';
             const labelColor = isDark ? '#f9fafb' : '#111827';
             const tooltipBg = isDark ? '#1f2937' : '#ffffff';
             const tooltipBorder = isDark ? '#4b5563' : '#d1d5db';
-            
+
             const colors = {
                 primary: isDark ? '#60a5fa' : '#2563eb',
                 secondary: isDark ? '#a78bfa' : '#7c3aed',
@@ -748,7 +951,10 @@
             const meses = dataTendencia.map(item => {
                 const [year, month] = item.mes.split('-');
                 const fecha = new Date(year, month - 1);
-                return fecha.toLocaleDateString('es-ES', { month: 'short', year: 'numeric' });
+                return fecha.toLocaleDateString('es-ES', {
+                    month: 'short',
+                    year: 'numeric'
+                });
             });
             const montos = dataTendencia.map(item => parseFloat(item.total) || 0);
             const cantidades = dataTendencia.map(item => parseInt(item.cantidad) || 0);
@@ -762,7 +968,8 @@
                         label: 'Monto Total',
                         data: montos,
                         borderColor: colors.primary,
-                        backgroundColor: isDark ? 'rgba(96, 165, 250, 0.1)' : 'rgba(59, 130, 246, 0.1)',
+                        backgroundColor: isDark ? 'rgba(96, 165, 250, 0.1)' :
+                            'rgba(59, 130, 246, 0.1)',
                         borderWidth: 2,
                         fill: true,
                         tension: 0.3,
@@ -792,11 +999,18 @@
                             borderWidth: 1,
                             padding: 10,
                             displayColors: false,
-                            titleFont: { size: 11, weight: '600' },
-                            bodyFont: { size: 11 },
+                            titleFont: {
+                                size: 11,
+                                weight: '600'
+                            },
+                            bodyFont: {
+                                size: 11
+                            },
                             callbacks: {
                                 label: function(context) {
-                                    return 'Monto: $' + context.parsed.y.toLocaleString('es-AR', {minimumFractionDigits: 2});
+                                    return 'Monto: $' + context.parsed.y.toLocaleString('es-AR', {
+                                        minimumFractionDigits: 2
+                                    });
                                 },
                                 afterLabel: function(context) {
                                     return 'Compras: ' + cantidades[context.dataIndex];
@@ -807,10 +1021,14 @@
                     scales: {
                         y: {
                             beginAtZero: true,
-                            border: { display: false },
+                            border: {
+                                display: false
+                            },
                             ticks: {
                                 color: labelColor,
-                                font: { size: 10 },
+                                font: {
+                                    size: 10
+                                },
                                 callback: function(value) {
                                     return '$' + (value / 1000).toFixed(0) + 'k';
                                 }
@@ -821,10 +1039,14 @@
                             }
                         },
                         x: {
-                            border: { display: false },
+                            border: {
+                                display: false
+                            },
                             ticks: {
                                 color: labelColor,
-                                font: { size: 10 }
+                                font: {
+                                    size: 10
+                                }
                             },
                             grid: {
                                 display: false
@@ -841,13 +1063,19 @@
 
             // Colores según el estado
             const coloresEstados = estados.map(estado => {
-                switch(estado) {
-                    case 'Pendiente de factura': return colors.warning;
-                    case 'Finalizada': return colors.success;
-                    case 'En proceso': return colors.info;
-                    case 'Cancelada': return colors.error;
-                    case 'Aprobada': return colors.primary;
-                    default: return colors.secondary;
+                switch (estado) {
+                    case 'Pendiente de factura':
+                        return colors.warning;
+                    case 'Finalizada':
+                        return colors.success;
+                    case 'En proceso':
+                        return colors.info;
+                    case 'Cancelada':
+                        return colors.error;
+                    case 'Aprobada':
+                        return colors.primary;
+                    default:
+                        return colors.secondary;
                 }
             });
 
@@ -875,7 +1103,9 @@
                                 usePointStyle: true,
                                 pointStyle: 'circle',
                                 color: labelColor,
-                                font: { size: 11 },
+                                font: {
+                                    size: 11
+                                },
                                 boxWidth: 8,
                                 boxHeight: 8,
                             }
@@ -888,13 +1118,19 @@
                             borderWidth: 1,
                             padding: 10,
                             displayColors: true,
-                            titleFont: { size: 11, weight: '600' },
-                            bodyFont: { size: 11 },
+                            titleFont: {
+                                size: 11,
+                                weight: '600'
+                            },
+                            bodyFont: {
+                                size: 11
+                            },
                             callbacks: {
                                 label: function(context) {
                                     const total = context.dataset.data.reduce((a, b) => a + b, 0);
                                     const porcentaje = ((context.parsed / total) * 100).toFixed(1);
-                                    return context.label + ': ' + context.parsed + ' (' + porcentaje + '%)';
+                                    return context.label + ': ' + context.parsed + ' (' + porcentaje +
+                                        '%)';
                                 }
                             }
                         }
@@ -952,11 +1188,18 @@
                             borderWidth: 1,
                             padding: 10,
                             displayColors: false,
-                            titleFont: { size: 11, weight: '600' },
-                            bodyFont: { size: 11 },
+                            titleFont: {
+                                size: 11,
+                                weight: '600'
+                            },
+                            bodyFont: {
+                                size: 11
+                            },
                             callbacks: {
                                 label: function(context) {
-                                    return 'Monto: $' + context.parsed.x.toLocaleString('es-AR', {minimumFractionDigits: 2});
+                                    return 'Monto: $' + context.parsed.x.toLocaleString('es-AR', {
+                                        minimumFractionDigits: 2
+                                    });
                                 },
                                 afterLabel: function(context) {
                                     return 'Órdenes: ' + ordenesProveedores[context.dataIndex];
@@ -967,10 +1210,14 @@
                     scales: {
                         x: {
                             beginAtZero: true,
-                            border: { display: false },
+                            border: {
+                                display: false
+                            },
                             ticks: {
                                 color: labelColor,
-                                font: { size: 10 },
+                                font: {
+                                    size: 10
+                                },
                                 callback: function(value) {
                                     return '$' + (value / 1000).toFixed(0) + 'k';
                                 }
@@ -981,10 +1228,14 @@
                             }
                         },
                         y: {
-                            border: { display: false },
+                            border: {
+                                display: false
+                            },
                             ticks: {
                                 color: labelColor,
-                                font: { size: 10 }
+                                font: {
+                                    size: 10
+                                }
                             },
                             grid: {
                                 display: false

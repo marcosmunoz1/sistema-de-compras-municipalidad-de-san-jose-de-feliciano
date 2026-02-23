@@ -1,33 +1,51 @@
- 
-<?php $__env->startSection('title', 'Editar orden de combustible'); ?> 
+<?php $__env->startSection('title', 'Editar orden de combustible'); ?>
 
-<?php $__env->startSection('content'); ?> 
-<!-- Titulo y boton --> 
- <div class="flex items-center justify-between mb-6">
-    <h1 class="text-2xl font-semibold">Edición de Orden de Combustible</h1> 
- </div>
- 
- <div class="breadcrumbs text-sm mb-6">
-  <ul>
-    <li>
-      <a href="<?php echo e(route('admin.index')); ?>">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          class="h-4 w-4 stroke-current">
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"></path>
-        </svg>
-        Home
-      </a>
-    </li>
-    <li>
-      <a href="<?php echo e(route('combustibles.index')); ?>">
-        <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
+<?php $__env->startSection('content'); ?>
+    <!-- Titulo y boton -->
+    <div class="flex items-center justify-between mb-6">
+        <h1 class="text-2xl font-semibold">Edición de Orden de Combustible</h1>
+        <div class="flex gap-2">
+            <a href="<?php echo e(route('combustibles.index')); ?>"
+                class="inline-flex items-center gap-2 h-9 px-4 py-2 rounded-md bg-blue-600 text-sm hover:bg-blue-700 text-white">
+                <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c = $attributes; } ?>
+<?php $component = BladeUI\Icons\Components\Svg::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('heroicon-o-arrow-left'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\BladeUI\Icons\Components\Svg::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['class' => 'w-4 h-4 inline']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $attributes = $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $component = $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
+                Volver a Combustibles
+            </a>
+        </div>
+    </div>
+
+    <div class="breadcrumbs text-sm mb-6">
+        <ul>
+            <li>
+                <a href="<?php echo e(route('admin.index')); ?>">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="h-4 w-4 stroke-current">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"></path>
+                    </svg>
+                    Home
+                </a>
+            </li>
+            <li>
+                <a href="<?php echo e(route('combustibles.index')); ?>">
+                    <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c = $attributes; } ?>
 <?php $component = BladeUI\Icons\Components\Svg::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
 <?php $component->withName('heroicon-o-truck'); ?>
@@ -47,505 +65,648 @@
 <?php $component = $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
 <?php unset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
 <?php endif; ?>
-        Combustibles
-      </a>
-    </li>
-    <li>
-      <span class="inline-flex items-center gap-2">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          class="h-4 w-4 stroke-current">
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M9 13h6m-3-3v6m5 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-        </svg>
-        Editar Orden de Combustible 
-      </span>
-    </li>
-  </ul>
-</div>
-<!-- Formulario --> 
-<form action="<?php echo e(route('combustibles.update',$combustible->id)); ?>" method="POST" class="space-y-6">
-    <?php echo csrf_field(); ?>  
-    <?php echo method_field('PUT'); ?> 
-        <div data-slot="card" class="card bg-base-100 shadow-xl p-4">
-        
-        <!-- HEADER -->
-        <div data-slot="card-header"
-            class="@container/card-header grid auto-rows-min grid-rows-[auto_auto] items-start 
-            gap-1.5 px-6 pt-6">
-            <h4 class="text-1xl font-semibold">Información de la Orden de Carga</h4>
-            <p class="text-muted-foreground">Autorización para carga de combustible</p>
-        </div>
-
-        <!-- CONTENT -->
-        <div data-slot="card-content" class="px-6 [&:last-child]:pb-6">
-            <div class="grid gap-4">
-
-                <!-- FILA 3 INPUTS -->
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-
-                    <!-- Código -->
-                    <div class="space-y-2">
-                        <label for="codigo" class="text-sm font-medium">Código de Orden<span class="text-red-600">*</span></label>
-                        <input 
-                            id="codigo"
-                            name="codigo"
-                            placeholder="Ejemplo: OCB-001..."
-                            value="<?php echo e($combustible->codigo, old('codigo')); ?>"
-                            class="w-full h-10 rounded-md border border-base-300 bg-base-200 
-                            px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
-                            focus:border-primary transition <?php $__errorArgs = ['codigo'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?> input-error <?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?>"> 
-                            <?php $__errorArgs = ['codigo'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?>
-                                <small class="text-red-500 error-message"><?php echo e($message); ?></small>
-                            <?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?>
-                    </div>
-
-                    <!-- Fecha -->
-                    <div class="space-y-2">
-                        <label for="fecha" class="text-sm font-medium">Fecha de Emisión<span class="text-red-600">*</span></label>
-                        <input 
-                            type="date"
-                            id="fecha"
-                            name="fecha"
-                            value="<?php echo e($combustible->fecha, old('fecha')); ?>" 
-                            class="w-full h-10 rounded-md border border-base-300 bg-base-200
-                            px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
-                            focus:border-primary transition <?php $__errorArgs = ['fecha'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?> input-error <?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?>" required>
-                            <?php $__errorArgs = ['fecha'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?>
-                                <small class="text-red-500 error-message"><?php echo e($message); ?></small>
-                            <?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?>
-                    </div>
-
-                    <!-- Usuario -->
-                    <div class="space-y-2">
-                        <label for="user_id" class="text-sm font-medium">Usuario que Autoriza<span class="text-red-600">*</span></label>
-
-                        <select 
-                            id="user_id"
-                            name="user_id"
-                            class="select w-full h-10 rounded-md border-base-300 bg-base-200
-                            px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
-                            focus:border-primary transition <?php $__errorArgs = ['user_id'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?> input-error <?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?>" required> 
-                            <option value="">Seleccione un usuario</option>   
-                            <?php $__currentLoopData = $users; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $usuario): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?> 
-                                <option value="<?php echo e($usuario->id); ?>"
-                                <?php echo e(old('user_id', $combustible->user_id ?? '') == $usuario->id ? 'selected' : ''); ?>> 
-                                    <?php echo e($usuario->name); ?> - <?php echo e($usuario->roles->pluck('name')->join(', ')); ?></option>  
-                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?> 
-                        </select>
-                        <?php $__errorArgs = ['user_id'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?>
-                            <small class="text-red-500 error-message"><?php echo e($message); ?></small>
-                        <?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?>
-                    </div>
-
-                </div>
-
-            </div>
-        </div>
-    </div>
-
-    <!-- CARD DE DATOS DE VEHÍCULO Y CONDUCTOR -->
-    <div data-slot="card" class="card bg-base-100 shadow-xl p-4"> 
-
-
-    <!-- HEADER -->
-    <div data-slot="card-header"
-    class="@container/card-header grid auto-rows-min grid-rows-[auto_auto] items-start
-    gap-1.5 px-6 pt-6">
-    <h4 class="text-1xl font-semibold">Datos del Vehículo y Conductor</h4>
-    <p class="text-muted-foreground">Información del vehículo a cargar combustible</p>
-    </div>
-
-
-    <!-- CONTENT -->
-    <div data-slot="card-content" class="px-6 [&:last-child]:pb-6">
-    <div class="grid gap-4">
-
-
-    <!-- FILA SELECT VEHÍCULO & SELECT CHOFER -->
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-
-
-    <!-- Select Vehículo -->
-    <div class="space-y-2">
-    <label for="vehiculo_id" class="text-sm font-medium">Vehículo<span class="text-red-600">*</span></label>
-    <select id="vehiculo_id" name="vehiculo_id"
-        class="w-full h-10 rounded-md border border-base-300 bg-base-200
-        px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary
-        focus:border-primary transition <?php $__errorArgs = ['vehiculo_id'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?> input-error <?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?>" required>
-        <option value="">Seleccione un vehículo</option>
-        <?php $__currentLoopData = $vehiculos; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $vehiculo): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?> 
-        <option value="<?php echo e($vehiculo->id); ?>" 
-            <?php echo e(old('vehiculo_id', $combustible->vehiculo_id ?? '') == $vehiculo->id ? 'selected' : ''); ?>
-
-            data-marca="<?php echo e($vehiculo->marca); ?>"
-            data-modelo="<?php echo e($vehiculo->modelo); ?>"
-            data-tipo="<?php echo e($vehiculo->tipo); ?>" 
-            data-combustible="<?php echo e($vehiculo->tipo_combustible); ?>" 
-            data-ultima="<?php echo e($vehiculo->created_at); ?>">
-            Patente: <?php echo e($vehiculo->patente); ?> 
-            - Marca: <?php echo e($vehiculo->marca); ?>  
-            - Modelo: <?php echo e($vehiculo->modelo); ?></option> 
-        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-    </select>
-    <?php $__errorArgs = ['vehiculo_id'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?> 
-        <small class="text-red-500 error-message"><?php echo e($message); ?></small>
-    <?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?>
-    </div>
-
-
-    <!-- Select Conductor / Chofer -->
-    <div class="space-y-2">
-    <label for="empleado_id" class="text-sm font-medium">Conductor / Chofer<span class="text-red-600">*</span></label>
-    <select
-    id="empleado_id"
-    name="empleado_id"
-    class="w-full h-10 rounded-md border border-base-300 bg-base-200
-    px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary
-    focus:border-primary transition <?php $__errorArgs = ['empleado_id'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?> input-error <?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?>" required>
-    <option selected>Seleccione un conductor</option>
-    <?php $__currentLoopData = $empleados; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $empleado): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?> 
-    <option value="<?php echo e($empleado->id); ?>"
-        <?php echo e(old('empleado_id', $combustible->empleado_id ?? '') == $empleado->id ? 'selected' : ''); ?>
-
-        >Nombre: <?php echo e($empleado->nombre); ?> - DNI: <?php echo e($empleado->dni); ?></option>  
-    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-    </select>
-    <?php $__errorArgs = ['empleado_id'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?>  
-        <small class="text-red-500 error-message"><?php echo e($message); ?></small>
-    <?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?>
-    </div>
-
-
-    </div>
-
-
-    </div>
-
-    <!-- CARD DATOS DEL VEHÍCULO OCULTO  -->  
-    <div id="vehiculo_info" class="hidden p-4 card bg-base-100 shadow-xl mt-6"> 
-        <div class="flex items-center gap-2 mb-2">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" 
-                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" 
-                stroke-linejoin="round" class="lucide lucide-fuel w-5 h-5">
-                <path d="M14 13h2a2 2 0 0 1 2 2v2a2 2 0 0 0 4 0v-6.998a2 2 0 0 0-.59-1.42L18 5"></path>
-                <path d="M14 21V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v16"></path>
-                <path d="M2 21h13"></path>
-                <path d="M3 9h11"></path>
-            </svg>
-            <span class="font-medium">Información del Vehículo</span>
-        </div>
-
-        <div class="grid grid-cols-3 gap-4 text-sm">
-            <div>
-                <span class="text-muted-foreground">Marca/Modelo:</span>
-                <p class="font-medium" id="v_marca_modelo"></p>
-            </div>
-            <div>
-                <span class="text-muted-foreground">Tipo:</span>
-                <p class="font-medium" id="v_tipo"></p>
-            </div>
-             
-            <div>
-                <span class="text-muted-foreground">Combustible:</span>
-                <span id="v_tipo_combustible" class="inline-flex items-center justify-center rounded-md border px-2 py-0.5 text-xs font-medium 
-                            w-fit whitespace-nowrap shrink-0 mt-1 bg-secondary text-secondary-foreground">
+                    Combustibles
+                </a>
+            </li>
+            <li>
+                <span class="inline-flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                        class="h-4 w-4 stroke-current">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M9 13h6m-3-3v6m5 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
+                        </path>
+                    </svg>
+                    Editar Orden de Combustible
                 </span>
-            </div>
-            <div>
-                <span class="text-muted-foreground">Última Carga:</span>
-                <p id="v_ultima_carga" class="font-medium"> (42L)</p> 
-            </div>
-             
-        </div>
+            </li>
+        </ul>
     </div>
+    <div data-slot="card"
+        class="bg-base-100 mt-6 text-base-content flex flex-col rounded-xl border border-l-4 border-l-orange-500 shadow-lg dark:border-gray-700 overflow-hidden">
 
-    </div>
+        <div
+            class="bg-gradient-to-r from-orange-50 to-amber-50 dark:from-slate-800 dark:to-slate-900 px-6 py-6 md:py-8 border-b border-orange-100 dark:border-gray-700">
+            <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
 
-    </div>
-    <!-- FIN DE CARD DE DATOS DE VEHICULO Y CONDUCTOR -->
-    <!-- DETALLES DE LA CARGA AUTORIZADA -->  
-    <div data-slot="card" class="card bg-base-100 shadow-xl p-4"> 
-
-        <!-- HEADER -->
-        <div data-slot="card-header"
-            class="@container/card-header grid auto-rows-min grid-rows-[auto_auto] items-start 
-            gap-1.5 px-6 pt-6">
-            <h4 class="text-1xl font-semibold">Detalles de la Carga Autorizada</h4>
-            <p class="text-muted-foreground">Especificaciones de la carga de combustible</p>
-        </div>
-
-        <!-- CONTENT -->
-        <div data-slot="card-content" class="px-6 [&:last-child]:pb-6">
-            <div class="grid gap-4">
-
-                <!-- FILA: 3 COLUMNAS -->
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-
-                    <!-- Tipo Combustible -->
-                    <div class="space-y-2">
-                        <label for="combustible" class="text-sm font-medium">Tipo de Combustible<span class="text-red-600">*</span></label>
-                        <select id="combustible" name="combustible"
-                            class="w-full h-10 rounded-md border border-base-300 bg-base-200 
-                            px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary
-                            focus:border-primary <?php $__errorArgs = ['combustible'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?> input-error <?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?> transition" required>
-                            <option value="">Seleccionar</option>
-                            <?php $__currentLoopData = $tipo_combustible; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $combustible_tipo): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                            <option value="<?php echo e($combustible_tipo->nombre); ?>"  
-                                <?php echo e(old('tipo', $combustible->tipo) == $combustible_tipo->nombre ? 'selected' : ''); ?>> 
-                                <?php echo e($combustible_tipo->nombre); ?></option>  
-                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                        </select> 
-                        <?php $__errorArgs = ['combustible'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?>
-                            <small class="text-red-500 error-message"><?php echo e($message); ?></small>
-                        <?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?>
+                <div class="flex items-center gap-4 md:gap-5">
+                    <div
+                        class="bg-gradient-to-br from-orange-500 to-red-600 p-3 md:p-4 rounded-2xl shadow-lg ring-4 ring-orange-500/20">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24"
+                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" class="lucide lucide-fuel text-white">
+                            <path d="M14 13h2a2 2 0 0 1 2 2v2a2 2 0 0 0 4 0v-6.998a2 2 0 0 0-.59-1.42L18 5"></path>
+                            <path d="M14 21V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v16"></path>
+                            <path d="M2 21h13"></path>
+                            <path d="M3 9h11"></path>
+                        </svg>
                     </div>
+                    <div>
+                        <h1 class="text-2xl text-white md:text-3xl font-black tracking-tight text-base-content">
+                            Editar Carga
+                        </h1>
+                        <p class="text-xs md:text-sm font-medium text-white opacity-70 uppercase tracking-wider mt-1">
+                            Registro de Combustible #<?php echo e($combustible->codigo); ?>
 
-                    <!-- Litros Estimados -->
-                    <div class="space-y-2">
-                        <label for="litros" class="text-sm font-medium">Litros Estimados <span class="text-red-600">*</span></label>
-                        <input type="number" value="<?php echo e(old('litros',$combustible->litros)); ?>" id="litros" min="0" max="1000" name="litros" placeholder="0"
-                            step="0.01"
-                            class="w-full h-10 rounded-md border border-base-300 bg-base-200 
-                            px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary
-                            focus:border-primary <?php $__errorArgs = ['litros'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?> input-error <?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?> transition" required>
-                        <p class="text-xs text-gray-500">Dejar vacío para carga completa</p>
-                        <?php $__errorArgs = ['litros'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?>
-                            <small class="text-red-500 error-message"><?php echo e($message); ?></small>
-                        <?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?> 
+                        </p>
                     </div>
-
-                    <!-- Monto Máximo -->
-                    <div class="space-y-2"> 
-                        <label for="precio" class="text-sm font-medium">Precio del combustible<span class="text-red-600">*</span></label>
-                        <input type="number" value="<?php echo e(old('precio',$combustible->precio)); ?>" id="precio" min="0" name="precio"
-                            placeholder="0" step="0.01"
-                            class="w-full h-10 rounded-md border border-base-300 bg-base-200 
-                            px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary
-                            focus:border-primary <?php $__errorArgs = ['precio'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?> input-error <?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?> transition" required>
-                        <?php $__errorArgs = ['precio'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?>
-                            <small class="text-red-500 error-message"><?php echo e($message); ?></small>
-                        <?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?>   
-                    </div>
-
                 </div>
 
-                <!-- FILA: 2 SELECT -->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-
-                    <!-- Estación sugerida -->
-                    <div class="space-y-2">
-                        <label for="estacion" class="text-sm font-medium">
-                            Estación Sugerida <span class="text-red-600">*</span>
-                        </label>
-                        <select id="estacion" name="estacion" 
-                            class="w-full h-10 rounded-md border border-base-300 bg-base-200 
-                            px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary
-                            focus:border-primary <?php $__errorArgs = ['estacion'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?> input-error <?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?> transition"
-                            required> 
-                            <option  value="YPF Ruta 14"  <?php echo e(old('estacion', $combustible->estacion) == 'YPF Ruta 14' ? 'selected' : ''); ?>>YPF Ruta 14</option>
-                            <option value="SHELL Centro"
-                                <?php echo e(old('estacion', $combustible->estacion) == 'SHELL Centro' ? 'selected' : ''); ?>>
-                                SHELL Centro
-                            </option>
-
-                            <option value="AXION Norte"
-                                <?php echo e(old('estacion', $combustible->estacion) == 'AXION Norte' ? 'selected' : ''); ?>>
-                                AXION Norte
-                            </option>
-                        </select>
-                        <?php $__errorArgs = ['estacion'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?>
-                            <small class="text-red-500 error-message"><?php echo e($message); ?></small>
-                        <?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?>
-                    </div>
-
-                    <!-- Tipo de Pago -->
-                    <div class="space-y-2">
-                        <label for="tipo_de_pago" class="text-sm font-medium">Tipo de Pago Autorizado<span class="text-red-600">*</span></label>
-                        <select id="tipo_de_pago" name="tipo_de_pago"
-                            class="w-full h-10 rounded-md border border-base-300 bg-base-200 
-                            px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary
-                            focus:border-primary <?php $__errorArgs = ['tipo_de_pago'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?> input-error <?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?> transition" required>
-                            <option value="contado"
-                            <?php echo e(old('tipo_de_pago', $combustible->tipo_de_pago) == 'contado' ? 'selected' : ''); ?>>Pago en efectivo</option> 
-                            <option value="cuenta_corriente"
-                            <?php echo e(old('tipo_de_pago', $combustible->tipo_de_pago) == 'cuenta_corriente' ? 'selected' : ''); ?>>Cuenta corriente</option> 
-                        </select>
-                        <?php $__errorArgs = ['tipo_de_pago'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?>
-                            <small class="text-red-500 error-message"><?php echo e($message); ?></small>
-                        <?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?>
-                    </div>
-
-                </div>
-
-            
-
-                <!-- OBSERVACIONES -->
-                <div class="space-y-2">
-                    <label for="observaciones" class="text-sm font-medium">
-                        Observaciones / Instrucciones Especiales(Opcional) 
-                    </label>
-                    <textarea id="observaciones" name="observaciones" value="<?php echo e(old('observaciones',$combustible->observaciones)); ?>" rows="3"
-                        placeholder="Ingrese observaciones o instrucciones..."
-                        class="w-full rounded-md border border-base-300 bg-base-200
-                        px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary
-                        focus:border-primary transition resize-none"></textarea>
-                </div>
                 
             </div>
-        </div> 
+        </div>
+
+        <div class="bg-base-200/30 px-6 py-3 flex items-center gap-4">
+            <span class="flex items-center gap-1.5 text-xs font-semibold text-emerald-600 dark:text-emerald-400">
+                <span class="relative flex h-2 w-2">
+                    <span
+                        class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                    <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                </span>
+                Sistema en línea
+            </span>
+            <div class="h-4 w-[1px] bg-base-300"></div>
+            <p class="text-xs opacity-60 font-medium">Modo edición habilitado</p>
+        </div>
     </div>
-    <!-- FIN DE DETALLES DE LA CARGA AUTORIZADA -->
-    <!-- ========================= -->
-        <!-- BOTONES DEL FORMULARIO -->
-        <!-- ========================= -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6 mt-6">
+        <div data-slot="card"
+            class="bg-base-100 text-base-content flex flex-col gap-6 rounded-xl border lg:col-span-2 border-l-4 border-l-blue-500 shadow-lg dark:border-gray-700 dark:border-l-blue-500">
+
+            <div data-slot="card-header"
+                class="grid auto-rows-min grid-rows-[auto_auto] items-start gap-1.5 px-6 pt-6 pb-6 
+                    /* Redondeado superior para que no se vea el borde cuadrado */
+                    rounded-t-xl 
+                    /* Colores dinámicos para el degradado */
+                    bg-gradient-to-r from-blue-50 to-indigo-50 
+                    dark:from-slate-800 dark:to-slate-900 
+                    /* Bordes */
+                    border-b border-blue-100 dark:border-gray-700">
+
+                <h4 data-slot="card-title" class="flex items-center justify-between text-base md:text-lg font-semibold">
+                    <div class="flex items-center gap-2 md:gap-3">
+                        <div class="bg-blue-500 p-2 rounded-lg text-white shadow-sm">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" class="lucide lucide-file-text">
+                                <path
+                                    d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z">
+                                </path>
+                                <path d="M14 2v5a1 1 0 0 0 1 1h5"></path>
+                                <path d="M10 9H8"></path>
+                                <path d="M16 13H8"></path>
+                                <path d="M16 17H8"></path>
+                            </svg>
+                        </div>
+                        <span class="text-white">Información General</span>
+                    </div>
+
+                    <span
+                        class="hidden md:flex items-center gap-2 text-xs font-normal opacity-70 bg-base-300 dark:bg-slate-700 px-3 py-1 rounded-full text-white">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24"
+                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" class="lucide lucide-lock">
+                            <rect width="18" height="11" x="3" y="11" rx="2" ry="2"></rect>
+                            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                        </svg>
+                        Solo lectura
+                    </span>
+                </h4>
+            </div>
+
+            <div data-slot="card-content" class="px-6 pb-6 pt-4 md:pt-0">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    <div class="bg-base-200/50 rounded-lg p-3 border border-base-300 hover:border-blue-400 transition-all">
+                        <div class="flex items-center gap-2 mb-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" class="text-blue-500">
+                                <rect width="18" height="18" x="3" y="4" rx="2"></rect>
+                                <path d="M3 10h18"></path>
+                                <path d="M8 2v4"></path>
+                                <path d="M16 2v4"></path>
+                            </svg>
+                            <span class="text-xs font-semibold opacity-60 uppercase">Fecha de Carga</span>
+                        </div>
+                        <p class="text-base font-bold text-base-content">
+                            <?php echo e(\Carbon\Carbon::parse($combustible->fecha)->format('d/m/Y')); ?></p>
+                    </div>
+
+                    <div
+                        class="bg-base-200/50 rounded-lg p-3 border border-base-300 hover:border-purple-400 transition-all">
+                        <div class="flex items-center gap-2 mb-2 text-purple-500">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                class="lucide lucide-file-text">
+                                <path
+                                    d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z">
+                                </path>
+                                <path d="M14 2v5a1 1 0 0 0 1 1h5"></path>
+                            </svg>
+                            <span class="text-xs font-semibold opacity-60 uppercase">N° Factura</span>
+                        </div>
+                        <p class="text-base font-bold"><?php echo e($combustible->codigo); ?></p>
+                    </div>
+                    <?php
+                        $destino = $combustible->destino;
+                        $esVehiculo = $destino instanceof \App\Models\Vehiculo;
+                        $esDestino = $destino instanceof \App\Models\Destino;
+                        $esEquipo = $destino instanceof \App\Models\Equipo;
+                    ?>
+                    <div
+                        class="bg-base-200/50 rounded-lg p-3 border border-base-300 hover:border-orange-400 transition-all">
+                        <div class="flex items-center gap-2 mb-2 text-orange-500">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round">
+                                <path
+                                    d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2">
+                                </path>
+                                <circle cx="7" cy="17" r="2"></circle>
+                                <path d="M9 17h6"></path>
+                                <circle cx="17" cy="17" r="2"></circle>
+                            </svg>
+                            <span class="text-xs font-semibold opacity-60 uppercase">
+                                <?php if($esVehiculo): ?>
+                                    Vehículo
+                                <?php elseif($esDestino): ?>
+                                    Destino
+                                <?php elseif($esEquipo): ?>
+                                    Equipo
+                                <?php else: ?>
+                                    Destino
+                                <?php endif; ?>
+                            </span>
+                        </div>
+                        <p class="text-base font-bold">
+                            <?php if($esVehiculo): ?>
+                                <?php echo e($destino->patente); ?>
+
+                            <?php elseif($esDestino): ?>
+                                <?php echo e($destino->nombre); ?>
+
+                            <?php elseif($esEquipo): ?>
+                                <?php echo e($destino->equipamiento ?? 'Equipo'); ?>
+
+                            <?php else: ?>
+                                —
+                            <?php endif; ?>
+                        </p>
+
+                        <p class="text-xs opacity-60">
+                            <?php if($esVehiculo): ?>
+                                <?php echo e($destino->modelo); ?>
+
+                            <?php elseif($esDestino): ?>
+                                <?php echo e(ucfirst($destino->tipo)); ?>
+
+                            <?php elseif($esEquipo): ?>
+                                <?php echo e($destino->marca); ?>
+
+                            <?php endif; ?>
+                        </p>
+
+                    </div>
+                    <?php if(isset($combustible->id_empleado)): ?>
+                    <div class="bg-base-200/50 rounded-lg p-3 border border-base-300 hover:border-cyan-400 transition-all">
+                        <div class="flex items-center gap-2 mb-2 text-cyan-600">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="12" cy="7" r="4"></circle>
+                            </svg>
+                            <span class="text-xs font-semibold opacity-60 uppercase">Conductor</span>
+                        </div>
+                        <p class="text-base font-bold"><?php echo e($combustible->empleado->nombre); ?></p>
+                        <p class="text-xs opacity-60">DNI: <?php echo e($combustible->empleado->dni); ?></p>
+                    </div>
+                    <?php endif; ?>
+                    <div
+                        class="bg-base-200/50 rounded-lg p-3 border border-base-300 hover:border-violet-400 transition-all md:col-span-2">
+                        <div class="flex items-center gap-2 mb-2 text-violet-500">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path
+                                    d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0">
+                                </path>
+                                <circle cx="12" cy="10" r="3"></circle>
+                            </svg>
+                            <span class="text-xs font-semibold opacity-60 uppercase">Estación de Servicio</span>
+                        </div>
+                        <p class="text-base font-bold"><?php echo e($combustible->estacion); ?></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div data-slot="card"
+            class="bg-base-100 rounded-xl text-base-content flex flex-col  gap-6 border border-l-4 border-l-purple-500 shadow-lg dark:border-gray-700 dark:border-l-purple-500">
+
+            <div data-slot="card-header"
+                class="grid rounded-t-xl auto-rows-min grid-rows-[auto_auto] items-start gap-1.5 px-6 pt-6 bg-gradient-to-r from-purple-50 to-pink-50 dark:from-slate-800 dark:to-slate-900 border-b border-purple-100 dark:border-gray-700 pb-6">
+                <h4 data-slot="card-title" class="flex items-center justify-between text-base md:text-lg font-semibold">
+                    <div class="flex items-center gap-2 md:gap-3">
+                        <div class="bg-purple-500 p-2 rounded-lg text-white">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="12" cy="7" r="4"></circle>
+                            </svg>
+                        </div>
+                        <span class="text-white">Registrador</span>
+                    </div>
+                </h4>
+            </div>
+
+            <div data-slot="card-content" class="px-6 pb-6 pt-4 space-y-4">
+                <div
+                    class="bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 rounded-xl p-4 border border-purple-200 dark:border-purple-800">
+                    <div class="flex items-center gap-3 mb-3">
+                        <div class="bg-purple-500 p-2 rounded-full text-white">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="12" cy="7" r="4"></circle>
+                            </svg>
+                        </div>
+                        <div>
+                            <p class="text-[10px] opacity-60 uppercase tracking-widest">Registrado por</p>
+                            <p class="text-base font-bold"><?php echo e($combustible->user->name); ?></p>
+                            <p><?php echo e($combustible->user->roles->first()->name); ?></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div data-slot="card"
+        class="bg-base-100 mt-6 text-base-content flex flex-col gap-6 rounded-xl border lg:col-span-2 border-l-4 border-l-gray-500 shadow-lg dark:border-gray-700 dark:border-l-gray-500 overflow-hidden">
+
+        <div data-slot="card-header"
+            class="grid auto-rows-min grid-rows-[auto_auto] items-start gap-1.5 px-6 pt-6 pb-6 
+               bg-gradient-to-r from-gray-50 to-slate-100 dark:from-slate-800 dark:to-slate-900 
+               border-b border-gray-200 dark:border-gray-700">
+
+            <h4 data-slot="card-title" class="flex items-center justify-between text-base md:text-lg font-semibold">
+                <div class="flex items-center gap-2 md:gap-3">
+                    <div class="bg-gray-500 p-2 rounded-lg text-white shadow-sm">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" class="lucide lucide-message-square">
+                            <path
+                                d="M22 17a2 2 0 0 1-2 2H6.828a2 2 0 0 0-1.414.586l-2.202 2.202A.71.71 0 0 1 2 21.286V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2z">
+                            </path>
+                        </svg>
+                    </div>
+                    <span class="text-white">Observaciones</span>
+                </div>
+
+                <span
+                    class="flex items-center gap-2 text-xs font-normal opacity-70 bg-base-300 dark:bg-slate-700 px-3 py-1 rounded-full text-white">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round" class="lucide lucide-lock">
+                        <rect width="18" height="11" x="3" y="11" rx="2" ry="2"></rect>
+                        <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                    </svg>
+                    Solo lectura
+                </span>
+            </h4>
+        </div>
+
+        <div data-slot="card-content" class="px-6 pb-6 pt-4 md:pt-0">
+            <div class="bg-base-200/50 rounded-xl p-4 md:p-5 border-2 border-base-300 dark:border-gray-700">
+                <p class="text-sm md:text-base text-base-content leading-relaxed">
+                    <?php echo e($combustible->observaciones); ?>
+
+                </p>
+            </div>
+
+            <div
+                class="mt-3 flex items-start gap-2 text-xs md:text-sm opacity-80 bg-base-200 p-3 rounded-lg border border-base-300 dark:border-gray-700">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round" class="lucide lucide-lock mt-0.5 opacity-60">
+                    <rect width="18" height="11" x="3" y="11" rx="2" ry="2"></rect>
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                </svg>
+                <p><strong class="text-base-content">Campo de solo lectura:</strong> Las observaciones no pueden ser
+                    modificadas por seguridad del registro.</p>
+            </div>
+        </div>
+    </div>
+    <form action="<?php echo e(route('combustibles.update', $combustible->id)); ?>" method="POST" class="space-y-6"
+        enctype="multipart/form-data"> 
+        <?php echo csrf_field(); ?>
+        <?php echo method_field('PUT'); ?>
+        <div data-slot="card"
+            class="bg-base-100 mt-6 text-base-content flex flex-col gap-6 rounded-xl border lg:col-span-3 border-l-4 border-l-orange-500 shadow-lg dark:border-gray-700 dark:border-l-orange-500 overflow-hidden">
+
+            <div data-slot="card-header"
+                class="grid auto-rows-min grid-rows-[auto_auto] items-start gap-1.5 px-6 pt-6 pb-6 
+               bg-gradient-to-r from-orange-50 to-amber-50 dark:from-slate-800 dark:to-slate-900 
+               border-b border-orange-100 dark:border-gray-700">
+                <h4 data-slot="card-title"
+                    class="flex items-center gap-2 md:gap-3 text-base md:text-lg font-semibold text-base-content">
+                    <div class="bg-orange-500 p-2 rounded-lg text-white shadow-sm">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" class="lucide lucide-fuel">
+                            <path d="M14 13h2a2 2 0 0 1 2 2v2a2 2 0 0 0 4 0v-6.998a2 2 0 0 0-.59-1.42L18 5"></path>
+                            <path d="M14 21V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v16"></path>
+                            <path d="M2 21h13"></path>
+                            <path d="M3 9h11"></path>
+                        </svg>
+                    </div>
+                    <span class="text-white">Detalles del Combustible</span>
+                </h4>
+            </div>
+
+            <div data-slot="card-content" class="px-6 pb-6 pt-4 md:pt-6">
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6">
+
+                    <div class="space-y-3 md:space-y-4">
+                        <h3
+                            class="text-xs md:text-sm font-semibold opacity-60 uppercase tracking-wide flex items-center gap-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" class="opacity-70">
+                                <rect width="18" height="11" x="3" y="11" rx="2" ry="2"></rect>
+                                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                            </svg>
+                            Información Fija
+                        </h3>
+
+                        <div
+                            class="bg-orange-50 dark:bg-orange-900/10 rounded-xl p-3 md:p-4 border border-orange-200 dark:border-orange-800/50">
+                            <div class="flex items-center gap-2 mb-1">
+                                <span
+                                    class="text-xs font-semibold text-orange-600 dark:text-orange-400 uppercase">Combustible</span>
+                            </div>
+                            <p class="text-xl md:text-2xl font-bold text-base-content"><?php echo e($combustible->tipo); ?></p>
+                        </div>
+
+                        <div
+                            class="bg-emerald-50 dark:bg-emerald-900/10 rounded-xl p-3 md:p-4 border border-emerald-200 dark:border-emerald-800/50">
+                            <div class="flex items-center gap-2 mb-1">
+                                <span class="text-xs font-semibold text-emerald-600 dark:text-emerald-400 uppercase">Precio
+                                    por Litro</span>
+                            </div>
+                            <p id="precio_litro" class="text-xl md:text-2xl font-bold text-base-content"
+                                data-precio="<?php echo e($combustible->precio); ?>">$
+                                <?php echo e(number_format($combustible->precio, 2, ',', '.')); ?></p>
+                            <input type="hidden" name="precio" value="<?php echo e($combustible->precio); ?>">
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-2">
+                            <div class="bg-base-200/50 rounded-xl p-3 border border-base-300">
+                                <p class="text-[10px] uppercase opacity-60 font-bold">Subcuenta</p>
+                                <p class="text-sm font-bold text-blue-600 dark:text-blue-400"><?php echo e($combustible->sub_cuenta); ?></p>
+                            </div>
+                            <div class="bg-base-200/50 rounded-xl p-3 border border-base-300">
+                                <p class="text-[10px] uppercase opacity-60 font-bold">Método</p>
+                                <p class="text-sm font-bold text-violet-600 dark:text-violet-400"><?php echo e(Str::headline($combustible->tipo_de_pago)); ?></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="space-y-3 md:space-y-4">
+                        <h3
+                            class="text-xs md:text-sm font-semibold text-emerald-600 dark:text-emerald-400 uppercase tracking-wide flex items-center gap-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M13 21h8"></path>
+                                <path
+                                    d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z">
+                                </path>
+                            </svg>
+                            Campo Editable
+                        </h3>
+                        <div class="relative group">
+                            <div
+                                class="absolute inset-0 bg-emerald-500 rounded-2xl blur-lg opacity-20 group-hover:opacity-30 transition-opacity">
+                            </div>
+                            <div
+                                class="relative bg-white dark:bg-slate-800 border-2 border-emerald-500 rounded-2xl p-4 md:p-6 shadow-xl">
+                                <label class="text-sm font-bold text-emerald-900 dark:text-emerald-400 block mb-2">Cantidad
+                                    de Litros *</label>
+                                <div class="relative">
+                                    <input type="number" id="cantidad_litros" name="litros"
+                                        class="w-full text-3xl md:text-4xl font-bold h-16 md:h-20 text-center border-b-4 border-emerald-500 bg-transparent focus:outline-none text-white"
+                                        value="<?php echo e($combustible->litros); ?>" step="0.01" min="0">
+                                    <span
+                                        class="absolute right-0 top-1/2 -translate-y-1/2 text-xl font-bold text-emerald-500/50">L</span>
+                                </div>
+                                <div
+                                    class="mt-4 flex items-center gap-2 text-[10px] md:text-xs text-emerald-700 dark:text-emerald-500 bg-emerald-50 dark:bg-emerald-500/10 p-2 rounded-lg">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
+                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <circle cx="12" cy="12" r="10"></circle>
+                                        <path d="m9 12 2 2 4-4"></path>
+                                    </svg>
+                                    <span>Puedes modificar esta cantidad libremente.</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="space-y-3 md:space-y-4">
+                        <h3
+                            class="text-xs md:text-sm font-semibold text-orange-600 dark:text-orange-400 uppercase tracking-wide flex items-center gap-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M16 7h6v6"></path>
+                                <path d="m22 7-8.5 8.5-5-5L2 17"></path>
+                            </svg>
+                            Cálculo Automático
+                        </h3>
+                        <div class="relative">
+                            <div
+                                class="absolute inset-0 bg-gradient-to-r from-orange-600 to-red-600 rounded-2xl blur-lg opacity-30">
+                            </div>
+                            <div
+                                class="relative bg-gradient-to-br from-orange-500 to-red-600 rounded-2xl p-5 md:p-6 text-white shadow-xl">
+                                <p class="text-xs font-semibold opacity-80 mb-1">MONTO TOTAL</p>
+                                <p id="monto_total"
+                                    class="text-4xl md:text-5xl font-black mb-4 text-center tracking-tight">$
+                                    <?php echo e(number_format($combustible->cantidad_litros * $combustible->precio_litro, 2, ',', '.')); ?>
+
+                                </p>
+
+                                <div
+                                    class="bg-white/10 backdrop-blur-md rounded-xl p-3 border border-white/20 text-[11px] md:text-xs">
+                                    <div class="flex justify-between items-center opacity-90">
+                                        <span
+                                            id="calculo_detalle"><?php echo e(number_format($combustible->cantidad_litros, 2, ',', '.')); ?>
+
+                                            L × $ <?php echo e(number_format($combustible->precio_litro, 2, ',', '.')); ?></span>
+                                        <span class="font-bold">Total</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div
+                            class="bg-amber-50 dark:bg-amber-900/10 border border-amber-200 dark:border-amber-800/50 rounded-xl p-3 flex gap-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2"
+                                class="text-amber-600 shrink-0 mt-0.5">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <line x1="12" x2="12" y1="8" y2="12"></line>
+                                <line x1="12" x2="12.01" y1="16" y2="16"></line>
+                            </svg>
+                            <p class="text-[11px] text-amber-800 dark:text-amber-500">El monto se actualiza en tiempo real
+                                al modificar los litros.</p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div data-slot="card"
+            class="bg-base-100 mt-6 text-base-content flex flex-col gap-6 rounded-xl border border-l-4 border-l-green-500 shadow-lg dark:border-gray-700 dark:border-l-green-500 overflow-hidden">
+
+            <div data-slot="card-header"
+                class="grid auto-rows-min grid-rows-[auto_auto] items-start gap-1.5 px-6 pt-6 pb-6 
+               bg-gradient-to-r from-green-50 to-emerald-50 dark:from-slate-800 dark:to-slate-900 
+               border-b border-green-100 dark:border-gray-700">
+
+                <h4 data-slot="card-title" class="flex items-center justify-between text-base md:text-lg font-semibold">
+                    <div class="flex items-center gap-2 md:gap-3">
+                        <div class="bg-green-500 p-2 rounded-lg text-white shadow-sm">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" class="lucide lucide-image">
+                                <rect width="18" height="18" x="3" y="3" rx="2" ry="2"></rect>
+                                <circle cx="9" cy="9" r="2"></circle>
+                                <path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"></path>
+                            </svg>
+                        </div>
+                        <span class="text-white">Comprobante</span>
+                    </div>
+
+                    <span
+                        class="flex items-center gap-2 text-[10px] md:text-xs font-medium bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 px-3 py-1 rounded-full border border-green-200 dark:border-green-800">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24"
+                            fill="none" stroke="currentColor" stroke-width="2" class="lucide lucide-pen-line">
+                            <path d="M13 21h8"></path>
+                            <path
+                                d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z">
+                            </path>
+                        </svg>
+                        Editable
+                    </span>
+                </h4>
+            </div>
+
+            <div data-slot="card-content" class="px-6 pb-6 pt-4 md:pt-6">
+                <div class="space-y-4 md:space-y-6">
+
+                    <div class="relative group">
+                        <div
+                            class="absolute inset-0 bg-green-500 rounded-2xl blur-lg opacity-10 group-hover:opacity-20 transition-opacity">
+                        </div>
+
+                        <label for="imagen_factura" id="upload_zone"
+                            class="relative border-2 border-dashed border-green-400 dark:border-green-800 bg-base-200/50 hover:bg-base-200 dark:hover:bg-slate-800/50 rounded-2xl p-6 md:p-10 text-center transition-all cursor-pointer block">
+                            <div
+                                class="bg-green-100 dark:bg-green-900/20 p-4 rounded-full w-16 h-16 md:w-20 md:h-20 mx-auto mb-4 flex items-center justify-center shadow-inner">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32"
+                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round"
+                                    class="lucide lucide-upload text-green-600 dark:text-green-400">
+                                    <path d="M12 3v12"></path>
+                                    <path d="m17 8-5-5-5 5"></path>
+                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                </svg>
+                            </div>
+
+                            <p class="text-base md:text-lg font-bold text-base-content mb-1">Arrastra la imagen aquí</p>
+                            <p class="text-xs md:text-sm opacity-60 mb-6 text-base-content">o haz clic para explorar tus
+                                archivos</p>
+
+                            <input type="file" id="imagen_factura" name="imagen_factura" accept="image/*"
+                                class="hidden">
+
+                            <span
+                                class="inline-flex items-center gap-2 px-6 py-3 bg-green-600 hover:bg-green-700 text-white rounded-xl font-bold transition-all shadow-md hover:shadow-green-500/20 hover:scale-105 active:scale-95 cursor-pointer text-sm md:text-base">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                    <polyline points="17 8 12 3 7 8"></polyline>
+                                    <line x1="12" y1="3" x2="12" y2="15"></line>
+                                </svg>
+                                Seleccionar Imagen
+                            </span>
+                        </label>
+
+                        <div id="preview_container"
+                            class="hidden relative border-2 border-solid border-green-400 dark:border-green-800 bg-base-200/50 rounded-2xl p-4 md:p-6 text-center">
+                            <div class="flex items-center justify-between mb-4">
+                                <div class="flex items-center gap-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                        class="text-green-600">
+                                        <rect width="18" height="18" x="3" y="3" rx="2" ry="2">
+                                        </rect>
+                                        <circle cx="9" cy="9" r="2"></circle>
+                                        <path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"></path>
+                                    </svg>
+                                    <span class="text-sm font-bold text-green-700 dark:text-green-400">Vista previa</span>
+                                </div>
+                                <button type="button" id="btn_remove_image"
+                                    class="btn btn-sm btn-circle btn-ghost text-red-500 hover:bg-red-100 dark:hover:bg-red-900/20">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M18 6 6 18"></path>
+                                        <path d="m6 6 12 12"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                            <img id="preview_image" src="" alt="Vista previa"
+                                class="max-h-64 mx-auto rounded-lg border border-base-300 shadow-md">
+                            <p id="preview_filename" class="text-xs text-center mt-3 opacity-70"></p>
+                            <label for="imagen_factura"
+                                class="inline-flex items-center gap-2 px-4 py-2 mt-4 bg-green-600 hover:bg-green-700 text-white rounded-lg font-medium transition-all shadow-sm cursor-pointer text-sm">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                    <polyline points="17 8 12 3 7 8"></polyline>
+                                    <line x1="12" y1="3" x2="12" y2="15"></line>
+                                </svg>
+                                Cambiar imagen
+                            </label>
+                        </div>
+                    </div>
+
+                    <div
+                        class="bg-blue-50 dark:bg-slate-800/40 border border-blue-100 dark:border-slate-700 rounded-xl p-4">
+                        <div class="flex items-start gap-3 text-blue-800 dark:text-slate-300">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2"
+                                class="mt-0.5 shrink-0 opacity-70">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <line x1="12" x2="12" y1="8" y2="12"></line>
+                                <line x1="12" x2="12.01" y1="16" y2="16"></line>
+                            </svg>
+                            <div>
+                                <p class="text-sm font-bold mb-2">Requisitos de la imagen:</p>
+                                <ul class="text-xs grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-1 opacity-80">
+                                    <li class="flex items-center gap-2">
+                                        <span class="w-1 h-1 bg-current rounded-full"></span> Formatos: JPG, PNG
+                                    </li>
+                                    <li class="flex items-center gap-2">
+                                        <span class="w-1 h-1 bg-current rounded-full"></span> Tamaño máximo: 5MB
+                                    </li>
+                                    <li class="flex items-center gap-2 md:col-span-2">
+                                        <span class="w-1 h-1 bg-current rounded-full"></span> La imagen debe ser legible y
+                                        clara
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
         <div class="flex justify-end pt-4">
-            <a href="<?php echo e(route('combustibles.index')); ?>" class="btn btn-warning mr-2"> 
+            <a href="<?php echo e(route('combustibles.index')); ?>" class="btn btn-warning mr-2">
                 <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c = $attributes; } ?>
 <?php $component = BladeUI\Icons\Components\Svg::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
@@ -565,9 +726,9 @@ unset($__errorArgs, $__bag); ?>
 <?php if (isset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
 <?php $component = $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
 <?php unset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
-<?php endif; ?> 
-                Volver 
-            </a>  
+<?php endif; ?>
+                Volver
+            </a>
             <button type="submit" class="btn btn-primary">
                 <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c = $attributes; } ?>
@@ -588,41 +749,87 @@ unset($__errorArgs, $__bag); ?>
 <?php if (isset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
 <?php $component = $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
 <?php unset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
-<?php endif; ?> 
-                Actualizar Carga De Combustible 
-            </button> 
+<?php endif; ?>
+                Editar Carga De Combustible
+            </button>
         </div>
-</form> 
+    </form>
 <?php $__env->stopSection(); ?>
-
 <?php $__env->startSection('js'); ?>
-    <script> 
-     $(document).ready(function () { 
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const cantidadInput = document.getElementById('cantidad_litros');
+            const precioElement = document.getElementById('precio_litro');
+            const montoTotalElement = document.getElementById('monto_total');
+            const calculoDetalleElement = document.getElementById('calculo_detalle');
 
-        function actualizarDatosVehiculo() {
-            var selected = $('#vehiculo_id option:selected');
-            var id = selected.val();
+            const precioLitro = parseFloat(precioElement.dataset.precio) || 0;
 
-            if (!id) { 
-                $('#vehiculo_info').addClass('hidden');
-                return;
+            function formatearNumero(num) {
+                const partes = Number(num).toFixed(2).split('.');
+                const entero = partes[0].replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+                const decimal = partes[1];
+                return `${entero},${decimal}`;
             }
 
-            // Mostrar card
-            $('#vehiculo_info').removeClass('hidden');
+            function calcularTotal() {
+                const cantidad = parseFloat(cantidadInput.value) || 0;
+                const total = cantidad * precioLitro;
 
-            // Cargar datos reales
-            $('#v_marca_modelo').text(selected.data('marca') + " " + selected.data('modelo'));
-            $('#v_tipo').text(selected.data('tipo'));
-            $('#v_tipo_combustible').text(selected.data('combustible'));
-            $('#v_ultima_carga').text(selected.data('ultima')); 
-        }
+                montoTotalElement.textContent = `$ ${formatearNumero(total)}`;
+                calculoDetalleElement.textContent =
+                    `${formatearNumero(cantidad)} L × $ ${formatearNumero(precioLitro)}`;
+            }
 
-        $('#vehiculo_id').change(actualizarDatosVehiculo);
+            cantidadInput.addEventListener('input', calcularTotal);
+            cantidadInput.addEventListener('change', calcularTotal);
 
-        actualizarDatosVehiculo(); // por si ya viene seleccionado
-    });
-</script>
+            calcularTotal();
+
+            // Preview de imagen
+            const inputImagen = document.getElementById('imagen_factura');
+            const uploadZone = document.getElementById('upload_zone');
+            const previewContainer = document.getElementById('preview_container');
+            const previewImage = document.getElementById('preview_image');
+            const previewFilename = document.getElementById('preview_filename');
+            const btnRemoveImage = document.getElementById('btn_remove_image');
+
+            inputImagen.addEventListener('change', function(e) {
+                const file = e.target.files[0];
+
+                if (!file) {
+                    uploadZone.classList.remove('hidden');
+                    previewContainer.classList.add('hidden');
+                    return;
+                }
+
+                if (!file.type.startsWith('image/')) {
+                    alert('Por favor, selecciona un archivo de imagen válido.');
+                    inputImagen.value = '';
+                    uploadZone.classList.remove('hidden');
+                    previewContainer.classList.add('hidden');
+                    return;
+                }
+
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    previewImage.src = event.target.result;
+                    previewFilename.textContent = file.name;
+                    uploadZone.classList.add('hidden');
+                    previewContainer.classList.remove('hidden');
+                };
+                reader.readAsDataURL(file);
+            });
+
+            btnRemoveImage.addEventListener('click', function() {
+                inputImagen.value = '';
+                previewImage.src = '';
+                previewFilename.textContent = '';
+                uploadZone.classList.remove('hidden');
+                previewContainer.classList.add('hidden');
+            });
+        });
+    </script>
 <?php $__env->stopSection(); ?>
 
 <?php echo $__env->make('layouts.admin', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\xampp\htdocs\sistema-municipal\resources\views\admin\combustibles\edit.blade.php ENDPATH**/ ?>

@@ -4,7 +4,7 @@
     <!-- Titulo y boton -->
     <div class="flex items-center justify-between mb-6">
         <h1 class="text-2xl font-semibold">Categorias</h1>
-        <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('categorias-create')): ?>
+        <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('categorias-store')): ?> 
         <button
             onclick="abrir_modal('crearCategoriaModal', 'Crear Nueva Categoría', '1', ['nombre','slug','descripcion'], {})"
             class="btn btn-primary">

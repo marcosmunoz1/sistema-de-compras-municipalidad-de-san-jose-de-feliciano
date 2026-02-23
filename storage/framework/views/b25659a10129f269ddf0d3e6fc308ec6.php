@@ -331,27 +331,29 @@ unset($__errorArgs, $__bag); ?>
 
         </div>
         <div class="card bg-base-100 shadow-xl p-4">
-            <h1 class="text-2xl font-semibold">Productos</h1>
-            <br>
-            <table class="table table-bordered" id="tablaProductos">
-                <thead>
-                    <tr>
-                        <th class="text-center">Nr</th>
-                        <th class="text-center">Producto</th>
-                        <th class="text-center">Cantidad asignada</th>
-                        <th class="text-center">Stock</th>
-                        <th class="text-center">Cantidad a mover/consumir</th>
-                        <th class="text-center">Acción</th>
-                    </tr>
-                </thead>
-                <tbody id="tbodyProductos"></tbody>
-            </table>
+            <h1 class="text-xl sm:text-2xl font-semibold mb-4">Productos</h1>
+            
+            <div class="overflow-x-auto">
+                <table class="table table-bordered text-sm" id="tablaProductos">
+                    <thead>
+                        <tr>
+                            <th class="text-center">Nr</th>
+                            <th class="text-center">Producto</th>
+                            <th class="text-center hidden sm:table-cell">Cantidad asignada</th>
+                            <th class="text-center hidden md:table-cell">Stock</th>
+                            <th class="text-center">Cantidad a mover</th>
+                            <th class="text-center">Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbodyProductos"></tbody>
+                </table>
+            </div>
 
         </div>
         
         <!-- Botones -->
-        <div class="flex justify-end mt-4">
-            <a href="<?php echo e(route('movimientos.index')); ?>" class="btn btn-warning mr-2">
+        <div class="flex flex-wrap gap-2 justify-end mt-4">
+            <a href="<?php echo e(route('movimientos.index')); ?>" class="btn btn-sm sm:btn-md btn-warning">
                 <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c = $attributes; } ?>
 <?php $component = BladeUI\Icons\Components\Svg::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
@@ -375,7 +377,7 @@ unset($__errorArgs, $__bag); ?>
                 Volver
             </a>
 
-            <button type="submit" class="btn btn-primary">
+            <button type="submit" class="btn btn-sm sm:btn-md btn-primary">
                 <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c = $attributes; } ?>
 <?php $component = BladeUI\Icons\Components\Svg::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
@@ -1114,12 +1116,12 @@ unset($__errorArgs, $__bag); ?>
                                     </td>
 
                                     <!-- CANTIDAD ASIGNADA -->
-                                    <td class="text-center">
+                                    <td class="text-center hidden sm:table-cell">
                                         <span class="badge badge-secondary">${cantidadAsignada}</span>
                                     </td>
 
                                     <!-- STOCK DISPONIBLE -->
-                                    <td class="text-center">
+                                    <td class="text-center hidden md:table-cell">
                                         <span class="badge badge-info">${stock}</span>
                                     </td>
 

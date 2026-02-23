@@ -29,38 +29,13 @@
 <?php endif; ?>
                 Volver a Combustibles
             </a>
-            <a href="<?php echo e(route('combustibles.edit', $combustible->id)); ?>"
-                class="inline-flex items-center gap-2 h-9 px-4 py-2 rounded-md text-sm bg-warning hover:bg-warning-700 text-white">
-                <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
-<?php if (isset($attributes)) { $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c = $attributes; } ?>
-<?php $component = BladeUI\Icons\Components\Svg::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
-<?php $component->withName('heroicon-o-pencil'); ?>
-<?php if ($component->shouldRender()): ?>
-<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
-<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
-<?php $attributes = $attributes->except(\BladeUI\Icons\Components\Svg::ignoredParameterNames()); ?>
-<?php endif; ?>
-<?php $component->withAttributes(['class' => 'w-4 h-4 inline']); ?>
-<?php echo $__env->renderComponent(); ?>
-<?php endif; ?>
-<?php if (isset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
-<?php $attributes = $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
-<?php unset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
-<?php endif; ?>
-<?php if (isset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
-<?php $component = $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
-<?php unset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
-<?php endif; ?>
-                Editar Combustible
-            </a>
         </div>
     </div>
     <div class="breadcrumbs text-sm mb-6">
         <ul>
             <li>
                 <a href="<?php echo e(route('admin.index')); ?>">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                        class="h-4 w-4 stroke-current">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="h-4 w-4 stroke-current">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"></path>
                     </svg>
@@ -108,8 +83,8 @@
         </ul>
 
     </div>
-    <div class="card bg-base-100 shadow-md rounded-xl p-6">
-        <div class="flex items-start justify-between">
+    <div class="card bg-base-100 shadow-md rounded-xl p-4 sm:p-6">
+        <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
             <div class="flex gap-4">
                 <div class="bg-orange-500 p-4 rounded-lg">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
@@ -123,9 +98,16 @@
                     </svg>
                 </div>
                 <div>
-                    <div class="flex items-center gap-3 mb-2">
-                        <h1 class="text-3xl">Carga de Combustible</h1><span data-slot="badge"
-                            class="inline-flex items-center justify-center rounded-md border px-2 py-0.5 text-xs font-medium w-fit whitespace-nowrap shrink-0 [&amp;&gt;svg]:size-3 gap-1 [&amp;&gt;svg]:pointer-events-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive transition-[color,box-shadow] overflow-hidden border-transparent bg-primary text-primary-foreground [a&amp;]:hover:bg-primary/90">Activo</span>
+                    <div class="flex flex-wrap items-center gap-2 sm:gap-3 mb-2">
+                        <h1 class="text-xl sm:text-3xl">Carga de Combustible</h1>
+                        <span data-slot="badge"
+                            class="inline-flex items-center justify-center rounded-md border px-2 
+                            py-0.5 text-xs font-medium w-fit whitespace-nowrap shrink-0 [&amp;&gt;svg]:size-3 gap-1 [&amp;&gt;svg]:pointer-events-none 
+                            focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 
+                            aria-invalid:border-destructive transition-[color,box-shadow] overflow-hidden border-transparent 
+                            bg-primary text-primary-foreground [a&amp;]:hover:bg-primary/90">
+                            Activo
+                        </span>
                     </div>
                     <p class="text-gray-500 mb-1">Factura N° FACT-<?php echo e($combustible->codigo); ?></p>
                     <div class="flex items-center gap-2 mt-2"><span data-slot="badge"
@@ -141,9 +123,10 @@
                     </div>
                 </div>
             </div>
-            <div class="text-right">
+            <div class="text-left sm:text-right">
                 <p class="text-sm text-gray-500">Monto Total</p>
-                <p class="text-3xl font-medium text-orange-600">$ <?php echo e(number_format($combustible->monto, 2, ',', '.')); ?></p>
+                <p class="text-2xl sm:text-3xl font-medium text-orange-600">$
+                    <?php echo e(number_format($combustible->monto, 2, ',', '.')); ?></p>
             </div>
         </div>
     </div>
@@ -297,50 +280,53 @@
                 </div>
 
                 <!-- Contenido -->
-                <div data-slot="card-content" class="px-6 py-5 space-y-4">
+                <div data-slot="card-content" class="px-6 py-5 space-y-2">
 
-                    <!-- Nombre -->
-                    <div class="flex justify-between items-center p-3 rounded-lg">
-                        <span class="text-sm">Nombre:</span>
-                        <span class="text-sm font-medium">
-                            <?php echo e($destino->nombre ?? 'Sin destino'); ?>
-
-                        </span>
-                    </div>
-
-                    <!-- Tipo de equipo -->
-                    <div class="flex justify-between items-center p-3 rounded-lg">
-                        <span class="text-sm">Tipo:</span>
-                        <span class="text-sm font-medium">
-                            <?php echo e($destino->tipo_equipo ?? '—'); ?>
-
-                        </span>
-                    </div>
-
-                    <!-- Modelo -->
-                    <div class="flex justify-between items-center p-3 rounded-lg">
-                        <span class="text-sm">Modelo:</span>
-                        <span class="text-sm font-medium">
-                            <?php echo e($destino->modelo ?? '—'); ?>
+                    <!-- Equipamiento -->
+                    <div class="grid grid-cols-2 gap-2 p-3 rounded-lg">
+                        <span class="text-sm text-gray-500">Equipamiento:</span>
+                        <span class="text-sm font-medium text-right">
+                            <?php echo e($destino->equipamiento ?? 'Sin equipamiento'); ?>
 
                         </span>
                     </div>
 
                     <!-- Marca -->
-                    <div class="flex justify-between items-center p-3 rounded-lg">
-                        <span class="text-sm">Marca:</span>
-                        <span class="text-sm font-medium">
+                    <div class="grid grid-cols-2 gap-2 p-3 rounded-lg">
+                        <span class="text-sm text-gray-500">Marca:</span>
+                        <span class="text-sm font-medium text-right">
                             <?php echo e($destino->marca ?? '—'); ?>
 
                         </span>
                     </div>
 
-                    <!-- Número de serie -->
-                    <div class="flex justify-between items-center p-3 rounded-lg">
-                        <span class="text-sm">Nr. Serie:</span>
-                        <span class="text-sm font-medium">
-                            <?php echo e($destino->numero_serie ?? '—'); ?>
+                    <!-- Descripción -->
+                    <div class="grid grid-cols-2 gap-2 p-3 rounded-lg">
+                        <span class="text-sm text-gray-500">Descripción:</span>
+                        <span class="text-sm font-medium text-right">
+                            <?php echo e($destino->descripcion ?? '—'); ?>
 
+                        </span>
+                    </div>
+
+                    <!-- Área -->
+                    <div class="grid grid-cols-2 gap-2 p-3 rounded-lg">
+                        <span class="text-sm text-gray-500">Área:</span>
+                        <span class="text-sm font-medium text-right">
+                            <?php echo e($destino->area->nombre ?? '—'); ?>
+
+                        </span>
+                    </div>
+
+                    <!-- Estado -->
+                    <div class="grid grid-cols-2 gap-2 p-3 rounded-lg">
+                        <span class="text-sm text-gray-500">Estado:</span>
+                        <span class="text-sm font-medium text-right">
+                            <?php if($destino->estado): ?>
+                                <span class="badge badge-success">Activo</span>
+                            <?php else: ?>
+                                <span class="badge badge-error">Inactivo</span>
+                            <?php endif; ?>
                         </span>
                     </div>
 
@@ -503,6 +489,46 @@
                     </p>
                 </div>
 
+            </div>
+        </div>
+    </div>
+    <div data-slot="card"
+        class="bg-base-100 mt-6 text-base-content flex flex-col gap-6 rounded-xl border border-l-4 border-l-green-500 shadow-lg dark:border-gray-700 dark:border-l-green-500 overflow-hidden">
+        <div data-slot="card-header"
+            class="grid auto-rows-min grid-rows-[auto_auto] items-start gap-1.5 px-6 pt-6 pb-6 
+               bg-gradient-to-r from-green-50 to-emerald-50 dark:from-slate-800 dark:to-slate-900 
+               border-b border-green-100 dark:border-gray-700">
+            <h4 data-slot="card-title" class="flex items-center justify-between text-base md:text-lg font-semibold">
+                <div class="flex items-center gap-2 md:gap-3">
+                    <div class="bg-green-500 p-2 rounded-lg text-white shadow-sm">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" class="lucide lucide-image">
+                            <rect width="18" height="18" x="3" y="3" rx="2" ry="2"></rect>
+                            <circle cx="9" cy="9" r="2"></circle>
+                            <path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"></path>
+                        </svg>
+                    </div>
+                    <span class="text-white">Comprobante</span>
+                </div>
+            </h4>
+        </div>
+        <div data-slot="card-content" class="px-6 pb-6 pt-4 md:pt-6">
+            <div class="space-y-4 md:space-y-6">
+
+                <div class="relative group">
+                    <div
+                        class="absolute inset-0 bg-green-500 rounded-2xl blur-lg opacity-10 group-hover:opacity-20 transition-opacity">
+                    </div>
+
+                    <label for="imagen_factura" id="upload_zone"
+                        class="relative border-2 border-dashed border-green-400 dark:border-green-800 bg-base-200/50 hover:bg-base-200 dark:hover:bg-slate-800/50 rounded-2xl p-6 md:p-10 text-center transition-all cursor-pointer block">
+
+                        <img src="<?php echo e(asset('storage/' . $combustible->imagen_factura)); ?>" alt="Imagen de la factura"
+                            class="mx-auto mb-4 max-h-48 rounded-lg border border-base-300 shadow-md">
+
+                    </label>
+                </div>
             </div>
         </div>
     </div>

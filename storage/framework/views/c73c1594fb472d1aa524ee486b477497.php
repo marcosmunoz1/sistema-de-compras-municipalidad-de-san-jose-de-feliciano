@@ -1,11 +1,35 @@
 <?php $__env->startSection('title', 'Combustibles'); ?>
-<?php $__env->startSection('content'); ?>
-    <!-- Titulo y boton -->
-    <div class="flex items-center justify-between mb-6">
-        <h1 class="text-2xl font-semibold">Combustibles</h1>
-        <div class="flex  gap-2">
+<?php $__env->startSection('content'); ?> 
+    <!-- Titulo y boton --> 
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+        <h1 class="text-xl sm:text-2xl font-semibold">Combustibles</h1>
+        <div class="flex flex-wrap gap-2">
+            <button onclick="modalPreciosActuales.showModal()" class="btn btn-sm sm:btn-md btn-info tooltip tooltip-info"
+                data-tip="Ver precios actuales de combustibles">
+                <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c = $attributes; } ?>
+<?php $component = BladeUI\Icons\Components\Svg::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('heroicon-o-currency-dollar'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\BladeUI\Icons\Components\Svg::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['class' => 'w-4 h-4 inline']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $attributes = $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $component = $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
+                Ver Precios 
+            </button>
             <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('combustibles-update-prices')): ?>
-                <button onclick="crearCombustible.showModal()" class="btn btn-warning tooltip tooltip-warning mb-1"
+                <button onclick="crearCombustible.showModal()" class="btn btn-sm sm:btn-md btn-warning tooltip tooltip-warning" 
                     data-tip="Actualizar los precios de los combustibles">
                     <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c = $attributes; } ?>
@@ -28,15 +52,35 @@
 <?php unset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
 <?php endif; ?>
                     Actualizar Precios
-                </button>
-            <?php endif; ?>
-            <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('combustibles-create')): ?>
-                <a href="<?php echo e(route('combustibles.create')); ?>" class="btn btn-primary tooltip tooltip-primary tooltip-bottom mb-1"
+                </button> 
+            <?php endif; ?> 
+            <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('combustibles-create')): ?> 
+                <a href="<?php echo e(route('combustibles.create')); ?>" class="btn btn-sm sm:btn-md btn-primary tooltip tooltip-primary tooltip-bottom"
                     data-tip="Crear orden de carga">
-                    + Nueva Carga
+                    <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c = $attributes; } ?>
+<?php $component = BladeUI\Icons\Components\Svg::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('heroicon-o-plus'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\BladeUI\Icons\Components\Svg::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['class' => 'w-5 h-5']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $attributes = $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $component = $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?> 
+                    Nueva Carga
                 </a>
-            <?php endif; ?>
-        </div>
+            <?php endif; ?> 
+        </div> 
     </div>
     <div class="breadcrumbs text-sm mb-6">
         <ul>
@@ -87,10 +131,10 @@
         </form>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-3 pd-6 mb-6">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6"> 
 
         <!-- Card 1 -->
-        <div class="bg-base-100 shadow-xl bg-card text-card-foreground flex flex-col gap-6 rounded-xl mr-2">
+        <div class="bg-base-100 shadow-xl bg-card text-card-foreground flex flex-col gap-6 rounded-xl">
             <div class="px-6 pt-6 pb-6">
                 <div class="flex items-center justify-between">
                     <div>
@@ -110,7 +154,7 @@
         </div>
 
         <!-- Card 2 -->
-        <div class="bg-base-100 shadow-xl bg-card text-card-foreground flex flex-col gap-6 rounded-xl mr-2">
+        <div class="bg-base-100 shadow-xl bg-card text-card-foreground flex flex-col gap-6 rounded-xl">
             <div class="px-6 pt-6 pb-6">
                 <div class="flex items-center justify-between">
                     <div>
@@ -130,7 +174,7 @@
         </div>
 
         <!-- Card 3 -->
-        <div class="bg-base-100 shadow-xl bg-card text-card-foreground flex flex-col gap-6 rounded-xl mr-2">
+        <div class="bg-base-100 shadow-xl bg-card text-card-foreground flex flex-col gap-6 rounded-xl">
             <div class="px-6 pt-6 pb-6">
                 <div class="flex items-center justify-between">
                     <div>
@@ -218,15 +262,64 @@
         <div class="card-body p-4">
             <!-- HEADER COMPLETO -->
             <div class="flex flex-col gap-3">
-                <!-- TÍTULO + BUSCADOR -->
+                <!-- TÍTULO + FILTRO -->
                 <div class="flex items-center justify-between">
                     <h4 class="text-lg font-semibold">Historial de Cargas</h4>
-                    <!-- BUSCADOR -->
-                    <div class="relative">
-                        
+                    
+                    <!-- Filtro por estado -->
+                    <div class="dropdown dropdown-end">
+                        <label tabindex="0" class="btn btn-sm btn-ghost gap-2 <?php echo e(request('estado') == 'eliminados' || request('estado') == 'todos' ? 'text-primary' : ''); ?>">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" 
+                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
+                            </svg>
+                            <?php if(request('estado') == 'eliminados'): ?>
+                                <span class="badge badge-error badge-sm">Eliminados</span>
+                            <?php elseif(request('estado') == 'todos'): ?>
+                                <span class="badge badge-neutral badge-sm">Todos</span>
+                            <?php endif; ?>
+                        </label>
+                        <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow-lg bg-base-100 rounded-box w-52 border border-base-300">
+                            <li class="menu-title">
+                                <span>Filtrar por estado</span>
+                            </li>
+                            <li>
+                                <a href="<?php echo e(route('combustibles.index', array_merge(request()->except('estado', 'page'), []))); ?>" 
+                                   class="<?php echo e(!request('estado') || request('estado') == 'activo' ? 'active' : ''); ?>">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" 
+                                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-success">
+                                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                        <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                                    </svg>
+                                    Solo Activos
+                                </a>
+                            </li>
+                            <li>
+                                <a href="<?php echo e(route('combustibles.index', array_merge(request()->except('page'), ['estado' => 'eliminados']))); ?>"
+                                   class="<?php echo e(request('estado') == 'eliminados' ? 'active' : ''); ?>">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" 
+                                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-error">
+                                        <circle cx="12" cy="12" r="10"></circle>
+                                        <line x1="15" y1="9" x2="9" y2="15"></line>
+                                        <line x1="9" y1="9" x2="15" y2="15"></line>
+                                    </svg>
+                                    Solo Eliminados
+                                </a>
+                            </li>
+                            <li>
+                                <a href="<?php echo e(route('combustibles.index', array_merge(request()->except('page'), ['estado' => 'todos']))); ?>"
+                                   class="<?php echo e(request('estado') == 'todos' ? 'active' : ''); ?>">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" 
+                                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                                    </svg>
+                                    Todos
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
-        </div>
         <!-- TABLA -->
         <div class="overflow-x-auto mt-4">
             <table class="table table-zebra w-full">
@@ -239,7 +332,7 @@
                         <th class="text-center">Tipo</th>
                         <th class="text-center">Litros</th>
                         <th class="text-center">Importe</th>
-                        <th class="text-center">Estación</th> 
+                        <th class="text-center">Estado</th> 
                         <th class="text-center">Acciones</th> 
                     </tr>
                 </thead>
@@ -251,9 +344,24 @@
                             <td class="text-center"><?php echo e($combustible->destino->marca ?? 'N/A'); ?></td> 
                             <td class="text-center"><?php echo e($combustible->empleado->nombre ?? 'N/A'); ?></td> 
                             <td class="text-center"><?php echo e($combustible->tipo); ?></td> 
-                            <td class="text-center"><?php echo e($combustible->litros); ?></td>
+                            <td class="text-center"><?php echo e($combustible->litros ?? 'N/A'); ?></td>
                             <td class="text-center">$<?php echo e(number_format($combustible->monto,2,'.',',')); ?></td>
-                            <td class="text-center"><?php echo e($combustible->estacion); ?></td>
+                            <td class="text-center">
+                                    <?php
+                                        $badgeClass = match ($combustible->estado_carga) { 
+                                            'Pendiente' => 'badge badge-outline badge-warning', 
+                                            'Pendiente de factura' => 'badge badge-outline badge-error',
+                                            'Finalizada' => 'badge badge-outline badge-success',
+                                            'Cancelada' => 'badge badge-outline badge-error',
+                                            'Aprobada' => 'badge badge-outline badge-primary',
+                                            default => 'badge-ghost', 
+                                        }; 
+                                    ?>
+                                    <span class="badge <?php echo e($badgeClass); ?> badge-sm whitespace-nowrap overflow-hidden text-ellipsis max-w-[120px]" title="<?php echo e($combustible->estado_carga); ?>">
+                                        <?php echo e($combustible->estado_carga); ?>
+
+                                    </span>
+                            </td> 
                             <td class="text-center">
                                 <div class="flex items-center justify-center gap-2"> 
                                     <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('combustibles-show')): ?> 
@@ -281,7 +389,35 @@
 <?php endif; ?>
                                     </a>
                                     <?php endif; ?> 
-                                      
+
+                                    <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('combustibles-edit')): ?>
+                                        <?php if($combustible->estado_carga !== 'Finalizada'): ?>
+                                            <a href="<?php echo e(route('combustibles.edit', Crypt::encrypt($combustible->id))); ?>"
+                                            class="btn btn-warning btn-sm">
+                                                <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c = $attributes; } ?>
+<?php $component = BladeUI\Icons\Components\Svg::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('heroicon-s-pencil'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\BladeUI\Icons\Components\Svg::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['class' => 'w-4 h-4']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $attributes = $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $component = $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
+                                            </a>
+                                        <?php endif; ?>
+                                    <?php endif; ?>
+
                                     <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('combustibles-report')): ?>
                                     <button onclick="abrirModalPDFCarga(<?php echo e($combustible->id); ?>)"  
                                        class="btn bg-primary btn-sm" title="Imprimir orden"> 
@@ -307,7 +443,9 @@
 <?php endif; ?>
                                     </button>
                                     <?php endif; ?>
+
                                     <?php if($combustible->trashed()): ?>
+                                    
                                         <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('combustibles-restore')): ?>
                                         <button class="btn btn-success btn-sm"
                                                 onclick="abrirModalRestaurar('<?php echo e(url('/admin/combustibles/'. $combustible->id.'/restore')); ?>')">
@@ -333,7 +471,9 @@
 <?php endif; ?>
                                         </button>
                                         <?php endif; ?> 
+
                                     <?php else: ?> 
+
                                         <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('combustibles-destroy')): ?> 
                                         <button class="btn btn-error btn-sm"
                                                 onclick="confirmarEliminacion(<?php echo e($combustible->id); ?>)">
@@ -359,6 +499,7 @@
 <?php endif; ?>
                                         </button>
                                         <?php endif; ?> 
+
                                     <?php endif; ?>
 
                                     </div>
@@ -591,7 +732,7 @@ unset($__errorArgs, $__bag); ?>
 
                 <!-- Descripción -->
                 <div class="form-control">
-                    <label class="label">
+                    <label class="text-sm font-medium"> 
                         <span class="label-text font-medium">Descripción (Opcional) </span>
                     </label>
 
@@ -624,24 +765,130 @@ unset($__errorArgs, $__bag); ?>
                 <div class="modal-action">
 
                     <!-- Guardar -->
-                    <button class="btn btn-primary">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                            stroke="currentColor" class="w-5 h-5 mr-1">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
-                        </svg>
+                    <button class="btn btn-primary btn-sm">
+                        <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c = $attributes; } ?>
+<?php $component = BladeUI\Icons\Components\Svg::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('heroicon-m-arrow-down-tray'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\BladeUI\Icons\Components\Svg::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['class' => 'w-4 h-4 inline']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $attributes = $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $component = $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
                         Guardar precio
                     </button>
 
                     <!-- Cancelar -->
-                    <button type="button" onclick="crearCombustible.close()" class="btn btn-neutral">
+                    <button type="button" onclick="crearCombustible.close()" class="btn btn-neutral btn-sm">
                         Cancelar
                     </button>
                 </div>
 
             </form>
         </div>
-
     </dialog>
+    <!-- Modal para ver precios actuales -->
+    <dialog id="modalPreciosActuales" class="modal">
+        <div class="modal-box max-w-2xl rounded-xl">
+            <form method="dialog">
+                <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+            </form>
+
+            <h3 class="font-bold text-xl flex items-center gap-3 mb-6">
+                <div class="p-2 rounded-lg bg-info/10">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="text-info">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"></path>
+                        <path d="M12 18V6"></path>
+                    </svg>
+                </div>
+                Precios Actuales de Combustibles
+            </h3>
+
+            <div class="overflow-x-auto">
+                <table class="table table-zebra w-full">
+                    <thead>
+                        <tr class="bg-base-200">
+                            <th class="text-left">Tipo de Combustible</th>
+                            <th class="text-right">Precio por Litro</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php $__empty_1 = true; $__currentLoopData = $tipos_combustibles; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $tipo): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+                            <tr class="hover">
+                                <td>
+                                    <div class="flex items-center gap-3">
+                                        <div class="p-2 rounded-lg bg-warning/10">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                class="text-warning">
+                                                <path d="M14 13h2a2 2 0 0 1 2 2v2a2 2 0 0 0 4 0v-6.998a2 2 0 0 0-.59-1.42L18 5"></path>
+                                                <path d="M14 21V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v16"></path>
+                                                <path d="M2 21h13"></path>
+                                                <path d="M3 9h11"></path>
+                                            </svg>
+                                        </div>
+                                        <div>
+                                            <p class="font-semibold"><?php echo e($tipo->nombre); ?></p>
+                                            <?php if($tipo->descripcion): ?>
+                                                <p class="text-xs text-gray-500"><?php echo e($tipo->descripcion); ?></p>
+                                            <?php endif; ?>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="text-right">
+                                    <span class="text-lg font-bold text-success">$<?php echo e(number_format($tipo->valor, 2, ',', '.')); ?></span>
+                                    <span class="text-xs text-gray-500">/L</span>
+                                </td>
+                            </tr>
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
+                            <tr>
+                                <td colspan="2" class="text-center py-8 text-gray-500">
+                                    No hay tipos de combustibles registrados
+                                </td>
+                            </tr>
+                        <?php endif; ?>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="mt-4 p-3 bg-base-200 rounded-lg">
+                <p class="text-xs text-gray-500 flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" class="text-info">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <path d="M12 16v-4"></path>
+                        <path d="M12 8h.01"></path>
+                    </svg>
+                    Los precios mostrados son los valores actuales registrados en el sistema.
+                </p>
+            </div>
+
+            <div class="modal-action">
+                <form method="dialog">
+                    <button class="btn btn-sm btn-neutral">Cerrar</button>
+                </form>
+            </div>
+        </div>
+
+        <form method="dialog" class="modal-backdrop">
+            <button></button>
+        </form>
+    </dialog>
+
     <!-- Modal para eliminar -->
     <dialog id="modal_eliminar_combustible" class="modal">
         <div class="modal-box">
@@ -1022,7 +1269,7 @@ unset($__errorArgs, $__bag); ?>
 
             const ctxConsumo = document.getElementById('chartConsumoMensual').getContext('2d');
             new Chart(ctxConsumo, {
-                type: 'line',
+                type: 'line', 
                 data: {
                     labels: meses,
                     datasets: [{

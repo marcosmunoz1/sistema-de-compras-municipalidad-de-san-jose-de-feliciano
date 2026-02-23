@@ -348,8 +348,29 @@ class CompraController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Compra $compra)
+    public function destroy($id)
     {
-        //
+        $compra = Compra::findOrFail($id);
+        $compra->estado = false;
+        $compra->save();
+        $compra->delete();
+
+        return redirect()
+            ->route('compras.index')
+            ->with('mensaje', 'La compra fue eliminada correctamente y marcada como inactiva.')
+            ->with('icono', 'success');
     }
+
+        public function restore($id)
+        {
+            $compra = Compra::withTrashed()->findOrFail($id);
+            $compra->estado = true;
+            $compra->save();
+            $compra->restore();
+    
+            return redirect()
+                ->route('compras.index')
+                ->with('mensaje', 'La compra fue restaurada correctamente y marcada como activa.')
+                ->with('icono', 'success');
+        }
 }

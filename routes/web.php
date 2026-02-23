@@ -44,6 +44,9 @@ Route::put('/admin/compras/{id}', [App\Http\Controllers\CompraController::class,
 Route::get('/admin/compras/{id}', [App\Http\Controllers\CompraController::class, 'show'])->name('compras.show')->middleware('auth', 'can:compras-show');
 Route::delete('/admin/compras/{id}', [App\Http\Controllers\CompraController::class, 'destroy'])->name('compras.destroy')->middleware('auth', 'can:compras-destroy');
 
+//Rutas para detalles de compra para eliminar un detalle de compra específico
+Route::delete('/admin/compras/detalle-compra/{id}', [App\Http\Controllers\DetalleCompraController::class, 'destroy'])->name('detalle-compra.destroy')->middleware('auth', 'can:compras-destroy');
+
 //rutas para roles
 Route::get('/admin/roles', [App\Http\Controllers\RoleController::class, 'index'])->name('admin.roles.index')->middleware('auth', 'can:roles-index');
 Route::post('/admin/roles/store', [App\Http\Controllers\RoleController::class, 'store'])->name('admin.roles.store')->middleware('auth', 'can:roles-store');

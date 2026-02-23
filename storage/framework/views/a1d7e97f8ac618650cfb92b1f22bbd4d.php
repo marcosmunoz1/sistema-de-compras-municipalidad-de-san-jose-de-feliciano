@@ -426,7 +426,7 @@ unset($__errorArgs, $__bag); ?>
 
                 <!-- Litros Estimados -->
                 <div class="space-y-2">
-                    <label for="litros" class="text-sm font-medium">Litros Estimados <span class="text-red-600">*</span></label>
+                    <label for="litros" class="text-sm font-medium">Litros Estimados</label>
                     <input type="number" id="litros" min="0" max="1000" name="litros" placeholder="0"
                         step="0.01"
                         class="w-full h-10 rounded-md border border-base-300 bg-base-200 
@@ -438,8 +438,8 @@ if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?> input-error <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?> transition" required>
-                    
+unset($__errorArgs, $__bag); ?> transition">
+                        <p class="text-xs text-gray-500">Dejar vacío para carga completa</p>
                      <?php $__errorArgs = ['litros'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
@@ -648,6 +648,7 @@ unset($__errorArgs, $__bag); ?>
                     <option value="empresa">Empresa</option>
                     <option value="institucion">Institución</option>
                     <option value="policia">Policía</option>
+                    <option value="varios">Varios</option>
                 </select>
             </div>
 
@@ -699,6 +700,7 @@ unset($__errorArgs, $__bag); ?>
                         <th>Celular</th>
                         <th>Email</th>
                         <th>Área</th>
+                        <th>Puesto</th>
                     </tr>
                 </thead>
                 <tbody id="tabla_empleado_body">
@@ -1299,7 +1301,9 @@ document.addEventListener("DOMContentLoaded", function() {
                 <td>${formatearCelda(empleado.dni)}</td>
                 <td>${formatearCelda(empleado.celular)}</td>
                 <td>${formatearCelda(empleado.email)}</td>
-                <td>${formatearCelda(empleado.area)}</td>
+                <td>${formatearCelda(empleado.area)}</td>                
+                <td>${formatearCelda(empleado.puesto)}</td>
+
             `;
 
             tr.addEventListener('click', function (e) {
@@ -1347,7 +1351,7 @@ document.addEventListener("DOMContentLoaded", function() {
         buscadorEmpleado.addEventListener('input', function () {
             const term = this.value.toLowerCase();
             const filtrados = empleadosData.filter(empleado => {
-                const texto = `${empleado.nombre || ''} ${empleado.dni || ''} ${empleado.celular || ''} ${empleado.email || ''} ${empleado.area || ''}`.toLowerCase();
+                const texto = `${empleado.nombre || ''} ${empleado.dni || ''} ${empleado.celular || ''} ${empleado.email || ''} ${empleado.area || ''}${empleado.puesto || ''}`.toLowerCase();
                 return texto.includes(term);
             });
             paginaEmpleado = 1;
@@ -1361,7 +1365,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 paginaEmpleado--;
                 const term = buscadorEmpleado ? buscadorEmpleado.value.toLowerCase() : '';
                 const filtrados = term ? empleadosData.filter(e => {
-                    const texto = `${e.nombre || ''} ${e.dni || ''} ${e.celular || ''} ${e.email || ''} ${e.area || ''}`.toLowerCase();
+                    const texto = `${e.nombre || ''} ${e.dni || ''} ${e.celular || ''} ${e.email || ''} ${e.area || ''} ${e.puesto || ''}`.toLowerCase();
                     return texto.includes(term);
                 }) : empleadosCache;
                 renderTablaEmpleado(filtrados);
@@ -1373,7 +1377,7 @@ document.addEventListener("DOMContentLoaded", function() {
         empleadoNext.addEventListener('click', function () {
             const term = buscadorEmpleado ? buscadorEmpleado.value.toLowerCase() : '';
             const filtrados = term ? empleadosData.filter(e => {
-                const texto = `${e.nombre || ''} ${e.dni || ''} ${e.celular || ''} ${e.email || ''} ${e.area || ''}`.toLowerCase();
+                const texto = `${e.nombre || ''} ${e.dni || ''} ${e.celular || ''} ${e.email || ''} ${e.area || ''} ${e.puesto || ''}`.toLowerCase();
                 return texto.includes(term);
             }) : empleadosCache;
             const totalPaginas = Math.ceil(filtrados.length / itemsPorPaginaEmpleado);

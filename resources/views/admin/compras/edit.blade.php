@@ -46,17 +46,21 @@
                     <!-- País -->
                     <div class="space-y-2">
                         <label for="fecha_orden" class="text-sm font-medium">Fecha de Emisión</label>
-                        <input type="date" id="fecha_orden" name="fecha_orden" value="{{ $compra->fecha_orden }}" class="w-full h-10 rounded-md border border-base-300 bg-base-200
+                        <input type="date" id="fecha_orden" name="fecha_orden" value="{{ $compra->fecha_orden }}"
+                            class="w-full h-10 rounded-md border border-base-300 bg-base-200
                             px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
-                            focus:border-primary transition @error('fecha_orden') input-error @enderror" disabled>
+                            focus:border-primary transition @error('fecha_orden') input-error @enderror"
+                            disabled>
                     </div>
 
                     <!-- entregar a -->
                     <div class="space-y-2">
                         <label for="empleado_id" class="text-sm font-medium">Entregar a</label>
-                        <select id="empleado_id" name="empleado_id" class="select w-full h-10 rounded-md border-base-300 bg-base-200
+                        <select id="empleado_id" name="empleado_id"
+                            class="select w-full h-10 rounded-md border-base-300 bg-base-200
                             px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
-                            focus:border-primary transition @error('empleado_id') input-error @enderror" disabled>
+                            focus:border-primary transition @error('empleado_id') input-error @enderror"
+                            disabled>
                             <option value="">{{ $compra->empleado->nombre }}</option>
                         </select>
                         @error('empleado_id')
@@ -66,9 +70,11 @@
 
                     <div class="space-y-2">
                         <label for="sub_cuenta" class="text-sm font-medium">Sub cuenta</label>
-                        <select id="sub_cuenta" name="sub_cuenta" class="select w-full h-10 rounded-md border-base-300 bg-base-200
+                        <select id="sub_cuenta" name="sub_cuenta"
+                            class="select w-full h-10 rounded-md border-base-300 bg-base-200
                             px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
-                            focus:border-primary transition @error('sub_cuenta') input-error @enderror" disabled>
+                            focus:border-primary transition @error('sub_cuenta') input-error @enderror"
+                            disabled>
                             <option value="">{{ $compra->sub_cuenta }}</option>
                         </select>
                         @error('sub_cuenta')
@@ -94,9 +100,11 @@
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div class="space-y-2">
                         <label for="proveedor_id" class="text-sm font-medium">Proveedor</label>
-                        <select id="proveedor_id" name="proveedor_id" class="select w-full h-10 rounded-md border-base-300 bg-base-200
+                        <select id="proveedor_id" name="proveedor_id"
+                            class="select w-full h-10 rounded-md border-base-300 bg-base-200
                             px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
-                            focus:border-primary transition @error('proveedor_id') input-error @enderror" disabled>
+                            focus:border-primary transition @error('proveedor_id') input-error @enderror"
+                            disabled>
                             <option value="">{{ $compra->proveedor->nombre }}</option>
                         </select>
                         @error('proveedor_id')
@@ -107,17 +115,21 @@
                     <!-- entregar a -->
                     <div class="space-y-2">
                         <label for="destino_tipo" class="text-sm font-medium">Destino de la compra</label>
-                        <select id="destino_tipo" name="destino_tipo" class="select w-full h-10 rounded-md border-base-300 bg-base-200
+                        <select id="destino_tipo" name="destino_tipo"
+                            class="select w-full h-10 rounded-md border-base-300 bg-base-200
                             px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
-                            focus:border-primary transition @error('destino_tipo') input-error @enderror" disabled>
+                            focus:border-primary transition @error('destino_tipo') input-error @enderror"
+                            disabled>
                             <option value="">{{ class_basename($compra->destino_tipo) }}</option>
                         </select>
                     </div>
                     <div class="space-y-2">
                         <label for="destino_id" class="text-sm font-medium">Enviar a:</label>
-                        <select id="destino_id" name="destino_id" class="select w-full h-10 rounded-md border-base-300 bg-base-200
+                        <select id="destino_id" name="destino_id"
+                            class="select w-full h-10 rounded-md border-base-300 bg-base-200
                             px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
-                            focus:border-primary transition @error('destino_id') input-error @enderror" disabled>
+                            focus:border-primary transition @error('destino_id') input-error @enderror"
+                            disabled>
                             <option value="">{{ $compra->destino_nombre }}</option>
 
                         </select>
@@ -127,7 +139,8 @@
                     <div class="space-y-2">
                         <label for="asunto_obra_automotor" class="text-sm font-medium">Asunto de la compra</label>
                         <textarea value="" type="text" id="asunto_obra_automotor" name="asunto_obra_automotor"
-                            placeholder="Ingrese una justificacion breve de la compra" class="textarea w-full rounded-md border border-base-300 bg-base-200 focus:outline-none focus:ring-2 focus:ring-primary 
+                            placeholder="Ingrese una justificacion breve de la compra"
+                            class="textarea w-full rounded-md border border-base-300 bg-base-200 focus:outline-none focus:ring-2 focus:ring-primary 
                             focus:border-primary transition @error('asunto_obra_automotor') input-error @enderror"
                             disabled>{{ $compra->asunto_obra_automotor }}</textarea>
                     </div>
@@ -135,8 +148,8 @@
                 <div class="grid grid-cols-1 gap-4">
                     <div class="space-y-2">
                         <label for="observacion" class="text-sm font-medium">Observaciones</label>
-                        <textarea type="text" id="observacion" name="observacion"
-                            placeholder="Ingrese una justificacion breve de la compra" class="textarea w-full rounded-md border border-base-300 bg-base-200 focus:outline-none focus:ring-2 focus:ring-primary 
+                        <textarea type="text" id="observacion" name="observacion" placeholder="Ingrese una justificacion breve de la compra"
+                            class="textarea w-full rounded-md border border-base-300 bg-base-200 focus:outline-none focus:ring-2 focus:ring-primary 
                             focus:border-primary transition @error('observacion') input-error @enderror"
                             disabled>{{ $compra->observacion }}</textarea>
                     </div>
@@ -180,11 +193,13 @@
                                         <td class="text-center">{{ $nr++ }}</td>
                                         <td class="text-center">
                                             <div class="flex items-center gap-1 justify-center">
-                                                <button type="button" class="btn btn-ghost btn-sm text-info" title="Ver detalle"
+                                                <button type="button" class="btn btn-ghost btn-sm text-info"
+                                                    title="Ver detalle"
                                                     onclick="verDetalleProducto({{ $detalle->producto->id }}, '{{ addslashes($detalle->producto->nombre) }}', '{{ $detalle->producto->categoria->nombre ?? '-' }}', '{{ addslashes($detalle->producto->descripcion ?? '-') }}', '{{ $detalle->producto->unidad ?? '-' }}', '{{ $detalle->producto->created_at ? $detalle->producto->created_at->format('d/m/Y') : '-' }}')">
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"
-                                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
-                                                        stroke-linecap="round" stroke-linejoin="round">
+                                                        viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                        stroke-width="1.8" stroke-linecap="round"
+                                                        stroke-linejoin="round">
                                                         <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"></path>
                                                         <circle cx="12" cy="12" r="3"></circle>
                                                     </svg>
@@ -211,8 +226,8 @@
                                             <input type="number"
                                                 class="cantidad input rounded-md border border-base-300 bg-base-200
                                                                                 px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
-                                                                                focus:border-primary transition w-20 text-center" readonly
-                                                value="{{ (float) $detalle->cantidad }}">
+                                                                                focus:border-primary transition w-20 text-center"
+                                                readonly value="{{ (float) $detalle->cantidad }}">
                                         </td>
 
                                         {{-- SUBTOTAL --}}
@@ -222,8 +237,15 @@
                                                 <input type="text"
                                                     class="subtotal input rounded-md border border-base-300 bg-base-200
                                                                                 px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
-                                                                                focus:border-primary transition w-28 text-center" readonly>
+                                                                                focus:border-primary transition w-28 text-center"
+                                                    readonly>
                                             </div>
+                                        </td>
+                                        <td class="text-center">
+                                            <button type="button" class="btn btn-ghost btn-sm text-error"
+                                                onclick="confirmarEliminacionDetalle({{ $detalle->id }})" title="Eliminar producto">
+                                                <x-heroicon-s-trash class="w-4 h-4"/>
+                                            </button>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -236,9 +258,11 @@
                                     <td class="text-center">
                                         <div class="flex items-center gap-1 justify-center">
                                             <span class="text-gray-600 select-none">$</span>
-                                            <input type="text" id="total_compra" class="input rounded-md border border-base-300 bg-base-200
+                                            <input type="text" id="total_compra"
+                                                class="input rounded-md border border-base-300 bg-base-200
                                                         px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
-                                                        focus:border-primary transition w-28 text-center" readonly>
+                                                        focus:border-primary transition w-28 text-center"
+                                                readonly>
                                         </div>
                                     </td>
                                 </tr>
@@ -294,7 +318,37 @@
             </button>
         </div>
     </form>
+    <!-- Modal para confirmar eliminación del detalle de compra -->
+    <dialog id="modal_eliminar_detalle" class="modal">
+        <div class="modal-box">
 
+            <h3 class="font-bold text-lg flex items-center gap-2 text-red-600">
+                <x-heroicon-o-trash class="w-5 h-5" />
+                Confirmar eliminación
+            </h3>
+
+            <p class="py-4">
+                ¿Seguro que querés eliminar este producto del detalle de la compra?
+            </p>
+
+            <div class="modal-action">
+                <form method="dialog">
+                    <button class="btn">Cancelar</button>
+                </form>
+
+                <form id="formEliminarDetalle" method="POST">
+                    @csrf
+                    @method('DELETE')
+
+                    <button type="submit" class="btn btn-error">
+                        <x-heroicon-o-trash class="w-4 h-4" />
+                        Eliminar
+                    </button>
+                </form>
+            </div>
+
+        </div>
+    </dialog>
     <!-- Modal para ver detalle del producto -->
     <dialog id="modalDetalleProducto" class="modal">
         <div class="modal-box max-w-lg rounded-xl max-h-[85vh] overflow-y-auto">
@@ -304,9 +358,9 @@
 
             <h3 class="font-bold text-xl flex items-center gap-3 mb-6">
                 <div class="p-2 rounded-lg bg-info/10">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                        class="text-info">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round" class="text-info">
                         <path d="m7.5 4.27 9 5.15"></path>
                         <path
                             d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z">
@@ -322,8 +376,8 @@
                 <!-- Nombre -->
                 <div class="bg-base-200 p-4 rounded-lg">
                     <div class="flex items-center gap-2 mb-1">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" class="text-primary">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                            fill="none" stroke="currentColor" stroke-width="2" class="text-primary">
                             <path d="M4 7V4h16v3"></path>
                             <path d="M5 20h6"></path>
                             <path d="M13 4 8 20"></path>
@@ -337,13 +391,14 @@
                     <!-- Categoría -->
                     <div class="bg-base-200 p-4 rounded-lg">
                         <div class="flex items-center gap-2 mb-1">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-                                stroke="currentColor" stroke-width="2" class="text-primary">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" class="text-primary">
                                 <path d="M12 2H2v10l9.29 9.29c.94.94 2.48.94 3.42 0l6.58-6.58c.94-.94.94-2.48 0-3.42L12 2Z">
                                 </path>
                                 <path d="M7 7h.01"></path>
                             </svg>
-                            <span class="text-xs text-muted-foreground font-medium uppercase tracking-wide">Categoría</span>
+                            <span
+                                class="text-xs text-muted-foreground font-medium uppercase tracking-wide">Categoría</span>
                         </div>
                         <p class="font-semibold" id="detalle_producto_categoria">-</p>
                     </div>
@@ -351,8 +406,8 @@
                     <!-- Unidad -->
                     <div class="bg-base-200 p-4 rounded-lg">
                         <div class="flex items-center gap-2 mb-1">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-                                stroke="currentColor" stroke-width="2" class="text-primary">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" class="text-primary">
                                 <path d="M3 3v18h18"></path>
                                 <rect width="4" height="7" x="7" y="10" rx="1"></rect>
                                 <rect width="4" height="12" x="15" y="5" rx="1"></rect>
@@ -366,8 +421,8 @@
                 <!-- Descripción -->
                 <div class="bg-base-200 p-4 rounded-lg">
                     <div class="flex items-center gap-2 mb-1">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" class="text-primary">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                            fill="none" stroke="currentColor" stroke-width="2" class="text-primary">
                             <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
                             <polyline points="14 2 14 8 20 8"></polyline>
                             <line x1="16" x2="8" y1="13" y2="13"></line>
@@ -382,8 +437,8 @@
                 <!-- Fecha de creación -->
                 <div class="bg-base-200 p-4 rounded-lg">
                     <div class="flex items-center gap-2 mb-1">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" class="text-primary">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                            fill="none" stroke="currentColor" stroke-width="2" class="text-primary">
                             <rect width="18" height="18" x="3" y="4" rx="2" ry="2"></rect>
                             <line x1="16" x2="16" y1="2" y2="6"></line>
                             <line x1="8" x2="8" y1="2" y2="6"></line>
@@ -410,6 +465,19 @@
 @endsection
 @section('js')
     <script>
+        function confirmarEliminacionDetalle(id) {
+
+            const form = document.getElementById('formEliminarDetalle');
+
+            let url = "{{ route('detalle-compra.destroy', ['id' => '__ID__']) }}";
+            url = url.replace('__ID__', id);
+
+            form.action = url;
+            //console.log(form.action);
+            document.getElementById('modal_eliminar_detalle').showModal();
+        }
+    </script>
+    <script>
         // Función para ver detalle del producto
         function verDetalleProducto(id, nombre, categoria, descripcion, unidad, fecha) {
             document.getElementById('detalle_producto_nombre').textContent = nombre || '-';
@@ -422,7 +490,7 @@
         }
     </script>
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DOMContentLoaded', function() {
             const form = document.querySelector('form'); // el form de edición
             const precioInputs = document.querySelectorAll('input.precio');
             const filas = document.querySelectorAll('tbody tr');
@@ -448,7 +516,7 @@
             function calcularTotal() {
                 let total = 0;
 
-                filas.forEach(function (row) {
+                filas.forEach(function(row) {
                     const precioInput = row.querySelector('.precio');
                     const cantidadInput = row.querySelector('.cantidad');
                     const subtotalInput = row.querySelector('.subtotal');
@@ -476,7 +544,7 @@
                 }
 
                 // Mientras escribís: NO formatear, solo recalcular
-                input.addEventListener('input', function () {
+                input.addEventListener('input', function() {
                     // quitar todo lo que no sea dígito
                     let digits = input.value.replace(/\D/g, '');
 
@@ -515,7 +583,7 @@
                 });
 
                 // Al salir del campo: ahí sí formateamos lindo
-                input.addEventListener('blur', function () {
+                input.addEventListener('blur', function() {
                     if (!input.value.trim()) {
                         input.value = '';
                         calcularTotal();
@@ -548,7 +616,7 @@
 
         // Antes de enviar: pasar todo a "10000.00"
         if (form) {
-            form.addEventListener('submit', function () {
+            form.addEventListener('submit', function() {
                 precioInputs.forEach(input => {
                     const n = normalizarPrecio(input.value);
                     input.value = n ? n.toFixed(2) : '';
@@ -557,7 +625,7 @@
         }
     </script>
     <script>
-        document.querySelector('input[name="foto_factura"]').addEventListener('change', function (e) {
+        document.querySelector('input[name="foto_factura"]').addEventListener('change', function(e) {
             const file = e.target.files[0];
             const preview = document.getElementById('previewFactura');
             const img = document.getElementById('previewImg');

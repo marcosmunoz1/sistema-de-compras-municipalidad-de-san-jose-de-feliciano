@@ -1,14 +1,14 @@
 <?php $__env->startSection('title', 'Backups'); ?>  
 <?php $__env->startSection('content'); ?>
 
-<div class="flex items-center justify-between mb-6">
+<div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
     <h1 class="text-2xl font-semibold">Gestión de Backups</h1>
     <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('backups-create')): ?> 
     <div class="flex gap-2"> 
-        <form action="<?php echo e(route('backups.create')); ?>" method="POST" class="inline">
+        <form id="formBackupDB" action="<?php echo e(route('backups.create')); ?>" method="POST" class="inline">
             <?php echo csrf_field(); ?>
             <input type="hidden" name="only_db" value="1">
-            <button type="submit" class="btn btn-info" onclick="return confirm('¿Ejecutar backup de base de datos?')">
+            <button type="button" class="btn btn-sm sm:btn-md btn-info" onclick="confirmarBackupDB()">
                 <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c = $attributes; } ?>
 <?php $component = BladeUI\Icons\Components\Svg::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
@@ -31,9 +31,9 @@
 <?php endif; ?>Solo Base de Datos
             </button>
         </form>
-        <form action="<?php echo e(route('backups.create')); ?>" method="POST" class="inline">
+        <form id="formBackupCompleto" action="<?php echo e(route('backups.create')); ?>" method="POST" class="inline">
             <?php echo csrf_field(); ?>
-            <button type="submit" class="btn btn-primary" onclick="return confirm('¿Ejecutar backup completo (DB + archivos)?')">
+            <button type="button" class="btn btn-sm sm:btn-md btn-primary" onclick="confirmarBackupCompleto()">
                 <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c = $attributes; } ?>
 <?php $component = BladeUI\Icons\Components\Svg::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
@@ -58,8 +58,7 @@
         </form>
     </div>
     <?php endif; ?>
-</div>
-
+</div> 
 <div class="breadcrumbs text-sm mb-6">
     <ul>
         <li>
@@ -578,16 +577,54 @@
 <?php $__env->stopSection(); ?> 
 <?php $__env->startSection('js'); ?>
 <script>
+    function confirmarBackupDB() {
+        Swal.fire({
+            title: '¿Ejecutar backup de base de datos?',
+            text: 'Se creará un respaldo solo de la base de datos',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#3b82f6',
+            cancelButtonColor: '#6b7280',
+            confirmButtonText: '<i class="fas fa-database"></i> Sí, ejecutar',
+            cancelButtonText: 'Cancelar',
+            showLoaderOnConfirm: true,
+            allowOutsideClick: () => !Swal.isLoading()
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.getElementById('formBackupDB').submit();
+            }
+        });
+    }
+
+    function confirmarBackupCompleto() {
+        Swal.fire({
+            title: '¿Ejecutar backup completo?',
+            html: 'Se creará un respaldo de:<br><strong>• Base de datos</strong><br><strong>• Archivos del sistema</strong><br><br><small class="text-warning">Este proceso puede tardar varios minutos</small>',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#3b82f6',
+            cancelButtonColor: '#6b7280',
+            confirmButtonText: '<i class="fas fa-server"></i> Sí, ejecutar',
+            cancelButtonText: 'Cancelar',
+            showLoaderOnConfirm: true,
+            allowOutsideClick: () => !Swal.isLoading()
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.getElementById('formBackupCompleto').submit();
+            }
+        });
+    }
+
     function confirmarEliminacion(name) { 
-            const form = document.getElementById('formEliminarBackup'); 
-            form.action = routeEliminarBackup(name); 
-            document.getElementById('modal_eliminar_backup').showModal();
-        }
-      // Genera la URL usando el helper de Laravel
-      function routeEliminarBackup(name) { 
-          return "<?php echo e(url('/admin/backups/delete')); ?>/" + name;  
-      } 
-  </script>
+        const form = document.getElementById('formEliminarBackup'); 
+        form.action = routeEliminarBackup(name); 
+        document.getElementById('modal_eliminar_backup').showModal();
+    }
+    
+    function routeEliminarBackup(name) { 
+        return "<?php echo e(url('/admin/backups/delete')); ?>/" + name;  
+    } 
+</script>
 <?php $__env->stopSection(); ?>
 
 <?php echo $__env->make('layouts.admin', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\xampp\htdocs\sistema-municipal\resources\views\admin\backups\index.blade.php ENDPATH**/ ?>
