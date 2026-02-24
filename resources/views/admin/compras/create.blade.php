@@ -478,7 +478,8 @@
                 <!-- Categoría -->
                 <div class="form-control">
                     <label class="label">
-                        <span class="label-text font-medium">Categoría</span>
+                        <span class="label-text font-medium">Categoría<span
+                                    class="text-red-600">*</span></span>
                     </label>
 
                     <select name="categoria_id"
@@ -499,7 +500,8 @@
                 <!-- Nombre -->
                 <div class="form-control">
                     <label class="label">
-                        <span class="label-text font-medium">Nombre del Producto</span>
+                        <span class="label-text font-medium">Nombre del Producto<span
+                                    class="text-red-600">*</span></span>
                     </label>
 
                     <input type="text" name="nombre" value="{{ old('nombre') }}"
@@ -517,7 +519,8 @@
                 <!-- Descripción -->
                 <div class="form-control">
                     <label class="label">
-                        <span class="label-text font-medium">Descripción</span>
+                        <span class="label-text font-medium">Descripción<span
+                                    class="text-red-600">*</span></span>
                     </label>
 
                     <textarea name="descripcion" rows="3" placeholder="Ingrese una descripción breve del producto..."
@@ -533,7 +536,8 @@
                 <!-- Unidad -->
                 <div class="form-control">
                     <label class="label">
-                        <span class="label-text font-medium">Unidad</span>
+                        <span class="label-text font-medium">Unidad<span
+                                    class="text-red-600">*</span></span>
                     </label>
 
                     <select id="unidad" name="unidad"

@@ -1,14 +1,32 @@
-@extends('layouts.admin')
-@section('title', 'Ver orden de combustible')
+<?php $__env->startSection('title', 'Ver orden de combustible'); ?>
 
-@section('content')
+<?php $__env->startSection('content'); ?>
     <!-- Titulo y boton -->
     <div class="flex items-center justify-between mb-6">
         <h1 class="text-2xl font-semibold">Ver Orden de Combustible</h1>
         <div class="flex gap-2">
-            <a href="{{ route('combustibles.index') }}"
+            <a href="<?php echo e(route('combustibles.index')); ?>"
                 class="inline-flex items-center gap-2 h-9 px-4 py-2 rounded-md bg-blue-600 text-sm hover:bg-blue-700 text-white">
-                <x-heroicon-o-arrow-left class="w-4 h-4 inline" />
+                <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c = $attributes; } ?>
+<?php $component = BladeUI\Icons\Components\Svg::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('heroicon-o-arrow-left'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\BladeUI\Icons\Components\Svg::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['class' => 'w-4 h-4 inline']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $attributes = $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $component = $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
                 Volver a Combustibles
             </a>
         </div>
@@ -16,7 +34,7 @@
     <div class="breadcrumbs text-sm mb-6">
         <ul>
             <li>
-                <a href="{{ route('admin.index') }}">
+                <a href="<?php echo e(route('admin.index')); ?>">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="h-4 w-4 stroke-current">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"></path>
@@ -25,7 +43,7 @@
                 </a>
             </li>
             <li>
-                <a href="{{ route('combustibles.index') }}">
+                <a href="<?php echo e(route('combustibles.index')); ?>">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                         class="lucide lucide-fuel w-5 h-5" aria-hidden="true">
@@ -39,7 +57,26 @@
             </li>
             <li>
                 <span class="inline-flex items-center gap-2">
-                    <x-heroicon-o-eye class="w-4 h-4 inline" />
+                    <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c = $attributes; } ?>
+<?php $component = BladeUI\Icons\Components\Svg::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('heroicon-o-eye'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\BladeUI\Icons\Components\Svg::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['class' => 'w-4 h-4 inline']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $attributes = $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $component = $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
                     Ver orden de combustible
                 </span>
             </li>
@@ -72,7 +109,7 @@
                             Activo
                         </span>
                     </div>
-                    <p class="text-gray-500 mb-1">Factura N° FACT-{{ $combustible->codigo }}</p>
+                    <p class="text-gray-500 mb-1">Factura N° FACT-<?php echo e($combustible->codigo); ?></p>
                     <div class="flex items-center gap-2 mt-2"><span data-slot="badge"
                             class="inline-flex items-center justify-center rounded-md border px-2 py-0.5 text-xs font-medium w-fit whitespace-nowrap shrink-0 [&amp;&gt;svg]:size-3 gap-1 [&amp;&gt;svg]:pointer-events-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive transition-[color,box-shadow] overflow-hidden border-transparent [a&amp;]:hover:bg-primary/90 bg-orange-100 text-orange-800">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
@@ -81,28 +118,28 @@
                                 <path
                                     d="M12 22a7 7 0 0 0 7-7c0-2-1-3.9-3-5.5s-3.5-4-4-6.5c-.5 2.5-2 4.9-4 6.5C6 11.1 5 13 5 15a7 7 0 0 0 7 7z">
                                 </path>
-                            </svg>{{ $combustible->tipo }}</span><span
-                            class="text-gray-500 text-sm">{{ $combustible->fecha ? \Carbon\Carbon::parse($combustible->fecha)->format('d/m/Y') : '—' }}</span>
+                            </svg><?php echo e($combustible->tipo); ?></span><span
+                            class="text-gray-500 text-sm"><?php echo e($combustible->fecha ? \Carbon\Carbon::parse($combustible->fecha)->format('d/m/Y') : '—'); ?></span>
                     </div>
                 </div>
             </div>
             <div class="text-left sm:text-right">
                 <p class="text-sm text-gray-500">Monto Total</p>
                 <p class="text-2xl sm:text-3xl font-medium text-orange-600">$
-                    {{ number_format($combustible->monto, 2, ',', '.') }}</p>
+                    <?php echo e(number_format($combustible->monto, 2, ',', '.')); ?></p>
             </div>
         </div>
     </div>
-    @php
+    <?php
         $destino = $combustible->destino;
         $esVehiculo = $destino instanceof \App\Models\Vehiculo;
         $esDestino = $destino instanceof \App\Models\Destino;
         $esEquipo = $destino instanceof \App\Models\Equipo;
-    @endphp
+    ?>
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-6">
-        {{-- CASO A: Vehículo --}}
-        @if ($esVehiculo)
-            {{-- Tarjeta Vehículo (la que ya tienes) --}}
+        
+        <?php if($esVehiculo): ?>
+            
             <div data-slot="card" class="card bg-base-100 shadow-md rounded-xl p-6">
                 <div data-slot="card-header"
                     class="@container/card-header grid auto-rows-min border-b border-neutral-200 grid-rows-[auto_auto] items-start gap-1.5 px-6 py-4 has-data-[slot=card-action]:grid-cols-[1fr_auto] [.border-b]:">
@@ -120,32 +157,33 @@
                     </h4>
                 </div>
 
-                {{-- ... HEADER ... --}}
+                
                 <div data-slot="card-content" class="px-6 [&:last-child]:pb-6 space-y-3">
                     <div class=" p-4 rounded-lg text-center">
                         <p class="text-3xl font-bold text-blue-600">
-                            {{ $destino->patente ?? 'Sin vehículo asignado' }}
+                            <?php echo e($destino->patente ?? 'Sin vehículo asignado'); ?>
+
                         </p>
                         <p class="text-sm text-gray-600 mt-1">Patente</p>
                     </div>
                     <div class="space-y-2">
                         <div class="flex justify-between">
                             <span class="text-sm text-gray-500">Marca:</span>
-                            <span class="text-sm font-medium">{{ $destino->marca ?? 'Sin vehículo asignado' }}</span>
+                            <span class="text-sm font-medium"><?php echo e($destino->marca ?? 'Sin vehículo asignado'); ?></span>
                         </div>
                         <div class="flex justify-between">
                             <span class="text-sm text-gray-500">Modelo:</span>
-                            <span class="text-sm font-medium">{{ $destino->modelo ?? 'Sin vehículo asignado' }}</span>
+                            <span class="text-sm font-medium"><?php echo e($destino->modelo ?? 'Sin vehículo asignado'); ?></span>
                         </div>
                         <div class="flex justify-between">
                             <span class="text-sm text-gray-500">Tipo:</span>
-                            <span class="text-sm font-medium">{{ $destino->tipo ?? 'Sin vehículo asignado' }}</span>
+                            <span class="text-sm font-medium"><?php echo e($destino->tipo ?? 'Sin vehículo asignado'); ?></span>
                         </div>
                     </div>
                 </div>
             </div>
 
-            {{-- Tarjeta Conductor (igual a la que ya tienes) --}}
+            
             <div data-slot="card" class="card bg-base-100 shadow-md rounded-xl p-6">
                 <div data-slot="card-header"
                     class="@container/card-header grid auto-rows-min border-b grid-rows-[auto_auto] items-start gap-1.5 px-6 py-4 has-data-[slot=card-action]:grid-cols-[1fr_auto] [.border-b]:">
@@ -164,20 +202,20 @@
                             class="bg-blue-500 size-12 rounded-full flex items-center justify-center text-white font-medium">
                             RF</div>
                         <div>
-                            <p class="font-medium">{{ $combustible->empleado->nombre }}</p>
-                            <p class="text-sm text-gray-500">DNI: {{ $combustible->empleado->dni }}</p>
+                            <p class="font-medium"><?php echo e($combustible->empleado->nombre); ?></p>
+                            <p class="text-sm text-gray-500">DNI: <?php echo e($combustible->empleado->dni); ?></p>
                         </div>
                     </div>
                     <div class="pt-3 border-t">
                         <p class="text-xs text-gray-500 mb-1">Registrado por:</p>
-                        <p class="text-sm font-medium">{{ $combustible->user->name }}</p>
+                        <p class="text-sm font-medium"><?php echo e($combustible->user->name); ?></p>
                     </div>
                 </div>
             </div>
-        @endif
+        <?php endif; ?>
 
-        {{-- CASO B: Destino genérico (tabla destinos) --}}
-        @if ($esDestino)
+        
+        <?php if($esDestino): ?>
             <div data-slot="card" class="card bg-base-100 shadow-md rounded-xl p-6">
 
                 <!-- Header -->
@@ -199,7 +237,8 @@
                     <div class="flex justify-between items-center p-3 rounded-lg">
                         <span class="text-sm">Nombre:</span>
                         <span class="text-sm font-medium ">
-                            {{ $destino->nombre ?? 'Sin destino' }}
+                            <?php echo e($destino->nombre ?? 'Sin destino'); ?>
+
                         </span>
                     </div>
 
@@ -207,7 +246,8 @@
                     <div class="flex justify-between items-center p-3 rounded-lg ">
                         <span class="text-sm">Tipo:</span>
                         <span class="text-sm font-medium ">
-                            {{ ucfirst($destino->tipo) }}
+                            <?php echo e(ucfirst($destino->tipo)); ?>
+
                         </span>
                     </div>
 
@@ -215,15 +255,16 @@
                     <div class="flex justify-between items-center p-3 rounded-lg ">
                         <span class="text-sm">Descripción:</span>
                         <span class="text-sm font-medium">
-                            {{ $destino->descripcion ?? '—' }}
+                            <?php echo e($destino->descripcion ?? '—'); ?>
+
                         </span>
                     </div>
 
                 </div>
             </div>
-        @endif
-        {{-- CASO C: Equipo --}}
-        @if ($esEquipo)
+        <?php endif; ?>
+        
+        <?php if($esEquipo): ?>
             <div data-slot="card" class="card bg-base-100 shadow-md rounded-xl p-6">
 
                 <!-- Header -->
@@ -245,7 +286,8 @@
                     <div class="grid grid-cols-2 gap-2 p-3 rounded-lg">
                         <span class="text-sm text-gray-500">Equipamiento:</span>
                         <span class="text-sm font-medium text-right">
-                            {{ $destino->equipamiento ?? 'Sin equipamiento' }}
+                            <?php echo e($destino->equipamiento ?? 'Sin equipamiento'); ?>
+
                         </span>
                     </div>
 
@@ -253,7 +295,8 @@
                     <div class="grid grid-cols-2 gap-2 p-3 rounded-lg">
                         <span class="text-sm text-gray-500">Marca:</span>
                         <span class="text-sm font-medium text-right">
-                            {{ $destino->marca ?? '—' }}
+                            <?php echo e($destino->marca ?? '—'); ?>
+
                         </span>
                     </div>
 
@@ -261,7 +304,8 @@
                     <div class="grid grid-cols-2 gap-2 p-3 rounded-lg">
                         <span class="text-sm text-gray-500">Descripción:</span>
                         <span class="text-sm font-medium text-right">
-                            {{ $destino->descripcion ?? '—' }}
+                            <?php echo e($destino->descripcion ?? '—'); ?>
+
                         </span>
                     </div>
 
@@ -269,7 +313,8 @@
                     <div class="grid grid-cols-2 gap-2 p-3 rounded-lg">
                         <span class="text-sm text-gray-500">Área:</span>
                         <span class="text-sm font-medium text-right">
-                            {{ $destino->area->nombre ?? '—' }}
+                            <?php echo e($destino->area->nombre ?? '—'); ?>
+
                         </span>
                     </div>
 
@@ -277,19 +322,19 @@
                     <div class="grid grid-cols-2 gap-2 p-3 rounded-lg">
                         <span class="text-sm text-gray-500">Estado:</span>
                         <span class="text-sm font-medium text-right">
-                            @if ($destino->estado)
+                            <?php if($destino->estado): ?>
                                 <span class="badge badge-success">Activo</span>
-                            @else
+                            <?php else: ?>
                                 <span class="badge badge-error">Inactivo</span>
-                            @endif
+                            <?php endif; ?>
                         </span>
                     </div>
 
                 </div>
             </div>
-        @endif
+        <?php endif; ?>
 
-        {{-- Tarjeta Resumen de Carga (SIEMPRE) --}}
+        
         <div data-slot="card" class="card bg-base-100 shadow-md rounded-xl p-6">
             <div data-slot="card-header"
                 class="@container/card-header grid auto-rows-min border-b border-neutral-200 grid-rows-[auto_auto] items-start gap-1.5 px-6 py-4 has-data-[slot=card-action]:grid-cols-[1fr_auto] [.border-b]:">
@@ -305,15 +350,16 @@
             <div data-slot="card-content" class="px-6 [&amp;:last-child]:pb-6 space-y-3">
                 <div class=" p-3 rounded-lg">
                     <p class="text-sm text-gray-500">Litros Cargados</p>
-                    <p class="text-2xl font-bold text-orange-600">{{ $combustible->litros }} L</p>
+                    <p class="text-2xl font-bold text-orange-600"><?php echo e($combustible->litros); ?> L</p>
                 </div>
                 <div class=" p-3 rounded-lg">
                     <p class="text-sm text-gray-500">Precio por Litro</p>
-                    <p class="text-xl font-medium">$. {{ number_format($combustible->precio, 2, ',', '.') }}</p>
+                    <p class="text-xl font-medium">$. <?php echo e(number_format($combustible->precio, 2, ',', '.')); ?></p>
                 </div>
                 <div class=" p-3 rounded-lg">
                     <p class="text-sm text-gray-500">Total Pagado</p>
-                    <p class="text-xl font-bold text-orange-600">$. {{ number_format($combustible->monto, 2, ',', '.') }}
+                    <p class="text-xl font-bold text-orange-600">$. <?php echo e(number_format($combustible->monto, 2, ',', '.')); ?>
+
                     </p>
                 </div>
             </div>
@@ -344,7 +390,7 @@
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
 
                     <!-- ITEM GENERATOR -->
-                    @php
+                    <?php
                         $items = [
                             [
                                 'label' => 'Fecha de Carga',
@@ -408,27 +454,29 @@
                             'gauge' =>
                                 '<svg class="size-5 text-gray-500 mt-0.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 14a2 2 0 1 0-2-2"></path><path d="M6.7 6.7A8 8 0 1 1 17.3 6.7"></path></svg>',
                         ];
-                    @endphp
+                    ?>
 
-                    @foreach ($items as $item)
+                    <?php $__currentLoopData = $items; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                         <div class="flex items-start gap-3 p-3 rounded-lg">
 
-                            {!! $icons[$item['icon']] !!}
+                            <?php echo $icons[$item['icon']]; ?>
+
 
                             <div class="flex-1">
-                                <p class="text-sm text-gray-500">{{ $item['label'] }}</p>
+                                <p class="text-sm text-gray-500"><?php echo e($item['label']); ?></p>
 
-                                @if (isset($item['badge']))
+                                <?php if(isset($item['badge'])): ?>
                                     <span class="inline-flex items-center rounded-md px-2 py-0.5 text-xs font-medium">
-                                        {{ $item['value'] }}
+                                        <?php echo e($item['value']); ?>
+
                                     </span>
-                                @else
-                                    <p class="font-medium ">{{ $item['value'] }}</p>
-                                @endif
+                                <?php else: ?>
+                                    <p class="font-medium "><?php echo e($item['value']); ?></p>
+                                <?php endif; ?>
                             </div>
 
                         </div>
-                    @endforeach
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 
                 </div>
 
@@ -436,14 +484,15 @@
                 <div class="mt-6 pt-4 border-t border-neutral-200 dark:border-neutral-700">
                     <p class="text-sm text-gray-500 mb-2">Observaciones</p>
                     <p class="text-sm leading-relaxed p-3 rounded-md bg-base-200 dark:bg-base-300">
-                        {{ $combustible->observaciones }}
+                        <?php echo e($combustible->observaciones); ?>
+
                     </p>
                 </div>
 
             </div>
         </div>
     </div>
-    @if ($combustible->imagen_factura)
+    <?php if($combustible->imagen_factura): ?>
     <div data-slot="card"
         class="bg-base-100 mt-6 text-base-content flex flex-col gap-6 rounded-xl border border-l-4 border-l-green-500 shadow-lg dark:border-gray-700 dark:border-l-green-500 overflow-hidden">
         <div data-slot="card-header"
@@ -476,7 +525,7 @@
                     <label for="imagen_factura" id="upload_zone"
                         class="relative border-2 border-dashed border-green-400 dark:border-green-800 bg-base-200/50 hover:bg-base-200 dark:hover:bg-slate-800/50 rounded-2xl p-6 md:p-10 text-center transition-all cursor-pointer block">
 
-                        <img src="{{ asset('storage/' . $combustible->imagen_factura) }}" alt="Imagen de la factura"
+                        <img src="<?php echo e(asset('storage/' . $combustible->imagen_factura)); ?>" alt="Imagen de la factura"
                             class="mx-auto mb-4 max-h-48 rounded-lg border border-base-300 shadow-md">
 
                     </label>
@@ -484,7 +533,7 @@
             </div>
         </div>
     </div>
-    @else
+    <?php else: ?>
     <div data-slot="card"
         class="bg-base-100 mt-6 text-base-content flex flex-col gap-6 rounded-xl border border-l-4 border-l-amber-500 shadow-lg dark:border-gray-700 dark:border-l-amber-500 overflow-hidden">
         <div data-slot="card-header"
@@ -530,7 +579,9 @@
             </div>
         </div>
     </div>
-    @endif
+    <?php endif; ?>
 
 
-@endsection
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.admin', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\laragon\www\Sistema-talwind\resources\views/admin/combustibles/show.blade.php ENDPATH**/ ?>

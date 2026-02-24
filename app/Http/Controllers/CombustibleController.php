@@ -73,23 +73,23 @@ class CombustibleController extends Controller
 
                 // 🔹 Campos propios
                 $q->orWhere('codigo', 'like', "%{$search}%")
-                ->orWhere('estacion', 'like', "%{$search}%")
+                    ->orWhere('estacion', 'like', "%{$search}%")
 
-                // 🔹 Destino polimórfico
-                ->orWhereHasMorph(
-                    'destino',
-                    [Vehiculo::class],
-                    function ($d) use ($search) {
-                        $d->where('marca', 'like', "%{$search}%")
-                            ->orWhere('patente', 'like', "%{$search}%")
-                            ->orWhere('modelo', 'like', "%{$search}%");
-                    }
-                )
+                    // 🔹 Destino polimórfico
+                    ->orWhereHasMorph(
+                        'destino',
+                        [Vehiculo::class],
+                        function ($d) use ($search) {
+                            $d->where('marca', 'like', "%{$search}%")
+                                ->orWhere('patente', 'like', "%{$search}%")
+                                ->orWhere('modelo', 'like', "%{$search}%");
+                        }
+                    )
 
-                // 🔹 Empleado
-                ->orWhereHas('empleado', function ($e) use ($search) {
-                    $e->where('nombre', 'like', "%{$search}%");
-                });
+                    // 🔹 Empleado
+                    ->orWhereHas('empleado', function ($e) use ($search) {
+                        $e->where('nombre', 'like', "%{$search}%");
+                    });
             });
         }
 
@@ -97,7 +97,7 @@ class CombustibleController extends Controller
         // CLONAMOS para las cards
         $totalesQuery = clone $query;
 
-        $totalMonto  = $totalesQuery->sum('monto');
+        $totalMonto = $totalesQuery->sum('monto');
         $totalLitros = $totalesQuery->sum('litros');
         $totalCargas = $totalesQuery->count();
 
@@ -151,70 +151,83 @@ class CombustibleController extends Controller
      * Show the form for creating a new resource.
      */
     public function create()
-    {   
-        $tipo_combustible = Tipo_combustibles::all();  
+    {
+        $tipo_combustible = Tipo_combustibles::all();
         $vehiculos = Vehiculo::all();
-        $empleados = Empleado::all(); 
-        $users = User::all(); 
-        return view('admin.combustibles.create', compact('vehiculos', 'empleados', 'users','tipo_combustible'));  
+        $empleados = Empleado::all();
+        $users = User::all();
+        return view('admin.combustibles.create', compact('vehiculos', 'empleados', 'users', 'tipo_combustible'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-    { 
+    {
 
         // return response()->json($request->all()); 
-        
+
+
+        // Sanitizar inputs antes de validar (Formato: 1.234,56 -> 1234.56)
+        $sanitize = function ($value) {
+            return str_replace(',', '.', str_replace('.', '', $value));
+        };
+
+        if ($request->has('precio')) {
+            $request->merge(['precio' => $sanitize($request->precio)]);
+        }
+        if ($request->has('litros')) {
+            $request->merge(['litros' => $sanitize($request->litros)]);
+        }
+
         $request->validate([
             'fecha' => 'required',
-            'sub_cuenta' => 'required', 
+            'sub_cuenta' => 'required',
             'destino_tipo' => 'required',
-            'destino_id' => 'required', 
+            'destino_id' => 'required',
             'combustible' => 'required',
             'precio' => 'required|numeric',
             'estacion' => 'required',
             'tipo_de_pago' => 'required',
-            'observaciones' => 'required' 
-        ]); 
-         
-      
-        $lastOrder = Combustible::withTrashed()->max('codigo');   
-        $newOrder = $lastOrder ? $lastOrder + 1 : 1; 
+            'observaciones' => 'required'
+        ]);
+
+
+        $lastOrder = Combustible::withTrashed()->max('codigo');
+        $newOrder = $lastOrder ? $lastOrder + 1 : 1;
 
         $codigo = str_pad($newOrder, 8, '0', STR_PAD_LEFT);
         $litros = $request->filled('litros') ? $request->input('litros') : null;
         $monto = $litros === null ? null : ($litros * $request->precio);
         $estado_carga = $litros === null ? 'Pendiente' : 'Pendiente de factura';
-        $user_id = Auth::id(); 
+        $user_id = Auth::id();
 
         DB::beginTransaction();
-        try{ 
-            Combustible::create([ 
-            'empleado_id' => $request->empleado_id ?? null, 
-            'user_id' => $user_id,  
-            'codigo' =>  $codigo,
-            'litros' => $litros, 
-            'tipo' => $request->combustible,  
-            'sub_cuenta' => $request->sub_cuenta, 
-            'precio' => $request->precio,
-            'estacion' => $request->estacion,  
-            'fecha' => $request->fecha, 
-            'destino_tipo' => modeloDestino($request->destino_tipo)['model'],           
-            'destino_id' => $request->destino_id,    
-            'monto' => $monto, 
-            'tipo_de_pago' => $request->tipo_de_pago,
-            'observaciones' => $request->observaciones,
-            'estado_carga' => $estado_carga,
-            'estado' => true, 
-            ]); 
+        try {
+            Combustible::create([
+                'empleado_id' => $request->empleado_id ?? null,
+                'user_id' => $user_id,
+                'codigo' => $codigo,
+                'litros' => $litros,
+                'tipo' => $request->combustible,
+                'sub_cuenta' => $request->sub_cuenta,
+                'precio' => $request->precio,
+                'estacion' => $request->estacion,
+                'fecha' => $request->fecha,
+                'destino_tipo' => modeloDestino($request->destino_tipo)['model'],
+                'destino_id' => $request->destino_id,
+                'monto' => $monto,
+                'tipo_de_pago' => $request->tipo_de_pago,
+                'observaciones' => $request->observaciones,
+                'estado_carga' => $estado_carga,
+                'estado' => true,
+            ]);
 
             DB::commit();
             return redirect()->route('combustibles.index')
-            ->with('mensaje', 'Combustible creado exitosamente')
-            ->with('icono', 'success');
-            
+                ->with('mensaje', 'Combustible creado exitosamente')
+                ->with('icono', 'success');
+
         } catch (\Exception $e) {
             DB::rollback();
             // Log the error for debugging
@@ -222,16 +235,16 @@ class CombustibleController extends Controller
             \Illuminate\Support\Facades\Log::error('Error trace: ' . $e->getTraceAsString());
             return redirect()->back()->with('error', 'Error al crear el combustible. Por favor intente nuevamente.');
         }
-      
+
     }
 
     /**
      * Display the specified resource.
      */
     public function show($id)
-    {   
-        $id = Crypt::decrypt($id); 
-        $combustible = Combustible::with('destino')->findOrFail($id); 
+    {
+        $id = Crypt::decrypt($id);
+        $combustible = Combustible::with('destino')->findOrFail($id);
         return view('admin.combustibles.show', compact('combustible'));
     }
 
@@ -239,36 +252,48 @@ class CombustibleController extends Controller
      * Show the form for editing the specified resource.
      */
     public function edit($id)
-    {    
-        $id = Crypt::decrypt($id); 
-        $tipo_combustible = Tipo_combustibles::all();   
-        $vehiculos = Vehiculo::all(); 
-        $empleados = Empleado::all();  
-        $users = User::all();  
+    {
+        $id = Crypt::decrypt($id);
+        $tipo_combustible = Tipo_combustibles::all();
+        $vehiculos = Vehiculo::all();
+        $empleados = Empleado::all();
+        $users = User::all();
         $combustible = Combustible::findOrFail($id);
 
         if ($combustible->estado_carga === 'Finalizada') {
             return redirect()->route('combustibles.index')->with('mensaje', 'No se puede editar esta orden de combustible porque ya está finalizada.')
-                                    ->with('icono', 'warning');
+                ->with('icono', 'warning');
         }
 
-        return view('admin.combustibles.edit', compact('combustible', 'tipo_combustible', 'vehiculos', 'empleados', 'users')); 
+        return view('admin.combustibles.edit', compact('combustible', 'tipo_combustible', 'vehiculos', 'empleados', 'users'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request,$id) 
-    { 
-        
+    public function update(Request $request, $id)
+    {
+
         //return response()->json($request->all());
-        $request->validate([ 
+        // Sanitizar inputs (Formato: 1.234,56 -> 1234.56)
+        $sanitize = function ($value) {
+            return str_replace(',', '.', str_replace('.', '', $value));
+        };
+
+        if ($request->has('litros')) {
+            $request->merge(['litros' => $sanitize($request->litros)]);
+        }
+        if ($request->has('precio')) {
+            $request->merge(['precio' => $sanitize($request->precio)]);
+        }
+
+        $request->validate([
             'litros' => 'required|numeric',
             'precio' => 'required|numeric',
             'imagen_factura' => 'required|file|mimes:jpg,jpeg,png,webp|max:5120', // 5MB
-        ]); 
-        
-        $monto = $request->litros * $request->precio;  
+        ]);
+
+        $monto = $request->litros * $request->precio;
         $combustible = Combustible::withTrashed()->findOrFail($id);
         $estado_carga = "Finalizada";
 
@@ -285,20 +310,20 @@ class CombustibleController extends Controller
         $combustible->monto = $monto;
         $combustible->estado_carga = $estado_carga;
         $combustible->save();
-            
-        
-        return redirect()->route('combustibles.index') 
-        ->with('mensaje', 'Combustible actualizado exitosamente')
-        ->with('icono', 'success');
-  
+
+
+        return redirect()->route('combustibles.index')
+            ->with('mensaje', 'Combustible actualizado exitosamente')
+            ->with('icono', 'success');
+
     }
 
     /**
      * Remove the specified resource from storage.
      */
     public function destroy($id)
-    {  
-        $combustible = Combustible::findOrFail($id); 
+    {
+        $combustible = Combustible::findOrFail($id);
 
         // Marcar como inactiva
         $combustible->estado = false;
@@ -307,38 +332,51 @@ class CombustibleController extends Controller
         // Soft delete
         $combustible->delete();
 
-        return redirect()->route('combustibles.index') 
-        ->with('mensaje', 'Combustible eliminado y marcado como inactivo.') 
-        ->with('icono', 'success');  
+        return redirect()->route('combustibles.index')
+            ->with('mensaje', 'Combustible eliminado y marcado como inactivo.')
+            ->with('icono', 'success');
     }
 
     public function restore($id)
-    { 
+    {
         $combustible = Combustible::withTrashed()->findOrFail($id);
         $combustible->restore();
         $combustible->estado = true;
         $combustible->save();
-        
-        return redirect()->route('combustibles.index') 
-        ->with('mensaje', 'Combustible restaurado exitosamente.') 
-        ->with('icono', 'success');  
+
+        return redirect()->route('combustibles.index')
+            ->with('mensaje', 'Combustible restaurado exitosamente.')
+            ->with('icono', 'success');
     }
 
-    public function updatePrices(Request $request){   
-        /* return response()->json($request->all());  */ 
-     
-         $request->validate([ 
+    public function updatePrices(Request $request)
+    {
+        /* return response()->json($request->all());  */
+
+        // Sanitizar precio: reemplazar punto de miles y coma por punto decimal
+        if ($request->has('precio')) {
+            $precio = $request->precio;
+            // Eliminar puntos de miles y cambiar coma por punto
+            $precio = str_replace('.', '', $precio);
+            $precio = str_replace(',', '.', $precio);
+
+            $request->merge([
+                'precio' => $precio
+            ]);
+        }
+
+        $request->validate([
             'precio' => 'required|numeric|min:0'
         ]);
-        
-        $tipo_combustible = Tipo_combustibles::findOrFail($request->id);  
-        $tipo_combustible->valor = $request->precio; 
+
+        $tipo_combustible = Tipo_combustibles::findOrFail($request->id);
+        $tipo_combustible->valor = $request->precio;
         $tipo_combustible->descripcion = $request->descripcion;
-        $tipo_combustible->save();   
-          
-        
-         return redirect()->route('combustibles.index')
-        ->with('mensaje', 'Combustible Actualizado exitosamente')
-        ->with('icono', 'success');  
+        $tipo_combustible->save();
+
+
+        return redirect()->route('combustibles.index')
+            ->with('mensaje', 'Combustible Actualizado exitosamente')
+            ->with('icono', 'success');
     }
-} 
+}

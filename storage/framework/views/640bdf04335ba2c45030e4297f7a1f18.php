@@ -1,7 +1,6 @@
-@extends('layouts.admin')
-@section('title', 'Nueva orden de combustible')
+<?php $__env->startSection('title', 'Nueva orden de combustible'); ?>
 
-@section('content')
+<?php $__env->startSection('content'); ?>
     <!-- Titulo y boton -->
     <div class="flex items-center justify-between mb-6">
         <h1 class="text-2xl font-semibold">Creación de Orden de Combustible</h1>
@@ -10,7 +9,7 @@
     <div class="breadcrumbs text-sm mb-6">
         <ul>
             <li>
-                <a href="{{ route('admin.index') }}">
+                <a href="<?php echo e(route('admin.index')); ?>">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="h-4 w-4 stroke-current">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"></path>
@@ -19,7 +18,7 @@
                 </a>
             </li>
             <li>
-                <a href="{{ route('combustibles.index') }}">
+                <a href="<?php echo e(route('combustibles.index')); ?>">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                         class="lucide lucide-fuel w-5 h-5" aria-hidden="true">
@@ -44,9 +43,9 @@
         </ul>
     </div>
     <!-- Formulario -->
-    <form action="{{ route('combustibles.store') }}" method="POST" class="space-y-6">
-        @csrf
-        @method('POST')
+    <form action="<?php echo e(route('combustibles.store')); ?>" method="POST" class="space-y-6">
+        <?php echo csrf_field(); ?>
+        <?php echo method_field('POST'); ?>
         <div data-slot="card" class="card bg-base-100 shadow-xl p-4">
 
             <!-- HEADER -->
@@ -67,29 +66,50 @@
                         <div class="space-y-2">
                             <label for="fecha" class="text-sm font-medium">Fecha de Emisión<span
                                     class="text-red-600">*</span></label>
-                            <input type="date" id="fecha" name="fecha" value="{{ old('fecha', date('Y-m-d')) }}" class="w-full h-10 rounded-md border border-base-300 bg-base-200
+                            <input type="date" id="fecha" name="fecha" value="<?php echo e(old('fecha', date('Y-m-d'))); ?>" class="w-full h-10 rounded-md border border-base-300 bg-base-200
                                 px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
-                                focus:border-primary transition @error('fecha') input-error @enderror" required>
-                            @error('fecha')
-                                <small class="text-red-500 error-message">{{ $message }}</small>
-                            @enderror
+                                focus:border-primary transition <?php $__errorArgs = ['fecha'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> input-error <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>" required>
+                            <?php $__errorArgs = ['fecha'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                <small class="text-red-500 error-message"><?php echo e($message); ?></small>
+                            <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                         </div>
                         <!-- Usuario -->
                         <div class="space-y-2">
                             <label for="sub_cuenta" class="text-sm font-medium">Sub cuenta<span
                                     class="text-red-600">*</span></label>
                             <div x-data="selectSearch({
-                                        options: @js([
+                                        options: <?php echo \Illuminate\Support\Js::from([
                                             ['value' => 'Secretaria de obras publicas', 'label' => 'Secretaria de Obras Publicas'],
                                             ['value' => 'Secretaria de desarrollos humanos', 'label' => 'Secretaria de Desarrollo Humano'],
                                             ['value' => 'Secretaria de gobierno', 'label' => 'Secretaria de Gobierno'],
                                             ['value' => 'Departamento ejecutivo municipal', 'label' => 'Departamento Ejecutivo Municipal'],
-                                        ]),
+                                        ])->toHtml() ?>,
                                         placeholder: 'Seleccione la sub cuenta',
-                                        value: @js(old('sub_cuenta'))
+                                        value: <?php echo \Illuminate\Support\Js::from(old('sub_cuenta'))->toHtml() ?>
                                     })" x-init="init()" class="relative w-full">
                                 <button type="button" @click="open = !open"
-                                    class="select w-full h-10 rounded-md border-base-300 bg-base-200 px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition flex items-center justify-between @error('sub_cuenta') input-error @enderror">
+                                    class="select w-full h-10 rounded-md border-base-300 bg-base-200 px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition flex items-center justify-between <?php $__errorArgs = ['sub_cuenta'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> input-error <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>">
                                     <span x-text="selected?.label ?? placeholder" class="truncate"></span>
                                 </button>
 
@@ -114,19 +134,26 @@
 
                                 <select id="sub_cuenta" name="sub_cuenta" class="hidden" x-model="selectedValue" required>
                                     <option value="">Seleccione la sub cuenta</option>
-                                    <option value="Secretaria de obras publicas" @selected(old('sub_cuenta') == 'Secretaria de obras publicas')>Secretaria de Obras Publicas</option>
+                                    <option value="Secretaria de obras publicas" <?php if(old('sub_cuenta') == 'Secretaria de obras publicas'): echo 'selected'; endif; ?>>Secretaria de Obras Publicas</option>
                                     <option value="Secretaria de desarrollos humanos"
-                                        @selected(old('sub_cuenta') == 'Secretaria de desarrollos humanos')>Secretaria de
+                                        <?php if(old('sub_cuenta') == 'Secretaria de desarrollos humanos'): echo 'selected'; endif; ?>>Secretaria de
                                         Desarrollo Humano</option>
-                                    <option value="Secretaria de gobierno" @selected(old('sub_cuenta') == 'Secretaria de gobierno')>Secretaria de Gobierno</option>
+                                    <option value="Secretaria de gobierno" <?php if(old('sub_cuenta') == 'Secretaria de gobierno'): echo 'selected'; endif; ?>>Secretaria de Gobierno</option>
                                     <option value="Departamento ejecutivo municipal"
-                                        @selected(old('sub_cuenta') == 'Departamento ejecutivo municipal')>Departamento
+                                        <?php if(old('sub_cuenta') == 'Departamento ejecutivo municipal'): echo 'selected'; endif; ?>>Departamento
                                         Ejecutivo Municipal</option>
                                 </select>
                             </div>
-                            @error('sub_cuenta')
-                                <small class="text-red-500 error-message">{{ $message }}</small>
-                            @enderror
+                            <?php $__errorArgs = ['sub_cuenta'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                <small class="text-red-500 error-message"><?php echo e($message); ?></small>
+                            <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                         </div>
                     </div>
                 </div>
@@ -143,7 +170,7 @@
                 <div class="flex items-center justify-between w-full mb-6">
                     <h4 class="text-1xl font-semibold">Datos del Destino de la carga</h4>
 
-                    {{-- Botón para abrir el modal de nuevo destino --}}
+                    
                     <label for="crear_destino_modal" class="btn btn-sm btn-success">
                         + Nuevo destino
                     </label>
@@ -161,15 +188,29 @@
                                     class="text-red-600">*</span></label>
                             <select id="destino_tipo" name="destino_tipo" class="select w-full h-10 rounded-md border-base-300 bg-base-200
                 px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
-                focus:border-primary transition @error('destino_tipo') input-error @enderror" required>
+                focus:border-primary transition <?php $__errorArgs = ['destino_tipo'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> input-error <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>" required>
                                 <option value="">Seleccione el destino de la carga</option>
                                 <option value="vehiculo">Vehiculo</option>
                                 <option value="equipo">Equipo</option>
                                 <option value="destino">Otros (Acuerdo policial, Área de obras públicas, Personas)</option>
                             </select>
-                            @error('destino_tipo')
-                                <small class="text-red-500 error-message">{{ $message }}</small>
-                            @enderror
+                            <?php $__errorArgs = ['destino_tipo'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                <small class="text-red-500 error-message"><?php echo e($message); ?></small>
+                            <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                         </div>
                         <div id="btn_elegir_destino" class="space-y-2 -mt-4">
                             <div class="flex items-center justify-between gap-4">
@@ -181,17 +222,24 @@
                                 </button>
                             </div>
 
-                            {{-- id oculto que se envía en el request --}}
-                            <input type="hidden" id="destino_id" name="destino_id" value="{{ old('destino_id') }}">
+                            
+                            <input type="hidden" id="destino_id" name="destino_id" value="<?php echo e(old('destino_id')); ?>">
 
-                            {{-- campo solo lectura mostrando el nombre elegido --}}
+                            
                             <input type="text" id="destino_nombre_visble"
                                 class="w-full h-10 rounded-md border border-base-300 bg-base-200 px-3 text-sm cursor-pointer"
                                 placeholder="Ningún destino seleccionado" readonly>
 
-                            @error('destino_id')
-                                <small class="text-red-500 error-message">{{ $message }}</small>
-                            @enderror
+                            <?php $__errorArgs = ['destino_id'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                <small class="text-red-500 error-message"><?php echo e($message); ?></small>
+                            <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                         </div>
                         <input type="checkbox" id="modal_elegir_destino" class="modal-toggle" />
                         <div class="modal">
@@ -207,11 +255,11 @@
                                     <table class="table table-zebra w-full text-sm">
                                         <thead>
                                             <tr id="tabla_destinos_head">
-                                                {{-- cabeceras generadas por JS --}}
+                                                
                                             </tr>
                                         </thead>
                                         <tbody id="tabla_destinos_body">
-                                            {{-- Se llena por JS --}}
+                                            
                                         </tbody>
                                     </table>
                                     <div class="flex justify-between items-center mt-3 text-xs">
@@ -220,7 +268,7 @@
                                         </button>
 
                                         <span id="destinos_pagination_info" class="mx-2">
-                                            {{-- se completa por JS --}}
+                                            
                                         </span>
 
                                         <button type="button" class="btn btn-xs" id="destinos_next_page">
@@ -241,17 +289,31 @@
                                     class="text-red-600">*</span></label>
 
                             <!-- ID oculto que se envía en el request -->
-                            <input type="hidden" id="empleado_id" name="empleado_id" value="{{ old('empleado_id') }}">
+                            <input type="hidden" id="empleado_id" name="empleado_id" value="<?php echo e(old('empleado_id')); ?>">
 
                             <!-- Campo solo lectura mostrando el nombre elegido -->
                             <input type="text" id="empleado_nombre_visible" class="w-full h-10 rounded-md border border-base-300 bg-base-200
                 px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
-                focus:border-primary cursor-pointer transition @error('empleado_id') input-error @enderror"
+                focus:border-primary cursor-pointer transition <?php $__errorArgs = ['empleado_id'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> input-error <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>"
                                 placeholder="Seleccione un empleado" value="" readonly>
 
-                            @error('empleado_id')
-                                <small class="text-red-500 error-message">{{ $message }}</small>
-                            @enderror
+                            <?php $__errorArgs = ['empleado_id'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                <small class="text-red-500 error-message"><?php echo e($message); ?></small>
+                            <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                         </div>
                     </div>
 
@@ -288,7 +350,7 @@
             <div data-slot="card-header" class="@container/card-header grid auto-rows-min grid-rows-[auto_auto] items-start 
                  gap-1.5 px-6 pt-6">
                 <h4 class="text-1xl font-semibold">Detalles de la Carga Autorizada</h4>
-                {{-- <p class="text-muted-foreground">Especificaciones de la carga de combustible</p> --}}
+                
             </div>
 
             <!-- CONTENT -->
@@ -304,17 +366,32 @@
                                     class="text-red-600">*</span></label>
                             <select id="combustible" name="combustible" class="w-full h-10 rounded-md border border-base-300 bg-base-200 
                                 px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary
-                                focus:border-primary @error('combustible') input-error @enderror transition" required>
+                                focus:border-primary <?php $__errorArgs = ['combustible'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> input-error <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?> transition" required>
                                 <option value="">Seleccionar</option>
-                                @foreach ($tipo_combustible as $combustible_tipo)
-                                    <option value="{{ $combustible_tipo->nombre }}" data-valor="{{ $combustible_tipo->valor }}">
-                                        {{$combustible_tipo->nombre }}
+                                <?php $__currentLoopData = $tipo_combustible; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $combustible_tipo): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                    <option value="<?php echo e($combustible_tipo->nombre); ?>" data-valor="<?php echo e($combustible_tipo->valor); ?>">
+                                        <?php echo e($combustible_tipo->nombre); ?>
+
                                     </option>
-                                @endforeach
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                             </select>
-                            @error('combustible')
-                                <small class="text-red-500 error-message">{{ $message }}</small>
-                            @enderror
+                            <?php $__errorArgs = ['combustible'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                <small class="text-red-500 error-message"><?php echo e($message); ?></small>
+                            <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                         </div>
 
                         <!-- Litros Estimados -->
@@ -322,12 +399,26 @@
                             <label for="litros" class="text-sm font-medium">Litros Estimados</label>
                             <input type="text" id="litros" name="litros" placeholder="0,00" class="w-full h-10 rounded-md border border-base-300 bg-base-200 
                                 px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary
-                                focus:border-primary @error('litros') input-error @enderror transition"
+                                focus:border-primary <?php $__errorArgs = ['litros'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> input-error <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?> transition"
                                 oninput="formatMoneda(this)">
                             <p class="text-xs text-gray-500">Dejar vacío para carga completa</p>
-                            @error('litros')
-                                <small class="text-red-500 error-message">{{ $message }}</small>
-                            @enderror
+                            <?php $__errorArgs = ['litros'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                <small class="text-red-500 error-message"><?php echo e($message); ?></small>
+                            <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                         </div>
 
                         <!-- Monto Máximo -->
@@ -336,10 +427,24 @@
                                     class="text-red-600">*</span></label>
                             <input type="text" id="precio" name="precio" placeholder="0,00" class="w-full h-10 rounded-md border border-base-300 bg-base-200 
                                 px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary
-                                focus:border-primary @error('precio') input-error @enderror transition" required readonly>
-                            @error('precio')
-                                <small class="text-red-500 error-message">{{ $message }}</small>
-                            @enderror
+                                focus:border-primary <?php $__errorArgs = ['precio'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> input-error <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?> transition" required readonly>
+                            <?php $__errorArgs = ['precio'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                <small class="text-red-500 error-message"><?php echo e($message); ?></small>
+                            <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                         </div>
                     </div>
 
@@ -353,13 +458,27 @@
                             </label>
                             <select id="estacion" name="estacion" class="w-full h-10 rounded-md border border-base-300 bg-base-200 
                                 px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary
-                                focus:border-primary @error('estacion') input-error @enderror transition" required>
+                                focus:border-primary <?php $__errorArgs = ['estacion'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> input-error <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?> transition" required>
                                 <option value="">Cualquier estación autorizada</option>
                                 <option>YPF Feliciano</option>
                             </select>
-                            @error('estacion')
-                                <small class="text-red-500 error-message">{{ $message }}</small>
-                            @enderror
+                            <?php $__errorArgs = ['estacion'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                <small class="text-red-500 error-message"><?php echo e($message); ?></small>
+                            <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                         </div>
 
                         <!-- Tipo de Pago -->
@@ -368,14 +487,28 @@
                                     class="text-red-600">*</span></label>
                             <select id="tipo_de_pago" name="tipo_de_pago" class="w-full h-10 rounded-md border border-base-300 bg-base-200 
                                 px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary
-                                focus:border-primary @error('tipo_de_pago') input-error @enderror transition" required>
+                                focus:border-primary <?php $__errorArgs = ['tipo_de_pago'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> input-error <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?> transition" required>
                                 <option value="">Seleccionar</option>
                                 <option value="contado">Pago en efectivo</option>
                                 <option value="cuenta_corriente">Cuenta corriente</option>
                             </select>
-                            @error('tipo_de_pago')
-                                <small class="text-red-500 error-message">{{ $message }}</small>
-                            @enderror
+                            <?php $__errorArgs = ['tipo_de_pago'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                <small class="text-red-500 error-message"><?php echo e($message); ?></small>
+                            <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                         </div>
 
                     </div>
@@ -398,26 +531,64 @@
         <!-- BOTONES DEL FORMULARIO -->
         <!-- ========================= -->
         <div class="flex justify-end pt-4">
-            <a href="{{ route('combustibles.index') }}" class="btn btn-warning mr-2">
-                <x-heroicon-m-arrow-left class="w-4 h-4 inline" />
+            <a href="<?php echo e(route('combustibles.index')); ?>" class="btn btn-warning mr-2">
+                <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c = $attributes; } ?>
+<?php $component = BladeUI\Icons\Components\Svg::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('heroicon-m-arrow-left'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\BladeUI\Icons\Components\Svg::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['class' => 'w-4 h-4 inline']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $attributes = $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $component = $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
                 Volver
             </a>
             <button type="submit" class="btn btn-primary">
-                <x-heroicon-m-arrow-down-tray class="w-4 h-4 inline" />
+                <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c = $attributes; } ?>
+<?php $component = BladeUI\Icons\Components\Svg::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('heroicon-m-arrow-down-tray'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\BladeUI\Icons\Components\Svg::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['class' => 'w-4 h-4 inline']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $attributes = $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $component = $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
                 Guardar Carga De Combustible
             </button>
         </div>
     </form>
-    {{-- Modal para crear un nuevo destino --}}
+    
     <input type="checkbox" id="crear_destino_modal" class="modal-toggle" />
     <div class="modal" role="dialog">
         <div class="modal-box">
             <h3 class="font-bold text-lg mb-4">Nuevo destino</h3>
 
-            <form method="POST" action="{{ route('destinos.store') }}">
-                @csrf
+            <form method="POST" action="<?php echo e(route('destinos.store')); ?>">
+                <?php echo csrf_field(); ?>
 
-                {{-- Nombre --}}
+                
                 <div class="form-control mb-3">
                     <label for="nuevo_destino_nombre" class="label">
                         <span class="label-text font-medium">Nombre <span class="text-red-600">*</span></span>
@@ -428,7 +599,7 @@
                         required>
                 </div>
 
-                {{-- Tipo --}}
+                
                 <div class="form-control mb-3">
                     <label for="nuevo_destino_tipo" class="label">
                         <span class="label-text font-medium">Tipo <span class="text-red-600">*</span></span>
@@ -444,7 +615,7 @@
                     </select>
                 </div>
 
-                {{-- Descripción --}}
+                
                 <div class="form-control mb-4">
                     <label for="nuevo_destino_descripcion" class="label">
                         <span class="label-text font-medium">Descripción <span class="text-red-600">*</span></span>
@@ -493,7 +664,7 @@
                         </tr>
                     </thead>
                     <tbody id="tabla_empleado_body">
-                        {{-- filas generadas por JS --}}
+                        
                     </tbody>
                 </table>
                 <div class="flex justify-between items-center mt-3 text-xs">
@@ -502,7 +673,7 @@
                     </button>
 
                     <span id="empleado_pagination_info" class="mx-2">
-                        {{-- se completa por JS --}}
+                        
                     </span>
 
                     <button type="button" class="btn btn-xs" id="empleado_next_page">
@@ -517,9 +688,9 @@
         </div>
         <label class="modal-backdrop" for="modal_elegir_empleado">Close</label>
     </div>
-@endsection
+<?php $__env->stopSection(); ?>
 
-@section('js')
+<?php $__env->startSection('js'); ?>
     <script>
         $(document).ready(function () {
 
@@ -648,7 +819,7 @@
 
             tbody.innerHTML = '<tr><td class="py-4 text-center text-sm" colspan="' + columnasGlobal.length + '">Cargando...</td></tr>';
 
-            fetch('{{ url('origen/listar') }}/' + tipo)
+            fetch('<?php echo e(url('origen/listar')); ?>/' + tipo)
                 .then(res => res.json())
                 .then(data => {
                     destinosCache = data;
@@ -1085,7 +1256,7 @@
         //  MODAL DE SELECCIÓN DE EMPLEADO
         // ==============================
         document.addEventListener("DOMContentLoaded", function () {
-            const empleadosData = @json($empleados);
+            const empleadosData = <?php echo json_encode($empleados, 15, 512) ?>;
             let empleadosCache = empleadosData;
             let paginaEmpleado = 1;
             const itemsPorPaginaEmpleado = 5;
@@ -1262,4 +1433,5 @@
             }
         }
     </script>
-@endsection
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('layouts.admin', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\laragon\www\Sistema-talwind\resources\views/admin/combustibles/create.blade.php ENDPATH**/ ?>

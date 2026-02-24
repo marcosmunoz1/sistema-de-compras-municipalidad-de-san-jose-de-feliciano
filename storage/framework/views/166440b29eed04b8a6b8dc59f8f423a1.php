@@ -114,7 +114,7 @@
             padding: 6px 14px;
             border-radius: 8px;
             font-weight: 800;
-            font-size: 16px;
+            font-size: 20px;
             letter-spacing: 1px;
         }
 
@@ -137,7 +137,7 @@
         }
 
         .field-label {
-            font-size: 9px;
+            font-size: 13px;
             font-weight: 700;
             color: #64748b;
             text-transform: uppercase;
@@ -149,7 +149,7 @@
 
         .field-value {
             flex-grow: 1;
-            font-size: 10px;
+            font-size: 15px;
             font-weight: 600;
             color: #1e293b;
         }
@@ -179,18 +179,18 @@
         th {
             background-color: #1e40af;
             color: white;
-            font-size: 9px;
+            font-size: 13px;
             font-weight: 600;
-            padding: 6px 8px;
+            padding: 9px 11px;
             text-transform: uppercase;
             text-align: left;
         }
 
         td {
             border-bottom: 1px solid #f1f5f9;
-            padding: 4px 8px;
-            height: 26px;
-            font-size: 10px;
+            padding: 7px 11px;
+            height: 30px;
+            font-size: 15px;
             vertical-align: middle;
         }
 
@@ -212,7 +212,7 @@
         }
 
         .signature-label {
-            font-size: 11px;
+            font-size: 15px;
             font-weight: 700;
             color: #1e293b;
             text-transform: uppercase;
@@ -224,7 +224,7 @@
             border-top: 1px dashed #cbd5e1;
             display: flex;
             justify-content: space-between;
-            font-size: 9px;
+            font-size: 13px;
             color: #94a3b8;
             font-weight: 600;
             position: relative;
@@ -376,7 +376,7 @@
         <div class="table-container">
             <div style="margin-bottom: 4px;">
                 <h3
-                    style="font-size: 9px; font-weight: 900; color: #334155; text-transform: uppercase; letter-spacing: 0.05em;">
+                    style="font-size: 13px; font-weight: 900; color: #334155; text-transform: uppercase; letter-spacing: 0.05em;">
                     Detalle de Insumos y Suministros</h3>
             </div>
             <table>
@@ -413,21 +413,21 @@
                     <img src="<?php echo e(public_path('storage/' . $compra->usuario->firma)); ?>"
                     style="max-width: 100px; height: auto; max-height: 100px;">
                     <?php endif; ?>
-                    <div style="font-size: 7px; font-weight: 700; text-transform: uppercase;">Autorizado por
+                    <div style="font-size: 11px; font-weight: 700; text-transform: uppercase;">Autorizado por
                         Funcionario<?php echo e($compra->usuario ? ': ' . $compra->usuario->name : ''); ?></div>
-                        <div style="font-size: 6px; color: #64748b; text-transform: uppercase;">Sello y Firma Municipal:
+                        <div style="font-size: 10px; color: #64748b; text-transform: uppercase;">Sello y Firma Municipal:
                         </div>
                     </td>
                 <td style="width: 33%; text-align: center; vertical-align: bottom; border: none; padding: 0 8px;">
                     <div style="border-bottom: 1.5px solid #000; height: 30px; margin-bottom: 4px;"></div>
-                    <div style="font-size: 7px; font-weight: 700; text-transform: uppercase;">Firma Proveedor</div>
-                    <div style="font-size: 6px; color: #64748b; text-transform: uppercase;">Aclaracion</div>
+                    <div style="font-size: 11px; font-weight: 700; text-transform: uppercase;">Firma Proveedor</div>
+                    <div style="font-size: 10px; color: #64748b; text-transform: uppercase;">Aclaracion</div>
                 </td>
                 <td style="width: 33%; text-align: center; vertical-align: bottom; border: none; padding: 0 8px;">
                     <div style="border-bottom: 1.5px solid #000; height: 30px; margin-bottom: 4px;"></div>
-                    <div style="font-size: 7px; font-weight: 700; text-transform: uppercase;">Firma Empleado Municipal
+                    <div style="font-size: 11px; font-weight: 700; text-transform: uppercase;">Firma Empleado Municipal
                     </div>
-                    <div style="font-size: 6px; color: #64748b; text-transform: uppercase;">Recibí Conforme</div>
+                    <div style="font-size: 10px; color: #64748b; text-transform: uppercase;">Recibí Conforme</div>
                 </td>
             </tr>
         </table>

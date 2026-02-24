@@ -10,12 +10,12 @@
 
         @page {
             size: A4;
-            margin: 10mm;
+            margin: 7mm;
         }
 
         body {
             margin: 0;
-            padding: 15px;
+            padding: 8px;
             font-family: 'Inter', sans-serif;
             color: #1e293b;
             background-color: white;
@@ -79,8 +79,8 @@
             justify-content: space-between;
             align-items: center;
             border-bottom: 3px solid #1e40af;
-            padding-bottom: 10px;
-            margin-bottom: 12px;
+            padding-bottom: 8px;
+            margin-bottom: 8px;
             position: relative;
             z-index: 10;
         }
@@ -92,8 +92,8 @@
         }
 
         .logo-placeholder {
-            width: 70px;
-            height: 70px;
+            width: 55px;
+            height: 55px;
             background: white;
             border-radius: 12px;
             display: flex;
@@ -111,7 +111,7 @@
         .title-badge {
             background-color: #eff6ff;
             color: #1e40af;
-            padding: 6px 14px;
+            padding: 4px 12px;
             border-radius: 8px;
             font-weight: 800;
             font-size: 16px;
@@ -121,8 +121,8 @@
         .field-group {
             display: grid;
             grid-template-columns: 1fr;
-            gap: 5px;
-            margin-bottom: 12px;
+            gap: 2px;
+            margin-bottom: 6px;
             position: relative;
             z-index: 10;
         }
@@ -133,11 +133,11 @@
             background: rgba(248, 250, 252, 0.8);
             border: 1px solid #e2e8f0;
             border-radius: 6px;
-            padding: 5px 12px;
+            padding: 2px 10px;
         }
 
         .field-label {
-            font-size: 9px;
+            font-size: 11px;
             font-weight: 700;
             color: #64748b;
             text-transform: uppercase;
@@ -149,7 +149,7 @@
 
         .field-value {
             flex-grow: 1;
-            font-size: 10px;
+            font-size: 12px;
             font-weight: 600;
             color: #1e293b;
         }
@@ -179,26 +179,26 @@
         th {
             background-color: #1e40af;
             color: white;
-            font-size: 9px;
+            font-size: 11px;
             font-weight: 600;
-            padding: 6px 8px;
+            padding: 4px 10px;
             text-transform: uppercase;
             text-align: left;
         }
 
         td {
             border-bottom: 1px solid #f1f5f9;
-            padding: 4px 8px;
-            height: 26px;
-            font-size: 10px;
+            padding: 3px 10px;
+            height: 20px;
+            font-size: 12px;
             vertical-align: middle;
         }
 
         .footer-area {
-            margin-top: 12px;
+            margin-top: 8px;
             display: flex;
             justify-content: center;
-            padding-bottom: 8px;
+            padding-bottom: 4px;
             position: relative;
             z-index: 10;
         }
@@ -212,7 +212,7 @@
         }
 
         .signature-label {
-            font-size: 11px;
+            font-size: 15px;
             font-weight: 700;
             color: #1e293b;
             text-transform: uppercase;
@@ -224,7 +224,7 @@
             border-top: 1px dashed #cbd5e1;
             display: flex;
             justify-content: space-between;
-            font-size: 9px;
+            font-size: 13px;
             color: #94a3b8;
             font-weight: 600;
             position: relative;
@@ -376,7 +376,7 @@
         <div class="table-container">
             <div style="margin-bottom: 4px;">
                 <h3
-                    style="font-size: 9px; font-weight: 900; color: #334155; text-transform: uppercase; letter-spacing: 0.05em;">
+                    style="font-size: 13px; font-weight: 900; color: #334155; text-transform: uppercase; letter-spacing: 0.05em;">
                     Detalle de Insumos y Suministros</h3>
             </div>
             <table>
@@ -409,24 +409,24 @@
             <tr style="page-break-inside: avoid;">
                 <td style="width: 33%; text-align: center; vertical-align: bottom; border: none; padding: 0 8px;">
                     @if($compra->usuario && $compra->usuario->firma)
-                    <img src="{{ public_path('storage/' . $compra->usuario->firma) }}"
-                    style="max-width: 100px; height: auto; max-height: 100px;">
+                        <img src="{{ public_path('storage/' . $compra->usuario->firma) }}"
+                            style="max-width: 100px; height: auto; max-height: 100px;">
                     @endif
-                    <div style="font-size: 7px; font-weight: 700; text-transform: uppercase;">Autorizado por
+                    <div style="font-size: 11px; font-weight: 700; text-transform: uppercase;">Autorizado por
                         Funcionario{{ $compra->usuario ? ': ' . $compra->usuario->name : '' }}</div>
-                        <div style="font-size: 6px; color: #64748b; text-transform: uppercase;">Sello y Firma Municipal:
-                        </div>
-                    </td>
-                <td style="width: 33%; text-align: center; vertical-align: bottom; border: none; padding: 0 8px;">
-                    <div style="border-bottom: 1.5px solid #000; height: 30px; margin-bottom: 4px;"></div>
-                    <div style="font-size: 7px; font-weight: 700; text-transform: uppercase;">Firma Proveedor</div>
-                    <div style="font-size: 6px; color: #64748b; text-transform: uppercase;">Aclaracion</div>
+                    <div style="font-size: 10px; color: #64748b; text-transform: uppercase;">Sello y Firma Municipal:
+                    </div>
                 </td>
                 <td style="width: 33%; text-align: center; vertical-align: bottom; border: none; padding: 0 8px;">
                     <div style="border-bottom: 1.5px solid #000; height: 30px; margin-bottom: 4px;"></div>
-                    <div style="font-size: 7px; font-weight: 700; text-transform: uppercase;">Firma Empleado Municipal
+                    <div style="font-size: 11px; font-weight: 700; text-transform: uppercase;">Firma Proveedor</div>
+                    <div style="font-size: 10px; color: #64748b; text-transform: uppercase;">Aclaracion</div>
+                </td>
+                <td style="width: 33%; text-align: center; vertical-align: bottom; border: none; padding: 0 8px;">
+                    <div style="border-bottom: 1.5px solid #000; height: 30px; margin-bottom: 4px;"></div>
+                    <div style="font-size: 11px; font-weight: 700; text-transform: uppercase;">Firma Empleado Municipal
                     </div>
-                    <div style="font-size: 6px; color: #64748b; text-transform: uppercase;">Recibí Conforme</div>
+                    <div style="font-size: 10px; color: #64748b; text-transform: uppercase;">Recibí Conforme</div>
                 </td>
             </tr>
         </table>

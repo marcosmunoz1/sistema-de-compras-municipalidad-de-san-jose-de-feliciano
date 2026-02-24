@@ -1,38 +1,48 @@
 @extends('layouts.admin')
-@section('title', 'Ver compra')
+@section('title', 'Ver Orden de Compra #' . ($compra->nr_orden ?? $compra->id))
 
 @section('content')
-    <!-- Titulo y boton -->
-    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
-        <h1 class="text-xl sm:text-2xl font-semibold">Ver datos de la compra</h1>
-        <a href="{{ route('compras.index') }}" class="btn btn-sm sm:btn-md btn-primary w-fit">
-            <x-heroicon-m-arrow-left class="w-4 h-4 inline" />
-            Volver
-        </a> 
-        @if ($from === 'vehiculo' && $vehiculoId)
-            <a href="{{ route('vehiculos.show', $vehiculoId) }}" class="btn btn-sm sm:btn-md btn-primary w-fit">
-                ← Volver al vehículo
+
+    {{-- ============================== --}}
+    {{-- HEADER + BREADCRUMBS --}}
+    {{-- ============================== --}}
+    <div class="flex items-center justify-between mb-4">
+        <h1 class="text-2xl font-semibold">Orden de Compra</h1>
+        <div class="flex gap-2 flex-wrap justify-end">
+            <a href="{{ route('compras.index') }}"
+                class="inline-flex items-center gap-2 h-9 px-4 py-2 rounded-md bg-primary text-primary-content text-sm hover:opacity-90 transition">
+                <x-heroicon-o-arrow-left class="w-4 h-4" />
+                Volver a Compras
             </a>
-        @elseif($from === 'obra' && $obraId)
-            <a href="{{ route('obras.show', $obraId) }}" class="btn btn-sm sm:btn-md btn-primary w-fit">
-                ← Volver a obra
-            </a>
-        @elseif($from === 'deposito' && $depositoId)
-            <a href="{{ route('depositos.show', $depositoId) }}" class="btn btn-sm sm:btn-md btn-primary w-fit">
-                ← Volver a depósito
-            </a>
-        @elseif($from === 'equipo' && $equipoId)
-            <a href="{{ route('equipos.show', $equipoId) }}" class="btn btn-sm sm:btn-md btn-primary w-fit">
-                ← Volver al equipo
-            </a>
-        @endif 
-    </div> 
+            @if ($from === 'vehiculo' && $vehiculoId)
+                <a href="{{ route('vehiculos.show', $vehiculoId) }}"
+                    class="inline-flex items-center gap-2 h-9 px-4 py-2 rounded-md bg-base-200 text-sm hover:bg-base-300 transition">
+                    ← Volver al vehículo
+                </a>
+            @elseif($from === 'obra' && $obraId)
+                <a href="{{ route('obras.show', $obraId) }}"
+                    class="inline-flex items-center gap-2 h-9 px-4 py-2 rounded-md bg-base-200 text-sm hover:bg-base-300 transition">
+                    ← Volver a Obra
+                </a>
+            @elseif($from === 'deposito' && $depositoId)
+                <a href="{{ route('depositos.show', $depositoId) }}"
+                    class="inline-flex items-center gap-2 h-9 px-4 py-2 rounded-md bg-base-200 text-sm hover:bg-base-300 transition">
+                    ← Volver a Depósito
+                </a>
+            @elseif($from === 'equipo' && $equipoId)
+                <a href="{{ route('equipos.show', $equipoId) }}"
+                    class="inline-flex items-center gap-2 h-9 px-4 py-2 rounded-md bg-base-200 text-sm hover:bg-base-300 transition">
+                    ← Volver al Equipo
+                </a>
+            @endif
+        </div>
+    </div>
+
     <div class="breadcrumbs text-sm mb-6">
         <ul>
             <li>
                 <a href="{{ route('admin.index') }}">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                        class="h-4 w-4 stroke-current">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="h-4 w-4 stroke-current">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"></path>
                     </svg>
@@ -46,280 +56,495 @@
                 </a>
             </li>
             <li>
-                <span class="inline-flex items-center gap-2">
-                    <x-heroicon-o-eye class="w-4 h-4 inline" />
-                    Ver Orden de compra
+                <span class="inline-flex items-center gap-1">
+                    <x-heroicon-o-eye class="w-4 h-4" />
+                    Orden #{{ $compra->nr_orden ?? $compra->id }}
                 </span>
             </li>
         </ul>
     </div>
 
+    {{-- ============================== --}}
+    {{-- HERO CARD --}}
+    {{-- ============================== --}}
+    <div class="card bg-base-100 shadow-md rounded-xl mb-6 border-l-4 border-indigo-500 overflow-hidden">
+        <div class="p-5 sm:p-6">
+            <div class="flex flex-col sm:flex-row sm:items-center gap-5">
 
+                {{-- Ícono --}}
+                <div class="bg-indigo-600 p-4 rounded-xl shrink-0 self-start">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8"
+                        stroke="currentColor" class="w-8 h-8 text-white">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
+                    </svg>
+                </div>
 
-
-    <div data-slot="card" class="card bg-base-100 shadow-xl p-4">
-        <div data-slot="card-header"
-            class="@container/card-header grid auto-rows-min grid-rows-[auto_auto] items-start gap-1.5 px-6 pt-6">
-            <h4 class="text-1xl font-semibold">Informacion General</h4>
-            <p class="text-muted-foreground"></p>
-        </div>
-
-        <div data-slot="card-content" class="px-6 [&:last-child]:pb-6">
-            <div class="grid gap-4">
-
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <!-- País -->
-                    <div class="space-y-2">
-                        <label for="fecha_orden" class="text-sm font-medium">Fecha de Emisión</label>
-                        <input type="date" id="fecha_orden" name="fecha_orden" value="{{ $compra->fecha_orden }}"
-                            class="w-full h-10 rounded-md border border-base-300 bg-base-200
-                        px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
-                        focus:border-primary transition @error('fecha_orden') input-error @enderror"
-                            disabled>
+                {{-- Datos principales --}}
+                <div class="flex-1 min-w-0">
+                    <div class="flex flex-wrap items-center gap-2 mb-3">
+                        <h2 class="text-xl font-bold">Orden de Compra</h2>
+                        @php
+                            $estadoClasses = match ($compra->estado_compra ?? 'pendiente') {
+                                'aprobada'  => 'badge-success',
+                                'rechazada' => 'badge-error',
+                                'anulada'   => 'badge-warning',
+                                default     => 'badge-info',
+                            };
+                        @endphp
+                        <span class="badge {{ $estadoClasses }} badge-outline capitalize">
+                            {{ $compra->estado_compra ?? 'Pendiente' }}
+                        </span>
                     </div>
-
-                    <!-- entregar a -->
-                    <div class="space-y-2">
-                        <label for="empleado_id" class="text-sm font-medium">Entregar a</label>
-                        <select id="empleado_id" name="empleado_id"
-                            class="select w-full h-10 rounded-md border-base-300 bg-base-200
-                        px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
-                        focus:border-primary transition @error('empleado_id') input-error @enderror"
-                            disabled>
-                            <option value="">{{ $compra->empleado->nombre }}</option>
-                        </select>
-                        @error('empleado_id')
-                            <small class="text-red-500 error-message">{{ $message }}</small>
-                        @enderror
-                    </div>
-
-                    <div class="space-y-2">
-                        <label for="sub_cuenta" class="text-sm font-medium">Sub cuenta</label>
-                        <select id="sub_cuenta" name="sub_cuenta"
-                            class="select w-full h-10 rounded-md border-base-300 bg-base-200
-                        px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
-                        focus:border-primary transition @error('sub_cuenta') input-error @enderror"
-                            disabled>
-                            <option value="">{{ $compra->sub_cuenta }}</option>
-                        </select>
-                        @error('sub_cuenta')
-                            <small class="text-red-500 error-message">{{ $message }}</small>
-                        @enderror
+                    <div class="grid grid-cols-2 sm:grid-cols-3 gap-x-8 gap-y-3">
+                        <div>
+                            <p class="text-xs text-base-content/50 mb-0.5">N° Orden</p>
+                            <p class="text-sm font-semibold">{{ $compra->nr_orden ?? '—' }}</p>
+                        </div>
+                        <div>
+                            <p class="text-xs text-base-content/50 mb-0.5">Fecha Emisión</p>
+                            <p class="text-sm font-semibold">{{ $compra->fecha_orden ? \Carbon\Carbon::parse($compra->fecha_orden)->format('d/m/Y') : '—' }}</p>
+                        </div>
+                        <div>
+                            <p class="text-xs text-base-content/50 mb-0.5">Sub Cuenta</p>
+                            <p class="text-sm font-semibold">{{ $compra->sub_cuenta ?? '—' }}</p>
+                        </div>
                     </div>
                 </div>
+
+                {{-- Total --}}
+                <div class="shrink-0 border-t border-base-200 pt-4 sm:border-t-0 sm:pt-0 sm:pl-6 sm:border-l sm:border-base-200 sm:text-right">
+                    <p class="text-xs text-base-content/50 uppercase tracking-widest mb-1">Total</p>
+                    <p class="text-3xl font-bold text-indigo-600 tabular-nums leading-none">
+                        ${{ number_format($compra->total, 2, ',', '.') }}
+                    </p>
+                    <p class="text-xs text-base-content/50 mt-1.5">
+                        {{ $compra->detalle_compras->count() }} {{ $compra->detalle_compras->count() === 1 ? 'ítem' : 'ítems' }}
+                    </p>
+                </div>
+
             </div>
         </div>
     </div>
 
-    <!-- Otra seccion -->
-    <div data-slot="card" class="card bg-base-100 shadow-xl p-4 mt-4">
-        <div data-slot="card-header"
-            class="@container/card-header grid auto-rows-min grid-rows-[auto_auto] items-start gap-1.5 px-6 pt-6">
-            <h4 class="text-1xl font-semibold">Informacion General</h4>
-            <p class="text-muted-foreground"></p>
+    {{-- ============================== --}}
+    {{-- TARJETAS: PROVEEDOR + EMPLEADO + DESTINO --}}
+    {{-- ============================== --}}
+    @php
+        $destino = $compra->destino;
+        $esVehiculo = $destino instanceof \App\Models\Vehiculo;
+        $esDeposito = $destino instanceof \App\Models\Deposito;
+        $esObra = $destino instanceof \App\Models\Obra;
+        $esEquipo = $destino instanceof \App\Models\Equipo;
+        $destinoLabel = class_basename($compra->destino_tipo ?? 'Destino');
+    @endphp
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+
+        {{-- Proveedor --}}
+        <div class="card bg-base-100 shadow-md rounded-xl">
+            <div class="px-6 py-4 border-b border-base-200 flex items-center gap-2">
+                <div class="bg-emerald-100 dark:bg-emerald-900/40 p-2 rounded-lg">
+                    <svg class="size-5 text-emerald-600" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M13.5 21v-7.5a.75.75 0 0 1 .75-.75h3a.75.75 0 0 1 .75.75V21m-4.5 0H2.36m11.14 0H18m0 0h3.64m-1.39 0V9.349M3.75 21V9.349m0 0a3.001 3.001 0 0 0 3.75-.615A2.993 2.993 0 0 0 9.75 9.75c.896 0 1.7-.393 2.25-1.016a2.993 2.993 0 0 0 2.25 1.016c.896 0 1.7-.393 2.25-1.015a3.001 3.001 0 0 0 3.75.614m-16.5 0a3.004 3.004 0 0 1-.621-4.72l1.189-1.19A1.5 1.5 0 0 1 5.378 3h13.243a1.5 1.5 0 0 1 1.06.44l1.19 1.189a3 3 0 0 1-.621 4.72M6.75 18h3.75a.75.75 0 0 0 .75-.75V13.5a.75.75 0 0 0-.75-.75H6.75a.75.75 0 0 0-.75.75v3.75c0 .414.336.75.75.75Z" />
+                    </svg>
+                </div>
+                <h4 class="font-semibold text-base">Proveedor</h4>
+            </div>
+            <div class="px-6 py-5 space-y-3">
+                <div class="flex items-center gap-3 p-3 bg-base-200/50 rounded-lg">
+                    <div class="bg-emerald-600 size-12 rounded-full flex items-center justify-center text-white font-bold text-lg shrink-0">
+                        {{ strtoupper(substr($compra->proveedor->nombre ?? 'P', 0, 1)) }}
+                    </div>
+                    <div>
+                        <p class="font-semibold">{{ $compra->proveedor->nombre ?? '—' }}</p>
+                        @if($compra->proveedor?->cuit)
+                            <p class="text-sm text-base-content/60">CUIT: {{ $compra->proveedor->cuit }}</p>
+                        @endif
+                    </div>
+                </div>
+                @if($compra->proveedor?->telefono)
+                    <div class="flex justify-between text-sm px-1">
+                        <span class="text-base-content/60">Teléfono</span>
+                        <span class="font-medium">{{ $compra->proveedor->telefono }}</span>
+                    </div>
+                @endif
+                @if($compra->proveedor?->email)
+                    <div class="flex justify-between text-sm px-1">
+                        <span class="text-base-content/60">Email</span>
+                        <span class="font-medium">{{ $compra->proveedor->email }}</span>
+                    </div>
+                @endif
+            </div>
         </div>
 
-        <div data-slot="card-content" class="px-6 [&:last-child]:pb-6">
-            <div class="grid gap-4">
-
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div class="space-y-2">
-                        <label for="proveedor_id" class="text-sm font-medium">Proveedor</label>
-                        <select id="proveedor_id" name="proveedor_id"
-                            class="select w-full h-10 rounded-md border-base-300 bg-base-200
-                        px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
-                        focus:border-primary transition @error('proveedor_id') input-error @enderror"
-                            disabled>
-                            <option value="">{{ $compra->proveedor->nombre }}</option>
-                        </select>
-                        @error('proveedor_id')
-                            <small class="text-red-500 error-message">{{ $message }}</small>
-                        @enderror
+        {{-- Empleado / Receptor --}}
+        <div class="card bg-base-100 shadow-md rounded-xl">
+            <div class="px-6 py-4 border-b border-base-200 flex items-center gap-2">
+                <div class="bg-blue-100 dark:bg-blue-900/40 p-2 rounded-lg">
+                    <svg class="size-5 text-blue-600" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+                    </svg>
+                </div>
+                <h4 class="font-semibold text-base">Receptor</h4>
+            </div>
+            <div class="px-6 py-5 space-y-3">
+                <div class="flex items-center gap-3 p-3 bg-base-200/50 rounded-lg">
+                    <div class="bg-blue-600 size-12 rounded-full flex items-center justify-center text-white font-bold text-lg shrink-0">
+                        {{ strtoupper(substr($compra->empleado->nombre ?? 'E', 0, 1)) }}
                     </div>
-
-                    <!-- entregar a -->
-                    <div class="space-y-2">
-                        <label for="destino_tipo" class="text-sm font-medium">Destino de la compra</label>
-                        <select id="destino_tipo" name="destino_tipo"
-                            class="select w-full h-10 rounded-md border-base-300 bg-base-200
-                        px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
-                        focus:border-primary transition @error('destino_tipo') input-error @enderror"
-                            disabled>
-                            <option value="">{{ class_basename($compra->destino_tipo) }}</option>
-                        </select>
-                    </div>
-                    <div class="space-y-2">
-                        <label for="destino_id" class="text-sm font-medium">Enviar a:</label>
-                        <select id="destino_id" name="destino_id"
-                            class="select w-full h-10 rounded-md border-base-300 bg-base-200
-                        px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
-                        focus:border-primary transition @error('destino_id') input-error @enderror"
-                            disabled>
-                            <option value="">{{ $compra->destino_nombre }}</option>
-                        </select>
+                    <div>
+                        <p class="font-semibold">{{ $compra->empleado->nombre ?? '—' }}</p>
+                        @if($compra->empleado?->dni)
+                            <p class="text-sm text-base-content/60">DNI: {{ $compra->empleado->dni }}</p>
+                        @endif
                     </div>
                 </div>
-                <div class="grid grid-cols-1 gap-4">
-                    <div class="space-y-2">
-                        <label for="asunto_obra_automotor" class="text-sm font-medium">Asunto de la compra</label>
-                        <textarea value="" type="text" id="asunto_obra_automotor" name="asunto_obra_automotor"
-                            placeholder="Ingrese una justificacion breve de la compra"
-                            class="textarea w-full rounded-md border border-base-300 bg-base-200 focus:outline-none focus:ring-2 focus:ring-primary 
-                        focus:border-primary transition @error('asunto_obra_automotor') input-error @enderror"
-                            disabled>{{ $compra->asunto_obra_automotor }}</textarea>
-                    </div>
-                </div>
-                <div class="grid grid-cols-1 gap-4">
-                    <div class="space-y-2">
-                        <label for="observacion" class="text-sm font-medium">Observaciones</label>
-                        <textarea type="text" id="observacion" name="observacion"
-                            placeholder="Ingrese una justificacion breve de la compra"
-                            class="textarea w-full rounded-md border border-base-300 bg-base-200 focus:outline-none focus:ring-2 focus:ring-primary 
-                        focus:border-primary transition @error('observacion') input-error @enderror"
-                            disabled>{{ $compra->observacion }}</textarea>
+                <div class="pt-2 border-t border-base-200">
+                    <p class="text-xs text-base-content/50 mb-1">Registrado por:</p>
+                    <div class="flex items-center gap-2">
+                        <p class="text-sm font-medium">{{ $compra->usuario->name ?? 'Sistema' }}</p>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <div data-slot="card" class="card bg-base-100 shadow-xl p-4 mt-4">
-        <div data-slot="card-header"
-            class="@container/card-header grid auto-rows-min grid-rows-[auto_auto] items-start gap-1.5 px-6 pt-6">
-            <h4 class="text-1xl font-semibold">Datos de la compra</h4>
-            <p class="text-muted-foreground"></p>
+        {{-- Destino --}}
+        <div class="card bg-base-100 shadow-md rounded-xl">
+            <div class="px-6 py-4 border-b border-base-200 flex items-center gap-2">
+                <div class="bg-violet-100 dark:bg-violet-900/40 p-2 rounded-lg">
+                    @if($esVehiculo)
+                        <svg class="size-5 text-violet-600" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M8.25 18.75a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 0 1-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 0 0-3.213-9.193 2.056 2.056 0 0 0-1.58-.86H14.25M16.5 18.75h-2.25m0-11.177v-.958c0-.568-.422-1.048-.987-1.106a48.554 48.554 0 0 0-10.026 0 1.106 1.106 0 0 0-.987 1.106v7.635m12-6.677v6.677m0 4.5v-4.5m0 0h-12" />
+                        </svg>
+                    @elseif($esObra)
+                        <svg class="size-5 text-violet-600" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M11.42 15.17 17.25 21A2.652 2.652 0 0 0 21 17.25l-5.877-5.877M11.42 15.17l2.496-3.03c.317-.384.74-.626 1.208-.766M11.42 15.17l-4.655 5.653a2.548 2.548 0 1 1-3.586-3.586l6.837-5.63m5.108-.233c.55-.164 1.163-.188 1.743-.14a4.5 4.5 0 0 0 4.486-6.336l-3.276 3.277a3.004 3.004 0 0 1-2.25-2.25l3.276-3.276a4.5 4.5 0 0 0-6.336 4.486c.091 1.076-.071 2.264-.904 2.95l-.102.085m-1.745 1.437L5.909 7.5H4.5L2.25 3.75l1.5-1.5L7.5 4.5v1.409l4.26 4.26m-1.745 1.437 1.745-1.437m6.615 8.206L15.75 15.75M4.867 19.125h.008v.008h-.008v-.008Z" />
+                        </svg>
+                    @elseif($esDeposito)
+                        <svg class="size-5 text-violet-600" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M20.25 7.5l-.625 10.632a2.25 2.25 0 0 1-2.247 2.118H6.622a2.25 2.25 0 0 1-2.247-2.118L3.75 7.5M10 11.25h4M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125Z" />
+                        </svg>
+                    @else
+                        <svg class="size-5 text-violet-600" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z"/>
+                        </svg>
+                    @endif
+                </div>
+                <h4 class="font-semibold text-base">{{ $destinoLabel }}</h4>
+            </div>
+            <div class="px-6 py-5 space-y-3">
+                @if($destino)
+                    @if($esVehiculo)
+                        <div class="p-3 bg-violet-50 dark:bg-violet-900/20 rounded-lg text-center">
+                            <p class="text-2xl font-bold text-violet-700">{{ $destino->patente ?? '—' }}</p>
+                            <p class="text-xs text-base-content/60 mt-1">Patente</p>
+                        </div>
+                        <div class="space-y-2 text-sm">
+                            <div class="flex justify-between px-1">
+                                <span class="text-base-content/60">Marca:</span>
+                                <span class="font-medium">{{ $destino->marca ?? '—' }}</span>
+                            </div>
+                            <div class="flex justify-between px-1">
+                                <span class="text-base-content/60">Modelo:</span>
+                                <span class="font-medium">{{ $destino->modelo ?? '—' }}</span>
+                            </div>
+                            <div class="flex justify-between px-1">
+                                <span class="text-base-content/60">Tipo:</span>
+                                <span class="font-medium">{{ $destino->tipo ?? '—' }}</span>
+                            </div>
+                        </div>
+                    @elseif($esObra)
+                        <div class="space-y-2 text-sm">
+                            <div class="flex justify-between px-1">
+                                <span class="text-base-content/60">Nombre:</span>
+                                <span class="font-medium">{{ $destino->nombre ?? '—' }}</span>
+                            </div>
+                            @if($destino->descripcion)
+                                <div class="flex justify-between px-1">
+                                    <span class="text-base-content/60">Descripción:</span>
+                                    <span class="font-medium">{{ $destino->descripcion }}</span>
+                                </div>
+                            @endif
+                        </div>
+                    @elseif($esDeposito)
+                        <div class="space-y-2 text-sm">
+                            <div class="flex justify-between px-1">
+                                <span class="text-base-content/60">Nombre:</span>
+                                <span class="font-medium">{{ $destino->nombre ?? '—' }}</span>
+                            </div>
+                            @if($destino->ubicacion)
+                                <div class="flex justify-between px-1">
+                                    <span class="text-base-content/60">Ubicación:</span>
+                                    <span class="font-medium">{{ $destino->ubicacion }}</span>
+                                </div>
+                            @endif
+                        </div>
+                    @elseif($esEquipo)
+                        <div class="space-y-2 text-sm">
+                            <div class="flex justify-between px-1">
+                                <span class="text-base-content/60">Equipamiento:</span>
+                                <span class="font-medium">{{ $destino->equipamiento ?? '—' }}</span>
+                            </div>
+                            <div class="flex justify-between px-1">
+                                <span class="text-base-content/60">Marca:</span>
+                                <span class="font-medium">{{ $destino->marca ?? '—' }}</span>
+                            </div>
+                        </div>
+                    @else
+                        <p class="text-sm text-base-content/60 px-1">{{ $compra->destino_nombre }}</p>
+                    @endif
+                @else
+                    <div class="flex flex-col items-center justify-center py-4 text-center text-base-content/40">
+                        <svg class="size-10 mb-2" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z"/>
+                        </svg>
+                        <p class="text-sm">Sin destino asignado</p>
+                    </div>
+                @endif
+            </div>
         </div>
 
-        <div data-slot="card-content" class="px-6 [&:last-child]:pb-6">
-            <div class="grid gap-4">
-                <div class="overflow-x-auto">
-                <table class="table table-zebra w-full text-sm">
+    </div>
+
+    {{-- ============================== --}}
+    {{-- DETALLES DE LA ORDEN --}}
+    {{-- ============================== --}}
+    <div class="card bg-base-100 shadow-md rounded-xl mb-6">
+        <div class="px-6 py-4 border-b border-base-200 flex items-center gap-2">
+            <svg class="w-5 h-5 text-primary" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                <path d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 0 0 2.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 0 0-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75 2.25 2.25 0 0 0-.1-.664m-5.8 0A2.251 2.251 0 0 1 13.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25ZM6.75 12h.008v.008H6.75V12Zm0 3h.008v.008H6.75V15Zm0 3h.008v.008H6.75V18Z"/>
+            </svg>
+            <h4 class="text-base font-semibold">Detalles de la Orden</h4>
+        </div>
+        <div class="px-6 py-5">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                @php
+                    $detalleItems = [
+                        ['label' => 'Fecha de Emisión', 'value' => $compra->fecha_orden ? \Carbon\Carbon::parse($compra->fecha_orden)->format('d/m/Y') : '—', 'icon' => 'calendar'],
+                        ['label' => 'N° de Orden', 'value' => $compra->nr_orden ?? '—', 'icon' => 'file'],
+                        ['label' => 'Sub Cuenta', 'value' => $compra->sub_cuenta ?? '—', 'icon' => 'card'],
+                        ['label' => 'Tipo de Destino', 'value' => class_basename($compra->destino_tipo ?? '—'), 'icon' => 'map'],
+                        ['label' => 'Enviar a', 'value' => $compra->destino_nombre, 'icon' => 'location'],
+                        ['label' => 'Estado', 'value' => ucfirst($compra->estado_compra ?? 'Pendiente'), 'icon' => 'badge'],
+                    ];
+                    $svgIcons = [
+                        'calendar' => '<svg class="size-5 text-base-content/40 mt-0.5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/></svg>',
+                        'file' => '<svg class="size-5 text-base-content/40 mt-0.5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2 2 0 0 1 1.414.586l3.999 4A2 2 0 0 1 20 8v12a2 2 0 0 1-2 2z"/><path d="M14 2v5a1 1 0 0 0 1 1h5"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>',
+                        'card' => '<svg class="size-5 text-base-content/40 mt-0.5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" x2="22" y1="10" y2="10"/></svg>',
+                        'map' => '<svg class="size-5 text-base-content/40 mt-0.5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M3 7l6-3 6 3 6-3v13l-6 3-6-3-6 3V7Z"/><path d="M9 4v13"/><path d="M15 7v13"/></svg>',
+                        'location' => '<svg class="size-5 text-base-content/40 mt-0.5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></svg>',
+                        'badge' => '<svg class="size-5 text-base-content/40 mt-0.5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z"/><path d="m9 12 2 2 4-4"/></svg>',
+                    ];
+                @endphp
+
+                @foreach ($detalleItems as $item)
+                    <div class="flex items-start gap-3 p-3 rounded-lg bg-base-200/40">
+                        {!! $svgIcons[$item['icon']] !!}
+                        <div class="flex-1 min-w-0">
+                            <p class="text-xs text-base-content/60 mb-0.5">{{ $item['label'] }}</p>
+                            <p class="font-medium text-sm truncate">{{ $item['value'] }}</p>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+
+            {{-- Asunto --}}
+            @if($compra->asunto_obra_automotor)
+                <div class="mb-4">
+                    <p class="text-sm text-base-content/60 mb-2 font-medium">Asunto de la compra</p>
+                    <p class="text-sm leading-relaxed p-3 rounded-lg bg-base-200/50 border border-base-300">
+                        {{ $compra->asunto_obra_automotor }}
+                    </p>
+                </div>
+            @endif
+
+            {{-- Observaciones --}}
+            @if($compra->observacion)
+                <div>
+                    <p class="text-sm text-base-content/60 mb-2 font-medium">Observaciones</p>
+                    <p class="text-sm leading-relaxed p-3 rounded-lg bg-base-200/50 border border-base-300">
+                        {{ $compra->observacion }}
+                    </p>
+                </div>
+            @endif
+        </div>
+    </div>
+
+    {{-- ============================== --}}
+    {{-- TABLA DE PRODUCTOS --}}
+    {{-- ============================== --}}
+    <div class="card bg-base-100 shadow-md rounded-xl mb-6">
+        <div class="px-6 py-4 border-b border-base-200 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <svg class="w-5 h-5 text-primary" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                    <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><line x1="3" x2="21" y1="6" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/>
+                </svg>
+                <h4 class="text-base font-semibold">Productos de la Compra</h4>
+            </div>
+            <span class="badge badge-neutral">{{ $compra->detalle_compras->count() }} ítems</span>
+        </div>
+        <div class="px-6 py-5">
+            <div class="overflow-x-auto">
+                <table class="table w-full text-sm">
                     <thead>
-                        <tr>
-                            <th class="text-center">Nr</th>
-                            <th class="text-center">Producto</th>
-                            <th class="text-center">Precio</th>
+                        <tr class="bg-base-200/60">
+                            <th class="text-center rounded-l-lg w-10">#</th>
+                            <th>Producto</th>
+                            <th class="text-right">Precio Unit.</th>
                             <th class="text-center">Cantidad</th>
-                            <th class="text-center">Subtotal</th>
+                            <th class="text-right rounded-r-lg">Subtotal</th>
                         </tr>
                     </thead>
                     <tbody>
                         @php $nr = 1; @endphp
-
-                        @foreach ($compra->detalle_compras as $detalle)
-                            <tr>
-                                <td class="text-center">{{ $nr++ }}</td>
-                                <td class="text-center">{{ $detalle->producto->nombre }}</td>
-
-                                {{-- Precio: input editable --}}
-                                <td class="text-center">
-                                    ${{ number_format($detalle->precio, 2) ?? '' }}
+                        @forelse ($compra->detalle_compras as $detalle)
+                            <tr class="hover:bg-base-200/40 transition-colors">
+                                <td class="text-center text-base-content/50 font-mono text-xs">{{ $nr++ }}</td>
+                                <td>
+                                    <div class="flex items-center gap-2">
+                                        <div class="bg-indigo-100 dark:bg-indigo-900/40 p-1.5 rounded-md">
+                                            <svg class="size-4 text-indigo-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M20.25 7.5l-.625 10.632a2.25 2.25 0 0 1-2.247 2.118H6.622a2.25 2.25 0 0 1-2.247-2.118L3.75 7.5m8.25 3v6.75m0 0-3-3m3 3 3-3M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125Z"/>
+                                            </svg>
+                                        </div>
+                                        <span class="font-medium">{{ $detalle->producto->nombre ?? '—' }}</span>
+                                    </div>
                                 </td>
-
-                                {{-- Cantidad --}}
+                                <td class="text-right font-mono">${{ number_format($detalle->precio, 2, ',', '.') }}</td>
                                 <td class="text-center">
-                                    <input type="text" class="text-center cantidad" readonly
-                                        value="{{ $detalle->cantidad }}">
+                                    <span class="badge badge-outline">{{ $detalle->cantidad }}</span>
                                 </td>
-
-                                {{-- Subtotal --}}
-                                <td class="text-center">
-                                    ${{ number_format($detalle->subtotal, 2) ?? '' }}
+                                <td class="text-right font-semibold font-mono text-indigo-600">
+                                    ${{ number_format($detalle->subtotal, 2, ',', '.') }}
                                 </td>
                             </tr>
-                        @endforeach
+                        @empty
+                            <tr>
+                                <td colspan="5" class="text-center py-8 text-base-content/50">
+                                    <svg class="size-10 mx-auto mb-2 opacity-30" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/>
+                                    </svg>
+                                    <p>No hay productos registrados</p>
+                                </td>
+                            </tr>
+                        @endforelse
                     </tbody>
-
-                    {{-- Total --}}
                     <tfoot>
-                        <tr>
-                            <td colspan="4" class="text-right font-bold">Total:</td>
-                            <td class="text-center">
-                                ${{ number_format($compra->total, 2) }}
+                        <tr class="border-t-2 border-base-300">
+                            <td colspan="4" class="text-right font-bold text-base pr-4 py-3">Total General:</td>
+                            <td class="text-right font-bold text-lg text-indigo-600 font-mono py-3">
+                                ${{ number_format($compra->total, 2, ',', '.') }}
                             </td>
                         </tr>
                     </tfoot>
-
                 </table>
-                </div>
             </div>
-            @if ($compra->foto_factura)
-                @php
-                    $archivo = $compra->foto_factura;
-                    $extension = strtolower(pathinfo($archivo, PATHINFO_EXTENSION));
-                @endphp
-
-                <div class="card bg-base-100 shadow-md border border-base-300 max-w-md">
-                    <div class="card-body gap-3">
-                        <h2 class="card-title text-base">
-                            Factura de la compra
-                        </h2>
-
-                        @if ($extension === 'pdf')
-                            <div class="flex items-center gap-3">
-                                <span class="badge badge-error badge-outline">PDF</span>
-
-                                <a href="{{ asset('storage/' . $archivo) }}" target="_blank"
-                                    class="btn btn-sm btn-primary">
-                                    Ver factura
-                                </a>
-
-                                <a href="{{ asset('storage/' . $archivo) }}" download class="btn btn-sm btn-outline">
-                                    Descargar
-                                </a>
-                            </div>
-                        @else
-                            <div class="rounded-lg overflow-hidden border border-base-300">
-                                <img src="{{ asset('storage/' . $archivo) }}" alt="Factura"
-                                    class="w-full object-cover">
-                            </div>
-
-                            <div class="flex justify-end">
-                                <a href="{{ asset('storage/' . $archivo) }}" target="_blank"
-                                    class="btn btn-sm btn-outline">
-                                    Ver en tamaño completo
-                                </a>
-                            </div>
-                        @endif
-                    </div>
-                </div>
-            @else
-                <div class="alert alert-info max-w-md">
-                    <span>No hay factura cargada para esta compra.</span>
-                </div>
-            @endif
-
         </div>
     </div>
-    <!-- ========================= -->
-    <!-- HISTORIAL DE ACTIVIDAD -->
-    <!-- ========================= -->
+
+    {{-- ============================== --}}
+    {{-- FACTURA / COMPROBANTE --}}
+    {{-- ============================== --}}
+    @php
+        $archivo = $compra->foto_factura;
+        $extension = $archivo ? strtolower(pathinfo($archivo, PATHINFO_EXTENSION)) : null;
+    @endphp
+
+    @if($compra->foto_factura)
+        <div class="card bg-base-100 shadow-md rounded-xl border border-l-4 border-l-emerald-500 mb-6 overflow-hidden">
+            <div class="px-6 py-4 border-b border-base-200 bg-gradient-to-r from-emerald-50 to-teal-50 dark:from-slate-800 dark:to-slate-900 flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <div class="bg-emerald-500 p-2 rounded-lg">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="size-5 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <rect width="18" height="18" x="3" y="3" rx="2" ry="2"/>
+                            <circle cx="9" cy="9" r="2"/>
+                            <path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <h4 class="text-white">Comprobante / Factura</h4> 
+                        <p class="text-xs text-white">Archivo adjunto a la orden de compra</p>
+                    </div>
+                </div>
+                <span class="badge {{ $extension === 'pdf' ? 'badge-error' : 'badge-success' }} badge-outline uppercase">
+                    {{ $extension ?? 'archivo' }}
+                </span>
+            </div>
+            <div class="px-6 py-6">
+                @if($extension === 'pdf')
+                    <div class="flex items-center gap-4 p-4 bg-base-200/50 rounded-xl border border-dashed border-base-300">
+                        <div class="bg-red-100 dark:bg-red-900/30 p-3 rounded-lg">
+                            <svg class="size-8 text-red-500" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z"/>
+                            </svg>
+                        </div>
+                        <div class="flex-1">
+                            <p class="font-medium">Factura en PDF</p>
+                            <p class="text-sm text-base-content/60">Haga clic para ver o descargar el documento</p>
+                        </div>
+                        <div class="flex gap-2">
+                            <a href="{{ asset('storage/' . $archivo) }}" target="_blank"
+                                class="btn btn-sm btn-primary gap-1">
+                                <svg class="size-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M2.25 12s4.5-8.25 9.75-8.25 9.75 8.25 9.75 8.25-4.5 8.25-9.75 8.25S2.25 12 2.25 12z"/><circle cx="12" cy="12" r="3"/></svg>
+                                Ver
+                            </a>
+                            <a href="{{ asset('storage/' . $archivo) }}" download
+                                class="btn btn-sm btn-outline gap-1">
+                                <svg class="size-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3"/></svg>
+                                Descargar
+                            </a>
+                        </div>
+                    </div>
+                @else
+                    <div class="border-2 border-dashed border-emerald-300 dark:border-emerald-700 bg-base-200/30 rounded-2xl p-4 text-center">
+                        <img src="{{ asset('storage/' . $archivo) }}" alt="Factura de la compra"
+                            class="mx-auto max-h-72 rounded-xl border border-base-300 shadow-md object-contain">
+                        <div class="mt-4">
+                            <a href="{{ asset('storage/' . $archivo) }}" target="_blank"
+                                class="btn btn-sm btn-outline gap-1">
+                                <svg class="size-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M2.25 12s4.5-8.25 9.75-8.25 9.75 8.25 9.75 8.25-4.5 8.25-9.75 8.25S2.25 12 2.25 12z"/><circle cx="12" cy="12" r="3"/></svg>
+                                Ver en tamaño completo
+                            </a>
+                        </div>
+                    </div>
+                @endif
+            </div>
+        </div>
+    @else
+        <div class="card bg-base-100 shadow-md rounded-xl border border-l-4 border-l-amber-400 mb-6 overflow-hidden">
+            <div class="px-6 py-4 border-b border-base-200 bg-gradient-to-r from-amber-50 to-yellow-50 dark:from-slate-800 dark:to-slate-900 flex items-center gap-3">
+                <div class="bg-amber-500 p-2 rounded-lg">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="size-5 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008Z"/>
+                    </svg>
+                </div>
+                <h4 class="font-semibold text-base">Comprobante / Factura</h4>
+            </div>
+            <div class="px-6 py-8 flex flex-col items-center justify-center text-center">
+                <div class="bg-amber-100 dark:bg-amber-900/30 p-4 rounded-full mb-4">
+                    <svg class="size-10 text-amber-500" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m6.75 12-3-3m0 0-3 3m3-3v6m0-15.75h-5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z"/>
+                    </svg>
+                </div>
+                <h5 class="text-base font-semibold text-base-content/70 mb-1">Sin factura adjunta</h5>
+                <p class="text-sm text-base-content/50 max-w-sm">
+                    No se ha adjuntado comprobante para esta orden de compra. Puede cargarlo desde la opción de edición.
+                </p>
+            </div>
+        </div>
+    @endif
+
+    {{-- ============================== --}}
+    {{-- HISTORIAL DE ACTIVIDAD --}}
+    {{-- ============================== --}}
     <x-historial-actividad :model="$compra" :limit="10" />
+
 @endsection
-@section('js')
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            function calcularTotal() {
-                let total = 0;
-                document.querySelectorAll('tbody tr').forEach(function(row) {
-                    const precio = parseFloat(row.querySelector('.precio').value) || 0;
-                    const cantidad = parseFloat(row.querySelector('.cantidad').value) || 0;
-                    const subtotal = precio * cantidad;
 
-                    row.querySelector('.subtotal').value = subtotal.toFixed(2);
-                    total += subtotal;
-                });
-
-                document.getElementById('total_compra').value = total.toFixed(2);
-            }
-
-            // recalcular al cambiar cualquier precio
-            document.querySelectorAll('.precio').forEach(function(input) {
-                input.addEventListener('input', calcularTotal);
-            });
-
-            // calcular al cargar la página
-            calcularTotal();
-        });
-    </script>
-@endsection

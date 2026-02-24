@@ -1,6 +1,6 @@
 <?php $__env->startSection('title', 'Combustibles'); ?>
-<?php $__env->startSection('content'); ?> 
-    <!-- Titulo y boton --> 
+<?php $__env->startSection('content'); ?>
+    <!-- Titulo y boton -->
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
         <h1 class="text-xl sm:text-2xl font-semibold">Combustibles</h1>
         <div class="flex flex-wrap gap-2">
@@ -26,10 +26,10 @@
 <?php $component = $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
 <?php unset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
 <?php endif; ?>
-                Ver Precios 
+                Ver Precios
             </button>
             <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('combustibles-update-prices')): ?>
-                <button onclick="crearCombustible.showModal()" class="btn btn-sm sm:btn-md btn-warning tooltip tooltip-warning" 
+                <button onclick="crearCombustible.showModal()" class="btn btn-sm sm:btn-md btn-warning tooltip tooltip-warning"
                     data-tip="Actualizar los precios de los combustibles">
                     <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c = $attributes; } ?>
@@ -52,10 +52,11 @@
 <?php unset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
 <?php endif; ?>
                     Actualizar Precios
-                </button> 
-            <?php endif; ?> 
-            <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('combustibles-create')): ?> 
-                <a href="<?php echo e(route('combustibles.create')); ?>" class="btn btn-sm sm:btn-md btn-primary tooltip tooltip-primary tooltip-bottom"
+                </button>
+            <?php endif; ?>
+            <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('combustibles-create')): ?>
+                <a href="<?php echo e(route('combustibles.create')); ?>"
+                    class="btn btn-sm sm:btn-md btn-primary tooltip tooltip-primary tooltip-bottom"
                     data-tip="Crear orden de carga">
                     <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c = $attributes; } ?>
@@ -76,18 +77,17 @@
 <?php if (isset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
 <?php $component = $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
 <?php unset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
-<?php endif; ?> 
+<?php endif; ?>
                     Nueva Carga
                 </a>
-            <?php endif; ?> 
-        </div> 
+            <?php endif; ?>
+        </div>
     </div>
     <div class="breadcrumbs text-sm mb-6">
         <ul>
             <li>
                 <a href="<?php echo e(route('admin.index')); ?>">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                        class="h-4 w-4 stroke-current">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="h-4 w-4 stroke-current">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"></path>
                     </svg>
@@ -112,15 +112,15 @@
             <div>
                 <label class="text-sm text-gray-500">Desde</label>
                 <input type="date" name="desde" class="w-full h-10 rounded-md border border-base-300 bg-base-200
-                        px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
-                        focus:border-primary transition" value="<?php echo e(request('desde')); ?>">
+                            px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
+                            focus:border-primary transition" value="<?php echo e(request('desde')); ?>">
             </div>
 
             <div>
                 <label class="text-sm text-gray-500">Hasta</label>
                 <input type="date" name="hasta" class="w-full h-10 rounded-md border border-base-300 bg-base-200
-                        px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
-                        focus:border-primary transition" value="<?php echo e(request('hasta')); ?>"> 
+                            px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
+                            focus:border-primary transition" value="<?php echo e(request('hasta')); ?>">
             </div>
 
             <div class="flex gap-2">
@@ -131,7 +131,7 @@
         </form>
     </div>
 
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6"> 
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
 
         <!-- Card 1 -->
         <div class="bg-base-100 shadow-xl bg-card text-card-foreground flex flex-col gap-6 rounded-xl">
@@ -147,7 +147,7 @@
                         <path d="M14 13h2a2 2 0 0 1 2 2v2a2 2 0 0 0 4 0v-6.998a2 2 0 0 0-.59-1.42L18 5"></path>
                         <path d="M14 21V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v16"></path>
                         <path d="M2 21h13"></path>
-                        <path d="M3 9h11"></path> 
+                        <path d="M3 9h11"></path>
                     </svg>
                 </div>
             </div>
@@ -202,10 +202,9 @@
                 <!-- INPUT -->
                 <label class="w-full">
                     <input name="search" value="<?php echo e(request('search') ?? ''); ?>" type="text"
-                        placeholder="Buscar por vehiculo, combustible, fecha..."
-                        class="w-full h-10 rounded-md border border-base-300 bg-base-200 
-                        px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
-                        focus:border-primary transition" />
+                        placeholder="Buscar por vehiculo, combustible, fecha..." class="w-full h-10 rounded-md border border-base-300 bg-base-200 
+                            px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
+                            focus:border-primary transition" />
                 </label>
 
                 <!-- BOTÓN -->
@@ -252,7 +251,8 @@
 <?php if (isset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
 <?php $component = $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
 <?php unset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
-<?php endif; ?> Limpiar</a>
+<?php endif; ?>
+                        Limpiar</a>
                 <?php endif; ?>
             </div>
         </div>
@@ -265,11 +265,12 @@
                 <!-- TÍTULO + FILTRO -->
                 <div class="flex items-center justify-between">
                     <h4 class="text-lg font-semibold">Historial de Cargas</h4>
-                    
+
                     <!-- Filtro por estado -->
                     <div class="dropdown dropdown-end">
-                        <label tabindex="0" class="btn btn-sm btn-ghost gap-2 <?php echo e(request('estado') == 'eliminados' || request('estado') == 'todos' ? 'text-primary' : ''); ?>">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" 
+                        <label tabindex="0"
+                            class="btn btn-sm btn-ghost gap-2 <?php echo e(request('estado') == 'eliminados' || request('estado') == 'todos' ? 'text-primary' : ''); ?>">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
                                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
                             </svg>
@@ -279,15 +280,17 @@
                                 <span class="badge badge-neutral badge-sm">Todos</span>
                             <?php endif; ?>
                         </label>
-                        <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow-lg bg-base-100 rounded-box w-52 border border-base-300">
+                        <ul tabindex="0"
+                            class="dropdown-content z-[1] menu p-2 shadow-lg bg-base-100 rounded-box w-52 border border-base-300">
                             <li class="menu-title">
                                 <span>Filtrar por estado</span>
                             </li>
                             <li>
-                                <a href="<?php echo e(route('combustibles.index', array_merge(request()->except('estado', 'page'), []))); ?>" 
-                                   class="<?php echo e(!request('estado') || request('estado') == 'activo' ? 'active' : ''); ?>">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" 
-                                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-success">
+                                <a href="<?php echo e(route('combustibles.index', array_merge(request()->except('estado', 'page'), []))); ?>"
+                                    class="<?php echo e(!request('estado') || request('estado') == 'activo' ? 'active' : ''); ?>">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round" class="text-success">
                                         <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
                                         <polyline points="22 4 12 14.01 9 11.01"></polyline>
                                     </svg>
@@ -296,9 +299,10 @@
                             </li>
                             <li>
                                 <a href="<?php echo e(route('combustibles.index', array_merge(request()->except('page'), ['estado' => 'eliminados']))); ?>"
-                                   class="<?php echo e(request('estado') == 'eliminados' ? 'active' : ''); ?>">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" 
-                                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-error">
+                                    class="<?php echo e(request('estado') == 'eliminados' ? 'active' : ''); ?>">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round" class="text-error">
                                         <circle cx="12" cy="12" r="10"></circle>
                                         <line x1="15" y1="9" x2="9" y2="15"></line>
                                         <line x1="9" y1="9" x2="15" y2="15"></line>
@@ -308,9 +312,10 @@
                             </li>
                             <li>
                                 <a href="<?php echo e(route('combustibles.index', array_merge(request()->except('page'), ['estado' => 'todos']))); ?>"
-                                   class="<?php echo e(request('estado') == 'todos' ? 'active' : ''); ?>">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" 
-                                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    class="<?php echo e(request('estado') == 'todos' ? 'active' : ''); ?>">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round">
                                         <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
                                     </svg>
                                     Todos
@@ -320,54 +325,59 @@
                     </div>
                 </div>
             </div>
-        <!-- TABLA -->
-        <div class="overflow-x-auto mt-4">
-            <table class="table table-zebra w-full">
-                <thead>
-                    <tr>
-                        <th class="text-center">Nr orden</th> 
-                        <th class="text-center">Fecha</th>
-                        <th class="text-center">Vehículo</th> 
-                        <th class="text-center">Conductor</th>
-                        <th class="text-center">Tipo</th>
-                        <th class="text-center">Litros</th>
-                        <th class="text-center">Importe</th>
-                        <th class="text-center">Estado</th> 
-                        <th class="text-center">Acciones</th> 
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php $__currentLoopData = $combustibles; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $combustible): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                        <tr> 
-                            <td class="text-center"><?php echo e($combustible->codigo); ?></td> 
-                            <td class="text-center"><?php echo e($combustible->fecha ? \Carbon\Carbon::parse($combustible->fecha)->format('d/m/Y') : '—'); ?></td> 
-                            <td class="text-center"><?php echo e($combustible->destino->marca ?? 'N/A'); ?></td> 
-                            <td class="text-center"><?php echo e($combustible->empleado->nombre ?? 'N/A'); ?></td> 
-                            <td class="text-center"><?php echo e($combustible->tipo); ?></td> 
-                            <td class="text-center"><?php echo e($combustible->litros ?? 'N/A'); ?></td>
-                            <td class="text-center">$<?php echo e(number_format($combustible->monto,2,'.',',')); ?></td>
-                            <td class="text-center">
-                                    <?php
-                                        $badgeClass = match ($combustible->estado_carga) { 
-                                            'Pendiente' => 'badge badge-outline badge-warning', 
-                                            'Pendiente de factura' => 'badge badge-outline badge-error',
-                                            'Finalizada' => 'badge badge-outline badge-success',
-                                            'Cancelada' => 'badge badge-outline badge-error',
-                                            'Aprobada' => 'badge badge-outline badge-primary',
-                                            default => 'badge-ghost', 
-                                        }; 
-                                    ?>
-                                    <span class="badge <?php echo e($badgeClass); ?> badge-sm whitespace-nowrap overflow-hidden text-ellipsis max-w-[120px]" title="<?php echo e($combustible->estado_carga); ?>">
-                                        <?php echo e($combustible->estado_carga); ?>
+            <!-- TABLA -->
+            <div class="overflow-x-auto mt-4">
+                <table class="table table-zebra w-full">
+                    <thead>
+                        <tr>
+                            <th class="text-center">Nr orden</th>
+                            <th class="text-center">Fecha</th>
+                            <th class="text-center">Vehículo</th>
+                            <th class="text-center">Conductor</th>
+                            <th class="text-center">Tipo</th>
+                            <th class="text-center">Litros</th>
+                            <th class="text-center">Importe</th>
+                            <th class="text-center">Estado</th>
+                            <th class="text-center">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php $__currentLoopData = $combustibles; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $combustible): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                            <tr>
+                                                <td class="text-center"><?php echo e($combustible->codigo); ?></td>
+                                                <td class="text-center">
+                                                    <?php echo e($combustible->fecha ? \Carbon\Carbon::parse($combustible->fecha)->format('d/m/Y') : '—'); ?>
 
-                                    </span>
-                            </td> 
-                            <td class="text-center">
-                                <div class="flex items-center justify-center gap-2"> 
-                                    <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('combustibles-show')): ?> 
-                                    <a href="<?php echo e(route('combustibles.show', Crypt::encrypt($combustible->id))); ?>"  
-                                       class="btn btn-info btn-sm" title="ver carga">
-                                        <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
+                                                </td>
+                                                <td class="text-center"><?php echo e($combustible->destino->marca ?? 'N/A'); ?></td>
+                                                <td class="text-center"><?php echo e($combustible->empleado->nombre ?? 'N/A'); ?></td>
+                                                <td class="text-center"><?php echo e($combustible->tipo); ?></td>
+                                                <td class="text-center"><?php echo e($combustible->litros ?? 'N/A'); ?></td>
+                                                <td class="text-center">$<?php echo e(number_format($combustible->monto, 2, '.', ',')); ?></td>
+                                                <td class="text-center">
+                                                    <?php
+                                                        $badgeClass = match ($combustible->estado_carga) {
+                                                            'Pendiente' => 'badge badge-outline badge-warning',
+                                                            'Pendiente de factura' => 'badge badge-outline badge-error',
+                                                            'Finalizada' => 'badge badge-outline badge-success',
+                                                            'Cancelada' => 'badge badge-outline badge-error',
+                                                            'Aprobada' => 'badge badge-outline badge-primary',
+                                                            default => 'badge-ghost',
+                                                        }; 
+                                                    ?>
+                             <span
+                                                        class="badge <?php echo e($badgeClass); ?> badge-sm whitespace-nowrap overflow-hidden text-ellipsis max-w-[120px]"
+                                                        title="<?php echo e($combustible->estado_carga); ?>">
+                                                        <?php echo e($combustible->estado_carga); ?>
+
+                                                    </span>
+                                                </td>
+                                                <td class="text-center">
+                                                    <div class="flex items-center justify-center gap-2">
+                                                        <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('combustibles-show')): ?>
+                                                            <a href="<?php echo e(route('combustibles.show', Crypt::encrypt($combustible->id))); ?>"
+                                                                class="btn btn-info btn-sm" title="ver carga">
+                                                                <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c = $attributes; } ?>
 <?php $component = BladeUI\Icons\Components\Svg::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
 <?php $component->withName('heroicon-s-eye'); ?>
@@ -387,17 +397,17 @@
 <?php $component = $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
 <?php unset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
 <?php endif; ?>
-                                    </a>
-                                    <?php endif; ?> 
+                                                            </a>
+                                                        <?php endif; ?>
 
-                                    <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('combustibles-edit')): ?>
-                                        <?php if($combustible->estado_carga !== 'Finalizada'): ?>
-                                            <a href="<?php echo e(route('combustibles.edit', Crypt::encrypt($combustible->id))); ?>"
-                                            class="btn btn-warning btn-sm">
-                                                <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
+                                                        <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('combustibles-edit')): ?>
+                                                            <?php if($combustible->estado_carga !== 'Finalizada'): ?>
+                                                                <a href="<?php echo e(route('combustibles.edit', Crypt::encrypt($combustible->id))); ?>"
+                                                                    class="btn btn-warning btn-sm">
+                                                                    <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c = $attributes; } ?>
 <?php $component = BladeUI\Icons\Components\Svg::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
-<?php $component->withName('heroicon-s-pencil'); ?>
+<?php $component->withName('heroicon-s-document-currency-dollar'); ?>
 <?php if ($component->shouldRender()): ?>
 <?php $__env->startComponent($component->resolveView(), $component->data()); ?>
 <?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
@@ -414,14 +424,14 @@
 <?php $component = $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
 <?php unset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
 <?php endif; ?>
-                                            </a>
-                                        <?php endif; ?>
-                                    <?php endif; ?>
+                                                                </a>
+                                                            <?php endif; ?>
+                                                        <?php endif; ?>
 
-                                    <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('combustibles-report')): ?>
-                                    <button onclick="abrirModalPDFCarga(<?php echo e($combustible->id); ?>)"  
-                                       class="btn bg-primary btn-sm" title="Imprimir orden"> 
-                                        <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
+                                                        <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('combustibles-report')): ?>
+                                                            <button onclick="abrirModalPDFCarga(<?php echo e($combustible->id); ?>)"
+                                                                class="btn bg-primary btn-sm" title="Imprimir orden">
+                                                                <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c = $attributes; } ?>
 <?php $component = BladeUI\Icons\Components\Svg::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
 <?php $component->withName('heroicon-o-printer'); ?>
@@ -441,15 +451,15 @@
 <?php $component = $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
 <?php unset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
 <?php endif; ?>
-                                    </button>
-                                    <?php endif; ?>
+                                                            </button>
+                                                        <?php endif; ?>
 
-                                    <?php if($combustible->trashed()): ?>
-                                    
-                                        <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('combustibles-restore')): ?>
-                                        <button class="btn btn-success btn-sm"
-                                                onclick="abrirModalRestaurar('<?php echo e(url('/admin/combustibles/'. $combustible->id.'/restore')); ?>')">
-                                            <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
+                                                        <?php if($combustible->trashed()): ?>
+
+                                                            <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('combustibles-restore')): ?>
+                                                                <button class="btn btn-success btn-sm"
+                                                                    onclick="abrirModalRestaurar('<?php echo e(url('/admin/combustibles/' . $combustible->id . '/restore')); ?>')">
+                                                                    <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c = $attributes; } ?>
 <?php $component = BladeUI\Icons\Components\Svg::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
 <?php $component->withName('heroicon-s-arrow-uturn-left'); ?>
@@ -469,15 +479,15 @@
 <?php $component = $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
 <?php unset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
 <?php endif; ?>
-                                        </button>
-                                        <?php endif; ?> 
+                                                                </button>
+                                                            <?php endif; ?>
 
-                                    <?php else: ?> 
+                                                        <?php else: ?>
 
-                                        <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('combustibles-destroy')): ?> 
-                                        <button class="btn btn-error btn-sm"
-                                                onclick="confirmarEliminacion(<?php echo e($combustible->id); ?>)">
-                                            <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
+                                                            <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('combustibles-destroy')): ?>
+                                                                <button class="btn btn-error btn-sm"
+                                                                    onclick="confirmarEliminacion(<?php echo e($combustible->id); ?>)">
+                                                                    <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c = $attributes; } ?>
 <?php $component = BladeUI\Icons\Components\Svg::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
 <?php $component->withName('heroicon-s-trash'); ?>
@@ -497,14 +507,14 @@
 <?php $component = $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
 <?php unset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
 <?php endif; ?>
-                                        </button>
-                                        <?php endif; ?> 
+                                                                </button>
+                                                            <?php endif; ?>
 
-                                    <?php endif; ?>
+                                                        <?php endif; ?>
 
-                                    </div>
-                                </td>
-                            </tr>
+                                                    </div>
+                                                </td>
+                                            </tr>
                         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                     </tbody>
                 </table>
@@ -558,8 +568,7 @@
                             <?php if($i == $currentPage): ?>
                                 <button class="join-item btn btn-square btn-active"><?php echo e($i); ?></button>
                             <?php else: ?>
-                                <a href="<?php echo e($combustibles->url($i)); ?>"
-                                    class="join-item btn btn-square"><?php echo e($i); ?></a>
+                                <a href="<?php echo e($combustibles->url($i)); ?>" class="join-item btn btn-square"><?php echo e($i); ?></a>
                             <?php endif; ?>
                         <?php endfor; ?>
 
@@ -568,8 +577,7 @@
                             <?php if($combustibles->currentPage() < $totalPages - 4): ?>
                                 <button class="join-item btn btn-square btn-disabled">...</button>
                             <?php endif; ?>
-                            <a href="<?php echo e($combustibles->url($totalPages)); ?>"
-                                class="join-item btn btn-square"><?php echo e($totalPages); ?></a>
+                            <a href="<?php echo e($combustibles->url($totalPages)); ?>" class="join-item btn btn-square"><?php echo e($totalPages); ?></a>
                         <?php endif; ?>
 
                         
@@ -588,12 +596,13 @@
 
     <!-- Sección de Gráficos - Estadísticas -->
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-8 mb-6">
-        
+
         <!-- Gráfico: Consumo Mensual -->
         <div class="card bg-base-100 shadow">
             <div class="card-body p-5">
                 <h2 class="text-sm font-semibold text-base-content/70 mb-3 flex items-center gap-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M3 3v18h18"></path>
                         <path d="m19 9-5 5-4-4-3 3"></path>
                     </svg>
@@ -609,7 +618,8 @@
         <div class="card bg-base-100 shadow">
             <div class="card-body p-5">
                 <h2 class="text-sm font-semibold text-base-content/70 mb-3 flex items-center gap-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M21.21 15.89A10 10 0 1 1 8 2.83"></path>
                         <path d="M22 12A10 10 0 0 0 12 2v10z"></path>
                     </svg>
@@ -627,8 +637,11 @@
     <div class="card bg-base-100 shadow mb-6">
         <div class="card-body p-5">
             <h2 class="text-sm font-semibold text-base-content/70 mb-3 flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2"></path>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path
+                        d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2">
+                    </path>
                     <circle cx="7" cy="17" r="2"></circle>
                     <path d="M9 17h6"></path>
                     <circle cx="17" cy="17" r="2"></circle>
@@ -655,29 +668,26 @@
                 Actualizar precios de los combustibles
             </h3>
 
-            <form action="<?php echo e(url('/admin/combustibles/update-prices')); ?>" method="POST" class="space-y-5"
-                id="form">
+            <form action="<?php echo e(url('/admin/combustibles/update-prices')); ?>" method="POST" class="space-y-5" id="form">
                 <?php echo csrf_field(); ?>
                 <?php echo method_field('post'); ?>
                 <!-- Nombre -->
                 <div class="form-control">
                     <label class="text-sm font-medium">Nombre<span class="text-red-600">*</span></label>
-                    <select id="id" name="id"
-                        class="w-full h-10 rounded-md border border-base-300 bg-base-200 
-                        px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary
-                        focus:border-primary <?php $__errorArgs = ['id'];
+                    <select id="id" name="id" class="w-full h-10 rounded-md border border-base-300 bg-base-200 
+                            px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary
+                            focus:border-primary <?php $__errorArgs = ['id'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?> input-error <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?> transition"
-                        required>>
+unset($__errorArgs, $__bag); ?> transition" required>>
                         <option value="">Seleccionar</option>
                         <?php $__currentLoopData = $tipos_combustibles; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $combustible_tipo): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                            <option value="<?php echo e($combustible_tipo->id); ?>"
-                                data-combustible="<?php echo e($combustible_tipo->valor); ?>"><?php echo e($combustible_tipo->nombre ?? ''); ?>
+                            <option value="<?php echo e($combustible_tipo->id); ?>" data-combustible="<?php echo e($combustible_tipo->valor); ?>">
+                                <?php echo e($combustible_tipo->nombre ?? ''); ?>
 
                             </option>
                         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
@@ -696,20 +706,17 @@ unset($__errorArgs, $__bag); ?>
                 <!-- Nombre -->
                 <div id="combustible_info" class="hidden form-control">
                     <label class="text-sm font-medium">Precio actual del combustible seleccionado</label>
-                    <input type="number" id="combustible_id" min="0" step="0.01"
-                        class="w-full h-10 rounded-md border border-base-300 bg-base-200 
-                        px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary
-                        focus:border-primary "
-                        readonly>
+                    <input type="number" id="combustible_id" min="0" step="0.01" class="w-full h-10 rounded-md border border-base-300 bg-base-200 
+                            px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary
+                            focus:border-primary " readonly>
                 </div>
                 <!-- Monto Máximo -->
                 <div class="space-y-2">
                     <label for="precio" class="text-sm font-medium">Nuevo precio del combustible<span
                             class="text-red-600">*</span></label>
-                    <input type="number" id="precio" min="0" name="precio" placeholder="0" step="0.01"
-                        class="w-full h-10 rounded-md border border-base-300 bg-base-200 
-                        px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary
-                        focus:border-primary <?php $__errorArgs = ['precio'];
+                    <input type="text" id="precio" name="precio" placeholder="0,00" class="w-full h-10 rounded-md border border-base-300 bg-base-200 
+                            px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary
+                            focus:border-primary <?php $__errorArgs = ['precio'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -732,15 +739,15 @@ unset($__errorArgs, $__bag); ?>
 
                 <!-- Descripción -->
                 <div class="form-control">
-                    <label class="text-sm font-medium"> 
+                    <label class="text-sm font-medium">
                         <span class="label-text font-medium">Descripción (Opcional) </span>
                     </label>
 
                     <textarea name="descripcion" id="descripcion" rows="3"
                         placeholder="Ingrese una descripción breve de la actualización del combustible..."
                         class="textarea w-full rounded-md border border-base-300 bg-base-200 
-                 focus:outline-none focus:ring-2 focus:ring-primary 
-                 focus:border-primary transition <?php $__errorArgs = ['descripcion'];
+                     focus:outline-none focus:ring-2 focus:ring-primary 
+                     focus:border-primary transition <?php $__errorArgs = ['descripcion'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -832,10 +839,11 @@ unset($__errorArgs, $__bag); ?>
                                 <td>
                                     <div class="flex items-center gap-3">
                                         <div class="p-2 rounded-lg bg-warning/10">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
-                                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                                class="text-warning">
-                                                <path d="M14 13h2a2 2 0 0 1 2 2v2a2 2 0 0 0 4 0v-6.998a2 2 0 0 0-.59-1.42L18 5"></path>
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                                stroke-linejoin="round" class="text-warning">
+                                                <path d="M14 13h2a2 2 0 0 1 2 2v2a2 2 0 0 0 4 0v-6.998a2 2 0 0 0-.59-1.42L18 5">
+                                                </path>
                                                 <path d="M14 21V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v16"></path>
                                                 <path d="M2 21h13"></path>
                                                 <path d="M3 9h11"></path>
@@ -850,7 +858,8 @@ unset($__errorArgs, $__bag); ?>
                                     </div>
                                 </td>
                                 <td class="text-right">
-                                    <span class="text-lg font-bold text-success">$<?php echo e(number_format($tipo->valor, 2, ',', '.')); ?></span>
+                                    <span
+                                        class="text-lg font-bold text-success">$<?php echo e(number_format($tipo->valor, 2, ',', '.')); ?></span>
                                     <span class="text-xs text-gray-500">/L</span>
                                 </td>
                             </tr>
@@ -1035,7 +1044,7 @@ unset($__errorArgs, $__bag); ?>
 <?php $__env->stopSection(); ?>
 <?php $__env->startSection('js'); ?>
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
 
             function actualizarDatosdelcombustible() {
                 var selected = $('#id option:selected');
@@ -1064,16 +1073,85 @@ unset($__errorArgs, $__bag); ?>
             form.action = routeEliminarCombustible(id);
             document.getElementById('modal_eliminar_combustible').showModal();
         }
-      // Genera la URL usando el helper de Laravel
-      function routeEliminarCombustible(id) { 
-          return "<?php echo e(url('/admin/combustibles')); ?>/" + id; 
-      }
-      function abrirModalRestaurar(url) {
-        const form = document.getElementById('formRestaurarCombustible');
-        form.action = url; 
-        modal_restaurar_combustible.showModal(); 
-      }
-  </script>
+        // Genera la URL usando el helper de Laravel
+        function routeEliminarCombustible(id) {
+            return "<?php echo e(url('/admin/combustibles')); ?>/" + id;
+        }
+        function abrirModalRestaurar(url) {
+            const form = document.getElementById('formRestaurarCombustible');
+            form.action = url;
+            modal_restaurar_combustible.showModal();
+        }
+    </script>
+    <script>
+        function formatMoneda(input) {
+            // 1. Guardar posición del cursor
+            let cursorPosition = input.selectionStart;
+            let originalLength = input.value.length;
+
+            // 2. Limpiar todo lo que no sea número
+            let valor = input.value.replace(/\D/g, '');
+
+            // 3. Formatear (agregar miles con punto y decimal con coma)
+            // Si no hay valor, dejar vacío
+            if (valor === '') {
+                input.value = '';
+                return;
+            }
+
+            // Convertir a número con decimales (los últimos 2 dígitos son decimales)
+            // Si el usuario escribe "1", queremos ver "0,01"? O estilo "1" -> "1"?
+            // El requerimiento dice "ingresar un valor y se vaya formateando solo, ejemplo: 1.233,4"
+            // Esto sugiere un comportamiento donde se escribe normal y se agregan separadores.
+            // Opción A: Escribir "1234" -> "1.234". Si pone coma, detectarla.
+            // Opción B (más común en sistemas contables): Escribir corrido y los ultimos 2 son decimales.
+
+            // Dado el ejemplo "1.233,4", parece que el usuario quiere escribir libremente y que aparezcan los puntos.
+            // Intentaremos un enfoque híbrido amigable: permitir números y una coma.
+
+            // Re-evaluando estrategia simple para input de texto libre con auto-formato miles:
+            // Mejor usar una librería o una función robusta. Haremos una función artesanal robusta.
+
+            // Reiniciamos lógica para "typing friendly":
+            // Permitir borrar todo
+
+            // Recuperar valor crudo preservando la coma si existe para saber si está escribiendo decimales
+            let rawValue = input.value.replace(/\./g, '').replace(',', '.');
+
+            // Si el valor termina en coma, no formatear todavía la parte decimal
+            if (input.value.endsWith(',')) {
+                // Solo asegurar que no haya mas de una coma y formatear la parte entera
+                let parts = input.value.split(',');
+                if (parts.length > 2) { // más de una coma
+                    input.value = input.value.substring(0, input.value.length - 1);
+                    return;
+                }
+                let integerPart = parts[0].replace(/\./g, '').replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+                input.value = integerPart + ',';
+                return;
+            }
+
+            // Dividir en entero y decimal
+            let parts = input.value.split(',');
+            let integerPart = parts[0].replace(/\D/g, ''); // Solo números en parte entera
+            let decimalPart = parts.length > 1 ? parts[1].replace(/\D/g, '') : null;
+
+            // Formatear parte entera con puntos
+            integerPart = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+
+            // Reconstruir
+            let newValue = integerPart;
+            if (decimalPart !== null) {
+                // Limitar decimales a 2? El usuario puso "4" en el ejemplo. Dejemos libre o max 2.
+                // Generalmente precios son 2.
+                newValue += ',' + decimalPart;
+            }
+
+            input.value = newValue;
+
+            // Ajustar cursor (aproximado, complexo de hacer perfecto sin librería)
+        }
+    </script>
 
     <!-- Modal para visualizar PDF de Orden de Carga -->
     <dialog id="modalPDFCarga" class="modal">
@@ -1129,11 +1207,12 @@ unset($__errorArgs, $__bag); ?>
                     </button>
                 </div>
             </div>
-            
+
             <!-- Contenedor del iframe -->
             <div class="flex-1 overflow-auto bg-base-200 relative">
                 <!-- Spinner de carga personalizado -->
-                <div id="loadingSpinnerCarga" class="absolute inset-0 flex items-center justify-center bg-base-100 z-10 transition-all duration-300">
+                <div id="loadingSpinnerCarga"
+                    class="absolute inset-0 flex items-center justify-center bg-base-100 z-10 transition-all duration-300">
                     <div class="text-center space-y-4">
                         <!-- Spinner animado -->
                         <div class="relative">
@@ -1169,23 +1248,23 @@ unset($__errorArgs, $__bag); ?>
             const iframe = document.getElementById('iframePDFCarga');
             const btnDescargar = document.getElementById('btnDescargarPDFCarga');
             const loadingSpinner = document.getElementById('loadingSpinnerCarga');
-            
+
             // Mostrar spinner
             loadingSpinner.style.display = 'flex';
-            
+
             // Construir las URLs usando route de Laravel
             const previewUrl = "<?php echo e(url('admin/combustibles')); ?>/" + combustibleId + "/preview";
             const downloadUrl = "<?php echo e(url('admin/combustibles')); ?>/" + combustibleId + "/download";
-            
+
             // Asignar URLs
             iframe.src = previewUrl;
             btnDescargar.href = downloadUrl;
-            
+
             // Ocultar spinner cuando el iframe termine de cargar
-            iframe.onload = function() {
+            iframe.onload = function () {
                 loadingSpinner.style.display = 'none';
             };
-            
+
             // Abrir modal
             modal.showModal();
         }
@@ -1194,13 +1273,13 @@ unset($__errorArgs, $__bag); ?>
             const modal = document.getElementById('modalPDFCarga');
             const iframe = document.getElementById('iframePDFCarga');
             const loadingSpinner = document.getElementById('loadingSpinnerCarga');
-            
+
             // Limpiar iframe al cerrar
             iframe.src = '';
-            
+
             // Resetear spinner para próxima apertura
             loadingSpinner.style.display = 'flex';
-            
+
             // Cerrar modal
             modal.close();
         }
@@ -1211,6 +1290,7 @@ unset($__errorArgs, $__bag); ?>
         [data-theme="light"] canvas {
             color: #000000 !important;
         }
+
         [data-theme="dark"] canvas,
         [data-theme="synthwave"] canvas {
             color: #ffffff !important;
@@ -1220,19 +1300,19 @@ unset($__errorArgs, $__bag); ?>
     <!-- Chart.js Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             // Detectar tema desde localStorage (donde app.js lo guarda)
             const savedTheme = localStorage.getItem('theme');
             const currentTheme = document.documentElement.getAttribute('data-theme');
             const isDark = savedTheme === 'dark' || currentTheme === 'dark' || currentTheme === 'synthwave';
-            
+
             // Colores según el tema
             const gridColor = isDark ? '#374151' : '#e5e7eb';
             const textColor = isDark ? '#f9fafb' : '#111827';
             const labelColor = isDark ? '#f9fafb' : '#111827';
             const tooltipBg = isDark ? '#1f2937' : '#ffffff';
             const tooltipBorder = isDark ? '#4b5563' : '#d1d5db';
-            
+
             const colors = {
                 primary: isDark ? '#60a5fa' : '#2563eb',
                 secondary: isDark ? '#a78bfa' : '#7c3aed',
@@ -1246,7 +1326,7 @@ unset($__errorArgs, $__bag); ?>
             // Listener para recargar cuando cambie el tema
             const themeToggle = document.getElementById('themeToggle');
             if (themeToggle) {
-                themeToggle.addEventListener('change', function() {
+                themeToggle.addEventListener('change', function () {
                     setTimeout(() => location.reload(), 100);
                 });
             }
@@ -1269,7 +1349,7 @@ unset($__errorArgs, $__bag); ?>
 
             const ctxConsumo = document.getElementById('chartConsumoMensual').getContext('2d');
             new Chart(ctxConsumo, {
-                type: 'line', 
+                type: 'line',
                 data: {
                     labels: meses,
                     datasets: [{
@@ -1347,7 +1427,7 @@ unset($__errorArgs, $__bag); ?>
                             ticks: {
                                 color: labelColor,
                                 font: { size: 10 },
-                                callback: function(value) {
+                                callback: function (value) {
                                     return value.toFixed(0) + ' L';
                                 }
                             },
@@ -1364,7 +1444,7 @@ unset($__errorArgs, $__bag); ?>
                             ticks: {
                                 color: labelColor,
                                 font: { size: 10 },
-                                callback: function(value) {
+                                callback: function (value) {
                                     return '$' + (value / 1000).toFixed(0) + 'k';
                                 }
                             },
@@ -1439,7 +1519,7 @@ unset($__errorArgs, $__bag); ?>
                             titleFont: { size: 11, weight: '600' },
                             bodyFont: { size: 11 },
                             callbacks: {
-                                label: function(context) {
+                                label: function (context) {
                                     const total = context.dataset.data.reduce((a, b) => a + b, 0);
                                     const porcentaje = ((context.parsed / total) * 100).toFixed(1);
                                     return context.label + ': ' + context.parsed.toFixed(0) + ' L (' + porcentaje + '%)';
@@ -1467,7 +1547,7 @@ unset($__errorArgs, $__bag); ?>
                     const patente = destino.patente || '';
                     const marca = destino.marca || '';
                     const modelo = destino.modelo || '';
-                    
+
                     if (patente && marca && modelo) {
                         return `🚗 ${patente} - ${marca} ${modelo}`;
                     } else if (patente && marca) {
@@ -1481,7 +1561,7 @@ unset($__errorArgs, $__bag); ?>
                     // EQUIPO: Equipamiento - Marca
                     const equipamiento = destino.equipamiento || '';
                     const marca = destino.marca || '';
-                    
+
                     if (equipamiento && marca) {
                         return `⚙️ ${equipamiento} - ${marca}`;
                     } else if (equipamiento) {
@@ -1493,7 +1573,7 @@ unset($__errorArgs, $__bag); ?>
                     // DESTINO GENÉRICO (Acuerdo policial, etc.): Nombre - Tipo
                     const nombre = destino.nombre || '';
                     const tipoDestino = destino.tipo || '';
-                    
+
                     if (nombre && tipoDestino) {
                         return `📍 ${nombre} (${tipoDestino})`;
                     } else if (nombre) {
@@ -1502,7 +1582,7 @@ unset($__errorArgs, $__bag); ?>
                         return `📍 ${tipoDestino}`;
                     }
                 }
-                
+
                 return 'Sin identificar';
             });
             const litrosVehiculos = dataVehiculos.map(item => parseFloat(item.total_litros) || 0);
@@ -1548,14 +1628,14 @@ unset($__errorArgs, $__bag); ?>
                             titleFont: { size: 11, weight: '600' },
                             bodyFont: { size: 11 },
                             callbacks: {
-                                label: function(context) {
+                                label: function (context) {
                                     return 'Litros: ' + context.parsed.x.toFixed(0) + ' L';
                                 },
-                                afterLabel: function(context) {
+                                afterLabel: function (context) {
                                     const idx = context.dataIndex;
                                     return [
                                         'Cargas: ' + cargasVehiculos[idx],
-                                        'Monto: $' + montosVehiculos[idx].toLocaleString('es-AR', {minimumFractionDigits: 2})
+                                        'Monto: $' + montosVehiculos[idx].toLocaleString('es-AR', { minimumFractionDigits: 2 })
                                     ];
                                 }
                             }
@@ -1568,7 +1648,7 @@ unset($__errorArgs, $__bag); ?>
                             ticks: {
                                 color: labelColor,
                                 font: { size: 10 },
-                                callback: function(value) {
+                                callback: function (value) {
                                     return value.toFixed(0) + ' L';
                                 }
                             },
@@ -1591,8 +1671,89 @@ unset($__errorArgs, $__bag); ?>
                 }
             });
 
-            });
+        });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // --- Lógica para el modal de Actualizar Precios ---
+            const selectCombustible = document.getElementById('id');
+            const inputPrecioActual = document.getElementById('combustible_id');
+            const divInfo = document.getElementById('combustible_info');
+            const inputNuevoPrecio = document.getElementById('precio');
+
+            // Funciones de formato (Scope local para no colisionar)
+            function normalizarPrecio(valor) {
+                if (!valor) return 0;
+                let raw = valor.toString().replace(/[^0-9,\.]/g, '');
+                raw = raw.replace(/\./g, '');
+                raw = raw.replace(',', '.');
+                const num = parseFloat(raw);
+                return isNaN(num) ? 0 : num;
+            }
+
+            function formatearPrecio(num) {
+                if (!num && num !== 0) return '';
+                const partes = Number(num).toFixed(2).split('.');
+                const entero = partes[0].replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+                const decimal = partes[1];
+                return `${entero},${decimal}`;
+            }
+
+            // 1. Mostrar precio actual al cambiar el select
+            if (selectCombustible) {
+                selectCombustible.addEventListener('change', function() {
+                    const selectedOption = this.options[this.selectedIndex];
+                    const precioActual = selectedOption.getAttribute('data-combustible');
+
+                    if (precioActual) {
+                        divInfo.classList.remove('hidden');
+                        inputPrecioActual.value = precioActual; // El input es type="number", así que espera punto decimal
+                    } else {
+                        divInfo.classList.add('hidden');
+                        inputPrecioActual.value = '';
+                    }
+                });
+            }
+
+            // 2. Lógica ATM para el nuevo precio
+            if (inputNuevoPrecio) {
+                inputNuevoPrecio.addEventListener('input', function() {
+                    let digits = this.value.replace(/\D/g, '');
+                    digits = digits.replace(/^0+/, '');
+
+                    if (!digits) {
+                        this.value = '';
+                        return;
+                    }
+
+                    let entero, centavos;
+                    if (digits.length === 1) {
+                        entero = '0';
+                        centavos = digits.padStart(2, '0');
+                    } else if (digits.length === 2) {
+                        entero = '0';
+                        centavos = digits;
+                    } else {
+                        entero = digits.slice(0, -2);
+                        centavos = digits.slice(-2);
+                    }
+
+                    const enteroFormateado = entero.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+                    this.value = `${enteroFormateado},${centavos}`;
+                });
+                
+                // Formatear al salir (blur) para asegurar consistencia
+                inputNuevoPrecio.addEventListener('blur', function() {
+                     if (!this.value.trim()) {
+                        this.value = '';
+                        return;
+                    }
+                    // Si el usuario copió y pegó algo como "1234.56", lo normalizamos
+                    const n = normalizarPrecio(this.value);
+                    this.value = formatearPrecio(n);
+                });
+            }
+        });
     </script>
 <?php $__env->stopSection(); ?>
-
 <?php echo $__env->make('layouts.admin', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\laragon\www\Sistema-talwind\resources\views/admin/combustibles/index.blade.php ENDPATH**/ ?>
