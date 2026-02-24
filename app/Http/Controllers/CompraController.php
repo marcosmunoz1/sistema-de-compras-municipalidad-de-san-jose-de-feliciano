@@ -253,7 +253,7 @@ class CompraController extends Controller
         $depositoId = $request->input('deposito_id');
         $equipoId = $request->input('equipo_id');
 
-        $compra = Compra::with('detalle_compras','empleado','proveedor','destino')->findOrFail($id);
+        $compra = Compra::with('detalle_compras','empleado','proveedor','destino', 'facturas')->findOrFail($id);
         return view('admin.compras.show', compact('compra','from','vehiculoId','obraId','depositoId','equipoId'));
     }
 
