@@ -270,7 +270,7 @@
             <tr>
                 <td style="width: 70px; vertical-align: middle; border: none; padding: 0;">
                     <div class="logo-placeholder">
-                        <img src="{{ public_path('logo/logo-pdf.png') }}" alt="Logo">
+                        <img src="<?php echo e(public_path('logo/logo-pdf.png')); ?>" alt="Logo">
                     </div>
                 </td>
                 <td style="vertical-align: middle; border: none; padding-left: 15px;">
@@ -288,12 +288,12 @@
                 <td style="text-align: right; vertical-align: middle; border: none; padding-bottom: 20px;">
                     <div class="title-badge" style="margin-bottom: 6px;">ORDEN DE CARGA</div>
                     <div style="font-size: 16px; font-family: monospace; font-weight: 700; color: #1e293b;">N° <span
-                            style="color: #b91c1c;">{{ str_pad($combustible->codigo, 12, '0', STR_PAD_LEFT) }}</span>
+                            style="color: #b91c1c;"><?php echo e(str_pad($combustible->codigo, 12, '0', STR_PAD_LEFT)); ?></span>
                     </div>
                     <div
                         style="font-size: 13px; color: #64748b; font-weight: 600; text-transform: uppercase; margin-top: 4px;">
                         Fecha: <span
-                            style="border-bottom: 1px solid #cbd5e1; display: inline-block; min-width: 80px;">{{ $combustible->fecha ? \Carbon\Carbon::parse($combustible->fecha)->format('d/m/Y') : '—' }}</span>
+                            style="border-bottom: 1px solid #cbd5e1; display: inline-block; min-width: 80px;"><?php echo e($combustible->fecha ? \Carbon\Carbon::parse($combustible->fecha)->format('d/m/Y') : '—'); ?></span>
                     </div>
                 </td>
             </tr>
@@ -301,66 +301,71 @@
 
         <!-- Campos de Datos -->
         <div class="field-group">
-            @if($combustible->destino instanceof \App\Models\Vehiculo)
-                {{-- VEHICULO: Mostrar patente y detalles del vehiculo --}}
+            <?php if($combustible->destino instanceof \App\Models\Vehiculo): ?>
+                
                 <div class="modern-field">
                     <span class="field-label">Dominio</span>
-                    <div class="field-value">{{ $combustible->destino->patente ?? 'N/A' }}</div>
+                    <div class="field-value"><?php echo e($combustible->destino->patente ?? 'N/A'); ?></div>
                 </div>
                 <div class="modern-field">
                     <span class="field-label">Vehiculo</span>
                     <div class="field-value">
-                        {{ $combustible->destino->tipo ?? '' }}
-                        {{ $combustible->destino->marca ?? '' }}
-                        {{ $combustible->destino->modelo ?? '' }}
-                        @if($combustible->destino->anio) ({{ $combustible->destino->anio }}) @endif
-                        @if($combustible->destino->color) - {{ $combustible->destino->color }} @endif
+                        <?php echo e($combustible->destino->tipo ?? ''); ?>
+
+                        <?php echo e($combustible->destino->marca ?? ''); ?>
+
+                        <?php echo e($combustible->destino->modelo ?? ''); ?>
+
+                        <?php if($combustible->destino->anio): ?> (<?php echo e($combustible->destino->anio); ?>) <?php endif; ?>
+                        <?php if($combustible->destino->color): ?> - <?php echo e($combustible->destino->color); ?> <?php endif; ?>
                     </div>
                 </div>
-            @elseif($combustible->destino instanceof \App\Models\Equipo)
-                {{-- EQUIPO: Mostrar equipamiento y detalles --}}
+            <?php elseif($combustible->destino instanceof \App\Models\Equipo): ?>
+                
                 <div class="modern-field">
                     <span class="field-label">Equipo</span>
-                    <div class="field-value">{{ $combustible->destino->equipamiento ?? 'N/A' }}</div>
+                    <div class="field-value"><?php echo e($combustible->destino->equipamiento ?? 'N/A'); ?></div>
                 </div>
                 <div class="modern-field">
                     <span class="field-label">Detalle</span>
                     <div class="field-value">
-                        {{ $combustible->destino->marca ?? '' }}
-                        @if($combustible->destino->descripcion) - {{ $combustible->destino->descripcion }} @endif
+                        <?php echo e($combustible->destino->marca ?? ''); ?>
+
+                        <?php if($combustible->destino->descripcion): ?> - <?php echo e($combustible->destino->descripcion); ?> <?php endif; ?>
                     </div>
                 </div>
-            @elseif($combustible->destino instanceof \App\Models\Destino)
-                {{-- OTRO (Acuerdo policial, etc): Mostrar nombre y detalles --}}
+            <?php elseif($combustible->destino instanceof \App\Models\Destino): ?>
+                
                 <div class="modern-field">
                     <span class="field-label">Destino</span>
-                    <div class="field-value">{{ $combustible->destino->nombre ?? 'N/A' }}</div>
+                    <div class="field-value"><?php echo e($combustible->destino->nombre ?? 'N/A'); ?></div>
                 </div>
-                @if($combustible->destino->descripcion)
+                <?php if($combustible->destino->descripcion): ?>
                     <div class="modern-field">
                         <span class="field-label">Detalle</span>
-                        <div class="field-value">{{ $combustible->destino->descripcion }}</div>
+                        <div class="field-value"><?php echo e($combustible->destino->descripcion); ?></div>
                     </div>
-                @endif
-            @else
-                {{-- FALLBACK --}}
+                <?php endif; ?>
+            <?php else: ?>
+                
                 <div class="modern-field">
                     <span class="field-label">Dominio</span>
-                    <div class="field-value">{{ $combustible->destino->patente ?? $combustible->destino->nombre ?? 'N/A' }}
+                    <div class="field-value"><?php echo e($combustible->destino->patente ?? $combustible->destino->nombre ?? 'N/A'); ?>
+
                     </div>
                 </div>
-            @endif
+            <?php endif; ?>
             <div class="modern-field">
                 <span class="field-label">Entregar a</span>
-                <div class="field-value">{{ $combustible->empleado->nombre ?? 'N/A' }}</div>
+                <div class="field-value"><?php echo e($combustible->empleado->nombre ?? 'N/A'); ?></div>
             </div>
             <div class="modern-field">
                 <span class="field-label">Sub Cuenta</span>
-                <div class="field-value">{{ $combustible->sub_cuenta ?? 'N/A' }}</div>
+                <div class="field-value"><?php echo e($combustible->sub_cuenta ?? 'N/A'); ?></div>
             </div>
             <div class="modern-field">
                 <span class="field-label">Estacion</span>
-                <div class="field-value">{{ $combustible->estacion ?? 'N/A' }}</div>
+                <div class="field-value"><?php echo e($combustible->estacion ?? 'N/A'); ?></div>
             </div>
         </div>
 
@@ -378,22 +383,16 @@
                 <tbody>
                     <tr>
                         <td style="font-weight: 600;">
-                            @if($combustible->litros !== null)
-                                {{ $combustible->litros }} Litros - {{ $combustible->tipo }}
-                            @else
-                                Carga completa - {{ $combustible->tipo }}
-                            @endif
+                            <?php if($combustible->litros !== null): ?>
+                                <?php echo e($combustible->litros); ?> Litros - <?php echo e($combustible->tipo); ?>
+
+                            <?php else: ?>
+                                Carga completa - <?php echo e($combustible->tipo); ?>
+
+                            <?php endif; ?>
                         </td>
                     </tr>
-                    {{-- @if($combustible->observaciones)
-                    <tr>
-                        <td>Observaciones: {{ $combustible->observaciones }}</td>
-                    </tr>
-                    @endif
-                    @for($i = ($combustible->observaciones ? 2 : 1); $i < 3; $i++) <tr>
-                        <td></td>
-                        </tr>
-                        @endfor --}}
+                    
                 </tbody>
             </table>
         </div>
@@ -405,12 +404,12 @@
                 <td style="width: 33%; text-align: center; vertical-align: bottom; border: none; padding: 0 8px;">
                     <div style="font-size: 10px; color: #64748b; text-transform: uppercase;">Sello y Firma Municipal:
                     </div>
-                    @if($combustible->user && $combustible->user->firma)
-                        <img src="{{ public_path('storage/' . $combustible->user->firma) }}"
+                    <?php if($combustible->user && $combustible->user->firma): ?>
+                        <img src="<?php echo e(public_path('storage/' . $combustible->user->firma)); ?>"
                             style="max-width: 180px; height: auto; max-height: 180px;">
-                    @endif
+                    <?php endif; ?>
                     <div style="font-size: 11px; font-weight: 700; text-transform: uppercase;">Autorizado por
-                        Funcionario{{ $combustible->user ? ': ' . $combustible->user->name : '' }}</div>
+                        Funcionario<?php echo e($combustible->user ? ': ' . $combustible->user->name : ''); ?></div>
                 </td>
                 <td style="width: 33%; text-align: center; vertical-align: bottom; border: none; padding: 0 8px;">
                     <div style="border-bottom: 1.5px solid #000; height: 30px; margin-bottom: 4px;"></div>
@@ -428,4 +427,4 @@
 
 </body>
 
-</html>
+</html><?php /**PATH C:\laragon\www\Sistema-talwind\resources\views/pdf/orden-carga.blade.php ENDPATH**/ ?>

@@ -1,36 +1,92 @@
-@extends('layouts.admin')
-@section('title', 'Combustibles')
-@section('content')
+<?php $__env->startSection('title', 'Combustibles'); ?>
+<?php $__env->startSection('content'); ?>
     <!-- Titulo y boton -->
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
         <h1 class="text-xl sm:text-2xl font-semibold">Combustibles</h1>
         <div class="flex flex-wrap gap-2">
             <button onclick="modalPreciosActuales.showModal()" class="btn btn-sm sm:btn-md btn-info tooltip tooltip-info"
                 data-tip="Ver precios actuales de combustibles">
-                <x-heroicon-o-currency-dollar class="w-4 h-4 inline" />
+                <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c = $attributes; } ?>
+<?php $component = BladeUI\Icons\Components\Svg::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('heroicon-o-currency-dollar'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\BladeUI\Icons\Components\Svg::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['class' => 'w-4 h-4 inline']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $attributes = $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $component = $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
                 Ver Precios
             </button>
-            @can('combustibles-update-prices')
+            <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('combustibles-update-prices')): ?>
                 <button onclick="crearCombustible.showModal()" class="btn btn-sm sm:btn-md btn-warning tooltip tooltip-warning"
                     data-tip="Actualizar los precios de los combustibles">
-                    <x-heroicon-s-cloud-arrow-up class="w-4 h-4 inline" />
+                    <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c = $attributes; } ?>
+<?php $component = BladeUI\Icons\Components\Svg::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('heroicon-s-cloud-arrow-up'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\BladeUI\Icons\Components\Svg::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['class' => 'w-4 h-4 inline']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $attributes = $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $component = $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
                     Actualizar Precios
                 </button>
-            @endcan
-            @can('combustibles-create')
-                <a href="{{ route('combustibles.create') }}"
+            <?php endif; ?>
+            <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('combustibles-create')): ?>
+                <a href="<?php echo e(route('combustibles.create')); ?>"
                     class="btn btn-sm sm:btn-md btn-primary tooltip tooltip-primary tooltip-bottom"
                     data-tip="Crear orden de carga">
-                    <x-heroicon-o-plus class="w-5 h-5" />
+                    <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c = $attributes; } ?>
+<?php $component = BladeUI\Icons\Components\Svg::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('heroicon-o-plus'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\BladeUI\Icons\Components\Svg::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['class' => 'w-5 h-5']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $attributes = $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $component = $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
                     Nueva Carga
                 </a>
-            @endcan
+            <?php endif; ?>
         </div>
     </div>
     <div class="breadcrumbs text-sm mb-6">
         <ul>
             <li>
-                <a href="{{ route('admin.index') }}">
+                <a href="<?php echo e(route('admin.index')); ?>">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="h-4 w-4 stroke-current">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"></path>
@@ -39,7 +95,7 @@
                 </a>
             </li>
             <li>
-                <a href="{{ route('combustibles.index') }}">
+                <a href="<?php echo e(route('combustibles.index')); ?>">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                         class="lucide lucide-fuel w-5 h-5" aria-hidden="true">
@@ -52,24 +108,24 @@
                 </a>
             </li>
         </ul>
-        <form method="GET" action="{{ route('combustibles.index') }}" class="flex gap-4 items-end mb-6 mt-3">
+        <form method="GET" action="<?php echo e(route('combustibles.index')); ?>" class="flex gap-4 items-end mb-6 mt-3">
             <div>
                 <label class="text-sm text-gray-500">Desde</label>
                 <input type="date" name="desde" class="w-full h-10 rounded-md border border-base-300 bg-base-200
                             px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
-                            focus:border-primary transition" value="{{ request('desde') }}">
+                            focus:border-primary transition" value="<?php echo e(request('desde')); ?>">
             </div>
 
             <div>
                 <label class="text-sm text-gray-500">Hasta</label>
                 <input type="date" name="hasta" class="w-full h-10 rounded-md border border-base-300 bg-base-200
                             px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
-                            focus:border-primary transition" value="{{ request('hasta') }}">
+                            focus:border-primary transition" value="<?php echo e(request('hasta')); ?>">
             </div>
 
             <div class="flex gap-2">
                 <button type="submit" class="btn btn-primary">Filtrar</button>
-                <a href="{{ route('combustibles.index') }}" class="btn btn-outline">Limpiar</a>
+                <a href="<?php echo e(route('combustibles.index')); ?>" class="btn btn-outline">Limpiar</a>
             </div>
 
         </form>
@@ -83,7 +139,7 @@
                 <div class="flex items-center justify-between">
                     <div>
                         <p class="text-gray-500">Total del Mes</p>
-                        <h3 class="mt-2">${{ number_format($totalMonto, 2) }}</h3>
+                        <h3 class="mt-2">$<?php echo e(number_format($totalMonto, 2)); ?></h3>
                     </div>
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
@@ -103,7 +159,7 @@
                 <div class="flex items-center justify-between">
                     <div>
                         <p class="text-gray-500">Litros Consumidos</p>
-                        <h3 class="mt-2">{{ $totalLitros }} L</h3>
+                        <h3 class="mt-2"><?php echo e($totalLitros); ?> L</h3>
                     </div>
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
@@ -123,7 +179,7 @@
                 <div class="flex items-center justify-between">
                     <div>
                         <p class="text-gray-500">Total Cargas</p>
-                        <h3 class="mt-2">{{ $totalCargas }}</h3>
+                        <h3 class="mt-2"><?php echo e($totalCargas); ?></h3>
                     </div>
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
@@ -139,13 +195,13 @@
 
     </div>
     <!-- Buscador -->
-    <form action="{{ route('combustibles.index') }}" method="GET">
+    <form action="<?php echo e(route('combustibles.index')); ?>" method="GET">
         <div class="card bg-base-100 shadow p-6 mb-6">
             <div class="flex items-center gap-3">
 
                 <!-- INPUT -->
                 <label class="w-full">
-                    <input name="search" value="{{ request('search') ?? '' }}" type="text"
+                    <input name="search" value="<?php echo e(request('search') ?? ''); ?>" type="text"
                         placeholder="Buscar por vehiculo, combustible, fecha..." class="w-full h-10 rounded-md border border-base-300 bg-base-200 
                             px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
                             focus:border-primary transition" />
@@ -153,13 +209,51 @@
 
                 <!-- BOTÓN -->
                 <button class="btn btn-primary">
-                    <x-heroicon-o-magnifying-glass class="w-4 h-4" />
+                    <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c = $attributes; } ?>
+<?php $component = BladeUI\Icons\Components\Svg::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('heroicon-o-magnifying-glass'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\BladeUI\Icons\Components\Svg::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['class' => 'w-4 h-4']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $attributes = $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $component = $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
                     Buscar
                 </button>
-                @if (request('search'))
-                    <a href="{{ route('combustibles.index') }}" class="btn btn-error"><x-heroicon-o-trash class="w-4 h-4" />
+                <?php if(request('search')): ?>
+                    <a href="<?php echo e(route('combustibles.index')); ?>" class="btn btn-error"><?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c = $attributes; } ?>
+<?php $component = BladeUI\Icons\Components\Svg::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('heroicon-o-trash'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\BladeUI\Icons\Components\Svg::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['class' => 'w-4 h-4']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $attributes = $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $component = $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
                         Limpiar</a>
-                @endif
+                <?php endif; ?>
             </div>
         </div>
     </form>
@@ -175,16 +269,16 @@
                     <!-- Filtro por estado -->
                     <div class="dropdown dropdown-end">
                         <label tabindex="0"
-                            class="btn btn-sm btn-ghost gap-2 {{ request('estado') == 'eliminados' || request('estado') == 'todos' ? 'text-primary' : '' }}">
+                            class="btn btn-sm btn-ghost gap-2 <?php echo e(request('estado') == 'eliminados' || request('estado') == 'todos' ? 'text-primary' : ''); ?>">
                             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
                                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
                             </svg>
-                            @if(request('estado') == 'eliminados')
+                            <?php if(request('estado') == 'eliminados'): ?>
                                 <span class="badge badge-error badge-sm">Eliminados</span>
-                            @elseif(request('estado') == 'todos')
+                            <?php elseif(request('estado') == 'todos'): ?>
                                 <span class="badge badge-neutral badge-sm">Todos</span>
-                            @endif
+                            <?php endif; ?>
                         </label>
                         <ul tabindex="0"
                             class="dropdown-content z-[1] menu p-2 shadow-lg bg-base-100 rounded-box w-52 border border-base-300">
@@ -192,8 +286,8 @@
                                 <span>Filtrar por estado</span>
                             </li>
                             <li>
-                                <a href="{{ route('combustibles.index', array_merge(request()->except('estado', 'page'), [])) }}"
-                                    class="{{ !request('estado') || request('estado') == 'activo' ? 'active' : '' }}">
+                                <a href="<?php echo e(route('combustibles.index', array_merge(request()->except('estado', 'page'), []))); ?>"
+                                    class="<?php echo e(!request('estado') || request('estado') == 'activo' ? 'active' : ''); ?>">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
                                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                         stroke-linejoin="round" class="text-success">
@@ -204,8 +298,8 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="{{ route('combustibles.index', array_merge(request()->except('page'), ['estado' => 'eliminados'])) }}"
-                                    class="{{ request('estado') == 'eliminados' ? 'active' : '' }}">
+                                <a href="<?php echo e(route('combustibles.index', array_merge(request()->except('page'), ['estado' => 'eliminados']))); ?>"
+                                    class="<?php echo e(request('estado') == 'eliminados' ? 'active' : ''); ?>">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
                                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                         stroke-linejoin="round" class="text-error">
@@ -217,8 +311,8 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="{{ route('combustibles.index', array_merge(request()->except('page'), ['estado' => 'todos'])) }}"
-                                    class="{{ request('estado') == 'todos' ? 'active' : '' }}">
+                                <a href="<?php echo e(route('combustibles.index', array_merge(request()->except('page'), ['estado' => 'todos']))); ?>"
+                                    class="<?php echo e(request('estado') == 'todos' ? 'active' : ''); ?>">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
                                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                         stroke-linejoin="round">
@@ -248,19 +342,20 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($combustibles as $combustible)
+                        <?php $__currentLoopData = $combustibles; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $combustible): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                             <tr>
-                                                <td class="text-center">{{ $combustible->codigo }}</td>
+                                                <td class="text-center"><?php echo e($combustible->codigo); ?></td>
                                                 <td class="text-center">
-                                                    {{ $combustible->fecha ? \Carbon\Carbon::parse($combustible->fecha)->format('d/m/Y') : '—' }}
+                                                    <?php echo e($combustible->fecha ? \Carbon\Carbon::parse($combustible->fecha)->format('d/m/Y') : '—'); ?>
+
                                                 </td>
-                                                <td class="text-center">{{ $combustible->destino->marca ?? 'N/A' }}</td>
-                                                <td class="text-center">{{ $combustible->empleado->nombre ?? 'N/A' }}</td>
-                                                <td class="text-center">{{ $combustible->tipo }}</td>
-                                                <td class="text-center">{{ $combustible->litros ?? 'N/A' }}</td>
-                                                <td class="text-center">${{ number_format($combustible->monto, 2, '.', ',') }}</td>
+                                                <td class="text-center"><?php echo e($combustible->destino->marca ?? 'N/A'); ?></td>
+                                                <td class="text-center"><?php echo e($combustible->empleado->nombre ?? 'N/A'); ?></td>
+                                                <td class="text-center"><?php echo e($combustible->tipo); ?></td>
+                                                <td class="text-center"><?php echo e($combustible->litros ?? 'N/A'); ?></td>
+                                                <td class="text-center">$<?php echo e(number_format($combustible->monto, 2, '.', ',')); ?></td>
                                                 <td class="text-center">
-                                                    @php
+                                                    <?php
                                                         $badgeClass = match ($combustible->estado_carga) {
                                                             'Pendiente' => 'badge badge-outline badge-warning',
                                                             'Pendiente de factura' => 'badge badge-outline badge-error',
@@ -269,95 +364,191 @@
                                                             'Aprobada' => 'badge badge-outline badge-primary',
                                                             default => 'badge-ghost',
                                                         }; 
-                                                    @endphp
+                                                    ?>
                              <span
-                                                        class="badge {{ $badgeClass }} badge-sm whitespace-nowrap overflow-hidden text-ellipsis max-w-[120px]"
-                                                        title="{{ $combustible->estado_carga }}">
-                                                        {{ $combustible->estado_carga }}
+                                                        class="badge <?php echo e($badgeClass); ?> badge-sm whitespace-nowrap overflow-hidden text-ellipsis max-w-[120px]"
+                                                        title="<?php echo e($combustible->estado_carga); ?>">
+                                                        <?php echo e($combustible->estado_carga); ?>
+
                                                     </span>
                                                 </td>
                                                 <td class="text-center">
                                                     <div class="flex items-center justify-center gap-2">
-                                                        @can('combustibles-show')
-                                                            <a href="{{ route('combustibles.show', Crypt::encrypt($combustible->id)) }}"
+                                                        <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('combustibles-show')): ?>
+                                                            <a href="<?php echo e(route('combustibles.show', Crypt::encrypt($combustible->id))); ?>"
                                                                 class="btn btn-info btn-sm" title="ver carga">
-                                                                <x-heroicon-s-eye class="w-4 h-4" />
+                                                                <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c = $attributes; } ?>
+<?php $component = BladeUI\Icons\Components\Svg::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('heroicon-s-eye'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\BladeUI\Icons\Components\Svg::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['class' => 'w-4 h-4']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $attributes = $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $component = $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
                                                             </a>
-                                                        @endcan
+                                                        <?php endif; ?>
 
-                                                        @can('combustibles-edit')
-                                                            @if ($combustible->estado_carga !== 'Finalizada')
-                                                                <a href="{{ route('combustibles.edit', Crypt::encrypt($combustible->id)) }}"
+                                                        <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('combustibles-edit')): ?>
+                                                            <?php if($combustible->estado_carga !== 'Finalizada'): ?>
+                                                                <a href="<?php echo e(route('combustibles.edit', Crypt::encrypt($combustible->id))); ?>"
                                                                     class="btn btn-warning btn-sm">
-                                                                    <x-heroicon-s-document-currency-dollar class="w-4 h-4" />
+                                                                    <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c = $attributes; } ?>
+<?php $component = BladeUI\Icons\Components\Svg::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('heroicon-s-document-currency-dollar'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\BladeUI\Icons\Components\Svg::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['class' => 'w-4 h-4']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $attributes = $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $component = $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
                                                                 </a>
-                                                            @endif
-                                                        @endcan
+                                                            <?php endif; ?>
+                                                        <?php endif; ?>
 
-                                                        @can('combustibles-report')
-                                                            <button onclick="abrirModalPDFCarga({{ $combustible->id }})"
+                                                        <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('combustibles-report')): ?>
+                                                            <button onclick="abrirModalPDFCarga(<?php echo e($combustible->id); ?>)"
                                                                 class="btn bg-primary btn-sm" title="Imprimir orden">
-                                                                <x-heroicon-o-printer class="w-4 h-4" />
+                                                                <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c = $attributes; } ?>
+<?php $component = BladeUI\Icons\Components\Svg::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('heroicon-o-printer'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\BladeUI\Icons\Components\Svg::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['class' => 'w-4 h-4']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $attributes = $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $component = $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
                                                             </button>
-                                                        @endcan
+                                                        <?php endif; ?>
 
-                                                        @if ($combustible->trashed())
+                                                        <?php if($combustible->trashed()): ?>
 
-                                                            @can('combustibles-restore')
+                                                            <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('combustibles-restore')): ?>
                                                                 <button class="btn btn-success btn-sm"
-                                                                    onclick="abrirModalRestaurar('{{ url('/admin/combustibles/' . $combustible->id . '/restore') }}')">
-                                                                    <x-heroicon-s-arrow-uturn-left class="w-4 h-4" />
+                                                                    onclick="abrirModalRestaurar('<?php echo e(url('/admin/combustibles/' . $combustible->id . '/restore')); ?>')">
+                                                                    <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c = $attributes; } ?>
+<?php $component = BladeUI\Icons\Components\Svg::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('heroicon-s-arrow-uturn-left'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\BladeUI\Icons\Components\Svg::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['class' => 'w-4 h-4']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $attributes = $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $component = $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
                                                                 </button>
-                                                            @endcan
+                                                            <?php endif; ?>
 
-                                                        @else
+                                                        <?php else: ?>
 
-                                                            @can('combustibles-destroy')
+                                                            <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('combustibles-destroy')): ?>
                                                                 <button class="btn btn-error btn-sm"
-                                                                    onclick="confirmarEliminacion({{ $combustible->id }})">
-                                                                    <x-heroicon-s-trash class="w-4 h-4" />
+                                                                    onclick="confirmarEliminacion(<?php echo e($combustible->id); ?>)">
+                                                                    <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c = $attributes; } ?>
+<?php $component = BladeUI\Icons\Components\Svg::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('heroicon-s-trash'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\BladeUI\Icons\Components\Svg::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['class' => 'w-4 h-4']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $attributes = $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $component = $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
                                                                 </button>
-                                                            @endcan
+                                                            <?php endif; ?>
 
-                                                        @endif
+                                                        <?php endif; ?>
 
                                                     </div>
                                                 </td>
                                             </tr>
-                        @endforeach
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                     </tbody>
                 </table>
             </div>
             <!-- PAGINACIÓN -->
-            @if ($combustibles->hasPages())
+            <?php if($combustibles->hasPages()): ?>
                 <div class="flex flex-col md:flex-row justify-between items-center mt-6 px-3 gap-4">
 
                     <!-- Texto "Mostrando X - Y" -->
                     <div class="text-sm text-gray-500">
-                        Mostrando {{ $combustibles->firstItem() }} - {{ $combustibles->lastItem() }} de
-                        {{ $combustibles->total() }} registros
+                        Mostrando <?php echo e($combustibles->firstItem()); ?> - <?php echo e($combustibles->lastItem()); ?> de
+                        <?php echo e($combustibles->total()); ?> registros
                     </div>
 
                     <!-- Controles de paginación estilo DaisyUI -->
                     <div class="join">
 
-                        {{-- Botón Anterior --}}
-                        @if ($combustibles->onFirstPage())
+                        
+                        <?php if($combustibles->onFirstPage()): ?>
                             <button class="join-item btn btn-square btn-disabled">«</button>
-                        @else
-                            <a href="{{ $combustibles->previousPageUrl() }}" class="join-item btn btn-square">«</a>
-                        @endif
+                        <?php else: ?>
+                            <a href="<?php echo e($combustibles->previousPageUrl()); ?>" class="join-item btn btn-square">«</a>
+                        <?php endif; ?>
 
-                        {{-- Botón Primera página --}}
-                        @if (!$combustibles->onFirstPage())
-                            <a href="{{ $combustibles->url(1) }}" class="join-item btn btn-square">1</a>
-                            @if ($combustibles->currentPage() > 4)
+                        
+                        <?php if(!$combustibles->onFirstPage()): ?>
+                            <a href="<?php echo e($combustibles->url(1)); ?>" class="join-item btn btn-square">1</a>
+                            <?php if($combustibles->currentPage() > 4): ?>
                                 <button class="join-item btn btn-square btn-disabled">...</button>
-                            @endif
-                        @endif
+                            <?php endif; ?>
+                        <?php endif; ?>
 
-                        {{-- Números de página con ventana deslizante --}}
-                        @php
+                        
+                        <?php
                             $currentPage = $combustibles->currentPage();
                             $totalPages = $combustibles->lastPage();
                             $start = max(1, $currentPage - 2);
@@ -371,34 +562,34 @@
                                     $start = max(1, $totalPages - 4);
                                 }
                             }
-                        @endphp
+                        ?>
 
-                        @for ($i = $start; $i <= $end; $i++)
-                            @if ($i == $currentPage)
-                                <button class="join-item btn btn-square btn-active">{{ $i }}</button>
-                            @else
-                                <a href="{{ $combustibles->url($i) }}" class="join-item btn btn-square">{{ $i }}</a>
-                            @endif
-                        @endfor
+                        <?php for($i = $start; $i <= $end; $i++): ?>
+                            <?php if($i == $currentPage): ?>
+                                <button class="join-item btn btn-square btn-active"><?php echo e($i); ?></button>
+                            <?php else: ?>
+                                <a href="<?php echo e($combustibles->url($i)); ?>" class="join-item btn btn-square"><?php echo e($i); ?></a>
+                            <?php endif; ?>
+                        <?php endfor; ?>
 
-                        {{-- Botón Última página --}}
-                        @if ($combustibles->currentPage() < $totalPages - 3)
-                            @if ($combustibles->currentPage() < $totalPages - 4)
+                        
+                        <?php if($combustibles->currentPage() < $totalPages - 3): ?>
+                            <?php if($combustibles->currentPage() < $totalPages - 4): ?>
                                 <button class="join-item btn btn-square btn-disabled">...</button>
-                            @endif
-                            <a href="{{ $combustibles->url($totalPages) }}" class="join-item btn btn-square">{{ $totalPages }}</a>
-                        @endif
+                            <?php endif; ?>
+                            <a href="<?php echo e($combustibles->url($totalPages)); ?>" class="join-item btn btn-square"><?php echo e($totalPages); ?></a>
+                        <?php endif; ?>
 
-                        {{-- Botón Siguiente --}}
-                        @if ($combustibles->hasMorePages())
-                            <a href="{{ $combustibles->nextPageUrl() }}" class="join-item btn btn-square">»</a>
-                        @else
+                        
+                        <?php if($combustibles->hasMorePages()): ?>
+                            <a href="<?php echo e($combustibles->nextPageUrl()); ?>" class="join-item btn btn-square">»</a>
+                        <?php else: ?>
                             <button class="join-item btn btn-square btn-disabled">»</button>
-                        @endif
+                        <?php endif; ?>
 
                     </div>
                 </div>
-            @endif
+            <?php endif; ?>
 
         </div>
     </div>
@@ -477,25 +668,40 @@
                 Actualizar precios de los combustibles
             </h3>
 
-            <form action="{{ url('/admin/combustibles/update-prices') }}" method="POST" class="space-y-5" id="form">
-                @csrf
-                @method('post')
+            <form action="<?php echo e(url('/admin/combustibles/update-prices')); ?>" method="POST" class="space-y-5" id="form">
+                <?php echo csrf_field(); ?>
+                <?php echo method_field('post'); ?>
                 <!-- Nombre -->
                 <div class="form-control">
                     <label class="text-sm font-medium">Nombre<span class="text-red-600">*</span></label>
                     <select id="id" name="id" class="w-full h-10 rounded-md border border-base-300 bg-base-200 
                             px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary
-                            focus:border-primary @error('id') input-error @enderror transition" required>>
+                            focus:border-primary <?php $__errorArgs = ['id'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> input-error <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?> transition" required>>
                         <option value="">Seleccionar</option>
-                        @foreach ($tipos_combustibles as $combustible_tipo)
-                            <option value="{{ $combustible_tipo->id }}" data-combustible="{{ $combustible_tipo->valor }}">
-                                {{ $combustible_tipo->nombre ?? '' }}
+                        <?php $__currentLoopData = $tipos_combustibles; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $combustible_tipo): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                            <option value="<?php echo e($combustible_tipo->id); ?>" data-combustible="<?php echo e($combustible_tipo->valor); ?>">
+                                <?php echo e($combustible_tipo->nombre ?? ''); ?>
+
                             </option>
-                        @endforeach
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                     </select>
-                    @error('id')
-                        <small class="text-red-500 error-message">{{ $message }}</small>
-                    @enderror
+                    <?php $__errorArgs = ['id'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                        <small class="text-red-500 error-message"><?php echo e($message); ?></small>
+                    <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                 </div>
                 <!-- Nombre -->
                 <div id="combustible_info" class="hidden form-control">
@@ -510,11 +716,25 @@
                             class="text-red-600">*</span></label>
                     <input type="text" id="precio" name="precio" placeholder="0,00" class="w-full h-10 rounded-md border border-base-300 bg-base-200 
                             px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary
-                            focus:border-primary @error('precio') input-error @enderror transition"
+                            focus:border-primary <?php $__errorArgs = ['precio'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> input-error <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?> transition"
                         required>
-                    @error('precio')
-                        <small class="text-red-500 error-message">{{ $message }}</small>
-                    @enderror
+                    <?php $__errorArgs = ['precio'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                        <small class="text-red-500 error-message"><?php echo e($message); ?></small>
+                    <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                 </div>
 
                 <!-- Descripción -->
@@ -527,11 +747,25 @@
                         placeholder="Ingrese una descripción breve de la actualización del combustible..."
                         class="textarea w-full rounded-md border border-base-300 bg-base-200 
                      focus:outline-none focus:ring-2 focus:ring-primary 
-                     focus:border-primary transition @error('descripcion') input-error @enderror">{{ old('descripcion') }}</textarea>
+                     focus:border-primary transition <?php $__errorArgs = ['descripcion'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> input-error <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>"><?php echo e(old('descripcion')); ?></textarea>
 
-                    @error('descripcion')
-                        <small class="text-red-500 error-message">{{ $message }}</small>
-                    @enderror
+                    <?php $__errorArgs = ['descripcion'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                        <small class="text-red-500 error-message"><?php echo e($message); ?></small>
+                    <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                 </div>
 
                 <!-- Botones -->
@@ -539,7 +773,26 @@
 
                     <!-- Guardar -->
                     <button class="btn btn-primary btn-sm">
-                        <x-heroicon-m-arrow-down-tray class="w-4 h-4 inline" />
+                        <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c = $attributes; } ?>
+<?php $component = BladeUI\Icons\Components\Svg::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('heroicon-m-arrow-down-tray'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\BladeUI\Icons\Components\Svg::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['class' => 'w-4 h-4 inline']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $attributes = $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $component = $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
                         Guardar precio
                     </button>
 
@@ -581,7 +834,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @forelse ($tipos_combustibles as $tipo)
+                        <?php $__empty_1 = true; $__currentLoopData = $tipos_combustibles; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $tipo): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
                             <tr class="hover">
                                 <td>
                                     <div class="flex items-center gap-3">
@@ -597,26 +850,26 @@
                                             </svg>
                                         </div>
                                         <div>
-                                            <p class="font-semibold">{{ $tipo->nombre }}</p>
-                                            @if($tipo->descripcion)
-                                                <p class="text-xs text-gray-500">{{ $tipo->descripcion }}</p>
-                                            @endif
+                                            <p class="font-semibold"><?php echo e($tipo->nombre); ?></p>
+                                            <?php if($tipo->descripcion): ?>
+                                                <p class="text-xs text-gray-500"><?php echo e($tipo->descripcion); ?></p>
+                                            <?php endif; ?>
                                         </div>
                                     </div>
                                 </td>
                                 <td class="text-right">
                                     <span
-                                        class="text-lg font-bold text-success">${{ number_format($tipo->valor, 2, ',', '.') }}</span>
+                                        class="text-lg font-bold text-success">$<?php echo e(number_format($tipo->valor, 2, ',', '.')); ?></span>
                                     <span class="text-xs text-gray-500">/L</span>
                                 </td>
                             </tr>
-                        @empty
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
                             <tr>
                                 <td colspan="2" class="text-center py-8 text-gray-500">
                                     No hay tipos de combustibles registrados
                                 </td>
                             </tr>
-                        @endforelse
+                        <?php endif; ?>
                     </tbody>
                 </table>
             </div>
@@ -650,7 +903,26 @@
         <div class="modal-box">
 
             <h3 class="font-bold text-lg flex items-center gap-2 text-red-600">
-                <x-heroicon-o-trash class="w-5 h-5" />
+                <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c = $attributes; } ?>
+<?php $component = BladeUI\Icons\Components\Svg::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('heroicon-o-trash'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\BladeUI\Icons\Components\Svg::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['class' => 'w-5 h-5']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $attributes = $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $component = $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
                 Confirmar eliminación
             </h3>
 
@@ -665,11 +937,30 @@
 
                 <!-- Formulario eliminar -->
                 <form id="formEliminarCombustible" method="POST">
-                    @csrf
-                    @method('DELETE')
+                    <?php echo csrf_field(); ?>
+                    <?php echo method_field('DELETE'); ?>
 
                     <button type="submit" class="btn btn-error">
-                        <x-heroicon-o-trash class="w-4 h-4" />
+                        <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c = $attributes; } ?>
+<?php $component = BladeUI\Icons\Components\Svg::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('heroicon-o-trash'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\BladeUI\Icons\Components\Svg::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['class' => 'w-4 h-4']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $attributes = $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $component = $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
                         Eliminar
                     </button>
                 </form>
@@ -682,7 +973,26 @@
         <div class="modal-box">
 
             <h3 class="font-bold text-lg flex items-center gap-2 text-green-600">
-                <x-heroicon-o-arrow-path class="w-5 h-5" />
+                <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c = $attributes; } ?>
+<?php $component = BladeUI\Icons\Components\Svg::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('heroicon-o-arrow-path'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\BladeUI\Icons\Components\Svg::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['class' => 'w-5 h-5']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $attributes = $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $component = $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
                 Confirmar restauración
             </h3>
 
@@ -699,11 +1009,30 @@
 
                 <!-- Formulario restaurar -->
                 <form id="formRestaurarCombustible" method="POST">
-                    @csrf
-                    @method('PUT')
+                    <?php echo csrf_field(); ?>
+                    <?php echo method_field('PUT'); ?>
 
                     <button type="submit" class="btn btn-success">
-                        <x-heroicon-o-arrow-path class="w-4 h-4" />
+                        <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c = $attributes; } ?>
+<?php $component = BladeUI\Icons\Components\Svg::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('heroicon-o-arrow-path'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\BladeUI\Icons\Components\Svg::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['class' => 'w-4 h-4']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $attributes = $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $component = $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
                         Restaurar
                     </button>
                 </form>
@@ -712,8 +1041,8 @@
 
         </div>
     </dialog>
-@endsection
-@section('js')
+<?php $__env->stopSection(); ?>
+<?php $__env->startSection('js'); ?>
     <script>
         $(document).ready(function () {
 
@@ -746,7 +1075,7 @@
         }
         // Genera la URL usando el helper de Laravel
         function routeEliminarCombustible(id) {
-            return "{{ url('/admin/combustibles') }}/" + id;
+            return "<?php echo e(url('/admin/combustibles')); ?>/" + id;
         }
         function abrirModalRestaurar(url) {
             const form = document.getElementById('formRestaurarCombustible');
@@ -832,11 +1161,49 @@
                 <h3 class="font-bold text-lg">Vista Previa - Orden de Carga de Combustible</h3>
                 <div class="flex gap-2">
                     <a id="btnDescargarPDFCarga" href="#" class="btn btn-success btn-sm" download>
-                        <x-heroicon-o-arrow-down-tray class="w-4 h-4" />
+                        <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c = $attributes; } ?>
+<?php $component = BladeUI\Icons\Components\Svg::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('heroicon-o-arrow-down-tray'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\BladeUI\Icons\Components\Svg::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['class' => 'w-4 h-4']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $attributes = $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $component = $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
                         Descargar
                     </a>
                     <button onclick="cerrarModalPDFCarga()" class="btn btn-sm btn-circle">
-                        <x-heroicon-o-x-mark class="w-5 h-5" />
+                        <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c = $attributes; } ?>
+<?php $component = BladeUI\Icons\Components\Svg::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('heroicon-o-x-mark'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\BladeUI\Icons\Components\Svg::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['class' => 'w-5 h-5']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $attributes = $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $component = $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
                     </button>
                 </div>
             </div>
@@ -886,8 +1253,8 @@
             loadingSpinner.style.display = 'flex';
 
             // Construir las URLs usando route de Laravel
-            const previewUrl = "{{ url('admin/combustibles') }}/" + combustibleId + "/preview";
-            const downloadUrl = "{{ url('admin/combustibles') }}/" + combustibleId + "/download";
+            const previewUrl = "<?php echo e(url('admin/combustibles')); ?>/" + combustibleId + "/preview";
+            const downloadUrl = "<?php echo e(url('admin/combustibles')); ?>/" + combustibleId + "/download";
 
             // Asignar URLs
             iframe.src = previewUrl;
@@ -971,7 +1338,7 @@
             Chart.defaults.borderColor = gridColor;
 
             // 📊 GRÁFICO 1: Consumo Mensual (Línea con doble eje)
-            const dataConsumo = @json($consumoPorMes);
+            const dataConsumo = <?php echo json_encode($consumoPorMes, 15, 512) ?>;
             const meses = dataConsumo.map(item => {
                 const [year, month] = item.mes.split('-');
                 const fecha = new Date(year, month - 1);
@@ -1100,7 +1467,7 @@
             });
 
             // 📊 GRÁFICO 2: Distribución por Tipo de Combustible (Dona)
-            const dataTipo = @json($consumoPorTipo);
+            const dataTipo = <?php echo json_encode($consumoPorTipo, 15, 512) ?>;
             const tipos = dataTipo.map(item => item.tipo);
             const litrosTipo = dataTipo.map(item => parseFloat(item.total_litros));
 
@@ -1165,7 +1532,7 @@
             });
 
             // 📊 GRÁFICO 3: Top Destinos (Vehículos, Equipos, etc.) - Barras Horizontales
-            const dataVehiculos = @json($topVehiculos);
+            const dataVehiculos = <?php echo json_encode($topVehiculos, 15, 512) ?>;
             const vehiculos = dataVehiculos.map(item => {
                 if (!item.destino) {
                     return 'Sin datos';
@@ -1388,4 +1755,5 @@
             }
         });
     </script>
-@endsection
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('layouts.admin', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\laragon\www\Sistema-talwind\resources\views/admin/combustibles/index.blade.php ENDPATH**/ ?>

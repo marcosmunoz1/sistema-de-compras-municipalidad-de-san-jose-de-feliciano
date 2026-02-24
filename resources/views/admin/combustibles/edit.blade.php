@@ -33,8 +33,7 @@
             </li>
             <li>
                 <span class="inline-flex items-center gap-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                        class="h-4 w-4 stroke-current">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="h-4 w-4 stroke-current">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M9 13h6m-3-3v6m5 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
                         </path>
@@ -54,9 +53,9 @@
                 <div class="flex items-center gap-4 md:gap-5">
                     <div
                         class="bg-gradient-to-br from-orange-500 to-red-600 p-3 md:p-4 rounded-2xl shadow-lg ring-4 ring-orange-500/20">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24"
-                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                            stroke-linejoin="round" class="lucide lucide-fuel text-white">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="lucide lucide-fuel text-white">
                             <path d="M14 13h2a2 2 0 0 1 2 2v2a2 2 0 0 0 4 0v-6.998a2 2 0 0 0-.59-1.42L18 5"></path>
                             <path d="M14 21V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v16"></path>
                             <path d="M2 21h13"></path>
@@ -73,7 +72,7 @@
                     </div>
                 </div>
 
-                
+
             </div>
         </div>
 
@@ -94,22 +93,21 @@
         <div data-slot="card"
             class="bg-base-100 text-base-content flex flex-col gap-6 rounded-xl border lg:col-span-2 border-l-4 border-l-blue-500 shadow-lg dark:border-gray-700 dark:border-l-blue-500">
 
-            <div data-slot="card-header"
-                class="grid auto-rows-min grid-rows-[auto_auto] items-start gap-1.5 px-6 pt-6 pb-6 
-                    /* Redondeado superior para que no se vea el borde cuadrado */
-                    rounded-t-xl 
-                    /* Colores dinámicos para el degradado */
-                    bg-gradient-to-r from-blue-50 to-indigo-50 
-                    dark:from-slate-800 dark:to-slate-900 
-                    /* Bordes */
-                    border-b border-blue-100 dark:border-gray-700">
+            <div data-slot="card-header" class="grid auto-rows-min grid-rows-[auto_auto] items-start gap-1.5 px-6 pt-6 pb-6 
+                                        /* Redondeado superior para que no se vea el borde cuadrado */
+                                        rounded-t-xl 
+                                        /* Colores dinámicos para el degradado */
+                                        bg-gradient-to-r from-blue-50 to-indigo-50 
+                                        dark:from-slate-800 dark:to-slate-900 
+                                        /* Bordes */
+                                        border-b border-blue-100 dark:border-gray-700">
 
                 <h4 data-slot="card-title" class="flex items-center justify-between text-base md:text-lg font-semibold">
                     <div class="flex items-center gap-2 md:gap-3">
                         <div class="bg-blue-500 p-2 rounded-lg text-white shadow-sm">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round" class="lucide lucide-file-text">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                class="lucide lucide-file-text">
                                 <path
                                     d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z">
                                 </path>
@@ -124,9 +122,9 @@
 
                     <span
                         class="hidden md:flex items-center gap-2 text-xs font-normal opacity-70 bg-base-300 dark:bg-slate-700 px-3 py-1 rounded-full text-white">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24"
-                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                            stroke-linejoin="round" class="lucide lucide-lock">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="lucide lucide-lock">
                             <rect width="18" height="11" x="3" y="11" rx="2" ry="2"></rect>
                             <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
                         </svg>
@@ -139,8 +137,8 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
                     <div class="bg-base-200/50 rounded-lg p-3 border border-base-300 hover:border-blue-400 transition-all">
                         <div class="flex items-center gap-2 mb-2">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" class="text-blue-500">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2" class="text-blue-500">
                                 <rect width="18" height="18" x="3" y="4" rx="2"></rect>
                                 <path d="M3 10h18"></path>
                                 <path d="M8 2v4"></path>
@@ -149,7 +147,8 @@
                             <span class="text-xs font-semibold opacity-60 uppercase">Fecha de Carga</span>
                         </div>
                         <p class="text-base font-bold text-base-content">
-                            {{ \Carbon\Carbon::parse($combustible->fecha)->format('d/m/Y') }}</p>
+                            {{ \Carbon\Carbon::parse($combustible->fecha)->format('d/m/Y') }}
+                        </p>
                     </div>
 
                     <div
@@ -221,18 +220,18 @@
 
                     </div>
                     @isset($combustible->id_empleado)
-                    <div class="bg-base-200/50 rounded-lg p-3 border border-base-300 hover:border-cyan-400 transition-all">
-                        <div class="flex items-center gap-2 mb-2 text-cyan-600">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                stroke-width="2">
-                                <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
-                                <circle cx="12" cy="7" r="4"></circle>
-                            </svg>
-                            <span class="text-xs font-semibold opacity-60 uppercase">Conductor</span>
+                        <div class="bg-base-200/50 rounded-lg p-3 border border-base-300 hover:border-cyan-400 transition-all">
+                            <div class="flex items-center gap-2 mb-2 text-cyan-600">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
+                                    <circle cx="12" cy="7" r="4"></circle>
+                                </svg>
+                                <span class="text-xs font-semibold opacity-60 uppercase">Conductor</span>
+                            </div>
+                            <p class="text-base font-bold">{{ $combustible->empleado->nombre }}</p>
+                            <p class="text-xs opacity-60">DNI: {{ $combustible->empleado->dni }}</p>
                         </div>
-                        <p class="text-base font-bold">{{ $combustible->empleado->nombre }}</p>
-                        <p class="text-xs opacity-60">DNI: {{ $combustible->empleado->dni }}</p>
-                    </div>
                     @endisset
                     <div
                         class="bg-base-200/50 rounded-lg p-3 border border-base-300 hover:border-violet-400 transition-all md:col-span-2">
@@ -295,17 +294,16 @@
     <div data-slot="card"
         class="bg-base-100 mt-6 text-base-content flex flex-col gap-6 rounded-xl border lg:col-span-2 border-l-4 border-l-gray-500 shadow-lg dark:border-gray-700 dark:border-l-gray-500 overflow-hidden">
 
-        <div data-slot="card-header"
-            class="grid auto-rows-min grid-rows-[auto_auto] items-start gap-1.5 px-6 pt-6 pb-6 
-               bg-gradient-to-r from-gray-50 to-slate-100 dark:from-slate-800 dark:to-slate-900 
-               border-b border-gray-200 dark:border-gray-700">
+        <div data-slot="card-header" class="grid auto-rows-min grid-rows-[auto_auto] items-start gap-1.5 px-6 pt-6 pb-6 
+                                   bg-gradient-to-r from-gray-50 to-slate-100 dark:from-slate-800 dark:to-slate-900 
+                                   border-b border-gray-200 dark:border-gray-700">
 
             <h4 data-slot="card-title" class="flex items-center justify-between text-base md:text-lg font-semibold">
                 <div class="flex items-center gap-2 md:gap-3">
                     <div class="bg-gray-500 p-2 rounded-lg text-white shadow-sm">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
-                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                            stroke-linejoin="round" class="lucide lucide-message-square">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="lucide lucide-message-square">
                             <path
                                 d="M22 17a2 2 0 0 1-2 2H6.828a2 2 0 0 0-1.414.586l-2.202 2.202A.71.71 0 0 1 2 21.286V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2z">
                             </path>
@@ -316,9 +314,9 @@
 
                 <span
                     class="flex items-center gap-2 text-xs font-normal opacity-70 bg-base-300 dark:bg-slate-700 px-3 py-1 rounded-full text-white">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24"
-                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round" class="lucide lucide-lock">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="lucide lucide-lock">
                         <rect width="18" height="11" x="3" y="11" rx="2" ry="2"></rect>
                         <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
                     </svg>
@@ -336,9 +334,9 @@
 
             <div
                 class="mt-3 flex items-start gap-2 text-xs md:text-sm opacity-80 bg-base-200 p-3 rounded-lg border border-base-300 dark:border-gray-700">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
-                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                    stroke-linejoin="round" class="lucide lucide-lock mt-0.5 opacity-60">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                    class="lucide lucide-lock mt-0.5 opacity-60">
                     <rect width="18" height="11" x="3" y="11" rx="2" ry="2"></rect>
                     <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
                 </svg>
@@ -348,22 +346,21 @@
         </div>
     </div>
     <form action="{{ route('combustibles.update', $combustible->id) }}" method="POST" class="space-y-6"
-        enctype="multipart/form-data"> 
+        enctype="multipart/form-data">
         @csrf
         @method('PUT')
         <div data-slot="card"
             class="bg-base-100 mt-6 text-base-content flex flex-col gap-6 rounded-xl border lg:col-span-3 border-l-4 border-l-orange-500 shadow-lg dark:border-gray-700 dark:border-l-orange-500 overflow-hidden">
 
-            <div data-slot="card-header"
-                class="grid auto-rows-min grid-rows-[auto_auto] items-start gap-1.5 px-6 pt-6 pb-6 
-               bg-gradient-to-r from-orange-50 to-amber-50 dark:from-slate-800 dark:to-slate-900 
-               border-b border-orange-100 dark:border-gray-700">
+            <div data-slot="card-header" class="grid auto-rows-min grid-rows-[auto_auto] items-start gap-1.5 px-6 pt-6 pb-6 
+                                   bg-gradient-to-r from-orange-50 to-amber-50 dark:from-slate-800 dark:to-slate-900 
+                                   border-b border-orange-100 dark:border-gray-700">
                 <h4 data-slot="card-title"
                     class="flex items-center gap-2 md:gap-3 text-base md:text-lg font-semibold text-base-content">
                     <div class="bg-orange-500 p-2 rounded-lg text-white shadow-sm">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
-                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                            stroke-linejoin="round" class="lucide lucide-fuel">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="lucide lucide-fuel">
                             <path d="M14 13h2a2 2 0 0 1 2 2v2a2 2 0 0 0 4 0v-6.998a2 2 0 0 0-.59-1.42L18 5"></path>
                             <path d="M14 21V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v16"></path>
                             <path d="M2 21h13"></path>
@@ -380,8 +377,8 @@
                     <div class="space-y-3 md:space-y-4">
                         <h3
                             class="text-xs md:text-sm font-semibold opacity-60 uppercase tracking-wide flex items-center gap-2">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" class="opacity-70">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2" class="opacity-70">
                                 <rect width="18" height="11" x="3" y="11" rx="2" ry="2"></rect>
                                 <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
                             </svg>
@@ -405,18 +402,22 @@
                             </div>
                             <p id="precio_litro" class="text-xl md:text-2xl font-bold text-base-content"
                                 data-precio="{{ $combustible->precio }}">$
-                                {{ number_format($combustible->precio, 2, ',', '.') }}</p>
+                                {{ number_format($combustible->precio, 2, ',', '.') }}
+                            </p>
                             <input type="hidden" name="precio" value="{{ $combustible->precio }}">
                         </div>
 
                         <div class="grid grid-cols-2 gap-2">
                             <div class="bg-base-200/50 rounded-xl p-3 border border-base-300">
                                 <p class="text-[10px] uppercase opacity-60 font-bold">Subcuenta</p>
-                                <p class="text-sm font-bold text-blue-600 dark:text-blue-400">{{ $combustible->sub_cuenta }}</p>
+                                <p class="text-sm font-bold text-blue-600 dark:text-blue-400">{{ $combustible->sub_cuenta }}
+                                </p>
                             </div>
                             <div class="bg-base-200/50 rounded-xl p-3 border border-base-300">
                                 <p class="text-[10px] uppercase opacity-60 font-bold">Método</p>
-                                <p class="text-sm font-bold text-violet-600 dark:text-violet-400">{{ Str::headline($combustible->tipo_de_pago) }}</p>
+                                <p class="text-sm font-bold text-violet-600 dark:text-violet-400">
+                                    {{ Str::headline($combustible->tipo_de_pago) }}
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -424,8 +425,8 @@
                     <div class="space-y-3 md:space-y-4">
                         <h3
                             class="text-xs md:text-sm font-semibold text-emerald-600 dark:text-emerald-400 uppercase tracking-wide flex items-center gap-2">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2">
                                 <path d="M13 21h8"></path>
                                 <path
                                     d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z">
@@ -442,16 +443,16 @@
                                 <label class="text-sm font-bold text-emerald-900 dark:text-emerald-400 block mb-2">Cantidad
                                     de Litros *</label>
                                 <div class="relative">
-                                    <input type="number" id="cantidad_litros" name="litros"
+                                    <input type="text" id="cantidad_litros" name="litros"
                                         class="w-full text-3xl md:text-4xl font-bold h-16 md:h-20 text-center border-b-4 border-emerald-500 bg-transparent focus:outline-none text-white"
-                                        value="{{ $combustible->litros }}" step="0.01" min="0">
+                                        value="{{ number_format($combustible->litros, 2, ',', '.') }}">
                                     <span
                                         class="absolute right-0 top-1/2 -translate-y-1/2 text-xl font-bold text-emerald-500/50">L</span>
                                 </div>
                                 <div
                                     class="mt-4 flex items-center gap-2 text-[10px] md:text-xs text-emerald-700 dark:text-emerald-500 bg-emerald-50 dark:bg-emerald-500/10 p-2 rounded-lg">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
-                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2">
                                         <circle cx="12" cy="12" r="10"></circle>
                                         <path d="m9 12 2 2 4-4"></path>
                                     </svg>
@@ -464,8 +465,8 @@
                     <div class="space-y-3 md:space-y-4">
                         <h3
                             class="text-xs md:text-sm font-semibold text-orange-600 dark:text-orange-400 uppercase tracking-wide flex items-center gap-2">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2">
                                 <path d="M16 7h6v6"></path>
                                 <path d="m22 7-8.5 8.5-5-5L2 17"></path>
                             </svg>
@@ -478,8 +479,8 @@
                             <div
                                 class="relative bg-gradient-to-br from-orange-500 to-red-600 rounded-2xl p-5 md:p-6 text-white shadow-xl">
                                 <p class="text-xs font-semibold opacity-80 mb-1">MONTO TOTAL</p>
-                                <p id="monto_total"
-                                    class="text-4xl md:text-5xl font-black mb-4 text-center tracking-tight">$
+                                <p id="monto_total" class="text-4xl md:text-5xl font-black mb-4 text-center tracking-tight">
+                                    $
                                     {{ number_format($combustible->cantidad_litros * $combustible->precio_litro, 2, ',', '.') }}
                                 </p>
 
@@ -496,9 +497,8 @@
                         </div>
                         <div
                             class="bg-amber-50 dark:bg-amber-900/10 border border-amber-200 dark:border-amber-800/50 rounded-xl p-3 flex gap-2">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2"
-                                class="text-amber-600 shrink-0 mt-0.5">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2" class="text-amber-600 shrink-0 mt-0.5">
                                 <circle cx="12" cy="12" r="10"></circle>
                                 <line x1="12" x2="12" y1="8" y2="12"></line>
                                 <line x1="12" x2="12.01" y1="16" y2="16"></line>
@@ -514,17 +514,16 @@
         <div data-slot="card"
             class="bg-base-100 mt-6 text-base-content flex flex-col gap-6 rounded-xl border border-l-4 border-l-green-500 shadow-lg dark:border-gray-700 dark:border-l-green-500 overflow-hidden">
 
-            <div data-slot="card-header"
-                class="grid auto-rows-min grid-rows-[auto_auto] items-start gap-1.5 px-6 pt-6 pb-6 
-               bg-gradient-to-r from-green-50 to-emerald-50 dark:from-slate-800 dark:to-slate-900 
-               border-b border-green-100 dark:border-gray-700">
+            <div data-slot="card-header" class="grid auto-rows-min grid-rows-[auto_auto] items-start gap-1.5 px-6 pt-6 pb-6 
+                                   bg-gradient-to-r from-green-50 to-emerald-50 dark:from-slate-800 dark:to-slate-900 
+                                   border-b border-green-100 dark:border-gray-700">
 
                 <h4 data-slot="card-title" class="flex items-center justify-between text-base md:text-lg font-semibold">
                     <div class="flex items-center gap-2 md:gap-3">
                         <div class="bg-green-500 p-2 rounded-lg text-white shadow-sm">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round" class="lucide lucide-image">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                class="lucide lucide-image">
                                 <rect width="18" height="18" x="3" y="3" rx="2" ry="2"></rect>
                                 <circle cx="9" cy="9" r="2"></circle>
                                 <path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"></path>
@@ -535,8 +534,8 @@
 
                     <span
                         class="flex items-center gap-2 text-[10px] md:text-xs font-medium bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 px-3 py-1 rounded-full border border-green-200 dark:border-green-800">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24"
-                            fill="none" stroke="currentColor" stroke-width="2" class="lucide lucide-pen-line">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" class="lucide lucide-pen-line">
                             <path d="M13 21h8"></path>
                             <path
                                 d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z">
@@ -559,10 +558,9 @@
                             class="relative border-2 border-dashed border-green-400 dark:border-green-800 bg-base-200/50 hover:bg-base-200 dark:hover:bg-slate-800/50 rounded-2xl p-6 md:p-10 text-center transition-all cursor-pointer block">
                             <div
                                 class="bg-green-100 dark:bg-green-900/20 p-4 rounded-full w-16 h-16 md:w-20 md:h-20 mx-auto mb-4 flex items-center justify-center shadow-inner">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32"
-                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                    stroke-linecap="round" stroke-linejoin="round"
-                                    class="lucide lucide-upload text-green-600 dark:text-green-400">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" class="lucide lucide-upload text-green-600 dark:text-green-400">
                                     <path d="M12 3v12"></path>
                                     <path d="m17 8-5-5-5 5"></path>
                                     <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
@@ -573,13 +571,12 @@
                             <p class="text-xs md:text-sm opacity-60 mb-6 text-base-content">o haz clic para explorar tus
                                 archivos</p>
 
-                            <input type="file" id="imagen_factura" name="imagen_factura" accept="image/*"
-                                class="hidden">
+                            <input type="file" id="imagen_factura" name="imagen_factura" accept="image/*" class="hidden">
 
                             <span
                                 class="inline-flex items-center gap-2 px-6 py-3 bg-green-600 hover:bg-green-700 text-white rounded-xl font-bold transition-all shadow-md hover:shadow-green-500/20 hover:scale-105 active:scale-95 cursor-pointer text-sm md:text-base">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"
-                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2">
                                     <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
                                     <polyline points="17 8 12 3 7 8"></polyline>
                                     <line x1="12" y1="3" x2="12" y2="15"></line>
@@ -592,9 +589,8 @@
                             class="hidden relative border-2 border-solid border-green-400 dark:border-green-800 bg-base-200/50 rounded-2xl p-4 md:p-6 text-center">
                             <div class="flex items-center justify-between mb-4">
                                 <div class="flex items-center gap-2">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"
-                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                        class="text-green-600">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" class="text-green-600">
                                         <rect width="18" height="18" x="3" y="3" rx="2" ry="2">
                                         </rect>
                                         <circle cx="9" cy="9" r="2"></circle>
@@ -604,8 +600,8 @@
                                 </div>
                                 <button type="button" id="btn_remove_image"
                                     class="btn btn-sm btn-circle btn-ghost text-red-500 hover:bg-red-100 dark:hover:bg-red-900/20">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"
-                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2">
                                         <path d="M18 6 6 18"></path>
                                         <path d="m6 6 12 12"></path>
                                     </svg>
@@ -616,8 +612,8 @@
                             <p id="preview_filename" class="text-xs text-center mt-3 opacity-70"></p>
                             <label for="imagen_factura"
                                 class="inline-flex items-center gap-2 px-4 py-2 mt-4 bg-green-600 hover:bg-green-700 text-white rounded-lg font-medium transition-all shadow-sm cursor-pointer text-sm">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2">
                                     <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
                                     <polyline points="17 8 12 3 7 8"></polyline>
                                     <line x1="12" y1="3" x2="12" y2="15"></line>
@@ -630,9 +626,8 @@
                     <div
                         class="bg-blue-50 dark:bg-slate-800/40 border border-blue-100 dark:border-slate-700 rounded-xl p-4">
                         <div class="flex items-start gap-3 text-blue-800 dark:text-slate-300">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2"
-                                class="mt-0.5 shrink-0 opacity-70">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2" class="mt-0.5 shrink-0 opacity-70">
                                 <circle cx="12" cy="12" r="10"></circle>
                                 <line x1="12" x2="12" y1="8" y2="12"></line>
                                 <line x1="12" x2="12.01" y1="16" y2="16"></line>
@@ -672,36 +667,111 @@
 @endsection
 @section('js')
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             const cantidadInput = document.getElementById('cantidad_litros');
             const precioElement = document.getElementById('precio_litro');
             const montoTotalElement = document.getElementById('monto_total');
             const calculoDetalleElement = document.getElementById('calculo_detalle');
 
+            // Precio base (ya viene como float desde data-precio, ej: 1000.50)
             const precioLitro = parseFloat(precioElement.dataset.precio) || 0;
 
-            function formatearNumero(num) {
+            // Función para limpiar el valor y convertirlo a float
+            function normalizarPrecio(valor) {
+                if (!valor) return 0;
+                let raw = valor.toString().replace(/[^0-9,\.]/g, ''); // solo dígitos, comas y puntos
+                raw = raw.replace(/\./g, ''); // eliminar puntos de miles
+                raw = raw.replace(',', '.'); // cambiar coma decimal por punto
+                const num = parseFloat(raw);
+                return isNaN(num) ? 0 : num;
+            }
+
+            // Función para dar formato visual (ej: 1234.56 -> 1.234,56)
+            function formatearPrecio(num) {
+                if (!num && num !== 0) return '';
                 const partes = Number(num).toFixed(2).split('.');
                 const entero = partes[0].replace(/\B(?=(\d{3})+(?!\d))/g, '.');
                 const decimal = partes[1];
                 return `${entero},${decimal}`;
             }
 
+            // Calcular total en función de los inputs
             function calcularTotal() {
-                const cantidad = parseFloat(cantidadInput.value) || 0;
+                const cantidadVal = cantidadInput.value;
+                const cantidad = normalizarPrecio(cantidadVal);
+
                 const total = cantidad * precioLitro;
 
-                montoTotalElement.textContent = `$ ${formatearNumero(total)}`;
-                calculoDetalleElement.textContent =
-                    `${formatearNumero(cantidad)} L × $ ${formatearNumero(precioLitro)}`;
+                // Actualizar visualización del total
+                montoTotalElement.textContent = `$ ${formatearPrecio(total)}`;
+                // Actualizar detalle
+                calculoDetalleElement.textContent = `${formatearPrecio(cantidad)} L × $ ${formatearPrecio(precioLitro)}`;
             }
 
-            cantidadInput.addEventListener('input', calcularTotal);
-            cantidadInput.addEventListener('change', calcularTotal);
+            // Manejo del input estilo "Cajero Automático" (ATM)
+            cantidadInput.addEventListener('input', function () {
+                // 1. Quitar todo lo que no sea dígito
+                let digits = this.value.replace(/\D/g, '');
 
-            calcularTotal();
+                // 2. Eliminar ceros a la izquierda para evitar "001"
+                digits = digits.replace(/^0+/, '');
 
-            // Preview de imagen
+                // 3. Si no hay nada, limpiar
+                if (!digits) {
+                    this.value = '';
+                    calcularTotal();
+                    return;
+                }
+
+                // 4. Construir parte entera y decimal
+                //    Siempre asumimos 2 decimales implícitos (123 -> 1,23)
+                let entero, centavos;
+
+                if (digits.length === 1) {
+                    // 1 dígito -> 0,0d
+                    entero = '0';
+                    centavos = digits.padStart(2, '0'); // '1' -> '01'
+                } else if (digits.length === 2) {
+                    // 2 dígitos -> 0,dd
+                    entero = '0';
+                    centavos = digits;
+                } else {
+                    // 3+ dígitos -> e...e,dd
+                    entero = digits.slice(0, -2);
+                    centavos = digits.slice(-2);
+                }
+
+                // 5. Formatear parte entera con puntos de miles
+                const enteroFormateado = entero.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+
+                // 6. Asignar valor formateado al input
+                this.value = `${enteroFormateado},${centavos}`;
+
+                // 7. Recalcular
+                calcularTotal();
+            });
+
+            // Formateo al perder foco (asegurar consistencia, p.ej. si estaba vacío)
+            cantidadInput.addEventListener('blur', function () {
+                if (!this.value.trim()) {
+                    this.value = '';
+                    calcularTotal();
+                    return;
+                }
+                const n = normalizarPrecio(this.value);
+                this.value = formatearPrecio(n);
+                calcularTotal();
+            });
+
+            // --- Inicialización ---
+            // Si hay valor inicial (ej: "50,00" o "50.00"), asegurar formato correcto
+            if (cantidadInput.value) {
+                const n = normalizarPrecio(cantidadInput.value);
+                cantidadInput.value = formatearPrecio(n);
+                calcularTotal();
+            }
+
+            // --- Lógica de Imagen (Preview) ---
             const inputImagen = document.getElementById('imagen_factura');
             const uploadZone = document.getElementById('upload_zone');
             const previewContainer = document.getElementById('preview_container');
@@ -709,40 +779,42 @@
             const previewFilename = document.getElementById('preview_filename');
             const btnRemoveImage = document.getElementById('btn_remove_image');
 
-            inputImagen.addEventListener('change', function(e) {
-                const file = e.target.files[0];
+            if (inputImagen) {
+                inputImagen.addEventListener('change', function (e) {
+                    const file = e.target.files[0];
 
-                if (!file) {
-                    uploadZone.classList.remove('hidden');
-                    previewContainer.classList.add('hidden');
-                    return;
-                }
+                    if (!file) {
+                        uploadZone.classList.remove('hidden');
+                        previewContainer.classList.add('hidden');
+                        return;
+                    }
 
-                if (!file.type.startsWith('image/')) {
-                    alert('Por favor, selecciona un archivo de imagen válido.');
+                    if (!file.type.startsWith('image/')) {
+                        alert('Por favor, selecciona un archivo de imagen válido.');
+                        inputImagen.value = '';
+                        uploadZone.classList.remove('hidden');
+                        previewContainer.classList.add('hidden');
+                        return;
+                    }
+
+                    const reader = new FileReader();
+                    reader.onload = function (event) {
+                        previewImage.src = event.target.result;
+                        previewFilename.textContent = file.name;
+                        uploadZone.classList.add('hidden');
+                        previewContainer.classList.remove('hidden');
+                    };
+                    reader.readAsDataURL(file);
+                });
+
+                btnRemoveImage.addEventListener('click', function () {
                     inputImagen.value = '';
+                    previewImage.src = '';
+                    previewFilename.textContent = '';
                     uploadZone.classList.remove('hidden');
                     previewContainer.classList.add('hidden');
-                    return;
-                }
-
-                const reader = new FileReader();
-                reader.onload = function(event) {
-                    previewImage.src = event.target.result;
-                    previewFilename.textContent = file.name;
-                    uploadZone.classList.add('hidden');
-                    previewContainer.classList.remove('hidden');
-                };
-                reader.readAsDataURL(file);
-            });
-
-            btnRemoveImage.addEventListener('click', function() {
-                inputImagen.value = '';
-                previewImage.src = '';
-                previewFilename.textContent = '';
-                uploadZone.classList.remove('hidden');
-                previewContainer.classList.add('hidden');
-            });
+                });
+            }
         });
     </script>
 @endsection
