@@ -428,21 +428,23 @@
                         required>
                 </div>
 
-                {{-- Tipo --}}
-                <div class="form-control mb-3">
-                    <label for="nuevo_destino_tipo" class="label">
-                        <span class="label-text font-medium">Tipo <span class="text-red-600">*</span></span>
-                    </label>
-                    <select id="nuevo_destino_tipo" name="tipo" class="select select-bordered w-full rounded-md border border-base-300 bg-base-200 focus:outline-none focus:ring-2 focus:ring-primary 
-                            focus:border-primary transition" required>
-                        <option value="">Seleccione un tipo</option>
-                        <option value="persona">Persona</option>
-                        <option value="organismo_publico">Organismo público</option>
-                        <option value="empresa">Empresa</option>
-                        <option value="institucion">Institución</option>
-                        <option value="policia">Policía</option>
-                    </select>
-                </div>
+            {{-- Tipo --}}
+            <div class="form-control mb-3">
+                <label for="nuevo_destino_tipo" class="label">
+                    <span class="label-text font-medium">Tipo <span class="text-red-600">*</span></span>
+                </label>
+                <select id="nuevo_destino_tipo" name="tipo"
+                    class="select select-bordered w-full rounded-md border border-base-300 bg-base-200 focus:outline-none focus:ring-2 focus:ring-primary 
+                    focus:border-primary transition" required>
+                    <option value="">Seleccione un tipo</option>
+                    <option value="persona">Persona</option>
+                    <option value="organismo_publico">Organismo público</option>
+                    <option value="empresa">Empresa</option>
+                    <option value="institucion">Institución</option>
+                    <option value="policia">Policía</option>
+                    <option value="varios">Varios</option>
+                </select>
+            </div>
 
                 {{-- Descripción --}}
                 <div class="form-control mb-4">

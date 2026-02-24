@@ -1,19 +1,37 @@
-@extends('layouts.admin')
-@section('title', 'Compras')
-@section('content')
+<?php $__env->startSection('title', 'Compras'); ?>
+<?php $__env->startSection('content'); ?>
     <div class="flex items-center justify-between mb-6">
         <h1 class="text-3xl font-bold text-base-content">Compras</h1>
-        {{-- Botón agregar compra --}}
-        @can('compras-create')
-            <a href="{{ route('compras.create') }}" class="btn btn-primary">
-                <x-heroicon-o-plus class="w-5 h-5" /> Nueva Compra
+        
+        <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('compras-create')): ?>
+            <a href="<?php echo e(route('compras.create')); ?>" class="btn btn-primary">
+                <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c = $attributes; } ?>
+<?php $component = BladeUI\Icons\Components\Svg::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('heroicon-o-plus'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\BladeUI\Icons\Components\Svg::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['class' => 'w-5 h-5']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $attributes = $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $component = $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?> Nueva Compra
             </a>
-        @endcan
+        <?php endif; ?>
     </div>
     <div class="breadcrumbs text-sm mb-6">
         <ul>
             <li>
-                <a href="{{ route('admin.index') }}">
+                <a href="<?php echo e(route('admin.index')); ?>">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="h-4 w-4 stroke-current">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"></path>
@@ -22,31 +40,50 @@
                 </a>
             </li>
             <li>
-                <a href="{{ route('compras.index') }}">
-                    <x-heroicon-o-shopping-bag class="w-4 h-4 inline" />
+                <a href="<?php echo e(route('compras.index')); ?>">
+                    <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c = $attributes; } ?>
+<?php $component = BladeUI\Icons\Components\Svg::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('heroicon-o-shopping-bag'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\BladeUI\Icons\Components\Svg::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['class' => 'w-4 h-4 inline']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $attributes = $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $component = $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
                     Compras
                 </a>
             </li>
         </ul>
-        <form method="GET" action="{{ route('compras.index') }}"
+        <form method="GET" action="<?php echo e(route('compras.index')); ?>"
             class="grid grid-cols-1 md:grid-cols-5 gap-4 items-end mb-6 mt-3">
 
             <!-- Desde -->
             <div>
                 <label class="text-sm text-gray-500">Desde</label>
-                <input type="date" name="desde" value="{{ request('desde') }}" class="input input-bordered w-full">
+                <input type="date" name="desde" value="<?php echo e(request('desde')); ?>" class="input input-bordered w-full">
             </div>
 
             <!-- Hasta -->
             <div>
                 <label class="text-sm text-gray-500">Hasta</label>
-                <input type="date" name="hasta" value="{{ request('hasta') }}" class="input input-bordered w-full">
+                <input type="date" name="hasta" value="<?php echo e(request('hasta')); ?>" class="input input-bordered w-full">
             </div>
 
             <!-- Proveedor -->
             <div>
                 <label class="text-sm text-gray-500">Proveedor</label>
-                <input type="text" name="proveedor" value="{{ request('proveedor') }}" placeholder="Nombre proveedor"
+                <input type="text" name="proveedor" value="<?php echo e(request('proveedor')); ?>" placeholder="Nombre proveedor"
                     class="input input-bordered w-full">
             </div>
 
@@ -55,10 +92,10 @@
                 <label class="text-sm text-gray-500">Estado</label>
                 <select name="estado" class="select select-bordered w-full">
                     <option value="">Todos</option>
-                    <option value="Pendiente de factura" @selected(request('estado') == 'Pendiente de factura')>
+                    <option value="Pendiente de factura" <?php if(request('estado') == 'Pendiente de factura'): echo 'selected'; endif; ?>>
                         Pendiente de factura
                     </option>
-                    <option value="Finalizada" @selected(request('estado') == 'Finalizada')>
+                    <option value="Finalizada" <?php if(request('estado') == 'Finalizada'): echo 'selected'; endif; ?>>
                         Finalizada
                     </option>
                 </select>
@@ -69,7 +106,7 @@
                 <button type="submit" class="btn btn-primary w-full md:w-auto">
                     Filtrar
                 </button>
-                <a href="{{ route('compras.index') }}" class="btn btn-outline w-full md:w-auto">
+                <a href="<?php echo e(route('compras.index')); ?>" class="btn btn-outline w-full md:w-auto">
                     Limpiar
                 </a>
             </div>
@@ -83,7 +120,7 @@
                 <div class="flex items-center justify-between">
                     <div>
                         <p class="text-gray-500">Monto Total</p>
-                        <h3 class="mt-2">${{ number_format($totalMonto, 2) }}</h3>
+                        <h3 class="mt-2">$<?php echo e(number_format($totalMonto, 2)); ?></h3>
                     </div>
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
@@ -102,7 +139,7 @@
                 <div class="flex items-center justify-between">
                     <div>
                         <p class="text-gray-500">Cantidad de compras</p>
-                        <h3 class="mt-2">{{ $totalCompras }}</h3>
+                        <h3 class="mt-2"><?php echo e($totalCompras); ?></h3>
                     </div>
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
@@ -121,7 +158,7 @@
                 <div class="flex items-center justify-between">
                     <div>
                         <p class="text-gray-500">Pendiente/sin facturas</p>
-                        <h3 class="mt-2">{{ $pendientes }}</h3>
+                        <h3 class="mt-2"><?php echo e($pendientes); ?></h3>
                     </div>
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
@@ -137,13 +174,13 @@
     </div>
 
     <!-- Buscador -->
-    <form action="{{ route('compras.index') }}" method="GET">
+    <form action="<?php echo e(route('compras.index')); ?>" method="GET">
         <div class="card bg-base-100 shadow p-6 mb-6">
             <div class="flex items-center gap-3">
 
                 <!-- INPUT -->
                 <label class="w-full">
-                    <input name="search" value="{{ request('search') ?? '' }}" type="text"
+                    <input name="search" value="<?php echo e(request('search') ?? ''); ?>" type="text"
                         placeholder="Buscar por proveedor, fecha, estado..."
                         class="w-full h-10 rounded-md border border-base-300 bg-base-200 
                         px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary 
@@ -152,13 +189,51 @@
 
                 <!-- BOTÓN -->
                 <button class="btn btn-primary">
-                    <x-heroicon-o-magnifying-glass class="w-4 h-4" />
+                    <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c = $attributes; } ?>
+<?php $component = BladeUI\Icons\Components\Svg::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('heroicon-o-magnifying-glass'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\BladeUI\Icons\Components\Svg::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['class' => 'w-4 h-4']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $attributes = $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $component = $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
                     Buscar
                 </button>
-                @if (request('search'))
-                    <a href="{{ route('compras.index') }}" class="btn btn-error"><x-heroicon-o-trash class="w-4 h-4" />
+                <?php if(request('search')): ?>
+                    <a href="<?php echo e(route('compras.index')); ?>" class="btn btn-error"><?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c = $attributes; } ?>
+<?php $component = BladeUI\Icons\Components\Svg::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('heroicon-o-trash'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\BladeUI\Icons\Components\Svg::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['class' => 'w-4 h-4']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $attributes = $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $component = $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
                         Limpiar</a>
-                @endif
+                <?php endif; ?>
             </div>
         </div>
     </form>
@@ -172,10 +247,26 @@
                     <h4 class="text-lg font-semibold">Historial de Compras</h4>
                     <!-- BOTÓN REPORTE -->
                     <div class="flex gap-2">
-                        <x-boton-reporte titulo="Generar Reporte" modalId="modal_reporte_compras"
-                            previewUrl="{{ route('compras.reporte.html') }}"
-                            downloadUrl="{{ route('compras.reporte.download') }}"
-                            descripcion="Reporte completo de todas las compras" icono="document" />
+                        <?php if (isset($component)) { $__componentOriginal64134405d1cef365195ea78d7e35c24e = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal64134405d1cef365195ea78d7e35c24e = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.boton-reporte','data' => ['titulo' => 'Generar Reporte','modalId' => 'modal_reporte_compras','previewUrl' => ''.e(route('compras.reporte.html')).'','downloadUrl' => ''.e(route('compras.reporte.download')).'','descripcion' => 'Reporte completo de todas las compras','icono' => 'document']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('boton-reporte'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['titulo' => 'Generar Reporte','modalId' => 'modal_reporte_compras','previewUrl' => ''.e(route('compras.reporte.html')).'','downloadUrl' => ''.e(route('compras.reporte.download')).'','descripcion' => 'Reporte completo de todas las compras','icono' => 'document']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal64134405d1cef365195ea78d7e35c24e)): ?>
+<?php $attributes = $__attributesOriginal64134405d1cef365195ea78d7e35c24e; ?>
+<?php unset($__attributesOriginal64134405d1cef365195ea78d7e35c24e); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal64134405d1cef365195ea78d7e35c24e)): ?>
+<?php $component = $__componentOriginal64134405d1cef365195ea78d7e35c24e; ?>
+<?php unset($__componentOriginal64134405d1cef365195ea78d7e35c24e); ?>
+<?php endif; ?>
                     </div>
                 </div>
             </div>
@@ -194,21 +285,22 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @php
+                        <?php
                             $nr = $compras->firstItem();
-                        @endphp
+                        ?>
 
-                        @foreach ($compras as $compra)
+                        <?php $__currentLoopData = $compras; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $compra): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                             <tr>
-                                <td class="text-center">{{ $compra->nr_orden }}</td>
+                                <td class="text-center"><?php echo e($compra->nr_orden); ?></td>
                                 <td class="text-center">
-                                    {{ \Carbon\Carbon::parse($compra->fecha_orden)->format('d/m/Y') }}
+                                    <?php echo e(\Carbon\Carbon::parse($compra->fecha_orden)->format('d/m/Y')); ?>
+
                                 </td>
-                                <td class="text-center">{{ $compra->proveedor->nombre ?? 'N/A' }}</td>
-                                <td class="text-center">{{ $compra->detalle_compras->count() ?? 'N/A' }}</td>
-                                <td class="text-center">${{ number_format($compra->total, 2) ?? 'N/A' }}</td>
+                                <td class="text-center"><?php echo e($compra->proveedor->nombre ?? 'N/A'); ?></td>
+                                <td class="text-center"><?php echo e($compra->detalle_compras->count() ?? 'N/A'); ?></td>
+                                <td class="text-center">$<?php echo e(number_format($compra->total, 2) ?? 'N/A'); ?></td>
                                 <td class="text-center">
-                                    @php
+                                    <?php
                                         $badgeClass = match ($compra->estado_compra) {
                                             'Pendiente de factura' => 'badge badge-outline badge-warning',
                                             'Finalizada' => 'badge badge-outline badge-success',
@@ -217,99 +309,211 @@
                                             'Aprobada' => 'badge badge-outline badge-primary',
                                             default => 'badge-ghost',
                                         };
-                                    @endphp
+                                    ?>
                                     <span
-                                        class="badge {{ $badgeClass }} badge-sm whitespace-nowrap overflow-hidden text-ellipsis max-w-[120px]"
-                                        title="{{ $compra->estado_compra }}">
-                                        {{ $compra->estado_compra }}
+                                        class="badge <?php echo e($badgeClass); ?> badge-sm whitespace-nowrap overflow-hidden text-ellipsis max-w-[120px]"
+                                        title="<?php echo e($compra->estado_compra); ?>">
+                                        <?php echo e($compra->estado_compra); ?>
+
                                     </span>
                                 </td>
                                 <td class="text-center">
                                     <div class="flex items-center justify-center gap-2">
-                                        @can('compras-show')
-                                            <a href="{{ route('compras.show', Crypt::encryptString($compra->id)) }}"
+                                        <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('compras-show')): ?>
+                                            <a href="<?php echo e(route('compras.show', Crypt::encryptString($compra->id))); ?>"
                                                 title="Ver orden de compra" class="btn btn-info btn-sm">
-                                                <x-heroicon-s-eye class="w-4 h-4" />
+                                                <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c = $attributes; } ?>
+<?php $component = BladeUI\Icons\Components\Svg::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('heroicon-s-eye'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\BladeUI\Icons\Components\Svg::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['class' => 'w-4 h-4']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $attributes = $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $component = $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
                                             </a>
-                                        @endcan
-                                        @can('compras-edit')
-                                            @if ($compra->estado_compra == 'Pendiente de factura')
-                                                <a href="{{ route('compras.edit', Crypt::encryptString($compra->id)) }}"
+                                        <?php endif; ?>
+                                        <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('compras-edit')): ?>
+                                            <?php if($compra->estado_compra == 'Pendiente de factura'): ?>
+                                                <a href="<?php echo e(route('compras.edit', Crypt::encryptString($compra->id))); ?>"
                                                     class="btn btn-warning btn-sm" title="Cargar Factura">
-                                                    <x-heroicon-s-document-currency-dollar class="w-4 h-4" />
+                                                    <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c = $attributes; } ?>
+<?php $component = BladeUI\Icons\Components\Svg::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('heroicon-s-document-currency-dollar'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\BladeUI\Icons\Components\Svg::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['class' => 'w-4 h-4']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $attributes = $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $component = $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
                                                 </a>
-                                            @endif
-                                        @endcan
+                                            <?php endif; ?>
+                                        <?php endif; ?>
 
-                                        {{--  <a href="{{ route('compras.report', $compra->id ) }}"  
-                                       class="btn bg-primary btn-sm" 
-                                       target="_blank">
-                                        <x-heroicon-o-printer class="w-4 h-4"/>
-                                    </a> --}}
+                                        
 
-                                        @can('compras-report')
-                                            <button onclick="abrirModalPDF({{ $compra->id }})"
-                                                class="btn bg-primary btn-sm {{ $compra->estado_compra == 'Finalizada' ? 'btn-disabled opacity-50 cursor-not-allowed' : '' }}"
-                                                title="{{ $compra->estado_compra == 'Finalizada' ? 'Compra ya finalizada' : 'Imprimir orden de compra' }}"
-                                                @if ($compra->estado_compra == 'Finalizada') disabled @endif>
-                                                @if ($compra->estado_compra == 'Finalizada')
-                                                    <x-heroicon-o-printer class="w-4 h-4" />
-                                                @else
-                                                    <x-heroicon-o-printer class="w-4 h-4" />
-                                                @endif
+                                        <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('compras-report')): ?>
+                                            <button onclick="abrirModalPDF(<?php echo e($compra->id); ?>)"
+                                                class="btn bg-primary btn-sm <?php echo e($compra->estado_compra == 'Finalizada' ? 'btn-disabled opacity-50 cursor-not-allowed' : ''); ?>"
+                                                title="<?php echo e($compra->estado_compra == 'Finalizada' ? 'Compra ya finalizada' : 'Imprimir orden de compra'); ?>"
+                                                <?php if($compra->estado_compra == 'Finalizada'): ?> disabled <?php endif; ?>>
+                                                <?php if($compra->estado_compra == 'Finalizada'): ?>
+                                                    <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c = $attributes; } ?>
+<?php $component = BladeUI\Icons\Components\Svg::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('heroicon-o-printer'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\BladeUI\Icons\Components\Svg::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['class' => 'w-4 h-4']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $attributes = $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $component = $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
+                                                <?php else: ?>
+                                                    <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c = $attributes; } ?>
+<?php $component = BladeUI\Icons\Components\Svg::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('heroicon-o-printer'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\BladeUI\Icons\Components\Svg::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['class' => 'w-4 h-4']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $attributes = $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $component = $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
+                                                <?php endif; ?>
                                             </button>
-                                        @endcan
-                                        @if ($compra->trashed())
+                                        <?php endif; ?>
+                                        <?php if($compra->trashed()): ?>
                                             <button class="btn btn-success btn-sm"
-                                                onclick="abrirModalRestaurar('{{ url('/admin/compras/' . $compra->id . '/restore') }}')">
-                                                <x-heroicon-s-arrow-uturn-left class="w-4 h-4" />
+                                                onclick="abrirModalRestaurar('<?php echo e(url('/admin/compras/' . $compra->id . '/restore')); ?>')">
+                                                <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c = $attributes; } ?>
+<?php $component = BladeUI\Icons\Components\Svg::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('heroicon-s-arrow-uturn-left'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\BladeUI\Icons\Components\Svg::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['class' => 'w-4 h-4']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $attributes = $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $component = $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
                                             </button>
-                                        @else
-                                            @if($compra->estado_compra != 'Finalizada')
+                                        <?php else: ?>
+                                            <?php if($compra->estado_compra != 'Finalizada'): ?>
                                                 <button class="btn btn-error btn-sm"
-                                                    onclick="confirmarEliminacion({{ $compra->id }})">
-                                                    <x-heroicon-s-trash class="w-4 h-4" />
+                                                    onclick="confirmarEliminacion(<?php echo e($compra->id); ?>)">
+                                                    <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c = $attributes; } ?>
+<?php $component = BladeUI\Icons\Components\Svg::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('heroicon-s-trash'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\BladeUI\Icons\Components\Svg::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['class' => 'w-4 h-4']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $attributes = $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $component = $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
                                                 </button>
-                                            @endif
-                                        @endif
+                                            <?php endif; ?>
+                                        <?php endif; ?>
 
                                     </div>
                                 </td>
                             </tr>
-                        @endforeach
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                     </tbody>
                 </table>
             </div>
             <!-- PAGINACIÓN -->
-            @if ($compras->hasPages())
+            <?php if($compras->hasPages()): ?>
                 <div class="flex flex-col md:flex-row justify-between items-center mt-6 px-3 gap-4">
 
                     <!-- Texto "Mostrando X - Y" -->
                     <div class="text-sm text-gray-500">
-                        Mostrando {{ $compras->firstItem() }} - {{ $compras->lastItem() }} de {{ $compras->total() }}
+                        Mostrando <?php echo e($compras->firstItem()); ?> - <?php echo e($compras->lastItem()); ?> de <?php echo e($compras->total()); ?>
+
                         registros
                     </div>
 
                     <!-- Controles de paginación estilo DaisyUI -->
                     <div class="join">
 
-                        {{-- Botón Anterior --}}
-                        @if ($compras->onFirstPage())
+                        
+                        <?php if($compras->onFirstPage()): ?>
                             <button class="join-item btn btn-square btn-disabled">«</button>
-                        @else
-                            <a href="{{ $compras->previousPageUrl() }}" class="join-item btn btn-square">«</a>
-                        @endif
+                        <?php else: ?>
+                            <a href="<?php echo e($compras->previousPageUrl()); ?>" class="join-item btn btn-square">«</a>
+                        <?php endif; ?>
 
-                        {{-- Botón Primera página --}}
-                        @if (!$compras->onFirstPage())
-                            <a href="{{ $compras->url(1) }}" class="join-item btn btn-square">1</a>
-                            @if ($compras->currentPage() > 4)
+                        
+                        <?php if(!$compras->onFirstPage()): ?>
+                            <a href="<?php echo e($compras->url(1)); ?>" class="join-item btn btn-square">1</a>
+                            <?php if($compras->currentPage() > 4): ?>
                                 <button class="join-item btn btn-square btn-disabled">...</button>
-                            @endif
-                        @endif
+                            <?php endif; ?>
+                        <?php endif; ?>
 
-                        {{-- Números de página con ventana deslizante --}}
-                        @php
+                        
+                        <?php
                             $currentPage = $compras->currentPage();
                             $totalPages = $compras->lastPage();
                             $start = max(1, $currentPage - 2);
@@ -323,36 +527,36 @@
                                     $start = max(1, $totalPages - 4);
                                 }
                             }
-                        @endphp
+                        ?>
 
-                        @for ($i = $start; $i <= $end; $i++)
-                            @if ($i == $currentPage)
-                                <button class="join-item btn btn-square btn-active">{{ $i }}</button>
-                            @else
-                                <a href="{{ $compras->url($i) }}"
-                                    class="join-item btn btn-square">{{ $i }}</a>
-                            @endif
-                        @endfor
+                        <?php for($i = $start; $i <= $end; $i++): ?>
+                            <?php if($i == $currentPage): ?>
+                                <button class="join-item btn btn-square btn-active"><?php echo e($i); ?></button>
+                            <?php else: ?>
+                                <a href="<?php echo e($compras->url($i)); ?>"
+                                    class="join-item btn btn-square"><?php echo e($i); ?></a>
+                            <?php endif; ?>
+                        <?php endfor; ?>
 
-                        {{-- Botón Última página --}}
-                        @if ($compras->currentPage() < $totalPages - 3)
-                            @if ($compras->currentPage() < $totalPages - 4)
+                        
+                        <?php if($compras->currentPage() < $totalPages - 3): ?>
+                            <?php if($compras->currentPage() < $totalPages - 4): ?>
                                 <button class="join-item btn btn-square btn-disabled">...</button>
-                            @endif
-                            <a href="{{ $compras->url($totalPages) }}"
-                                class="join-item btn btn-square">{{ $totalPages }}</a>
-                        @endif
+                            <?php endif; ?>
+                            <a href="<?php echo e($compras->url($totalPages)); ?>"
+                                class="join-item btn btn-square"><?php echo e($totalPages); ?></a>
+                        <?php endif; ?>
 
-                        {{-- Botón Siguiente --}}
-                        @if ($compras->hasMorePages())
-                            <a href="{{ $compras->nextPageUrl() }}" class="join-item btn btn-square">»</a>
-                        @else
+                        
+                        <?php if($compras->hasMorePages()): ?>
+                            <a href="<?php echo e($compras->nextPageUrl()); ?>" class="join-item btn btn-square">»</a>
+                        <?php else: ?>
                             <button class="join-item btn btn-square btn-disabled">»</button>
-                        @endif
+                        <?php endif; ?>
 
                     </div>
                 </div>
-            @endif
+            <?php endif; ?>
         </div>
     </div>
 
@@ -422,11 +626,49 @@
                 <h3 class="font-bold text-lg">Vista Previa - Orden de Compra</h3>
                 <div class="flex gap-2">
                     <a id="btnDescargarPDF" href="#" class="btn btn-success btn-sm" download>
-                        <x-heroicon-o-arrow-down-tray class="w-4 h-4" />
+                        <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c = $attributes; } ?>
+<?php $component = BladeUI\Icons\Components\Svg::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('heroicon-o-arrow-down-tray'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\BladeUI\Icons\Components\Svg::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['class' => 'w-4 h-4']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $attributes = $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $component = $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
                         Descargar
                     </a>
                     <button onclick="cerrarModalPDF()" class="btn btn-sm btn-circle">
-                        <x-heroicon-o-x-mark class="w-5 h-5" />
+                        <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c = $attributes; } ?>
+<?php $component = BladeUI\Icons\Components\Svg::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('heroicon-o-x-mark'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\BladeUI\Icons\Components\Svg::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['class' => 'w-5 h-5']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $attributes = $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $component = $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
                     </button>
                 </div>
             </div>
@@ -470,7 +712,26 @@
         <div class="modal-box">
 
             <h3 class="font-bold text-lg flex items-center gap-2 text-red-600">
-                <x-heroicon-o-trash class="w-5 h-5" />
+                <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c = $attributes; } ?>
+<?php $component = BladeUI\Icons\Components\Svg::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('heroicon-o-trash'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\BladeUI\Icons\Components\Svg::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['class' => 'w-5 h-5']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $attributes = $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $component = $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
                 Confirmar eliminación
             </h3>
 
@@ -485,11 +746,30 @@
 
                 <!-- Formulario eliminar -->
                 <form id="formEliminarCompra" method="POST">
-                    @csrf
-                    @method('DELETE')
+                    <?php echo csrf_field(); ?>
+                    <?php echo method_field('DELETE'); ?>
 
                     <button type="submit" class="btn btn-error">
-                        <x-heroicon-o-trash class="w-4 h-4" />
+                        <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c = $attributes; } ?>
+<?php $component = BladeUI\Icons\Components\Svg::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('heroicon-o-trash'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\BladeUI\Icons\Components\Svg::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['class' => 'w-4 h-4']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $attributes = $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $component = $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
                         Eliminar
                     </button>
                 </form>
@@ -501,7 +781,26 @@
         <div class="modal-box">
 
             <h3 class="font-bold text-lg flex items-center gap-2 text-green-600">
-                <x-heroicon-o-arrow-path class="w-5 h-5" />
+                <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c = $attributes; } ?>
+<?php $component = BladeUI\Icons\Components\Svg::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('heroicon-o-arrow-path'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\BladeUI\Icons\Components\Svg::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['class' => 'w-5 h-5']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $attributes = $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $component = $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
                 Confirmar restauración
             </h3>
 
@@ -518,11 +817,30 @@
 
                 <!-- Formulario restaurar -->
                 <form id="formRestaurarCompra" method="POST">
-                    @csrf
-                    @method('PUT')
+                    <?php echo csrf_field(); ?>
+                    <?php echo method_field('PUT'); ?>
 
                     <button type="submit" class="btn btn-success">
-                        <x-heroicon-o-arrow-path class="w-4 h-4" />
+                        <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c = $attributes; } ?>
+<?php $component = BladeUI\Icons\Components\Svg::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('heroicon-o-arrow-path'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\BladeUI\Icons\Components\Svg::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['class' => 'w-4 h-4']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $attributes = $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $component = $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
                         Restaurar
                     </button>
                 </form>
@@ -539,7 +857,7 @@
         }
         // Genera la URL usando el helper de Laravel
         function routeEliminarCompra(id) { 
-            return "{{ url('/admin/compras') }}/" + id; 
+            return "<?php echo e(url('/admin/compras')); ?>/" + id; 
         }
         function abrirModalRestaurar(url) {
             const form = document.getElementById('formRestaurarCompra');
@@ -558,8 +876,8 @@
             loadingSpinner.style.display = 'flex';
 
             // Construir las URLs usando route de Laravel
-            const previewUrl = "{{ url('admin/compras') }}/" + compraId + "/preview";
-            const downloadUrl = "{{ url('admin/compras') }}/" + compraId + "/download";
+            const previewUrl = "<?php echo e(url('admin/compras')); ?>/" + compraId + "/preview";
+            const downloadUrl = "<?php echo e(url('admin/compras')); ?>/" + compraId + "/download";
 
             // Asignar URLs
             iframe.src = previewUrl;
@@ -631,7 +949,7 @@
             Chart.defaults.borderColor = gridColor;
 
             // 📊 GRÁFICO 1: Tendencia de Compras (Línea)
-            const dataTendencia = @json($comprasPorMes);
+            const dataTendencia = <?php echo json_encode($comprasPorMes, 15, 512) ?>;
             const meses = dataTendencia.map(item => {
                 const [year, month] = item.mes.split('-');
                 const fecha = new Date(year, month - 1);
@@ -741,7 +1059,7 @@
             });
 
             // 📊 GRÁFICO 2: Estados de Compras (Dona)
-            const dataEstados = @json($comprasPorEstado);
+            const dataEstados = <?php echo json_encode($comprasPorEstado, 15, 512) ?>;
             const estados = dataEstados.map(item => item.estado_compra);
             const cantidadesEstados = dataEstados.map(item => parseInt(item.cantidad));
 
@@ -824,7 +1142,7 @@
             });
 
             // 📊 GRÁFICO 3: Top Proveedores (Barras Horizontales)
-            const dataProveedores = @json($topProveedores);
+            const dataProveedores = <?php echo json_encode($topProveedores, 15, 512) ?>;
             const proveedores = dataProveedores.map(item => item.proveedor?.nombre || 'Sin proveedor');
             const montosProveedores = dataProveedores.map(item => parseFloat(item.total_gastado) || 0);
             const ordenesProveedores = dataProveedores.map(item => parseInt(item.cantidad_ordenes) || 0);
@@ -930,4 +1248,6 @@
             });
         });
     </script>
-@endsection
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.admin', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\xampp\htdocs\sistema-municipal\resources\views/admin/compras/index.blade.php ENDPATH**/ ?>

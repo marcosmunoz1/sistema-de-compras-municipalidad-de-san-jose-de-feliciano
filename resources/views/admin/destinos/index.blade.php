@@ -385,6 +385,7 @@
                         <option value="empresa">Empresa</option>
                         <option value="institucion">Institución</option>
                         <option value="organismo_publico">Organismo Público</option>
+                        <option value="varios">Varios</option>
                     </select>
 
                     @error('tipo')
