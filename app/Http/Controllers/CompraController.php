@@ -287,12 +287,13 @@ class CompraController extends Controller
         $request->validate([
             'precios' => 'required|array',
             'precios.*' => 'nullable', 
-            'foto_factura' => 'required|nullable|file|mimes:jpg,jpeg,png,webp,pdf|max:5120', // 5MB
+            'facturas' => 'required|array',
+            'facturas.*' => 'file|mimes:jpg,jpeg,png,webp,pdf|max:5120',
         ],
         [
-            'foto_factura.file'  => 'El archivo de la factura no es válido.',
-            'foto_factura.mimes' => 'La factura debe ser una imagen (JPG, PNG, WEBP) o un archivo PDF.',
-            'foto_factura.max'   => 'La factura no puede superar los 5 MB.',
+            'facturas.file'  => 'El archivo de la factura no es válido.',
+            'facturas.mimes' => 'La factura debe ser una imagen (JPG, PNG, WEBP) o un archivo PDF.',
+            'facturas.max'   => 'La factura no puede superar los 5 MB.',
         ]); 
 
         // 2. Buscar la compra
@@ -326,11 +327,16 @@ class CompraController extends Controller
             $total += $detalle->subtotal;
         }
         // Manejo de la foto o PDF de la factura
-        if ($request->hasFile('foto_factura')) {
-            $path = $request->file('foto_factura')
-                ->store('facturas', 'public');
+        if ($request->hasFile('facturas')) {
 
-            $compra->foto_factura = $path;
+            foreach ($request->file('facturas') as $archivo) {
+
+                $ruta = $archivo->store('facturas_compra', 'public');
+
+                $compra->facturas()->create([
+                    'archivo' => $ruta
+                ]);
+            }
         }
 
         // 4. Actualizamos el total de la compra

@@ -90,4 +90,9 @@ class Compra extends Model
             ->setDescriptionForEvent(fn(string $eventName) => "Compra {$eventName}");
     }
 
+    public function facturas()
+    {
+        return $this->hasMany(FacturaCompra::class);
+    }
+
 }
