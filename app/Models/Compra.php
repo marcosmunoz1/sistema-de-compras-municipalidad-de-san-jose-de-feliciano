@@ -69,6 +69,7 @@ class Compra extends Model
             \App\Models\Deposito::class => $this->destino->nombre,
             \App\Models\Obra::class     => $this->destino->nombre,
             \App\Models\Equipo::class   => $this->destino->equipamiento ?? 'Sin nombre',
+            \App\Models\Destino::class => $this->destino->nombre ?? 'Sin nombre',
             default                     => 'No disponible'
         };
     }

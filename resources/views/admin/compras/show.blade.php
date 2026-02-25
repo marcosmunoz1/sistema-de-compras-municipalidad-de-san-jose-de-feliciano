@@ -141,6 +141,7 @@
         $esDeposito = $destino instanceof \App\Models\Deposito;
         $esObra = $destino instanceof \App\Models\Obra;
         $esEquipo = $destino instanceof \App\Models\Equipo;
+        $esDestinoGenerico = $destino instanceof \App\Models\Destino;
         $destinoLabel = class_basename($compra->destino_tipo ?? 'Destino');
     @endphp
 
@@ -242,6 +243,14 @@
                             <path stroke-linecap="round" stroke-linejoin="round"
                                 d="M20.25 7.5l-.625 10.632a2.25 2.25 0 0 1-2.247 2.118H6.622a2.25 2.25 0 0 1-2.247-2.118L3.75 7.5M10 11.25h4M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125Z" />
                         </svg>
+                    @elseif($esDestinoGenerico)
+                        <svg class="size-5 text-violet-600" fill="none" stroke="currentColor" stroke-width="1.8"
+                            viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
+                        </svg>
                     @else
                         <svg class="size-5 text-violet-600" fill="none" stroke="currentColor" stroke-width="1.8"
                             viewBox="0 0 24 24">
@@ -311,6 +320,23 @@
                                 <span class="text-base-content/60">Marca:</span>
                                 <span class="font-medium">{{ $destino->marca ?? '—' }}</span>
                             </div>
+                        </div>
+                    @elseif($esDestinoGenerico)
+                        <div class="space-y-2 text-sm">
+                            <div class="flex justify-between px-1">
+                                <span class="text-base-content/60">Tipo:</span>
+                                <span class="font-medium">{{ class_basename($destino->tipo) }}</span>
+                            </div>
+                            <div class="flex justify-between px-1">
+                                <span class="text-base-content/60">Nombre:</span>
+                                <span class="font-medium">{{ $destino->nombre ?? '—' }}</span>
+                            </div>
+                            @if ($destino->descripcion)
+                                <div class="flex justify-between px-1">
+                                    <span class="text-base-content/60">Descripción:</span>
+                                    <span class="font-medium">{{ $destino->descripcion }}</span>
+                                </div>
+                            @endif
                         </div>
                     @else
                         <p class="text-sm text-base-content/60 px-1">{{ $compra->destino_nombre }}</p>

@@ -184,6 +184,11 @@ class CompraController extends Controller
             // Carga al destino
             $destinoInfo  = modeloDestino($request->destino_tipo);
             $destinoClass = $destinoInfo['model'];
+
+            if ($destinoClass === \App\Models\Destino::class) {
+                continue; // salta al siguiente producto
+            }
+
             $campoCantidad = $destinoInfo['campo']; // cantidad_asignada
             $destinoModel = $destinoClass::find($request->destino_id);
 
