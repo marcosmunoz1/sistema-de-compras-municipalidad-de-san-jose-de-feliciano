@@ -23,7 +23,19 @@ class CompraController extends Controller
         $search = $request->get('search');
         
 
-        $query = Compra::withTrashed()->orderBy('id', 'desc');
+        $estadoFiltro = $request->get('estado_registro'); // nuevo filtro
+
+        // Por defecto solo activos
+        if ($estadoFiltro === 'todos') {
+            $query = Compra::withTrashed();
+        } elseif ($estadoFiltro === 'inactivo') {
+            $query = Compra::withTrashed()->where('estado', false);
+        } else {
+            // default: solo activos
+            $query = Compra::where('estado', true);
+        }
+
+        $query->orderBy('id', 'desc');
         // 📅 Filtro por fecha
         if ($request->filled('desde')) {
             $query->whereDate('fecha_orden', '>=', $request->desde);
@@ -363,6 +375,7 @@ class CompraController extends Controller
     {
         $compra = Compra::findOrFail($id);
         $compra->estado = false;
+        $compra->observacion = 'Compra anulada el ' . now()->format('d/m/Y H:i:s');
         $compra->save();
         $compra->delete();
 

@@ -246,7 +246,7 @@
                 <div class="flex items-center justify-between">
                     <h4 class="text-lg font-semibold">Historial de Compras</h4>
                     <!-- BOTÓN REPORTE -->
-                    <div class="flex gap-2">
+                    <div class="flex items-center gap-2 justify-end">
                         <?php if (isset($component)) { $__componentOriginal64134405d1cef365195ea78d7e35c24e = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal64134405d1cef365195ea78d7e35c24e = $attributes; } ?>
 <?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.boton-reporte','data' => ['titulo' => 'Generar Reporte','modalId' => 'modal_reporte_compras','previewUrl' => ''.e(route('compras.reporte.html')).'','downloadUrl' => ''.e(route('compras.reporte.download')).'','descripcion' => 'Reporte completo de todas las compras','icono' => 'document']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
@@ -267,6 +267,81 @@
 <?php $component = $__componentOriginal64134405d1cef365195ea78d7e35c24e; ?>
 <?php unset($__componentOriginal64134405d1cef365195ea78d7e35c24e); ?>
 <?php endif; ?>
+                        <!-- Filtro por estado de registro -->
+                        <div class="dropdown dropdown-end">
+                            <label tabindex="0"
+                                class="btn btn-sm btn-ghost gap-2 
+                            <?php echo e(request('estado_registro') == 'inactivo' || request('estado_registro') == 'todos' ? 'text-primary' : ''); ?>">
+
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round">
+                                    <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
+                                </svg>
+
+                                <?php if(request('estado_registro') == 'inactivo'): ?>
+                                    <span class="badge badge-error badge-sm">Inactivas</span>
+                                <?php elseif(request('estado_registro') == 'todos'): ?>
+                                    <span class="badge badge-neutral badge-sm">Todas</span>
+                                <?php endif; ?>
+                            </label>
+
+                            <ul tabindex="0"
+                                class="dropdown-content z-[1] menu p-2 shadow-lg bg-base-100 rounded-box w-52 border border-base-300">
+
+                                <li class="menu-title">
+                                    <span>Filtrar por estado</span>
+                                </li>
+
+                                <li>
+                                    <a href="<?php echo e(route('compras.index', array_merge(request()->except('estado_registro', 'page'), []))); ?>"
+                                        class="<?php echo e(!request('estado_registro') ? 'active' : ''); ?>">
+
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                            stroke-linecap="round" stroke-linejoin="round" class="text-success">
+                                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                            <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                                        </svg>
+
+                                        Solo Activas
+                                    </a>
+                                </li>
+
+                                <li>
+                                    <a href="<?php echo e(route('compras.index', array_merge(request()->except('page'), ['estado_registro' => 'inactivo']))); ?>"
+                                        class="<?php echo e(request('estado_registro') == 'inactivo' ? 'active' : ''); ?>">
+
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                            stroke-linecap="round" stroke-linejoin="round" class="text-error">
+                                            <circle cx="12" cy="12" r="10"></circle>
+                                            <line x1="15" y1="9" x2="9" y2="15"></line>
+                                            <line x1="9" y1="9" x2="15" y2="15"></line>
+                                        </svg>
+
+                                        Solo Inactivas
+                                    </a>
+                                </li>
+
+                                <li>
+                                    <a href="<?php echo e(route('compras.index', array_merge(request()->except('page'), ['estado_registro' => 'todos']))); ?>"
+                                        class="<?php echo e(request('estado_registro') == 'todos' ? 'active' : ''); ?>">
+
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                            stroke-linecap="round" stroke-linejoin="round">
+                                            <rect x="3" y="3" width="18" height="18" rx="2"
+                                                ry="2">
+                                            </rect>
+                                        </svg>
+
+                                        Todas
+                                    </a>
+                                </li>
+
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -856,9 +931,10 @@
             document.getElementById('modal_eliminar_compra').showModal();
         }
         // Genera la URL usando el helper de Laravel
-        function routeEliminarCompra(id) { 
-            return "<?php echo e(url('/admin/compras')); ?>/" + id; 
+        function routeEliminarCompra(id) {
+            return "<?php echo e(url('/admin/compras')); ?>/" + id;
         }
+
         function abrirModalRestaurar(url) {
             const form = document.getElementById('formRestaurarCompra');
             form.action = url;
