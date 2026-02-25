@@ -65,11 +65,11 @@
             </div>
 
             <!-- Botones -->
-            <div class="flex gap-2">
-                <button type="submit" class="btn btn-primary w-full md:w-auto">
+            <div class="flex flex-col md:flex-row gap-2">
+                <button type="submit" class="btn btn-primary">
                     Filtrar
                 </button>
-                <a href="{{ route('compras.index') }}" class="btn btn-outline w-full md:w-auto">
+                <a href="{{ route('compras.index') }}" class="btn btn-outline">
                     Limpiar
                 </a>
             </div>
