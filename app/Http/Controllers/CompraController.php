@@ -23,7 +23,19 @@ class CompraController extends Controller
         $search = $request->get('search');
         
 
-        $query = Compra::withTrashed()->orderBy('id', 'desc');
+        $estadoFiltro = $request->get('estado_registro'); // nuevo filtro
+
+        // Por defecto solo activos
+        if ($estadoFiltro === 'todos') {
+            $query = Compra::withTrashed();
+        } elseif ($estadoFiltro === 'inactivo') {
+            $query = Compra::withTrashed()->where('estado', false);
+        } else {
+            // default: solo activos
+            $query = Compra::where('estado', true);
+        }
+
+        $query->orderBy('id', 'desc');
         // 📅 Filtro por fecha
         if ($request->filled('desde')) {
             $query->whereDate('fecha_orden', '>=', $request->desde);
@@ -184,6 +196,11 @@ class CompraController extends Controller
             // Carga al destino
             $destinoInfo  = modeloDestino($request->destino_tipo);
             $destinoClass = $destinoInfo['model'];
+
+            if ($destinoClass === \App\Models\Destino::class) {
+                continue; // salta al siguiente producto
+            }
+
             $campoCantidad = $destinoInfo['campo']; // cantidad_asignada
             $destinoModel = $destinoClass::find($request->destino_id);
 
@@ -253,7 +270,7 @@ class CompraController extends Controller
         $depositoId = $request->input('deposito_id');
         $equipoId = $request->input('equipo_id');
 
-        $compra = Compra::with('detalle_compras','empleado','proveedor','destino')->findOrFail($id);
+        $compra = Compra::with('detalle_compras','empleado','proveedor','destino', 'facturas')->findOrFail($id);
         return view('admin.compras.show', compact('compra','from','vehiculoId','obraId','depositoId','equipoId'));
     }
 
@@ -287,12 +304,13 @@ class CompraController extends Controller
         $request->validate([
             'precios' => 'required|array',
             'precios.*' => 'nullable', 
-            'foto_factura' => 'required|nullable|file|mimes:jpg,jpeg,png,webp,pdf|max:5120', // 5MB
+            'facturas' => 'required|array',
+            'facturas.*' => 'file|mimes:jpg,jpeg,png,webp,pdf|max:5120',
         ],
         [
-            'foto_factura.file'  => 'El archivo de la factura no es válido.',
-            'foto_factura.mimes' => 'La factura debe ser una imagen (JPG, PNG, WEBP) o un archivo PDF.',
-            'foto_factura.max'   => 'La factura no puede superar los 5 MB.',
+            'facturas.file'  => 'El archivo de la factura no es válido.',
+            'facturas.mimes' => 'La factura debe ser una imagen (JPG, PNG, WEBP) o un archivo PDF.',
+            'facturas.max'   => 'La factura no puede superar los 5 MB.',
         ]); 
 
         // 2. Buscar la compra
@@ -326,11 +344,16 @@ class CompraController extends Controller
             $total += $detalle->subtotal;
         }
         // Manejo de la foto o PDF de la factura
-        if ($request->hasFile('foto_factura')) {
-            $path = $request->file('foto_factura')
-                ->store('facturas', 'public');
+        if ($request->hasFile('facturas')) {
 
-            $compra->foto_factura = $path;
+            foreach ($request->file('facturas') as $archivo) {
+
+                $ruta = $archivo->store('facturas_compra', 'public');
+
+                $compra->facturas()->create([
+                    'archivo' => $ruta
+                ]);
+            }
         }
 
         // 4. Actualizamos el total de la compra
@@ -352,6 +375,7 @@ class CompraController extends Controller
     {
         $compra = Compra::findOrFail($id);
         $compra->estado = false;
+        $compra->observacion = 'Compra anulada el ' . now()->format('d/m/Y H:i:s');
         $compra->save();
         $compra->delete();
 

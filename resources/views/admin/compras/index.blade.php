@@ -65,7 +65,7 @@
             </div>
 
             <!-- Botones -->
-            <div class="flex gap-2 sm:col-span-2">
+            <div class="flex flex-col md:flex-row gap-2">
                 <button type="submit" class="btn btn-primary">
                     Filtrar
                 </button>
@@ -171,11 +171,86 @@
                 <div class="flex items-center justify-between">
                     <h4 class="text-lg font-semibold">Historial de Compras</h4>
                     <!-- BOTÓN REPORTE -->
-                    <div class="flex gap-2">
+                    <div class="flex items-center gap-2 justify-end">
                         <x-boton-reporte titulo="Generar Reporte" modalId="modal_reporte_compras"
                             previewUrl="{{ route('compras.reporte.html') }}"
                             downloadUrl="{{ route('compras.reporte.download') }}"
                             descripcion="Reporte completo de todas las compras" icono="document" />
+                        <!-- Filtro por estado de registro -->
+                        <div class="dropdown dropdown-end">
+                            <label tabindex="0"
+                                class="btn btn-sm btn-ghost gap-2 
+                            {{ request('estado_registro') == 'inactivo' || request('estado_registro') == 'todos' ? 'text-primary' : '' }}">
+
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round">
+                                    <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
+                                </svg>
+
+                                @if (request('estado_registro') == 'inactivo')
+                                    <span class="badge badge-error badge-sm">Inactivas</span>
+                                @elseif(request('estado_registro') == 'todos')
+                                    <span class="badge badge-neutral badge-sm">Todas</span>
+                                @endif
+                            </label>
+
+                            <ul tabindex="0"
+                                class="dropdown-content z-[1] menu p-2 shadow-lg bg-base-100 rounded-box w-52 border border-base-300">
+
+                                <li class="menu-title">
+                                    <span>Filtrar por estado</span>
+                                </li>
+
+                                <li>
+                                    <a href="{{ route('compras.index', array_merge(request()->except('estado_registro', 'page'), [])) }}"
+                                        class="{{ !request('estado_registro') ? 'active' : '' }}">
+
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                            stroke-linecap="round" stroke-linejoin="round" class="text-success">
+                                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                            <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                                        </svg>
+
+                                        Solo Activas
+                                    </a>
+                                </li>
+
+                                <li>
+                                    <a href="{{ route('compras.index', array_merge(request()->except('page'), ['estado_registro' => 'inactivo'])) }}"
+                                        class="{{ request('estado_registro') == 'inactivo' ? 'active' : '' }}">
+
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                            stroke-linecap="round" stroke-linejoin="round" class="text-error">
+                                            <circle cx="12" cy="12" r="10"></circle>
+                                            <line x1="15" y1="9" x2="9" y2="15"></line>
+                                            <line x1="9" y1="9" x2="15" y2="15"></line>
+                                        </svg>
+
+                                        Solo Inactivas
+                                    </a>
+                                </li>
+
+                                <li>
+                                    <a href="{{ route('compras.index', array_merge(request()->except('page'), ['estado_registro' => 'todos'])) }}"
+                                        class="{{ request('estado_registro') == 'todos' ? 'active' : '' }}">
+
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                            stroke-linecap="round" stroke-linejoin="round">
+                                            <rect x="3" y="3" width="18" height="18" rx="2"
+                                                ry="2">
+                                            </rect>
+                                        </svg>
+
+                                        Todas
+                                    </a>
+                                </li>
+
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -265,7 +340,7 @@
                                                 <x-heroicon-s-arrow-uturn-left class="w-4 h-4" />
                                             </button>
                                         @else
-                                            @if($compra->estado_compra != 'Finalizada')
+                                            @if ($compra->estado_compra != 'Finalizada')
                                                 <button class="btn btn-error btn-sm"
                                                     onclick="confirmarEliminacion({{ $compra->id }})">
                                                     <x-heroicon-s-trash class="w-4 h-4" />
@@ -538,9 +613,10 @@
             document.getElementById('modal_eliminar_compra').showModal();
         }
         // Genera la URL usando el helper de Laravel
-        function routeEliminarCompra(id) { 
-            return "{{ url('/admin/compras') }}/" + id; 
+        function routeEliminarCompra(id) {
+            return "{{ url('/admin/compras') }}/" + id;
         }
+
         function abrirModalRestaurar(url) {
             const form = document.getElementById('formRestaurarCompra');
             form.action = url;
