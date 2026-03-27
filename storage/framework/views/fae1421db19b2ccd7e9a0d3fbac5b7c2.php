@@ -386,11 +386,13 @@
                             <?php if($combustible->litros !== null): ?>
                                 <?php echo e($combustible->litros); ?> Litros - <?php echo e($combustible->tipo); ?>
 
-                            <?php else: ?>
+                            <?php elseif($combustible->litros === 0.00): ?>  
+                                Carga completa - <?php echo e($combustible->tipo); ?> 
+                            <?php else: ?> 
                                 Carga completa - <?php echo e($combustible->tipo); ?>
 
                             <?php endif; ?>
-                        </td>
+                        </td> 
                     </tr>
                     
                 </tbody>

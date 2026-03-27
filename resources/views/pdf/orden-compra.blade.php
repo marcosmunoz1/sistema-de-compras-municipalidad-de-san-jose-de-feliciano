@@ -385,7 +385,8 @@
                 <thead>
                     <tr>
                         <th width="18%">CANT. / U.M.</th>
-                        <th width="82%">DESCRIPCIÓN DEL INSUMO</th>
+                        <th width="52%">DESCRIPCIÓN DEL INSUMO</th>
+                        <th width="30%">DESTINO (Veh. / Obra / Equipo)</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -395,10 +396,27 @@
                                 {{ $detalle->producto->unidad ?? 'UND' }}
                             </td>
                             <td style="font-size: 14px">{{ $detalle->producto->nombre ?? 'N/A' }}</td>
+                            <td style="font-size: 13px; color: #334155; font-weight: 600;">
+                                @if($compra->destino instanceof \App\Models\Vehiculo)
+                                    {{ $compra->destino->patente ?? '' }}
+                                    {{ $compra->destino->marca ?? '' }}
+                                    {{ $compra->destino->modelo ?? '' }}
+                                @elseif($compra->destino instanceof \App\Models\Equipo)
+                                    {{ $compra->destino->equipamiento ?? '' }}
+                                    @if($compra->destino->marca) - {{ $compra->destino->marca }} @endif
+                                @elseif($compra->destino instanceof \App\Models\Obra)
+                                    {{ $compra->destino->nombre ?? '' }}
+                                @elseif($compra->destino instanceof \App\Models\Deposito)
+                                    {{ $compra->destino->nombre ?? '' }}
+                                @else
+                                    {{ $compra->asunto_obra_automotor ?? 'N/A' }}
+                                @endif
+                            </td>
                         </tr>
                     @endforeach
                     @for($i = count($compra->detalle_compras); $i < 3; $i++)
                         <tr>
+                            <td></td>
                             <td></td>
                             <td></td>
                         </tr>
@@ -406,11 +424,10 @@
                 </tbody>
             </table>
         </div>
-
         <table
             style="width: 100%; margin-top: 15px; border: none; border-collapse: collapse; page-break-inside: avoid;">
             <tr style="page-break-inside: avoid;">
-                <td style="width: 80%; text-align: center; vertical-align: bottom; border: none; padding: 0 8px;">
+                <td style="width: 34%; text-align: center; vertical-align: bottom; border: none; padding: 0 8px;">
                     @if($compra->usuario && $compra->usuario->firma)
                         <img src="{{ public_path('storage/' . $compra->usuario->firma) }}"
                             style="max-width: 100px; height: auto; max-height: 100px;">
@@ -433,14 +450,11 @@
                 </td>
             </tr>
         </table>
-
         <div class="copy-indicator uppercase">
             <span>Original: Contaduría Municipal</span>
             <span>San José de Feliciano - Entre Ríos</span>
             <span>Copia: Proveedor / Archivo</span>
         </div>
     </div>
-
 </body>
-
 </html>

@@ -10,12 +10,12 @@
 
         @page {
             size: A4;
-            margin: 10mm;
+            margin: 7mm;
         }
 
         body {
             margin: 0;
-            padding: 15px;
+            padding: 8px;
             font-family: 'Inter', sans-serif;
             color: #1e293b;
             background-color: white;
@@ -79,8 +79,8 @@
             justify-content: space-between;
             align-items: center;
             border-bottom: 3px solid #1e40af;
-            padding-bottom: 10px;
-            margin-bottom: 12px;
+            padding-bottom: 8px;
+            margin-bottom: 8px;
             position: relative;
             z-index: 10;
         }
@@ -92,8 +92,8 @@
         }
 
         .logo-placeholder {
-            width: 70px;
-            height: 70px;
+            width: 55px;
+            height: 55px;
             background: white;
             border-radius: 12px;
             display: flex;
@@ -111,18 +111,18 @@
         .title-badge {
             background-color: #eff6ff;
             color: #1e40af;
-            padding: 6px 14px;
+            padding: 4px 12px;
             border-radius: 8px;
             font-weight: 800;
-            font-size: 20px;
+            font-size: 16px;
             letter-spacing: 1px;
         }
 
         .field-group {
             display: grid;
             grid-template-columns: 1fr;
-            gap: 5px;
-            margin-bottom: 12px;
+            gap: 2px;
+            margin-bottom: 6px;
             position: relative;
             z-index: 10;
         }
@@ -133,11 +133,11 @@
             background: rgba(248, 250, 252, 0.8);
             border: 1px solid #e2e8f0;
             border-radius: 6px;
-            padding: 5px 12px;
+            padding: 2px 10px;
         }
 
         .field-label {
-            font-size: 13px;
+            font-size: 11px;
             font-weight: 700;
             color: #64748b;
             text-transform: uppercase;
@@ -149,7 +149,7 @@
 
         .field-value {
             flex-grow: 1;
-            font-size: 15px;
+            font-size: 12px;
             font-weight: 600;
             color: #1e293b;
         }
@@ -179,26 +179,26 @@
         th {
             background-color: #1e40af;
             color: white;
-            font-size: 13px;
+            font-size: 11px;
             font-weight: 600;
-            padding: 9px 11px;
+            padding: 4px 10px;
             text-transform: uppercase;
             text-align: left;
         }
 
         td {
             border-bottom: 1px solid #f1f5f9;
-            padding: 7px 11px;
-            height: 30px;
-            font-size: 15px;
+            padding: 3px 10px;
+            height: 20px;
+            font-size: 12px;
             vertical-align: middle;
         }
 
         .footer-area {
-            margin-top: 12px;
+            margin-top: 8px;
             display: flex;
             justify-content: center;
-            padding-bottom: 8px;
+            padding-bottom: 4px;
             position: relative;
             z-index: 10;
         }
@@ -340,7 +340,7 @@
                 </div>
             </div>
             <div class="text-right">
-                <div class="title-badge mb-1.5">Solicitud provisonaria de insumos</div>
+                <div class="title-badge mb-1.5">Solicitud provisoria de insumos</div>
                 <div class="text-lg font-mono font-bold text-slate-800">N° <span
                         class="text-red-600"><?php echo e(str_pad($compra->nr_orden, 12, '0', STR_PAD_LEFT)); ?></span></div>
                 <div
@@ -354,19 +354,19 @@
         <div class="field-group">
             <div class="modern-field">
                 <span class="field-label">Proveedor</span>
-                <div class="field-value"><?php echo e($compra->proveedor->nombre ?? 'N/A'); ?></div>
+                <div class="field-value" style="font-size: 14px"><?php echo e($compra->proveedor->nombre ?? 'N/A'); ?></div>
             </div>
             <div class="modern-field">
                 <span class="field-label">Entregar a</span>
-                <div class="field-value"><?php echo e($compra->empleado->nombre ?? 'N/A'); ?></div>
+                <div class="field-value" style="font-size: 14px"><?php echo e($compra->empleado->nombre ?? 'N/A'); ?></div>
             </div>
             <div class="modern-field">
                 <span class="field-label">Sub Cuenta</span>
-                <div class="field-value"><?php echo e($compra->sub_cuenta ?? 'N/A'); ?></div>
+                <div class="field-value" style="font-size: 14px"><?php echo e($compra->sub_cuenta ?? 'N/A'); ?></div>
             </div>
             <div class="modern-field">
                 <span class="field-label">Asunto</span>
-                <div class="field-value"><?php echo e($compra->asunto_obra_automotor ?? 'N/A'); ?></div>
+                <div class="field-value" style="font-size: 14px"><?php echo e($compra->asunto_obra_automotor ?? 'N/A'); ?></div>
                 <span class="ml-4"
                     style="font-size: 9px; color: #94a3b8; font-weight: bold; text-transform: uppercase;">(Vehículo /
                     Obra / Equipo)</span>
@@ -377,26 +377,55 @@
             <div style="margin-bottom: 4px;">
                 <h3
                     style="font-size: 13px; font-weight: 900; color: #334155; text-transform: uppercase; letter-spacing: 0.05em;">
+                    style="font-size: 13px; font-weight: 900; color: #334155; text-transform: uppercase; letter-spacing:
+                    0.05em;">
                     Detalle de Insumos y Suministros</h3>
             </div>
             <table>
                 <thead>
                     <tr>
                         <th width="18%">CANT. / U.M.</th>
-                        <th width="82%">DESCRIPCIÓN DEL INSUMO</th>
+                        <th width="52%">DESCRIPCIÓN DEL INSUMO</th>
+                        <th width="30%">DESTINO (Veh. / Obra / Equipo)</th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php $__currentLoopData = $compra->detalle_compras; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $detalle): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                         <tr>
-                            <td style="font-weight: 600;"><?php echo e($detalle->cantidad); ?> <?php echo e($detalle->producto->unidad ?? 'UND'); ?>
+                            <td style="font-weight: 600; font-size: 14px"><?php echo e($detalle->cantidad); ?>
+
+                                <?php echo e($detalle->producto->unidad ?? 'UND'); ?>
 
                             </td>
-                            <td><?php echo e($detalle->producto->nombre ?? 'N/A'); ?></td>
+                            <td style="font-size: 14px"><?php echo e($detalle->producto->nombre ?? 'N/A'); ?></td>
+                            <td style="font-size: 13px; color: #334155; font-weight: 600;">
+                                <?php if($compra->destino instanceof \App\Models\Vehiculo): ?>
+                                    <?php echo e($compra->destino->patente ?? ''); ?>
+
+                                    <?php echo e($compra->destino->marca ?? ''); ?>
+
+                                    <?php echo e($compra->destino->modelo ?? ''); ?>
+
+                                <?php elseif($compra->destino instanceof \App\Models\Equipo): ?>
+                                    <?php echo e($compra->destino->equipamiento ?? ''); ?>
+
+                                    <?php if($compra->destino->marca): ?> - <?php echo e($compra->destino->marca); ?> <?php endif; ?>
+                                <?php elseif($compra->destino instanceof \App\Models\Obra): ?>
+                                    <?php echo e($compra->destino->nombre ?? ''); ?>
+
+                                <?php elseif($compra->destino instanceof \App\Models\Deposito): ?>
+                                    <?php echo e($compra->destino->nombre ?? ''); ?>
+
+                                <?php else: ?>
+                                    <?php echo e($compra->asunto_obra_automotor ?? 'N/A'); ?>
+
+                                <?php endif; ?>
+                            </td>
                         </tr>
                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                     <?php for($i = count($compra->detalle_compras); $i < 3; $i++): ?>
                         <tr>
+                            <td></td>
                             <td></td>
                             <td></td>
                         </tr>
@@ -404,20 +433,19 @@
                 </tbody>
             </table>
         </div>
-
         <table
             style="width: 100%; margin-top: 15px; border: none; border-collapse: collapse; page-break-inside: avoid;">
             <tr style="page-break-inside: avoid;">
-                <td style="width: 33%; text-align: center; vertical-align: bottom; border: none; padding: 0 8px;">
+                <td style="width: 34%; text-align: center; vertical-align: bottom; border: none; padding: 0 8px;">
                     <?php if($compra->usuario && $compra->usuario->firma): ?>
-                    <img src="<?php echo e(public_path('storage/' . $compra->usuario->firma)); ?>"
-                    style="max-width: 100px; height: auto; max-height: 100px;">
+                        <img src="<?php echo e(public_path('storage/' . $compra->usuario->firma)); ?>"
+                            style="max-width: 100px; height: auto; max-height: 100px;">
                     <?php endif; ?>
                     <div style="font-size: 11px; font-weight: 700; text-transform: uppercase;">Autorizado por
                         Funcionario<?php echo e($compra->usuario ? ': ' . $compra->usuario->name : ''); ?></div>
-                        <div style="font-size: 10px; color: #64748b; text-transform: uppercase;">Sello y Firma Municipal:
-                        </div>
-                    </td>
+                    <div style="font-size: 10px; color: #64748b; text-transform: uppercase;">Sello y Firma Municipal:
+                    </div>
+                </td>
                 <td style="width: 33%; text-align: center; vertical-align: bottom; border: none; padding: 0 8px;">
                     <div style="border-bottom: 1.5px solid #000; height: 30px; margin-bottom: 4px;"></div>
                     <div style="font-size: 11px; font-weight: 700; text-transform: uppercase;">Firma Proveedor</div>
