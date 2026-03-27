@@ -236,9 +236,9 @@ class VehiculoController extends Controller
             'tipo'    => 'required|string|max:255',
             'patente' => 'required|string|max:255|unique:vehiculos,patente,' . $id,
             'modelo'  => 'required|string|max:255',
-            'color'   => 'required|string|max:255',
-            'anio'    => 'required|integer',
-            'chasis'  => 'required|string|max:255|unique:vehiculos,chasis,' . $id,
+            'color'   => 'nullable|string|max:255',
+            'anio'    => 'nullable|integer',
+            'chasis'  => 'nullable|string|max:255|unique:vehiculos,chasis,' . $id,
             'motor'   => 'required|string|max:255|unique:vehiculos,motor,' . $id,
             'imagen'  => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:16384',
             'tipo_combustible_id' => 'required|exists:tipo_combustibles,id'

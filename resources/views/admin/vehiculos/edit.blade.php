@@ -136,12 +136,11 @@
 
                             <!-- Modelo -->
                             <div class="space-y-2">
-                                <label for="modelo" class="text-sm font-medium">Modelo <span
-                                        class="text-red-600">*</span></label>
+                                <label for="modelo" class="text-sm font-medium">Modelo</label>
                                 <input id="modelo" name="modelo" value="{{ old('modelo', $vehiculo->modelo) }}"
                                     class="w-full h-10 rounded-md border border-base-300 bg-base-200 px-3 text-sm 
                                    focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition @error('modelo') input-error @enderror"
-                                    placeholder="Modelo..." required />
+                                    placeholder="Modelo..."  />
                                 @error('modelo')
                                     <small class="text-red-500 error-message">{{ $message }}</small>
                                 @enderror
@@ -149,13 +148,12 @@
 
                             <!-- Año -->
                             <div class="space-y-2">
-                                <label for="anio" class="text-sm font-medium">Año <span
-                                        class="text-red-600">*</span></label>
+                                <label for="anio" class="text-sm font-medium">Año</label>
                                 <input id="anio" name="anio" type="number" min="1900"
                                     max="{{ date('Y') }}" value="{{ old('anio', $vehiculo->anio) }}"
                                     class="w-full h-10 rounded-md border border-base-300 bg-base-200 px-3 text-sm 
                                    focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition @error('anio') input-error @enderror"
-                                    placeholder="Año..." required />
+                                    placeholder="Año..."  />
                                 @error('anio')
                                     <small class="text-red-500 error-message">{{ $message }}</small>
                                 @enderror
@@ -178,12 +176,11 @@
 
                             <!-- Motor -->
                             <div class="space-y-2">
-                                <label for="motor" class="text-sm font-medium">N° de Motor <span
-                                        class="text-red-600">*</span></label>
+                                <label for="motor" class="text-sm font-medium">N° de Motor </label>
                                 <input id="motor" name="motor" value="{{ old('motor', $vehiculo->motor) }}"
                                     class="w-full h-10 rounded-md border border-base-300 bg-base-200 px-3 text-sm 
                                    focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition @error('motor') input-error @enderror"
-                                    placeholder="Número de Motor..." required />
+                                    placeholder="Número de Motor..."  />
                                 @error('motor')
                                     <small class="text-red-500 error-message">{{ $message }}</small>
                                 @enderror
@@ -192,12 +189,11 @@
                         <div class="grid grid-cols-2 gap-4">
                             <!-- Chasis -->
                             <div class="space-y-2">
-                                <label for="chasis" class="text-sm font-medium">N° de Chasis <span
-                                        class="text-red-600">*</span></label>
+                                <label for="chasis" class="text-sm font-medium">N° de Chasis</label>
                                 <input id="chasis" name="chasis" value="{{ old('chasis', $vehiculo->chasis) }}"
                                     class="w-full h-10 rounded-md border border-base-300 bg-base-200 px-3 text-sm 
                                 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition @error('chasis') input-error @enderror"
-                                    placeholder="Número de Chasis..." required />
+                                    placeholder="Número de Chasis..."  />
                                 @error('chasis')
                                     <small class="text-red-500 error-message">{{ $message }}</small>
                                 @enderror
