@@ -23,7 +23,9 @@ class PDFController extends Controller
     public function PdfOrdenCompra($id)
     {
         $compra = Compra::with(['usuario', 'destino'])->findOrFail($id);
-        $pdf = PDF::loadView('pdf.orden-compra', compact('compra'));
+        $pdf = PDF::loadView('pdf.orden-compra', compact('compra'))
+            ->setOption('isHtml5ParserEnabled', true)
+            ->setOption('isRemoteEnabled', true);
         return $pdf->stream('orden_compra_' . $id . '.pdf');
     }
 
@@ -39,14 +41,18 @@ class PDFController extends Controller
             'ruta_firma' => $compra->usuario ? $compra->usuario->firma : null
         ]);
 
-        $pdf = PDF::loadView('pdf.orden-compra', compact('compra'));
+        $pdf = PDF::loadView('pdf.orden-compra', compact('compra'))
+            ->setOption('isHtml5ParserEnabled', true)
+            ->setOption('isRemoteEnabled', true);
         return $pdf->stream('orden_compra_' . $compra->nr_orden . '.pdf');
     }
 
     public function downloadOrdenCompra($id)
     {
         $compra = Compra::with(['proveedor', 'empleado', 'detalle_compras.producto', 'usuario', 'destino'])->findOrFail($id);
-        $pdf = PDF::loadView('pdf.orden-compra', compact('compra'));
+        $pdf = PDF::loadView('pdf.orden-compra', compact('compra'))
+            ->setOption('isHtml5ParserEnabled', true)
+            ->setOption('isRemoteEnabled', true);
         return $pdf->download('orden_compra_' . $compra->nr_orden . '.pdf');
     }
 

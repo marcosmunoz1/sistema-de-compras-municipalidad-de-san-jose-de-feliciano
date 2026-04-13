@@ -383,12 +383,10 @@
                 <tbody>
                     <tr>
                         <td style="font-weight: 600;">
-                            <?php if($combustible->litros !== null): ?>
+                            <?php if($combustible->litros !== null && $combustible->litros != 0): ?>
                                 <?php echo e($combustible->litros); ?> Litros - <?php echo e($combustible->tipo); ?>
 
-                            <?php elseif($combustible->litros === 0.00): ?>  
-                                Carga completa - <?php echo e($combustible->tipo); ?> 
-                            <?php else: ?> 
+                            <?php else: ?>
                                 Carga completa - <?php echo e($combustible->tipo); ?>
 
                             <?php endif; ?>

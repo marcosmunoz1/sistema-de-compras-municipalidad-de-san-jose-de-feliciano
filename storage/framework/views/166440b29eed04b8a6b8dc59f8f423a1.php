@@ -134,6 +134,7 @@
             border: 1px solid #e2e8f0;
             border-radius: 6px;
             padding: 2px 10px;
+            margin-bottom: 2px;
         }
 
         .field-label {
@@ -326,40 +327,50 @@
     <div class="page">
         <div class="watermark text-slate-200">DUPLICADO</div>
 
-        <div class="header-section">
-            <div class="logo-container">
-                <div class="logo-placeholder">
-                    <img src="<?php echo e(public_path('logo/logo-pdf.png')); ?>" alt="Logo">
-                </div>
-                <div>
-                    <h1 class="text-xl font-black text-slate-900 tracking-tight">MUNICIPALIDAD DE</h1>
-                    <h2 class="text-xl font-black text-blue-700 tracking-tight">SAN JOSÉ DE FELICIANO</h2>
-                    <p
-                        style="font-size: 11px; font-weight: bold; color: #64748b; text-transform: uppercase; letter-spacing: 0.1em; margin-top: 2px;">
-                        Gestión Corralón Municipal</p>
-                </div>
-            </div>
-            <div class="text-right">
-                <div class="title-badge mb-1.5">Solicitud provisoria de insumos</div>
-                <div class="text-lg font-mono font-bold text-slate-800">N° <span
-                        class="text-red-600"><?php echo e(str_pad($compra->nr_orden, 12, '0', STR_PAD_LEFT)); ?></span></div>
-                <div
-                    style="font-size: 12px; color: #64748b; font-weight: 600; margin-top: 2px; text-transform: uppercase;">
-                    Fecha: <span
-                        style="border-bottom: 1px solid #cbd5e1; display: inline-block; width: 112px;"><?php echo e(\Carbon\Carbon::parse($compra->fecha_orden)->format('d/m/Y')); ?></span>
-                </div>
-            </div>
-        </div>
+        <!-- Encabezado Principal -->
+        <table
+            style="width: 100%; border: none; border-collapse: collapse; border-bottom: 3px solid #1e40af; padding-bottom: 10px; margin-bottom: 8px;">
+            <tr>
+                <td style="width: 70px; vertical-align: middle; border: none; padding: 0;">
+                    <div class="logo-placeholder">
+                        <img src="<?php echo e(public_path('logo/logo-pdf.png')); ?>" alt="Logo">
+                    </div>
+                </td>
+                <td style="vertical-align: middle; border: none; padding-left: 15px;">
+                    <div style="font-size: 18px; font-weight: 900; color: #1e293b; letter-spacing: -0.5px;">
+                        MUNICIPALIDAD DE</div>
+                    <div style="font-size: 18px; font-weight: 900; color: #1e40af; letter-spacing: -0.5px;">SAN JOSÉ DE
+                        FELICIANO</div>
+                    <div
+                        style="font-size: 11px; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 1px; margin-top: 2px;">
+                        Gestión Corralón Municipal</div>
+                    <div
+                        style="font-size: 10px; font-weight: 600; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.5px;">
+                        Solicitud Provisoria de Insumos</div>
+                </td>
+                <td style="text-align: right; vertical-align: middle; border: none; padding-bottom: 20px;">
+                    <div class="title-badge" style="margin-bottom: 6px;">ORDEN DE COMPRA</div>
+                    <div style="font-size: 16px; font-family: monospace; font-weight: 700; color: #1e293b;">N° <span
+                            style="color: #dc2626;"><?php echo e(str_pad($compra->nr_orden, 12, '0', STR_PAD_LEFT)); ?></span>
+                    </div>
+                    <div
+                        style="font-size: 13px; color: #64748b; font-weight: 600; text-transform: uppercase; margin-top: 4px;">
+                        Fecha: <span
+                            style="border-bottom: 1px solid #cbd5e1; display: inline-block; min-width: 80px;"><?php echo e(\Carbon\Carbon::parse($compra->fecha_orden)->format('d/m/Y')); ?></span>
+                    </div>
+                </td>
+            </tr>
+        </table>
 
         <div class="field-group">
             <div class="modern-field">
-                <span class="field-label">Proveedor</span>
-                <div class="field-value" style="font-size: 14px"><?php echo e($compra->proveedor->nombre ?? 'N/A'); ?></div>
+                <span class="field-label">Proveedor</span> 
+                <div class="field-value" style="font-size: 14px"><?php echo e($compra->proveedor->empresa ?? 'N/A'); ?></div>
             </div>
             <div class="modern-field">
                 <span class="field-label">Entregar a</span>
                 <div class="field-value" style="font-size: 14px"><?php echo e($compra->empleado->nombre ?? 'N/A'); ?></div>
-            </div>
+            </div> 
             <div class="modern-field">
                 <span class="field-label">Sub Cuenta</span>
                 <div class="field-value" style="font-size: 14px"><?php echo e($compra->sub_cuenta ?? 'N/A'); ?></div>
@@ -367,19 +378,21 @@
             <div class="modern-field">
                 <span class="field-label">Asunto</span>
                 <div class="field-value" style="font-size: 14px"><?php echo e($compra->asunto_obra_automotor ?? 'N/A'); ?></div>
-                <span class="ml-4"
+                <span class="ml-4" 
                     style="font-size: 9px; color: #94a3b8; font-weight: bold; text-transform: uppercase;">(Vehículo /
                     Obra / Equipo)</span>
             </div>
+            <?php if($compra->observacion): ?>
+            <div class="modern-field">
+                <span class="field-label">Observación</span>
+                <div class="field-value" style="font-size: 14px; word-wrap: break-word; overflow-wrap: break-word; white-space: normal;"><?php echo e($compra->observacion); ?></div>
+            </div>
+            <?php endif; ?>
         </div>
 
         <div class="table-container">
             <div style="margin-bottom: 4px;">
-                <h3
-                    style="font-size: 13px; font-weight: 900; color: #334155; text-transform: uppercase; letter-spacing: 0.05em;">
-                    style="font-size: 13px; font-weight: 900; color: #334155; text-transform: uppercase; letter-spacing:
-                    0.05em;">
-                    Detalle de Insumos y Suministros</h3>
+               
             </div>
             <table>
                 <thead>
@@ -439,7 +452,7 @@
                 <td style="width: 34%; text-align: center; vertical-align: bottom; border: none; padding: 0 8px;">
                     <?php if($compra->usuario && $compra->usuario->firma): ?>
                         <img src="<?php echo e(public_path('storage/' . $compra->usuario->firma)); ?>"
-                            style="max-width: 100px; height: auto; max-height: 100px;">
+                            style="max-width: 180px; height: auto; max-height: 180px;">
                     <?php endif; ?>
                     <div style="font-size: 11px; font-weight: 700; text-transform: uppercase;">Autorizado por
                         Funcionario<?php echo e($compra->usuario ? ': ' . $compra->usuario->name : ''); ?></div>
@@ -459,14 +472,11 @@
                 </td>
             </tr>
         </table>
-
         <div class="copy-indicator uppercase">
             <span>Original: Contaduría Municipal</span>
             <span>San José de Feliciano - Entre Ríos</span>
             <span>Copia: Proveedor / Archivo</span>
         </div>
     </div>
-
 </body>
-
-</html><?php /**PATH C:\laragon\www\Sistema-talwind\resources\views/pdf/orden-compra.blade.php ENDPATH**/ ?>
+</html> <?php /**PATH C:\laragon\www\Sistema-talwind\resources\views/pdf/orden-compra.blade.php ENDPATH**/ ?>
