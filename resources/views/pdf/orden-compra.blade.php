@@ -92,7 +92,7 @@
         }
 
         .logo-placeholder {
-            width: 55px;
+            width: 85px;
             height: 55px;
             background: white;
             border-radius: 12px;
@@ -364,13 +364,13 @@
 
         <div class="field-group">
             <div class="modern-field">
-                <span class="field-label">Proveedor</span> 
+                <span class="field-label">Proveedor</span>
                 <div class="field-value" style="font-size: 14px">{{ $compra->proveedor->empresa ?? 'N/A' }}</div>
             </div>
             <div class="modern-field">
                 <span class="field-label">Entregar a</span>
                 <div class="field-value" style="font-size: 14px">{{ $compra->empleado->nombre ?? 'N/A' }}</div>
-            </div> 
+            </div>
             <div class="modern-field">
                 <span class="field-label">Sub Cuenta</span>
                 <div class="field-value" style="font-size: 14px">{{ $compra->sub_cuenta ?? 'N/A' }}</div>
@@ -378,21 +378,23 @@
             <div class="modern-field">
                 <span class="field-label">Asunto</span>
                 <div class="field-value" style="font-size: 14px">{{ $compra->asunto_obra_automotor ?? 'N/A' }}</div>
-                <span class="ml-4" 
+                <span class="ml-4"
                     style="font-size: 9px; color: #94a3b8; font-weight: bold; text-transform: uppercase;">(Vehículo /
                     Obra / Equipo)</span>
             </div>
-            @if($compra->observacion)
-            <div class="modern-field">
-                <span class="field-label">Observación</span>
-                <div class="field-value" style="font-size: 14px; word-wrap: break-word; overflow-wrap: break-word; white-space: normal;">{{ $compra->observacion }}</div>
-            </div>
+            @if ($compra->observacion)
+                <div class="modern-field">
+                    <span class="field-label">Observación</span>
+                    <div class="field-value"
+                        style="font-size: 14px; word-wrap: break-word; overflow-wrap: break-word; white-space: normal;">
+                        {{ $compra->observacion }}</div>
+                </div>
             @endif
         </div>
 
         <div class="table-container">
             <div style="margin-bottom: 4px;">
-               
+
             </div>
             <table>
                 <thead>
@@ -403,20 +405,22 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($compra->detalle_compras as $detalle)
+                    @foreach ($compra->detalle_compras as $detalle)
                         <tr>
                             <td style="font-weight: 600; font-size: 14px">{{ $detalle->cantidad }}
                                 {{ $detalle->producto->unidad ?? 'UND' }}
                             </td>
                             <td style="font-size: 14px">{{ $detalle->producto->nombre ?? 'N/A' }}</td>
                             <td style="font-size: 13px; color: #334155; font-weight: 600;">
-                                @if($compra->destino instanceof \App\Models\Vehiculo)
+                                @if ($compra->destino instanceof \App\Models\Vehiculo)
                                     {{ $compra->destino->patente ?? '' }}
                                     {{ $compra->destino->marca ?? '' }}
                                     {{ $compra->destino->modelo ?? '' }}
                                 @elseif($compra->destino instanceof \App\Models\Equipo)
                                     {{ $compra->destino->equipamiento ?? '' }}
-                                    @if($compra->destino->marca) - {{ $compra->destino->marca }} @endif
+                                    @if ($compra->destino->marca)
+                                        - {{ $compra->destino->marca }}
+                                    @endif
                                 @elseif($compra->destino instanceof \App\Models\Obra)
                                     {{ $compra->destino->nombre ?? '' }}
                                 @elseif($compra->destino instanceof \App\Models\Deposito)
@@ -427,7 +431,7 @@
                             </td>
                         </tr>
                     @endforeach
-                    @for($i = count($compra->detalle_compras); $i < 3; $i++)
+                    @for ($i = count($compra->detalle_compras); $i < 3; $i++)
                         <tr>
                             <td></td>
                             <td></td>
@@ -441,13 +445,14 @@
             style="width: 100%; margin-top: 15px; border: none; border-collapse: collapse; page-break-inside: avoid;">
             <tr style="page-break-inside: avoid;">
                 <td style="width: 34%; text-align: center; vertical-align: bottom; border: none; padding: 0 8px;">
-                    @if($compra->usuario && $compra->usuario->firma)
+                    @if ($compra->usuario && $compra->usuario->firma)
                         <img src="{{ public_path('storage/' . $compra->usuario->firma) }}"
                             style="max-width: 180px; height: auto; max-height: 180px;">
                     @endif
                     <div style="font-size: 11px; font-weight: 700; text-transform: uppercase;">Autorizado por
-                        Funcionario{{ $compra->usuario ? ': ' . $compra->usuario->name : '' }}</div>
-                    <div style="font-size: 10px; color: #64748b; text-transform: uppercase;">Sello y Firma Municipal:
+                        jefe de compras.
+                        <br> 
+                        Cargado por {{ $compra->usuario ? ': ' . $compra->usuario->name : '' }}
                     </div>
                 </td>
                 <td style="width: 33%; text-align: center; vertical-align: bottom; border: none; padding: 0 8px;">
@@ -470,4 +475,5 @@
         </div>
     </div>
 </body>
-</html> 
+
+</html>
