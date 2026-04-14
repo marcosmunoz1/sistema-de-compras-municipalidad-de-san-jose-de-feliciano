@@ -92,7 +92,7 @@
         }
 
         .logo-placeholder {
-            width: 55px;
+            width: 85px;
             height: 55px;
             background: white;
             border-radius: 12px;
@@ -364,13 +364,13 @@
 
         <div class="field-group">
             <div class="modern-field">
-                <span class="field-label">Proveedor</span> 
+                <span class="field-label">Proveedor</span>
                 <div class="field-value" style="font-size: 14px"><?php echo e($compra->proveedor->empresa ?? 'N/A'); ?></div>
             </div>
             <div class="modern-field">
                 <span class="field-label">Entregar a</span>
                 <div class="field-value" style="font-size: 14px"><?php echo e($compra->empleado->nombre ?? 'N/A'); ?></div>
-            </div> 
+            </div>
             <div class="modern-field">
                 <span class="field-label">Sub Cuenta</span>
                 <div class="field-value" style="font-size: 14px"><?php echo e($compra->sub_cuenta ?? 'N/A'); ?></div>
@@ -378,21 +378,23 @@
             <div class="modern-field">
                 <span class="field-label">Asunto</span>
                 <div class="field-value" style="font-size: 14px"><?php echo e($compra->asunto_obra_automotor ?? 'N/A'); ?></div>
-                <span class="ml-4" 
+                <span class="ml-4"
                     style="font-size: 9px; color: #94a3b8; font-weight: bold; text-transform: uppercase;">(Vehículo /
                     Obra / Equipo)</span>
             </div>
             <?php if($compra->observacion): ?>
-            <div class="modern-field">
-                <span class="field-label">Observación</span>
-                <div class="field-value" style="font-size: 14px; word-wrap: break-word; overflow-wrap: break-word; white-space: normal;"><?php echo e($compra->observacion); ?></div>
-            </div>
+                <div class="modern-field">
+                    <span class="field-label">Observación</span>
+                    <div class="field-value"
+                        style="font-size: 14px; word-wrap: break-word; overflow-wrap: break-word; white-space: normal;">
+                        <?php echo e($compra->observacion); ?></div>
+                </div>
             <?php endif; ?>
         </div>
 
         <div class="table-container">
             <div style="margin-bottom: 4px;">
-               
+
             </div>
             <table>
                 <thead>
@@ -422,7 +424,10 @@
                                 <?php elseif($compra->destino instanceof \App\Models\Equipo): ?>
                                     <?php echo e($compra->destino->equipamiento ?? ''); ?>
 
-                                    <?php if($compra->destino->marca): ?> - <?php echo e($compra->destino->marca); ?> <?php endif; ?>
+                                    <?php if($compra->destino->marca): ?>
+                                        - <?php echo e($compra->destino->marca); ?>
+
+                                    <?php endif; ?>
                                 <?php elseif($compra->destino instanceof \App\Models\Obra): ?>
                                     <?php echo e($compra->destino->nombre ?? ''); ?>
 
@@ -430,7 +435,7 @@
                                     <?php echo e($compra->destino->nombre ?? ''); ?>
 
                                 <?php else: ?>
-                                    <?php echo e($compra->asunto_obra_automotor ?? 'N/A'); ?>
+                                    <?php echo e($compra->destino->nombre ?? 'N/A'); ?>
 
                                 <?php endif; ?>
                             </td>
@@ -455,8 +460,10 @@
                             style="max-width: 180px; height: auto; max-height: 180px;">
                     <?php endif; ?>
                     <div style="font-size: 11px; font-weight: 700; text-transform: uppercase;">Autorizado por
-                        Funcionario<?php echo e($compra->usuario ? ': ' . $compra->usuario->name : ''); ?></div>
-                    <div style="font-size: 10px; color: #64748b; text-transform: uppercase;">Sello y Firma Municipal:
+                        jefe de compras.
+                        <br> 
+                        Cargado por <?php echo e($compra->usuario ? ': ' . $compra->usuario->name : ''); ?>
+
                     </div>
                 </td>
                 <td style="width: 33%; text-align: center; vertical-align: bottom; border: none; padding: 0 8px;">
@@ -479,4 +486,6 @@
         </div>
     </div>
 </body>
-</html> <?php /**PATH C:\xampp\htdocs\sistema-municipal\resources\views\pdf\orden-compra.blade.php ENDPATH**/ ?>
+
+</html>
+<?php /**PATH C:\xampp\htdocs\sistema-municipal\resources\views\pdf\orden-compra.blade.php ENDPATH**/ ?>
