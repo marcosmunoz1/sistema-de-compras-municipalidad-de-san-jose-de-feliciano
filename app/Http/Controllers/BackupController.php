@@ -96,24 +96,15 @@ class BackupController extends Controller
                     ->log('Backup descargado');
             }
             
-            // Obtener información del archivo
             $fullPath = $disk->path($filePath);
-            $fileSize = $disk->size($filePath);
             
-            // Si el archivo es muy grande, usar streamed response
-            if ($fileSize > 50 * 1024 * 1024) { // 50MB
-                return response()->stream(function() use ($fullPath) {
-                    readfile($fullPath);
-                }, 200, [
-                    'Content-Type' => 'application/zip',
-                    'Content-Disposition' => 'attachment; filename="' . $filename . '"',
-                    'Content-Length' => $fileSize,
-                ]);
-            }
+            // Cerrar la sesión para evitar bloqueos si el archivo es grande y tarda en descargar
+            session_write_close();
             
-            return $disk->download($filePath, $filename, [
+            // Usar response()->download que utiliza BinaryFileResponse, 
+            // la forma más eficiente y segura de enviar archivos grandes en Laravel/Symfony
+            return response()->download($fullPath, $filename, [
                 'Content-Type' => 'application/zip',
-                'Content-Disposition' => 'attachment; filename="' . $filename . '"',
                 'Cache-Control' => 'no-cache, no-store, must-revalidate',
                 'Pragma' => 'no-cache',
                 'Expires' => '0',
