@@ -96,14 +96,12 @@ class BackupController extends Controller
                     ->log('Backup descargado');
             }
             
-            $fullPath = $disk->path($filePath);
-            
             // Cerrar la sesión para evitar bloqueos si el archivo es grande y tarda en descargar
             session_write_close();
             
-            // Usar response()->download que utiliza BinaryFileResponse, 
-            // la forma más eficiente y segura de enviar archivos grandes en Laravel/Symfony
-            return response()->download($fullPath, $filename, [
+            // Utilizar el método nativo de Laravel Storage::download que gestiona la transmisión (streaming)
+            // de forma segura a través de fpassthru sin cargar el archivo en memoria y sin requerir chequeos is_readable absolutos.
+            return $disk->download($filePath, $filename, [
                 'Content-Type' => 'application/zip',
                 'Cache-Control' => 'no-cache, no-store, must-revalidate',
                 'Pragma' => 'no-cache',
@@ -310,3 +308,4 @@ class BackupController extends Controller
         return round($bytes, 2) . ' ' . $units[$pow];
     }
 }
+

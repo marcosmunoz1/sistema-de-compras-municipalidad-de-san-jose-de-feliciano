@@ -38,7 +38,7 @@ return [
             'filename_prefix' => '',
             'disks' => [
                 'backups',
-                // 'google',  // Descomentar cuando configures Google Drive
+                'google',  // Sincronizar backups a Google Drive
                 // 's3',      // Descomentar cuando configures AWS S3
             ],
         ],
