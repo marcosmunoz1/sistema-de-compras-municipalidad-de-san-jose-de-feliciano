@@ -38,9 +38,13 @@ return [
             'filename_prefix' => '',
             'disks' => [
                 'backups',
-                'google',  // Sincronizar backups a Google Drive
-                // 's3',      // Descomentar cuando configures AWS S3
             ],
+        ],
+
+        // Destinos externos para sincronización (manejados por SmartBackup con tolerancia a fallos)
+        'sync_disks' => [
+            'google',
+            // 's3',      // Descomentar cuando configures AWS S3
         ],
 
         'temporary_directory' => storage_path('app/backup-temp'),

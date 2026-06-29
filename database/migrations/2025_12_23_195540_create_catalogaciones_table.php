@@ -10,7 +10,7 @@ return new class extends Migration
     {
         Schema::create('catalogaciones', function (Blueprint $table) {
             $table->id();
-            $table->string('codigo')->unique(); // SG-001, OP-002, etc.
+            $table->string('codigo')->unique(); // SG-001, OP-002, etc. 
             $table->foreignId('area_id')->constrained('areas')->onDelete('restrict');
             $table->string('tipo'); // 'equipo' o 'vehiculo'
             $table->unsignedBigInteger('item_id'); // ID del equipo o vehículo

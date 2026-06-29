@@ -38,11 +38,11 @@ Route::post('/admin/compras/store', [App\Http\Controllers\CompraController::clas
 Route::get('/admin/compras/{id}/edit', [App\Http\Controllers\CompraController::class, 'edit'])->name('compras.edit')->middleware('auth', 'can:compras-edit');
 Route::get('/admin/compras/{id}/report', [App\Http\Controllers\PDFController::class, 'PdfOrdenCompra'])->name('compras.report')->middleware('auth', 'can:compras-report');
 Route::get('/admin/compras/{id}/preview', [App\Http\Controllers\PDFController::class, 'previewOrdenCompra'])->name('compras.preview')->middleware('auth', 'can:compras-report');
-Route::get('/admin/compras/{id}/download', [App\Http\Controllers\PDFController::class, 'downloadOrdenCompra'])->name('compras.download')->middleware('auth', 'can:compras-report');
-Route::put('/admin/compras/{id}/restore', [App\Http\Controllers\CompraController::class, 'restore'])->name('compras.restore')->middleware('auth', 'can:compras-restore');
+Route::get('/admin/compras/{id}/download', [App\Http\Controllers\PDFController::class, 'downloadOrdenCompra'])->name('compras.download')->middleware('auth', 'can:compras-report'); 
+Route::put('/admin/compras/{id}/restore', [App\Http\Controllers\CompraController::class, 'restore'])->name('compras.restore')->middleware('auth');
 Route::put('/admin/compras/{id}', [App\Http\Controllers\CompraController::class, 'update'])->name('compras.update')->middleware('auth', 'can:compras-update');
 Route::get('/admin/compras/{id}', [App\Http\Controllers\CompraController::class, 'show'])->name('compras.show')->middleware('auth', 'can:compras-show');
-Route::delete('/admin/compras/{id}', [App\Http\Controllers\CompraController::class, 'destroy'])->name('compras.destroy')->middleware('auth', 'can:compras-destroy');
+Route::delete('/admin/compras/{id}', [App\Http\Controllers\CompraController::class, 'destroy'])->name('compras.destroy')->middleware('auth');
 
 //Rutas para detalles de compra para eliminar un detalle de compra específico
 Route::delete('/admin/compras/detalle-compra/{id}', [App\Http\Controllers\DetalleCompraController::class, 'destroy'])->name('detalle-compra.destroy')->middleware('auth', 'can:compras-destroy');

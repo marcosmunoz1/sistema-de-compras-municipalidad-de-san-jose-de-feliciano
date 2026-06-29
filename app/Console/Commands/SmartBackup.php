@@ -34,9 +34,11 @@ class SmartBackup extends Command
             
             $command = $onlyDb ? 'backup:run --only-db' : 'backup:run';
             $exitCode = Artisan::call($command);
+            $output = Artisan::output();
             
             if ($exitCode !== 0) {
-                throw new Exception('El comando de backup falló con código: ' . $exitCode);
+                Log::error('Backup output: ' . $output);
+                throw new Exception('El comando de backup falló con código: ' . $exitCode . ' | Output: ' . trim($output));
             }
             
             $newBackup = $this->getLatestBackup();
@@ -182,9 +184,8 @@ class SmartBackup extends Command
     
     protected function syncToExternalDestinations(array $backup): void
     {
-        // Solo sincronizar con destinos que estén configurados en backup.php
-        $configuredDisks = config('backup.backup.destination.disks', []);
-        $destinations = array_filter($configuredDisks, fn($disk) => $disk !== 'backups');
+        // Usar los destinos de sincronización separados (no los primarios del backup)
+        $destinations = config('backup.backup.sync_disks', []);
         
         if (empty($destinations)) {
             $this->info('ℹ️ No hay destinos externos configurados');
@@ -202,17 +203,49 @@ class SmartBackup extends Command
                 
                 $this->info("☁️ Sincronizando con {$destination}...");
                 
-                $disk = Storage::disk($destination);
-                $content = file_get_contents($backup['path']);
-                $disk->put($backup['name'], $content);
+                // Verificar que el archivo local existe
+                if (!file_exists($backup['path'])) {
+                    $this->warn("⚠️ Archivo de backup no encontrado: {$backup['path']}");
+                    continue;
+                }
                 
-                $this->info("✅ Sincronizado con {$destination}");
+                $fileSize = filesize($backup['path']);
+                $this->info("   📁 Archivo: {$backup['name']} (" . $this->formatBytes($fileSize) . ")");
+                
+                $disk = Storage::disk($destination);
+                
+                // Usar stream para archivos grandes en vez de cargar todo en memoria
+                $stream = fopen($backup['path'], 'r');
+                
+                if ($stream === false) {
+                    $this->warn("⚠️ No se pudo abrir el archivo de backup para lectura");
+                    continue;
+                }
+                
+                $result = $disk->put($backup['name'], $stream);
+                
+                if (is_resource($stream)) {
+                    fclose($stream);
+                }
+                
+                if ($result === false) {
+                    $this->error("❌ Falló la subida a {$destination} (put() retornó false)");
+                    Log::error("Fallo sincronización con {$destination}", [
+                        'backup' => $backup['name'],
+                        'file_size' => $fileSize,
+                        'reason' => 'put() returned false - posible token expirado o error de conexión',
+                    ]);
+                    continue;
+                }
+                
+                $this->info("✅ Sincronizado con {$destination} -> {$backup['name']}");
                 $successCount++;
                 
             } catch (Exception $e) {
                 $this->warn("⚠️ Error al sincronizar con {$destination}: " . $e->getMessage());
                 Log::warning("Fallo sincronización con {$destination}", [
                     'error' => $e->getMessage(),
+                    'trace' => $e->getTraceAsString(),
                     'backup' => $backup['name'],
                 ]);
             }
@@ -220,6 +253,8 @@ class SmartBackup extends Command
         
         if ($successCount > 0) {
             $this->info("✅ Sincronizado con {$successCount} destino(s) externo(s)");
+        } else if (!empty($destinations)) {
+            $this->warn("⚠️ No se pudo sincronizar con ningún destino externo");
         }
     }
     
