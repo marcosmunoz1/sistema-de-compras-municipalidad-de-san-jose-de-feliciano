@@ -1,11 +1,10 @@
-<?php $__env->startSection('title', 'Editar compra'); ?>
+<?php $__env->startSection('title', 'Carga de factura'); ?>
 
 <?php $__env->startSection('content'); ?>
     <!-- Titulo y boton -->
     <div class="flex items-center justify-between mb-6">
-        <h1 class="text-xl sm:text-2xl font-semibold">Edición de la Orden de compra</h1>
+        <h1 class="text-xl sm:text-2xl font-semibold">Carga de factura</h1> 
     </div>
-
     <div class="breadcrumbs text-sm mb-6">
         <ul>
             <li>
@@ -64,7 +63,7 @@
 <?php $component = $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
 <?php unset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
 <?php endif; ?>
-                    Editar Orden de compra
+                    Carga de factura de compra 
                 </span>
             </li>
         </ul>
@@ -78,7 +77,6 @@
 
         <div data-slot="card-content" class="px-6 [&:last-child]:pb-6">
             <div class="grid gap-4">
-
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <!-- País -->
                     <div class="space-y-2">
@@ -96,7 +94,6 @@ endif;
 unset($__errorArgs, $__bag); ?>"
                             disabled>
                     </div>
-
                     <!-- entregar a -->
                     <div class="space-y-2">
                         <label for="empleado_id" class="text-sm font-medium">Entregar a</label>
@@ -125,7 +122,7 @@ if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>
                     </div>
-
+                    -
                     <div class="space-y-2">
                         <label for="sub_cuenta" class="text-sm font-medium">Sub cuenta</label>
                         <select id="sub_cuenta" name="sub_cuenta"
@@ -583,7 +580,6 @@ unset($__errorArgs, $__bag); ?>
                 </div>
                 Detalle del Producto
             </h3>
-
             <div class="space-y-4">
                 <!-- Nombre -->
                 <div class="bg-base-200 p-4 rounded-lg">
@@ -598,7 +594,6 @@ unset($__errorArgs, $__bag); ?>
                     </div>
                     <p class="font-semibold text-lg" id="detalle_producto_nombre">-</p>
                 </div>
-
                 <div class="grid grid-cols-2 gap-4">
                     <!-- Categoría -->
                     <div class="bg-base-200 p-4 rounded-lg">
@@ -645,7 +640,6 @@ unset($__errorArgs, $__bag); ?>
                     </div>
                     <p class="text-sm" id="detalle_producto_descripcion">-</p>
                 </div>
-
                 <!-- Fecha de creación -->
                 <div class="bg-base-200 p-4 rounded-lg">
                     <div class="flex items-center gap-2 mb-1">
@@ -662,14 +656,12 @@ unset($__errorArgs, $__bag); ?>
                     <p class="text-sm" id="detalle_producto_fecha">-</p>
                 </div>
             </div>
-
             <div class="modal-action">
                 <form method="dialog">
                     <button class="btn btn-sm btn-neutral">Cerrar</button>
                 </form>
             </div>
         </div>
-
         <form method="dialog" class="modal-backdrop">
             <button></button>
         </form>
@@ -747,14 +739,12 @@ unset($__errorArgs, $__bag); ?>
                     totalInput.value = formatearPrecio(total);
                 }
             }
-
             precioInputs.forEach(input => {
                 // Inicial: formatear lo que viene del servidor
                 if (input.value) {
                     const n = normalizarPrecio(input.value);
                     input.value = formatearPrecio(n);
                 }
-
                 // Mientras escribís: NO formatear, solo recalcular
                 input.addEventListener('input', function() {
                     // quitar todo lo que no sea dígito
@@ -822,7 +812,6 @@ unset($__errorArgs, $__bag); ?>
                 });
             });
         });
-
         // Calcular total al cargar
         calcularTotal();
 
@@ -896,7 +885,5 @@ unset($__errorArgs, $__bag); ?>
             });
         });
         </script>
-
 <?php $__env->stopSection(); ?>
-
 <?php echo $__env->make('layouts.admin', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\laragon\www\sistema-municipal\resources\views\admin\compras\edit.blade.php ENDPATH**/ ?>

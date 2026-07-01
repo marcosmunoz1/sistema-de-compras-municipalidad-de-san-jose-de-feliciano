@@ -1,9 +1,9 @@
 <?php $__env->startSection('title', 'Editar orden de combustible'); ?>
 
-<?php $__env->startSection('content'); ?>
-    <!-- Titulo y boton -->
+<?php $__env->startSection('content'); ?> 
+    <!-- Titulo y boton -->  
     <div class="flex items-center justify-between mb-6">
-        <h1 class="text-2xl font-semibold">Edición de Orden de Combustible</h1>
+        <h1 class="text-2xl font-semibold">Carga de factura de la orden N° <?php echo e($combustible->codigo); ?></h1>    
         <div class="flex gap-2">
             <a href="<?php echo e(route('combustibles.index')); ?>"
                 class="inline-flex items-center gap-2 h-9 px-4 py-2 rounded-md bg-blue-600 text-sm hover:bg-blue-700 text-white">
@@ -30,7 +30,7 @@
                 Volver a Combustibles
             </a>
         </div>
-    </div>
+    </div>  
 
     <div class="breadcrumbs text-sm mb-6">
         <ul>
@@ -75,7 +75,7 @@
                             d="M9 13h6m-3-3v6m5 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
                         </path>
                     </svg>
-                    Editar Orden de Combustible
+                     Carga de factura de combustible 
                 </span>
             </li>
         </ul>
@@ -101,7 +101,7 @@
                     </div>
                     <div>
                         <h1 class="text-2xl text-white md:text-3xl font-black tracking-tight text-base-content">
-                            Editar Carga
+                            Cargar factura
                         </h1>
                         <p class="text-xs md:text-sm font-medium text-white opacity-70 uppercase tracking-wider mt-1">
                             Registro de Combustible #<?php echo e($combustible->codigo); ?>

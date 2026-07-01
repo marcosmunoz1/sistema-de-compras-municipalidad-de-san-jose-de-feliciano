@@ -456,7 +456,7 @@
 
                                                         <?php if($combustible->trashed()): ?>
 
-                                                            <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('combustibles-restore')): ?>
+                                                            <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('combustibles-restore')): ?> 
                                                                 <button class="btn btn-success btn-sm"
                                                                     onclick="abrirModalRestaurar('<?php echo e(url('/admin/combustibles/' . $combustible->id . '/restore')); ?>')">
                                                                     <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
@@ -479,8 +479,8 @@
 <?php $component = $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
 <?php unset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
 <?php endif; ?>
-                                                                </button>
-                                                            <?php endif; ?>
+                                                                </button> 
+                                                            <?php endif; ?> 
 
                                                         <?php else: ?>
 
@@ -508,7 +508,7 @@
 <?php unset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
 <?php endif; ?>
                                                                 </button>
-                                                            <?php endif; ?>
+                                                            <?php endif; ?> 
 
                                                         <?php endif; ?>
 
