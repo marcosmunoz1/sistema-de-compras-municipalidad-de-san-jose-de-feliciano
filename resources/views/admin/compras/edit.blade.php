@@ -1,12 +1,11 @@
 @extends('layouts.admin')
-@section('title', 'Editar compra')
+@section('title', 'Carga de factura')
 
 @section('content')
     <!-- Titulo y boton -->
     <div class="flex items-center justify-between mb-6">
-        <h1 class="text-xl sm:text-2xl font-semibold">Edición de la Orden de compra</h1>
+        <h1 class="text-xl sm:text-2xl font-semibold">Carga de factura</h1> 
     </div>
-
     <div class="breadcrumbs text-sm mb-6">
         <ul>
             <li>
@@ -27,7 +26,7 @@
             <li>
                 <span class="inline-flex items-center gap-2">
                     <x-heroicon-o-pencil class="w-4 h-4 inline" />
-                    Editar Orden de compra
+                    Carga de factura de compra 
                 </span>
             </li>
         </ul>
@@ -41,7 +40,6 @@
 
         <div data-slot="card-content" class="px-6 [&:last-child]:pb-6">
             <div class="grid gap-4">
-
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <!-- País -->
                     <div class="space-y-2">
@@ -52,7 +50,6 @@
                             focus:border-primary transition @error('fecha_orden') input-error @enderror"
                             disabled>
                     </div>
-
                     <!-- entregar a -->
                     <div class="space-y-2">
                         <label for="empleado_id" class="text-sm font-medium">Entregar a</label>
@@ -67,7 +64,7 @@
                             <small class="text-red-500 error-message">{{ $message }}</small>
                         @enderror
                     </div>
-
+                    -
                     <div class="space-y-2">
                         <label for="sub_cuenta" class="text-sm font-medium">Sub cuenta</label>
                         <select id="sub_cuenta" name="sub_cuenta"
@@ -367,7 +364,6 @@
                 </div>
                 Detalle del Producto
             </h3>
-
             <div class="space-y-4">
                 <!-- Nombre -->
                 <div class="bg-base-200 p-4 rounded-lg">
@@ -382,7 +378,6 @@
                     </div>
                     <p class="font-semibold text-lg" id="detalle_producto_nombre">-</p>
                 </div>
-
                 <div class="grid grid-cols-2 gap-4">
                     <!-- Categoría -->
                     <div class="bg-base-200 p-4 rounded-lg">
@@ -429,7 +424,6 @@
                     </div>
                     <p class="text-sm" id="detalle_producto_descripcion">-</p>
                 </div>
-
                 <!-- Fecha de creación -->
                 <div class="bg-base-200 p-4 rounded-lg">
                     <div class="flex items-center gap-2 mb-1">
@@ -446,14 +440,12 @@
                     <p class="text-sm" id="detalle_producto_fecha">-</p>
                 </div>
             </div>
-
             <div class="modal-action">
                 <form method="dialog">
                     <button class="btn btn-sm btn-neutral">Cerrar</button>
                 </form>
             </div>
         </div>
-
         <form method="dialog" class="modal-backdrop">
             <button></button>
         </form>
@@ -531,14 +523,12 @@
                     totalInput.value = formatearPrecio(total);
                 }
             }
-
             precioInputs.forEach(input => {
                 // Inicial: formatear lo que viene del servidor
                 if (input.value) {
                     const n = normalizarPrecio(input.value);
                     input.value = formatearPrecio(n);
                 }
-
                 // Mientras escribís: NO formatear, solo recalcular
                 input.addEventListener('input', function() {
                     // quitar todo lo que no sea dígito
@@ -606,7 +596,6 @@
                 });
             });
         });
-
         // Calcular total al cargar
         calcularTotal();
 
@@ -680,5 +669,4 @@
             });
         });
         </script>
-
 @endsection

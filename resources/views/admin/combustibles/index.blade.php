@@ -303,12 +303,12 @@
 
                                                         @if ($combustible->trashed())
 
-                                                            @can('combustibles-restore')
+                                                            @can('combustibles-restore') 
                                                                 <button class="btn btn-success btn-sm"
                                                                     onclick="abrirModalRestaurar('{{ url('/admin/combustibles/' . $combustible->id . '/restore') }}')">
                                                                     <x-heroicon-s-arrow-uturn-left class="w-4 h-4" />
-                                                                </button>
-                                                            @endcan
+                                                                </button> 
+                                                            @endcan 
 
                                                         @else
 
@@ -317,7 +317,7 @@
                                                                     onclick="confirmarEliminacion({{ $combustible->id }})">
                                                                     <x-heroicon-s-trash class="w-4 h-4" />
                                                                 </button>
-                                                            @endcan
+                                                            @endcan 
 
                                                         @endif
 

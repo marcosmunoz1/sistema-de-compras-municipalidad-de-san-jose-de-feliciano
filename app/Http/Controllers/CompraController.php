@@ -158,7 +158,7 @@ class CompraController extends Controller
         ]);
 
         // Generar número de orden
-        $lastOrder = Compra::max('nr_orden');
+        $lastOrder = Compra::withTrashed()->max('nr_orden');
         $newOrder = $lastOrder ? $lastOrder + 1 : 00000;
         $nr_orden = str_pad($newOrder, 8, '0', STR_PAD_LEFT);
          

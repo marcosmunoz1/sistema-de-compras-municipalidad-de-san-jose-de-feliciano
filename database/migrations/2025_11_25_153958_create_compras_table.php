@@ -6,11 +6,10 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
+     
     public function up(): void
     {
+
         Schema::create('compras', function (Blueprint $table) {
             $table->id(); 
             $table->foreignId('proveedor_id')->constrained('proveedores')->cascadeOnDelete(); //listo
@@ -28,11 +27,10 @@ return new class extends Migration
             $table->softDeletes(); // listo  
             $table->timestamps(); //listo  
 
-            // Polimorfismo manual
+            // Polimorfismo manual 
             $table->index(['destino_tipo', 'destino_id']); // no esta hecha esta modificacion en la base de datos
         });
     }
-
     /**
      * Reverse the migrations.
      */
@@ -40,4 +38,5 @@ return new class extends Migration
     {
         Schema::dropIfExists('compras');
     }
+
 };

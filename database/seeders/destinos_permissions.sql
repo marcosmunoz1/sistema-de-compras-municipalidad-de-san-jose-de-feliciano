@@ -3,7 +3,7 @@
 
 INSERT INTO permissions (name, guard_name, created_at, updated_at) 
 VALUES 
-('destinos-index', 'web', NOW(), NOW()),
+('destinos-index', 'web', NOW(), NOW()), 
 ('destinos-show', 'web', NOW(), NOW()),
 ('destinos-update', 'web', NOW(), NOW()),
 ('destinos-destroy', 'web', NOW(), NOW()),
