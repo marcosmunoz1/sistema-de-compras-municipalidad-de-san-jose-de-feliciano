@@ -390,7 +390,7 @@
                                 Carga completa - <?php echo e($combustible->tipo); ?>
 
                             <?php endif; ?>
-                        </td> 
+                        </td>
                     </tr>
                     
                 </tbody>
@@ -409,9 +409,13 @@
                             style="max-width: 180px; height: auto; max-height: 180px;">
                     <?php endif; ?>
                     <div style="font-size: 11px; font-weight: 700; text-transform: uppercase;">Autorizado por
-                        jefe de compras.
+                        Angeles Urueña.
                         <br>
-                        Cargado por<?php echo e($combustible->user ? ': ' . $combustible->user->name : ''); ?></div>
+                        A/c Área de Compras</div>
+                        <br>
+                        Cargado por<?php echo e($combustible->user ? ': ' . $combustible->user->name : ''); ?>
+
+                    </div>
                 </td>
                 <td style="width: 33%; text-align: center; vertical-align: bottom; border: none; padding: 0 8px;">
                     <div style="border-bottom: 1.5px solid #000; height: 30px; margin-bottom: 4px;"></div>
@@ -429,4 +433,5 @@
 
 </body>
 
-</html><?php /**PATH C:\laragon\www\sistema-municipal\resources\views\pdf\orden-carga.blade.php ENDPATH**/ ?>
+</html>
+<?php /**PATH C:\laragon\www\sistema-municipal\resources\views\pdf\orden-carga.blade.php ENDPATH**/ ?>

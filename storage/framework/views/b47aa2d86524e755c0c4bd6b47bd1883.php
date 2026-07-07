@@ -460,8 +460,10 @@
                             style="max-width: 180px; height: auto; max-height: 180px;">
                     <?php endif; ?>
                     <div style="font-size: 11px; font-weight: 700; text-transform: uppercase;">Autorizado por
-                        jefe de compras.
-                        <br> 
+                        Angeles Urueña.
+                        <br>
+                        A/c Área de Compras
+                        <br>
                         Cargado por <?php echo e($compra->usuario ? ': ' . $compra->usuario->name : ''); ?>
 
                     </div>

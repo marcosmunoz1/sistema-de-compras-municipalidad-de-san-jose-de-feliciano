@@ -462,7 +462,8 @@
                     <div style="font-size: 11px; font-weight: 700; text-transform: uppercase;">Autorizado por
                         Angeles Urueña.
                         <br>
-                        A/c Área de Compras
+                        Cargado por <?php echo e($compra->usuario ? ': ' . $compra->usuario->name : ''); ?>
+
                     </div>
                 </td>
                 <td style="width: 33%; text-align: center; vertical-align: bottom; border: none; padding: 0 8px;">
