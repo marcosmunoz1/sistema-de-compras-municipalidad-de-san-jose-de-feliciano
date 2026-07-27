@@ -450,7 +450,7 @@
                             style="max-width: 180px; height: auto; max-height: 180px;">
                     @endif
                     <div style="font-size: 11px; font-weight: 700; text-transform: uppercase;">Autorizado por
-                        Angeles Urueña.
+                        jefe de compras.
                         <br>
                         Cargado por {{ $compra->usuario ? ': ' . $compra->usuario->name : '' }}
                     </div>

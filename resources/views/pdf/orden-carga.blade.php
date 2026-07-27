@@ -410,7 +410,7 @@
                             style="height: 139px; width: auto;">
                     @endif
                     <div style="font-size: 11px; font-weight: 700; text-transform: uppercase;">Autorizado por
-                        Angeles Urueña.
+                        jefe de compras.
                         <br>
                         Cargado por{{ $combustible->user ? ': ' . $combustible->user->name : '' }}
                     </div>
